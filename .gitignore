@@ -27,7 +27,6 @@ dist-ssr
 
 # Document files
 *.pdf
-*.txt
 *.doc
 *.docx
 *.xls
