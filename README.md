@@ -1,5 +1,4 @@
-![image](https://github.com/user-attachments/assets/532cb58e-b1cf-4e19-983c-a09d189b9f06)<div align="center">
-  
+
   <h2>VIETNAM NATIONAL UNIVERSITY, HO CHI MINH CITY</h2>
   <h3>UNIVERSITY OF TECHNOLOGY</h3>
   <h3>FACULTY OF COMPUTER SCIENCE AND ENGINEERING</h3>
