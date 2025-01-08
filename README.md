@@ -41,6 +41,4 @@
 
 <div align="center">
   <a href="https://github.com/pdz1804"><img src="https://avatars.githubusercontent.com/u/123137268?v=4" title="pdz1804" width="50" height="50"></a>
-   <a href="https://github.com/nguyen1oc"><img src="![image](https://github.com/user-attachments/assets/0100062b-1beb-4aab-9949-c0fc5c64555d)
-" title="pdz1804" width="50" height="50"></a>
 </div>
