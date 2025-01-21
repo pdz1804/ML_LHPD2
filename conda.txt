@@ -1,0 +1,13 @@
+conda env list
+
+Update an Existing Environment
+If you modify the environment.yml file (e.g., add a new dependency), update the existing environment with:
+conda env update -f environment.yml
+
+Export an Environment to a YML File
+If you already have an environment and want to generate an environment.yml file for it:
+conda env export > environment.yml
+
+Regenerate the requirements.txt
+pip freeze > requirements.txt
+
