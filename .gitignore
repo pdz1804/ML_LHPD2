@@ -41,3 +41,5 @@ dist-ssr
 *.7z
 *.psd
 *.safetensors
+
+main.py
