@@ -179,6 +179,67 @@ def lemmatize_words(words):
     lemmatizer = WordNetLemmatizer()
     return [lemmatizer.lemmatize(word) for word in words]
 
+def remove_html_tags(text):
+    """ 
+    Remove html tags from text
+    """
+    clean_text = re.sub(r'<.*?>', '', text)
+    return clean_text
+
+def remove_mention(text):
+    """ 
+    Remove @mentions
+    """
+    # Remove @mentions
+    clean_text = re.sub(r'@\w+', '', text)
+    return clean_text
+
+def remove_urls(text):
+    """ 
+    Remove urls from text
+    """
+    clean_text = re.sub(r'http\S+', '', text)
+    return clean_text
+
+def replace_chat_words(text):
+    chat_words = {
+        "BRB": "Be right back",
+        "BTW": "By the way",
+        "OMG": "Oh my God/goodness",
+        "TTYL": "Talk to you later",
+        "OMW": "On my way",
+        "SMH/SMDH": "Shaking my head/shaking my darn head",
+        "LOL": "Laugh out loud",
+        "TBD": "To be determined", 
+        "IMHO/IMO": "In my humble opinion",
+        "HMU": "Hit me up",
+        "IIRC": "If I remember correctly",
+        "LMK": "Let me know", 
+        "OG": "Original gangsters (used for old friends)",
+        "FTW": "For the win", 
+        "NVM": "Nevermind",
+        "OOTD": "Outfit of the day", 
+        "Ngl": "Not gonna lie",
+        "Rq": "real quick", 
+        "Iykyk": "If you know, you know",
+        "Ong": "On god (I swear)", 
+        "YAAAS": "Yes!", 
+        "Brt": "Be right there",
+        "Sm": "So much",
+        "Ig": "I guess",
+        "Wya": "Where you at",
+        "Istg": "I swear to god",
+        "Hbu": "How about you",
+        "Atm": "At the moment",
+        "Asap": "As soon as possible",
+        "Fyi": "For your information",
+        "Tbh": "To be honest",
+        "Wtf": "What the fuck",
+        "Idk": "I don't know"
+    }
+    for word, expanded_form in chat_words.items():
+        text = text.replace(word, expanded_form)
+    return text
 
 def text_preprocessing(
     text,
@@ -211,6 +272,11 @@ def text_preprocessing(
     processed_sentences = []
     for sentence in sentences:
         # Step 1: Remove special characters
+        sentence = remove_mention(sentence)
+        sentence = remove_html_tags(sentence)
+        sentence = remove_urls(sentence)
+        sentence = replace_chat_words(sentence)
+        
         if remove_special:
             sentence = remove_special_characters(sentence)
         
