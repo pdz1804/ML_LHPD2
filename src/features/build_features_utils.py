@@ -1,9 +1,9 @@
 """
 build_features.py
 
-
 Author: Nguyen Quang Phu
 Date: 2025-02-03
+Updated: 2025-02-10
 """
 
 import os
@@ -86,7 +86,6 @@ class FeatureBuilder:
             return np.mean(word_vectors, axis=0)
         else:
             return np.zeros(self.glove_model.vector_size)
-
 
     def _get_bert_embedding(self, doc):
         """

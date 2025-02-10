@@ -39,7 +39,6 @@ def handle_missing_values(data, strategy="mean", fill_value=None, columns=None):
     else:
         raise ValueError(f"Unknown strategy: {strategy}")
 
-
 def encode_categorical_columns(data, encoding_type="one_hot", columns=None):
     """
     Encode categorical columns in the dataset.
@@ -61,7 +60,6 @@ def encode_categorical_columns(data, encoding_type="one_hot", columns=None):
     else:
         raise ValueError(f"Unknown encoding type: {encoding_type}")
 
-
 def normalize_columns(data, columns=None):
     """
     Normalize numerical columns to the range [0, 1].
@@ -74,7 +72,6 @@ def normalize_columns(data, columns=None):
     data[columns] = data[columns].apply(lambda x: (x - x.min()) / (x.max() - x.min()), axis=0)
     return data
 
-
 def standardize_columns(data, columns=None):
     """
     Standardize numerical columns to have mean 0 and standard deviation 1.
@@ -86,7 +83,6 @@ def standardize_columns(data, columns=None):
     columns = columns or data.select_dtypes(include=["number"]).columns
     data[columns] = data[columns].apply(lambda x: (x - x.mean()) / x.std(), axis=0)
     return data
-
 
 def remove_outliers(data, method="z_score", threshold=3, columns=None):
     """
@@ -115,7 +111,6 @@ def remove_outliers(data, method="z_score", threshold=3, columns=None):
     else:
         raise ValueError(f"Unknown method: {method}")
 
-
 def drop_duplicates(data):
     """
     Drop duplicate rows from the dataset.
@@ -137,13 +132,11 @@ def remove_special_characters(text):
     text = re.sub(r'\w*\d\w*', '', text)
     return text.strip()
 
-
 def lowercase_text(text):
     """
     Convert text to lowercase.
     """
     return text.lower()
-
 
 def tokenize_text(text):
     """
@@ -151,14 +144,12 @@ def tokenize_text(text):
     """
     return word_tokenize(text)
 
-
 def remove_stopwords(words, language="english"):
     """
     Remove stopwords from a list of words.
     """
     stop_words = set(stopwords.words(language))
     return [word for word in words if word not in stop_words]
-
 
 def stem_words(words):
     """
@@ -168,7 +159,6 @@ def stem_words(words):
     from nltk.stem import PorterStemmer
     stemmer = PorterStemmer()
     return [stemmer.stem(word) for word in words]
-
 
 def lemmatize_words(words):
     """
@@ -237,6 +227,7 @@ def replace_chat_words(text):
         "Wtf": "What the fuck",
         "Idk": "I don't know"
     }
+    
     for word, expanded_form in chat_words.items():
         text = text.replace(word, expanded_form)
     return text
@@ -305,7 +296,6 @@ def text_preprocessing(
     # Merge sentences back into text
     return " ".join(processed_sentences)
 
-
 # if __name__ == "__main__":
 #     # Example text
 #     text = """
@@ -325,4 +315,3 @@ def text_preprocessing(
 #     print("Original Text:\n", text)
 #     print("Processed Text:\n", processed_text)
     
-       

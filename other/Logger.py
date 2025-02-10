@@ -1,3 +1,12 @@
+"""
+Logger.py
+
+A class used for logging messages => very useful for debugging
+
+Author: Nguyen Quang Phu
+Date: 2025-02-04
+"""
+
 import os
 import logging
 
@@ -63,7 +72,6 @@ class MyLogger:
         self._initialize_logger()
 
 # # Usage
-# # danh sách các biến toàn cục
 # logger = MyLogger()
 
 # # Enable/Disable tokenizers parallelism to avoid the warning
