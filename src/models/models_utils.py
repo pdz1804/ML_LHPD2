@@ -114,32 +114,31 @@ def generate_binary_classification_model(X, y, model_algorithm, hyperparameters,
         plt.close()
         print(f"📈 Plot saved to {img_save_path}")
     
-    # # ---- Additional Decision Tree Analysis ---- #
-    # if isinstance(model_algorithm, DecisionTreeClassifier):
-    #     print("\n🌳 Performing Decision Tree Analysis...")
+    # ---- Additional Decision Tree Analysis ---- #
+    if isinstance(model_algorithm, DecisionTreeClassifier):
+        print("\n🌳 Performing Decision Tree Analysis...")
 
-    #     # Plot the decision tree
-    #     plt.figure(figsize=(20, 10))
-    #     plot_tree(model_algorithm, filled=True, class_names=[str(label) for label in model_algorithm.classes_], rounded=True)
-    #     plt.title("Decision Tree Visualization")
-    #     plt.show()
+        # Plot the decision tree
+        plt.figure(figsize=(20, 10))
+        plot_tree(model_algorithm, filled=True, class_names=[str(label) for label in model_algorithm.classes_], rounded=True)
+        plt.title("Decision Tree Visualization")
+        plt.show()
 
-    #     # Print decision path for a sample
-    #     sample_id = 0  # Change for other samples if needed
-    #     node_indicator = model_algorithm.decision_path(X)
-    #     leaf_id = model_algorithm.apply(X)
+        # Print decision path for a sample
+        sample_id = 0  # Change for other samples if needed
+        node_indicator = model_algorithm.decision_path(X)
+        leaf_id = model_algorithm.apply(X)
 
-    #     # print(f"\n📝 Rules used to predict sample {sample_id}: {X_train[sample_id]}")
-    #     print(f"\n📝 Rules used to predict sample {sample_id}:")
-    #     node_index = node_indicator.indices[node_indicator.indptr[sample_id]: node_indicator.indptr[sample_id + 1]]
+        # print(f"\n📝 Rules used to predict sample {sample_id}: {X_train[sample_id]}")
+        print(f"\n📝 Rules used to predict sample {sample_id}:")
+        node_index = node_indicator.indices[node_indicator.indptr[sample_id]: node_indicator.indptr[sample_id + 1]]
 
-    #     for node_id in node_index:
-    #         if leaf_id[sample_id] == node_id:
-    #             continue
+        for node_id in node_index:
+            continue
 
-    #         threshold_sign = "<=" if X.iloc[sample_id, model_algorithm.tree_.feature[node_id]] <= model_algorithm.tree_.threshold[node_id] else ">"
-    #         print(f"🔹 Decision node {node_id}: (X[{sample_id}, {model_algorithm.tree_.feature[node_id]}] = "
-    #               f"{X.iloc[sample_id, model_algorithm.tree_.feature[node_id]]}) {threshold_sign} {model_algorithm.tree_.threshold[node_id]}")
+        threshold_sign = "<=" if X.iloc[sample_id, model_algorithm.tree_.feature[node_id]] <= model_algorithm.tree_.threshold[node_id] else ">"
+        print(f"🔹 Decision node {node_id}: (X[{sample_id}, {model_algorithm.tree_.feature[node_id]}] = "
+                f"{X.iloc[sample_id, model_algorithm.tree_.feature[node_id]]}) {threshold_sign} {model_algorithm.tree_.threshold[node_id]}")
 
     return model_algorithm
 

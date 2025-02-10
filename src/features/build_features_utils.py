@@ -34,11 +34,11 @@ class FeatureBuilder:
         
         # Define models for vectorization
         if method == "tfidf":
-            self.vectorizer = TfidfVectorizer(max_features=500)
+            self.vectorizer = TfidfVectorizer(max_features=2000, stop_words="english")
         elif method == "count":
-            self.vectorizer = CountVectorizer(max_features=500)
+            self.vectorizer = CountVectorizer(max_features=2000)
         elif method == "binary_count":
-            self.vectorizer = CountVectorizer(binary=True, max_features=500)
+            self.vectorizer = CountVectorizer(binary=True, max_features=2000)
         elif method == "word2vec":
             self.word2vec_model = api.load("word2vec-google-news-300")  # Pretrained Google News Word2Vec
         elif method == "glove":
