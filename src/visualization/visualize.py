@@ -5,16 +5,16 @@ A module for providing various data visualization options for any dataset.
 This includes plotting class distributions, feature relationships, correlation matrices,
 and automated visualization of all columns and relationships.
 
+STILL NOT BE ABLE TO USE THIS YET :>
+
 Author: Nguyen Quang Phu
-Email: phu.nguyenquang2004@hcmut.edu.vn
+
 Date: 2025-01-21
-Version: 1.0
 
 Usage:
     from visualization import DataVisualizer
     visualizer = DataVisualizer(data)
     visualizer.plot_class_distribution("target")
-
 """
 
 import pandas as pd
@@ -122,3 +122,5 @@ class DataVisualizer:
         sns.pairplot(self.data[numeric_cols], diag_kind="kde", plot_kws={"alpha": 0.7})
         plt.suptitle("Pairwise Relationships", y=1.02)
         plt.show()
+
+
