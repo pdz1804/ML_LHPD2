@@ -39,7 +39,6 @@ def handle_missing_values(data, strategy="mean", fill_value=None, columns=None):
     else:
         raise ValueError(f"Unknown strategy: {strategy}")
 
-
 def encode_categorical_columns(data, encoding_type="one_hot", columns=None):
     """
     Encode categorical columns in the dataset.
@@ -61,7 +60,6 @@ def encode_categorical_columns(data, encoding_type="one_hot", columns=None):
     else:
         raise ValueError(f"Unknown encoding type: {encoding_type}")
 
-
 def normalize_columns(data, columns=None):
     """
     Normalize numerical columns to the range [0, 1].
@@ -74,7 +72,6 @@ def normalize_columns(data, columns=None):
     data[columns] = data[columns].apply(lambda x: (x - x.min()) / (x.max() - x.min()), axis=0)
     return data
 
-
 def standardize_columns(data, columns=None):
     """
     Standardize numerical columns to have mean 0 and standard deviation 1.
@@ -86,7 +83,6 @@ def standardize_columns(data, columns=None):
     columns = columns or data.select_dtypes(include=["number"]).columns
     data[columns] = data[columns].apply(lambda x: (x - x.mean()) / x.std(), axis=0)
     return data
-
 
 def remove_outliers(data, method="z_score", threshold=3, columns=None):
     """
@@ -115,7 +111,6 @@ def remove_outliers(data, method="z_score", threshold=3, columns=None):
     else:
         raise ValueError(f"Unknown method: {method}")
 
-
 def drop_duplicates(data):
     """
     Drop duplicate rows from the dataset.
@@ -137,13 +132,11 @@ def remove_special_characters(text):
     text = re.sub(r'\w*\d\w*', '', text)
     return text.strip()
 
-
 def lowercase_text(text):
     """
     Convert text to lowercase.
     """
     return text.lower()
-
 
 def tokenize_text(text):
     """
@@ -151,14 +144,12 @@ def tokenize_text(text):
     """
     return word_tokenize(text)
 
-
 def remove_stopwords(words, language="english"):
     """
     Remove stopwords from a list of words.
     """
     stop_words = set(stopwords.words(language))
     return [word for word in words if word not in stop_words]
-
 
 def stem_words(words):
     """
@@ -169,7 +160,6 @@ def stem_words(words):
     stemmer = PorterStemmer()
     return [stemmer.stem(word) for word in words]
 
-
 def lemmatize_words(words):
     """
     Apply lemmatization to a list of words.
@@ -179,6 +169,68 @@ def lemmatize_words(words):
     lemmatizer = WordNetLemmatizer()
     return [lemmatizer.lemmatize(word) for word in words]
 
+def remove_html_tags(text):
+    """ 
+    Remove html tags from text
+    """
+    clean_text = re.sub(r'<.*?>', '', text)
+    return clean_text
+
+def remove_mention(text):
+    """ 
+    Remove @mentions
+    """
+    # Remove @mentions
+    clean_text = re.sub(r'@\w+', '', text)
+    return clean_text
+
+def remove_urls(text):
+    """ 
+    Remove urls from text
+    """
+    clean_text = re.sub(r'http\S+', '', text)
+    return clean_text
+
+def replace_chat_words(text):
+    chat_words = {
+        "BRB": "Be right back",
+        "BTW": "By the way",
+        "OMG": "Oh my God/goodness",
+        "TTYL": "Talk to you later",
+        "OMW": "On my way",
+        "SMH/SMDH": "Shaking my head/shaking my darn head",
+        "LOL": "Laugh out loud",
+        "TBD": "To be determined", 
+        "IMHO/IMO": "In my humble opinion",
+        "HMU": "Hit me up",
+        "IIRC": "If I remember correctly",
+        "LMK": "Let me know", 
+        "OG": "Original gangsters (used for old friends)",
+        "FTW": "For the win", 
+        "NVM": "Nevermind",
+        "OOTD": "Outfit of the day", 
+        "Ngl": "Not gonna lie",
+        "Rq": "real quick", 
+        "Iykyk": "If you know, you know",
+        "Ong": "On god (I swear)", 
+        "YAAAS": "Yes!", 
+        "Brt": "Be right there",
+        "Sm": "So much",
+        "Ig": "I guess",
+        "Wya": "Where you at",
+        "Istg": "I swear to god",
+        "Hbu": "How about you",
+        "Atm": "At the moment",
+        "Asap": "As soon as possible",
+        "Fyi": "For your information",
+        "Tbh": "To be honest",
+        "Wtf": "What the fuck",
+        "Idk": "I don't know"
+    }
+    
+    for word, expanded_form in chat_words.items():
+        text = text.replace(word, expanded_form)
+    return text
 
 def text_preprocessing(
     text,
@@ -211,6 +263,11 @@ def text_preprocessing(
     processed_sentences = []
     for sentence in sentences:
         # Step 1: Remove special characters
+        sentence = remove_mention(sentence)
+        sentence = remove_html_tags(sentence)
+        sentence = remove_urls(sentence)
+        sentence = replace_chat_words(sentence)
+        
         if remove_special:
             sentence = remove_special_characters(sentence)
         
@@ -239,7 +296,6 @@ def text_preprocessing(
     # Merge sentences back into text
     return " ".join(processed_sentences)
 
-
 # if __name__ == "__main__":
 #     # Example text
 #     text = """
@@ -259,4 +315,3 @@ def text_preprocessing(
 #     print("Original Text:\n", text)
 #     print("Processed Text:\n", processed_text)
     
-       
