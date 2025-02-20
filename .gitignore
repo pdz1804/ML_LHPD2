@@ -42,7 +42,6 @@ dist-ssr
 *.psd
 *.safetensors
 *.pkl
-*.png
 
 main.py
 store.txt
