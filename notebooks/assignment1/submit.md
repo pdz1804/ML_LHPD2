@@ -59,8 +59,8 @@
 
 ### **2️⃣ GitHub Repository Structure**
 We are implementing **ALL machine learning models from the syllabus** using:
-- **ONE unified dataset** before the midterm (Chapters 2-6).
-- **ANOTHER dataset** for the second stage after midterm (Chapters 6-10).
+- **ONE unified dataset** before the midterm (Chapters 2-6) (which we do in this Assignment - Assignment 1).
+- **ANOTHER dataset** for the second stage after midterm (Chapters 6-10) (which we will do in our Assignment 2).
 
 ✅ **Repository Setup**:
 - The **main repository** is created by the team lead.
