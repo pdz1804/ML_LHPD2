@@ -10,23 +10,21 @@ import os
 import joblib
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
+from statistics import mean
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
-from statistics import mean
-from tqdm import tqdm
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MaxAbsScaler
 from sklearn.model_selection import KFold, GridSearchCV
-from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.linear_model import Perceptron, LogisticRegression
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
-from sklearn.preprocessing import MaxAbsScaler
+import hmmlearn.hmm
 import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
-import hmmlearn.hmm
 from sklearn_crfsuite import CRF
 from sklearn.metrics import log_loss, hinge_loss
 
@@ -34,8 +32,6 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import keras_tuner as kt
-import matplotlib.pyplot as plt
-from tqdm import tqdm
 
 def build_cnn_model(hp, input_shape):
     model = keras.Sequential()
