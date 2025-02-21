@@ -5,7 +5,7 @@ The meaning of the structure of the folder is:
 📂 models/                     # Contains training results, trained models, and logs
 │── 📂 img/                    # Stores images related to training/validation loss, accuracy, and k-fold cross-validation results
 │   │── 📂 results_DT_LR/      # Images for Decision Tree + Logistic Regression results
-│   │── 📂 results_per_bayes/  # Images for Naive Bayes results
+│   │── 📂 results_per_bayes/  # Images for Perceptron + Naive Bayes results
 │   │── 📂 results_RF/         # Images for Random Forest results
 │   │── 📂 results_svm/        # Images for SVM results
 │
