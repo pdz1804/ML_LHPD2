@@ -17,12 +17,6 @@
 
 ---
 
-## **Table of Contents**
-
-[TOC]
-
----
-
 ## 👥 **Team Members**
 
 | Name | Student ID |
