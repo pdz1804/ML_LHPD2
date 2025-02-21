@@ -106,10 +106,8 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 - Applied **data cleaning & preprocessing** 🧹
 - Uploaded the final dataset to **Kaggle** 📤
 
----
-
-## 🚀 **III. Models that we have done in Assignment 1**
-- **Train and Evaluate Models**:
+### **2️⃣ Models that we have done in Assignment 2**
+- **Train and Evaluate Models** 🚀
   - Decision Tree 
   - Random Forest 
   - Logistic Regression 
