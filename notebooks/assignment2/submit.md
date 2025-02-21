@@ -12,8 +12,14 @@
 </div>
 
 <h2 align="center">💡 Course: Machine Learning - 242 💡</h2>
-<h2 align="center">Assignment 1</h2>
+<h2 align="center">Assignment 2</h2>
 <h3 align="center">💡 Class: CC01 - Group LHPD2  💡</h2>
+
+---
+
+## **Table of Contents**
+
+[TOC]
 
 ---
 
@@ -59,8 +65,8 @@
 
 ### **2️⃣ GitHub Repository Structure**
 We are implementing **ALL machine learning models from the syllabus** using:
-- **ONE unified dataset** before the midterm (Chapters 2-6) (which we do in this Assignment - Assignment 1).
-- **ANOTHER dataset** for the second stage after midterm (Chapters 6-10) (which we will do in our Assignment 2).
+- **ONE unified dataset** before the midterm (Chapters 2-6) (which we have done in Assignment 1).
+- **ANOTHER dataset** for the second stage after midterm (Chapters 6-10) (which we do in this Assignment 2).
 
 ✅ **Repository Setup**:
 - The **main repository** is created by the team lead.
@@ -120,17 +126,14 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 - Applied **data cleaning & preprocessing** 🧹
 - Uploaded the final dataset to **Kaggle** 📤
 
----
 
-## 🚀 **III. Models that we have done in Assignment 1**
-- **Train and Evaluate Models**:
-  - Decision Tree 
-  - Random Forest 
-  - Logistic Regression 
-  - Naive Bayes
-  - Support Vector Machine (SVM) 
-  - MLPClassifier and simple Perceptron 
-  - CNN / LSTM for deep learning 
+### **2️⃣ Models that we have done in Assignment 2**
+- **Train and Evaluate Models** 🚀
+  - Some models
+  - Some models
+  - Some models
+  - Some models
+  - Some models
 
 - **Compare Model Performance** 🏆
 - **Create Visualizations for Analysis** 📊
@@ -138,18 +141,19 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 
 ---
 
-## 💡 **IV. Contributions and Task Distribution**
+## 💡 **III. Contributions and Task Distribution**
+
 | **Team Member**  | **Task** |
 |------------------|----------|
 | **Nguyen Quang Phu** | Team leader; Repository management; Participate and Ensure everything stays on schedule and verify all work done by other members. 📂 |
 | **Pham Huynh Bao Dai** | Data preparation; Data preprocessing; feature engineering; Document Data Collecting; Preprocessing and Merging. ⚙️|
-| **Nguyen Thanh Dat** | Consistent model training and evaluating; Model implementation (Decision Tree, Random Forest); Document Model Implementation. 🌳 |
-| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (SVM, Logistic Regression); Document Model Implementation. 📈 |
+| **Nguyen Thanh Dat** | Consistent model training and evaluating; Model implementation (Some models); Document Model Implementation. 🌳 |
+| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (Some models); Document Model Implementation. 📈 |
 | **Nguyen Thien Loc** | Model evaluation, hyperparameter tuning, Model Comparison, Document Performance analysis. 🔍 |
 
 ---
 
-## 📌 **V. How to Run This Project**
+## 📌 **IV. How to Run This Project**
 
 ### 1️⃣ **Clone the Repository**
 ```sh
@@ -172,14 +176,12 @@ cd ML_LHPD2
 
 ---
 
-## 📄 **VI. License**
+## 📄 **V. License**
 This project is licensed under the **MIT License**.
 
 ---
 
-## 📧 **VII. Contact**
+## 📧 **VI. Contact**
 For any questions or contributions, please contact:
 📩 Email: phu.nguyenquang2004@hcmut.edu.vn
 🔗 GitHub: https://github.com/pdz1804/
-
----
