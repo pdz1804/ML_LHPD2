@@ -1,0 +1,211 @@
+2025-02-23 09:51:07,629 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-23 09:51:07,632 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-02-23 09:51:09,356 - INFO - ✅ count - Train shape: (40000, 2000), Test shape: (10000, 2000)
+2025-02-23 09:51:09,358 - INFO - 
+🔍 Processing feature extraction using: tfidf...
+2025-02-23 09:51:11,044 - INFO - ✅ tfidf - Train shape: (40000, 2000), Test shape: (10000, 2000)
+2025-02-23 09:51:11,046 - INFO - 
+🔍 Processing feature extraction using: word2vec...
+2025-02-23 09:51:11,047 - INFO - Creating /root/gensim-data
+2025-02-23 09:54:23,622 - INFO - word2vec-google-news-300 downloaded
+2025-02-23 09:54:23,625 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-02-23 09:55:10,402 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-02-23T09:55:10.402687', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-23 09:55:12,186 - INFO - ✅ word2vec - Train shape: (40000, 300), Test shape: (10000, 300)
+2025-02-23 09:55:12,187 - INFO - 
+🔍 Processing feature extraction using: glove...
+2025-02-23 09:55:29,010 - INFO - glove-wiki-gigaword-100 downloaded
+2025-02-23 09:55:29,013 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz
+2025-02-23 09:55:54,961 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 100) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-02-23T09:55:54.960976', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-23 09:55:57,084 - INFO - ✅ glove - Train shape: (40000, 100), Test shape: (10000, 100)
+2025-02-23 09:57:13,013 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-02-23 09:57:13,014 - INFO - 
+🚀 Training random_forest models...
+
+2025-02-23 09:57:13,015 - INFO - 🔎 Training with Method: count...
+2025-02-23 09:57:13,016 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:01:55,060 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:01:55,061 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:02:51,624 - INFO - 📊 Average Accuracy: 67%
+2025-02-23 10:02:51,625 - INFO - 📊 Average ROC AUC: 66%
+2025-02-23 10:02:51,627 - INFO - 📊 Average F1 Score: 73%
+2025-02-23 10:02:51,628 - INFO - 📊 Average Precision: 62%
+2025-02-23 10:02:51,628 - INFO - 📊 Average Recall: 89%
+2025-02-23 10:03:04,527 - INFO - 💾 Model saved to best_random_forest_count.pkl
+2025-02-23 10:03:04,778 - INFO - 📈 Plot saved to best_random_forest_count.png
+2025-02-23 10:03:04,930 - INFO - 📉 Loss plot saved to best_random_forest_count_loss.png
+2025-02-23 10:03:04,933 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 10:03:04,934 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:07:53,098 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:07:53,099 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:08:48,792 - INFO - 📊 Average Accuracy: 66%
+2025-02-23 10:08:48,793 - INFO - 📊 Average ROC AUC: 65%
+2025-02-23 10:08:48,794 - INFO - 📊 Average F1 Score: 73%
+2025-02-23 10:08:48,796 - INFO - 📊 Average Precision: 61%
+2025-02-23 10:08:48,796 - INFO - 📊 Average Recall: 90%
+2025-02-23 10:09:01,707 - INFO - 💾 Model saved to best_random_forest_tfidf.pkl
+2025-02-23 10:09:01,850 - INFO - 📈 Plot saved to best_random_forest_tfidf.png
+2025-02-23 10:09:02,006 - INFO - 📉 Loss plot saved to best_random_forest_tfidf_loss.png
+2025-02-23 10:09:02,009 - INFO - 🔎 Training with Method: word2vec...
+2025-02-23 10:09:02,010 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:29:21,140 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:29:21,141 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:32:42,498 - INFO - 📊 Average Accuracy: 69%
+2025-02-23 10:32:42,500 - INFO - 📊 Average ROC AUC: 69%
+2025-02-23 10:32:42,501 - INFO - 📊 Average F1 Score: 71%
+2025-02-23 10:32:42,502 - INFO - 📊 Average Precision: 70%
+2025-02-23 10:32:42,502 - INFO - 📊 Average Recall: 72%
+2025-02-23 10:33:32,363 - INFO - 💾 Model saved to best_random_forest_word2vec.pkl
+2025-02-23 10:33:32,521 - INFO - 📈 Plot saved to best_random_forest_word2vec.png
+2025-02-23 10:33:32,668 - INFO - 📉 Loss plot saved to best_random_forest_word2vec_loss.png
+2025-02-23 10:33:32,669 - INFO - 🔎 Training with Method: glove...
+2025-02-23 10:33:32,671 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:46:46,019 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:46:46,020 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:48:47,115 - INFO - 📊 Average Accuracy: 67%
+2025-02-23 10:48:47,115 - INFO - 📊 Average ROC AUC: 67%
+2025-02-23 10:48:47,116 - INFO - 📊 Average F1 Score: 69%
+2025-02-23 10:48:47,118 - INFO - 📊 Average Precision: 68%
+2025-02-23 10:48:47,118 - INFO - 📊 Average Recall: 70%
+2025-02-23 10:49:16,887 - INFO - 💾 Model saved to best_random_forest_glove.pkl
+2025-02-23 10:49:17,050 - INFO - 📈 Plot saved to best_random_forest_glove.png
+2025-02-23 10:49:17,221 - INFO - 📉 Loss plot saved to best_random_forest_glove_loss.png
+2025-02-23 10:49:17,222 - INFO - 
+🚀 Training xgboost models...
+
+2025-02-23 10:49:17,222 - INFO - 🔎 Training with Method: count...
+2025-02-23 10:49:17,223 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 10:58:15,302 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-02-23 10:58:15,303 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:59:09,491 - INFO - 📊 Average Accuracy: 73%
+2025-02-23 10:59:09,493 - INFO - 📊 Average ROC AUC: 72%
+2025-02-23 10:59:09,494 - INFO - 📊 Average F1 Score: 75%
+2025-02-23 10:59:09,495 - INFO - 📊 Average Precision: 70%
+2025-02-23 10:59:09,495 - INFO - 📊 Average Recall: 82%
+2025-02-23 10:59:19,848 - INFO - 💾 Model saved to best_xgboost_count.pkl
+2025-02-23 10:59:20,022 - INFO - 📈 Plot saved to best_xgboost_count.png
+2025-02-23 10:59:20,163 - INFO - 📉 Loss plot saved to best_xgboost_count_loss.png
+2025-02-23 10:59:20,167 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 10:59:20,169 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 11:34:07,851 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-02-23 11:34:07,852 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 11:37:24,144 - INFO - 📊 Average Accuracy: 71%
+2025-02-23 11:37:24,145 - INFO - 📊 Average ROC AUC: 71%
+2025-02-23 11:37:24,146 - INFO - 📊 Average F1 Score: 75%
+2025-02-23 11:37:24,147 - INFO - 📊 Average Precision: 68%
+2025-02-23 11:37:24,148 - INFO - 📊 Average Recall: 83%
+2025-02-23 11:38:09,028 - INFO - 💾 Model saved to best_xgboost_tfidf.pkl
+2025-02-23 11:38:09,198 - INFO - 📈 Plot saved to best_xgboost_tfidf.png
+2025-02-23 11:38:09,346 - INFO - 📉 Loss plot saved to best_xgboost_tfidf_loss.png
+2025-02-23 11:38:09,350 - INFO - 🔎 Training with Method: word2vec...
+2025-02-23 11:38:09,351 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 14:01:51,118 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 150}
+2025-02-23 14:01:51,119 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 14:08:02,890 - INFO - 📊 Average Accuracy: 71%
+2025-02-23 14:08:02,891 - INFO - 📊 Average ROC AUC: 71%
+2025-02-23 14:08:02,891 - INFO - 📊 Average F1 Score: 72%
+2025-02-23 14:08:02,892 - INFO - 📊 Average Precision: 71%
+2025-02-23 14:08:02,893 - INFO - 📊 Average Recall: 74%
+2025-02-23 14:09:25,710 - INFO - 💾 Model saved to best_xgboost_word2vec.pkl
+2025-02-23 14:09:25,863 - INFO - 📈 Plot saved to best_xgboost_word2vec.png
+2025-02-23 14:09:26,013 - INFO - 📉 Loss plot saved to best_xgboost_word2vec_loss.png
+2025-02-23 14:09:26,015 - INFO - 🔎 Training with Method: glove...
+2025-02-23 14:09:26,016 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 14:57:39,910 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-02-23 14:57:39,911 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 15:01:34,667 - INFO - 📊 Average Accuracy: 69%
+2025-02-23 15:01:34,669 - INFO - 📊 Average ROC AUC: 69%
+2025-02-23 15:01:34,669 - INFO - 📊 Average F1 Score: 70%
+2025-02-23 15:01:34,670 - INFO - 📊 Average Precision: 70%
+2025-02-23 15:01:34,671 - INFO - 📊 Average Recall: 71%
+2025-02-23 15:02:28,302 - INFO - 💾 Model saved to best_xgboost_glove.pkl
+2025-02-23 15:02:28,469 - INFO - 📈 Plot saved to best_xgboost_glove.png
+2025-02-23 15:02:28,614 - INFO - 📉 Loss plot saved to best_xgboost_glove_loss.png
+2025-02-23 15:03:01,464 - INFO - 🔎 Predicting with Model: random_forest, Method: count...
+2025-02-23 15:03:01,878 - INFO - Model: random_forest
+2025-02-23 15:03:01,879 - INFO - Method: count
+2025-02-23 15:03:01,879 - INFO - --------------------------------------------------
+2025-02-23 15:03:01,880 - INFO - Accuracy: 0.6684
+2025-02-23 15:03:01,880 - INFO - Precision: 0.6230
+2025-02-23 15:03:01,881 - INFO - Recall: 0.9017
+2025-02-23 15:03:01,882 - INFO - F1 Score: 0.7369
+2025-02-23 15:03:01,882 - INFO - ROC AUC: 0.7627025723150836
+2025-02-23 15:03:01,883 - INFO - 🔎 Predicting with Model: random_forest, Method: tfidf...
+2025-02-23 15:03:02,286 - INFO - Model: random_forest
+2025-02-23 15:03:02,287 - INFO - Method: tfidf
+2025-02-23 15:03:02,288 - INFO - --------------------------------------------------
+2025-02-23 15:03:02,288 - INFO - Accuracy: 0.6599
+2025-02-23 15:03:02,289 - INFO - Precision: 0.6151
+2025-02-23 15:03:02,289 - INFO - Recall: 0.9078
+2025-02-23 15:03:02,290 - INFO - F1 Score: 0.7333
+2025-02-23 15:03:02,291 - INFO - ROC AUC: 0.7534060854769293
+2025-02-23 15:03:02,293 - INFO - 🔎 Predicting with Model: random_forest, Method: word2vec...
+2025-02-23 15:03:02,655 - INFO - Model: random_forest
+2025-02-23 15:03:02,656 - INFO - Method: word2vec
+2025-02-23 15:03:02,656 - INFO - --------------------------------------------------
+2025-02-23 15:03:02,657 - INFO - Accuracy: 0.7000
+2025-02-23 15:03:02,658 - INFO - Precision: 0.7009
+2025-02-23 15:03:02,658 - INFO - Recall: 0.7283
+2025-02-23 15:03:02,659 - INFO - F1 Score: 0.7143
+2025-02-23 15:03:02,660 - INFO - ROC AUC: 0.7702233410069063
+2025-02-23 15:03:02,662 - INFO - 🔎 Predicting with Model: random_forest, Method: glove...
+2025-02-23 15:03:02,980 - INFO - Model: random_forest
+2025-02-23 15:03:02,981 - INFO - Method: glove
+2025-02-23 15:03:02,981 - INFO - --------------------------------------------------
+2025-02-23 15:03:02,982 - INFO - Accuracy: 0.6813
+2025-02-23 15:03:02,984 - INFO - Precision: 0.6832
+2025-02-23 15:03:02,984 - INFO - Recall: 0.7107
+2025-02-23 15:03:02,985 - INFO - F1 Score: 0.6967
+2025-02-23 15:03:02,986 - INFO - ROC AUC: 0.7470747472725452
+2025-02-23 15:03:02,988 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 15:03:02,988 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 15:03:02,989 - INFO - 🔎 Predicting with Model: xgboost, Method: count...
+2025-02-23 15:03:03,523 - INFO - Model: xgboost
+2025-02-23 15:03:03,524 - INFO - Method: count
+2025-02-23 15:03:03,526 - INFO - --------------------------------------------------
+2025-02-23 15:03:03,526 - INFO - Accuracy: 0.7251
+2025-02-23 15:03:03,527 - INFO - Precision: 0.6970
+2025-02-23 15:03:03,528 - INFO - Recall: 0.8247
+2025-02-23 15:03:03,528 - INFO - F1 Score: 0.7555
+2025-02-23 15:03:03,529 - INFO - ROC AUC: 0.8039885096586928
+2025-02-23 15:03:03,531 - INFO - 🔎 Predicting with Model: xgboost, Method: tfidf...
+2025-02-23 15:03:04,080 - INFO - Model: xgboost
+2025-02-23 15:03:04,080 - INFO - Method: tfidf
+2025-02-23 15:03:04,081 - INFO - --------------------------------------------------
+2025-02-23 15:03:04,082 - INFO - Accuracy: 0.7152
+2025-02-23 15:03:04,082 - INFO - Precision: 0.6837
+2025-02-23 15:03:04,083 - INFO - Recall: 0.8317
+2025-02-23 15:03:04,084 - INFO - F1 Score: 0.7505
+2025-02-23 15:03:04,084 - INFO - ROC AUC: 0.7874202582324092
+2025-02-23 15:03:04,086 - INFO - 🔎 Predicting with Model: xgboost, Method: word2vec...
+2025-02-23 15:03:04,275 - INFO - Model: xgboost
+2025-02-23 15:03:04,276 - INFO - Method: word2vec
+2025-02-23 15:03:04,278 - INFO - --------------------------------------------------
+2025-02-23 15:03:04,279 - INFO - Accuracy: 0.7168
+2025-02-23 15:03:04,280 - INFO - Precision: 0.7146
+2025-02-23 15:03:04,280 - INFO - Recall: 0.7495
+2025-02-23 15:03:04,281 - INFO - F1 Score: 0.7316
+2025-02-23 15:03:04,282 - INFO - ROC AUC: 0.7942710639575618
+2025-02-23 15:03:04,283 - INFO - 🔎 Predicting with Model: xgboost, Method: glove...
+2025-02-23 15:03:04,537 - INFO - Model: xgboost
+2025-02-23 15:03:04,538 - INFO - Method: glove
+2025-02-23 15:03:04,538 - INFO - --------------------------------------------------
+2025-02-23 15:03:04,539 - INFO - Accuracy: 0.6972
+2025-02-23 15:03:04,539 - INFO - Precision: 0.6971
+2025-02-23 15:03:04,540 - INFO - Recall: 0.7287
+2025-02-23 15:03:04,540 - INFO - F1 Score: 0.7125
+2025-02-23 15:03:04,541 - INFO - ROC AUC: 0.7650047642878591
+2025-02-23 15:03:04,542 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 15:03:04,542 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

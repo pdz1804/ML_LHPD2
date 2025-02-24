@@ -3,7 +3,11 @@ build_features.py
 
 Author: Nguyen Quang Phu
 Date: 2025-02-03
-Updated: 2025-02-10
+Last Modified: 2025-02-25
+
+This module includes:
+- A FeatureBuilder class for feature extraction and transformation using various methods.
+- A function to build feature vectors for text data.
 """
 
 import os
@@ -17,14 +21,34 @@ import gensim.downloader as api
 from transformers import AutoTokenizer, AutoModel
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.model_selection import train_test_split
 
 class FeatureBuilder:
+    """
+    A class for feature extraction and transformation using various methods.
+
+    Attributes:
+        method (str): The feature extraction method ('tfidf', 'count', 'word2vec', 'bert', etc.).
+        save_dir (str): Directory to save processed features.
+        reduce_dim (str): Dimensionality reduction method ('pca', 'lda', or None).
+        n_components (int): Number of components for dimensionality reduction.
+        vectorizer (object): Vectorizer object for 'tfidf', 'count', or 'binary_count' methods.
+        word2vec_model (object): Pretrained Word2Vec model.
+        glove_model (object): Pretrained GloVe model.
+        tokenizer (object): Tokenizer for BERT model.
+        bert_model (object): BERT model for embedding extraction.
+        reducer (object): Dimensionality reduction object (PCA or LDA).
+    """
+
     def __init__(self, method="tfidf", save_dir="data/processed", reduce_dim=None, n_components=100):
         """
         Initializes the FeatureBuilder with a specified feature engineering method.
-        
-        :param method: str, feature engineering method ('tfidf', 'count', 'word2vec', 'bert', etc.)
-        :param save_dir: str, directory to save processed features
+
+        Args:
+            method (str): Feature engineering method ('tfidf', 'count', 'word2vec', 'bert', etc.).
+            save_dir (str): Directory to save processed features.
+            reduce_dim (str): Dimensionality reduction method ('pca', 'lda', or None).
+            n_components (int): Number of components for dimensionality reduction.
         """
         self.method = method
         self.save_dir = save_dir
@@ -42,7 +66,7 @@ class FeatureBuilder:
         elif method == "word2vec":
             self.word2vec_model = api.load("word2vec-google-news-300")  # Pretrained Google News Word2Vec
         elif method == "glove":
-            self.glove_model = api.load("glove-wiki-gigaword-100")  # Pretrained GloVe embeddings
+            self.glove_model = api.load("glove-wiki-gigaword-100")      # Pretrained GloVe embeddings
         elif method == "bert":
             self.tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
             self.bert_model = AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
@@ -57,13 +81,16 @@ class FeatureBuilder:
         """
         Extracts the average Word2Vec embedding for a document.
 
-        :param doc: str, the document text
-        :return: np.array, the averaged Word2Vec embedding
+        Args:
+            doc (str): The document text.
+
+        Returns:
+            np.array: The averaged Word2Vec embedding.
         """
         tokens = doc.split()
         word_vectors = []
         for token in tokens:
-            if token in self.word2vec_model:  # Access word directly
+            if token in self.word2vec_model: 
                 word_vectors.append(self.word2vec_model[token])  # No need for '.wv'
         if word_vectors:
             return np.mean(word_vectors, axis=0)
@@ -74,13 +101,16 @@ class FeatureBuilder:
         """
         Extracts the average GloVe embedding for a document.
 
-        :param doc: str, the document text
-        :return: np.array, the averaged GloVe embedding
+        Args:
+            doc (str): The document text.
+
+        Returns:
+            np.array: The averaged GloVe embedding.
         """
         tokens = doc.split()
         word_vectors = []
         for token in tokens:
-            if token in self.glove_model:  # Same for GloVe
+            if token in self.glove_model:  
                 word_vectors.append(self.glove_model[token])  # Use directly without '.wv'
         if word_vectors:
             return np.mean(word_vectors, axis=0)
@@ -91,8 +121,11 @@ class FeatureBuilder:
         """
         Extracts the BERT embedding for a document.
 
-        :param doc: str, the document text
-        :return: np.array, the BERT embedding
+        Args:
+            doc (str): The document text.
+
+        Returns:
+            np.array: The BERT embedding.
         """
         inputs = self.tokenizer(doc, return_tensors="pt", padding=True, truncation=True, max_length=512)
         with torch.no_grad():
@@ -103,8 +136,9 @@ class FeatureBuilder:
         """
         Fits the model to the text data by computing necessary statistics (e.g., vocabulary, embeddings).
 
-        :param texts: list, raw text data
-        :return: None
+        Args:
+            texts (list): Raw text data.
+            labels (list, optional): Class labels for LDA. Defaults to None.
         """
         if self.method in ["tfidf", "count", "binary_count"]:
             self.vectorizer.fit(texts)
@@ -122,8 +156,12 @@ class FeatureBuilder:
         """
         Transforms new data based on the fitted model.
 
-        :param texts: list, raw text data
-        :return: transformed feature matrix
+        Args:
+            texts (list): Raw text data.
+            labels (list, optional): Class labels for LDA. Defaults to None.
+
+        Returns:
+            np.array: Transformed feature matrix.
         """
         if self.method in ["tfidf", "count", "binary_count"]:
             # Transform the new data using the fitted vectorizer
@@ -167,14 +205,19 @@ class FeatureBuilder:
         """
         Fits and transforms the text data by first fitting the model and then transforming it.
 
-        :param texts: list, raw text data
-        :return: transformed feature matrix
+        Args:
+            texts (list): Raw text data.
+
+        Returns:
+            np.array: Transformed feature matrix.
         """
         self.fit(texts)  # First fit the model (compute parameters)
         return self.transform(texts)  # Then transform the data using the fitted model
     
     def _save_model(self):
-        """Saves the fitted vectorizer/scaler for later use."""
+        """
+        Saves the fitted vectorizer/scaler for later use.
+        """
         # Ensure the directory exists
         save_dir = self.save_dir if self.save_dir else "data/processed"
         os.makedirs(save_dir, exist_ok=True)  # Create directory if it doesn't exist  
@@ -206,7 +249,9 @@ class FeatureBuilder:
                 pickle.dump(self.reducer, f)
     
     def _load_model(self):
-        """Loads the previously saved vectorizer/scaler."""
+        """
+        Loads the previously saved vectorizer/scaler.
+        """
         # Ensure the directory exists
         os.makedirs(self.save_dir, exist_ok=True)
         
@@ -237,6 +282,60 @@ class FeatureBuilder:
             with open(reducer_path, "rb") as f:
                 self.reducer = pickle.load(f)
 
+def build_vector_for_text(df_sampled, feature_methods, project_root):
+    """
+    Builds feature vectors for text data using specified feature extraction methods.
+
+    Args:
+        df_sampled (pd.DataFrame): The sampled DataFrame containing text data.
+        feature_methods (list): List of feature extraction methods to use.
+        project_root (str): Root directory of the project.
+
+    Returns:
+        dict: Dictionary of training feature matrices for each method.
+        dict: Dictionary of testing feature matrices for each method.
+        pd.Series: Training labels.
+        pd.Series: Testing labels.
+    """
+    X_train_features_dict = {}
+    X_test_features_dict = {}
+
+    # Step 1: First, split the DataFrame before feature extraction (to maintain X-y matching)
+    df_train, df_test = train_test_split(df_sampled, test_size=0.2, random_state=42, stratify=df_sampled["target"])
+
+    # Extract y_train and y_test **before feature extraction** to ensure data alignment
+    y_train = df_train["target"].reset_index(drop=True)
+    y_test = df_test["target"].reset_index(drop=True)
+
+    print("\n🔎 Running feature extraction...\n")
+    for method in tqdm(feature_methods, desc="Feature Extraction Progress"):
+        print(f"\n🔍 Processing feature extraction using: {method}...")
+
+        try:
+            # Initialize FeatureBuilder for the current method
+            feature_builder = FeatureBuilder(
+                method=method,
+                save_dir=os.path.join(project_root, "data", "processed"),
+                reduce_dim=None,
+                n_components=50
+            )
+
+            # Step 2: Extract features separately for train and test sets
+            feature_builder.fit(df_sampled["text_clean"].tolist())
+            X_train = feature_builder.transform(df_train["text_clean"].tolist())
+            X_test = feature_builder.transform(df_test["text_clean"].tolist()) 
+
+            # Ensure feature matrices are DataFrames
+            X_train_features_dict[method] = pd.DataFrame(X_train)
+            X_test_features_dict[method] = pd.DataFrame(X_test)
+
+            print(f"✅ {method} - Train shape: {X_train.shape}, Test shape: {X_test.shape}")
+
+        except Exception as e:
+            print(f"❌ Error with {method}: {e}. Skipping this method.")
+
+    return X_train_features_dict, X_test_features_dict, y_train, y_test
+
 # if __name__ == "__main__":
 #     # Sample texts for testing
 #     sample_texts = [
@@ -258,12 +357,12 @@ class FeatureBuilder:
 #             feature_builder = FeatureBuilder(method=method, save_dir="data/processed")
 #             loaded_features = feature_builder.fit_transform(sample_texts)
 #             feature_builder._save_model()  # Save the model for later use
-#             print(f"✅ {method} - Loaded feature shape: {np.array(loaded_features).shape}")
+#             print(f"{method} - Loaded feature shape: {np.array(loaded_features).shape}")
             
 #             # Display saved model file paths and contents
 #             if method in ["tfidf", "count", "binary_count"]:
 #                 model_file = os.path.join(feature_builder.save_dir, f"{method}_vectorizer.pkl")
-#                 print(f"✅ {method} - Saved vectorizer file: {model_file}")
+#                 print(f"{method} - Saved vectorizer file: {model_file}")
                 
 #                 # Print some content from the vectorizer (e.g., vocabulary)
 #                 with open(model_file, "rb") as f:
@@ -271,49 +370,10 @@ class FeatureBuilder:
 #                     print(f"Sample vocabulary for {method}: {dict(list(vectorizer.vocabulary_.items())[:10])}")  # First 10 items
             
 #             elif method in ["word2vec", "glove", "bert"]:
-#                 print(f"✅ {method} - Model embeddings have been generated.")
+#                 print(f"{method} - Model embeddings have been generated.")
                 
 #             print("\n")
 #         except Exception as e:
-#             print(f"❌ Error with method {method}: {e}\n")
-
-#     # Load the models and display data
-#     for method in methods:
-#         try:
-#             print(f"▶ Loading {method} model...\n")
-            
-#             # Define file paths for the saved models
-#             if method in ["tfidf", "count", "binary_count"]:
-#                 vectorizer_file = os.path.join("data/processed", f"{method}_vectorizer.pkl")
-#                 with open(vectorizer_file, "rb") as f:
-#                     vectorizer = pickle.load(f)
-#                 print(f"✅ {method} - Vocabulary: {dict(list(vectorizer.vocabulary_.items())[:10])}")  # First 10 items
-
-#             elif method in ["word2vec", "glove", "bert"]:
-#                 model_file = os.path.join("data/processed", f"{method}_model.pkl")
-#                 with open(model_file, "rb") as f:
-#                     model = pickle.load(f)
-#                 print(f"✅ {method} - Model loaded successfully. Model data type: {type(model)}")
-                
-#                 if method == "word2vec":
-#                     print(f"✅ {method} - Example word embedding for 'handsome': {model['handsome'][:10]}")  # Show first 10 values
-#                 elif method == "glove":
-#                     # Assuming GloVe is a dictionary of words and embeddings
-#                     print(f"✅ {method} - Example word embedding for 'handsome': {model['handsome'][:10]}")  # Show first 10 values
-#                 elif method == "bert":
-#                     # Load the BERT tokenizer separately
-#                     tokenizer_file = os.path.join("data/processed", "bert_tokenizer.pkl")
-#                     with open(tokenizer_file, "rb") as f:
-#                         tokenizer = pickle.load(f)
-#                     print(f"✅ {method} - Tokenizer loaded successfully. Tokenizer data type: {type(tokenizer)}")
-                    
-#                     # Use the tokenizer to encode the text
-#                     input_ids = tokenizer.encode("handsome", return_tensors="pt")
-#                     embeddings = model(input_ids).last_hidden_state
-#                     print(f"✅ {method} - Example embedding for 'handsome': {embeddings[0][0][:10]}")  # First 10 values
-
-#         except Exception as e:
-#             print(f"❌ Error with method {method}: {e}\n")
-
+#             print(f"Error with method {method}: {e}\n")
 
 

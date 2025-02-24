@@ -1,0 +1,78 @@
+2025-02-20 15:01:04,225 - INFO - Training set size: 40000
+2025-02-20 15:01:04,225 - INFO - Test set size: 10000
+2025-02-20 15:01:04,226 - INFO - Training labels size: 40000
+2025-02-20 15:01:04,227 - INFO - Test labels size: 10000
+2025-02-20 15:01:04,285 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-20 15:01:16,900 - INFO - Creating /root/gensim-data
+2025-02-20 15:04:31,164 - INFO - word2vec-google-news-300 downloaded
+2025-02-20 15:04:31,167 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-02-20 15:05:18,275 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-02-20T15:05:18.273000', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-20 15:06:52,295 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-20 15:06:52,298 - INFO - Model: random_forest
+2025-02-20 15:06:52,299 - INFO - 🔍 Method: count...
+2025-02-20 15:06:52,300 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-20 15:17:07,708 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-20 15:18:13,390 - INFO - 📊 Average Accuracy: 63%
+2025-02-20 15:18:13,392 - INFO - 📊 Average ROC AUC: 63%
+2025-02-20 15:18:13,393 - INFO - 📊 Average F1 Score: 64%
+2025-02-20 15:18:13,394 - INFO - 📊 Average Precision: 64%
+2025-02-20 15:18:13,394 - INFO - 📊 Average Recall: 65%
+2025-02-20 15:18:13,445 - INFO - 💾 Model saved to best_random_forest_count.pkl
+2025-02-20 15:18:14,004 - INFO - 📈 Plot saved to best_random_forest_count.png
+2025-02-20 15:18:14,160 - INFO - 📉 Loss plot saved to best_random_forest_count_loss.png
+2025-02-20 15:18:14,163 - INFO - Model: random_forest
+2025-02-20 15:18:14,163 - INFO - 🔍 Method: tfidf...
+2025-02-20 15:18:14,164 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-20 15:28:07,601 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+2025-02-20 15:29:10,672 - INFO - 📊 Average Accuracy: 67%
+2025-02-20 15:29:10,673 - INFO - 📊 Average ROC AUC: 67%
+2025-02-20 15:29:10,674 - INFO - 📊 Average F1 Score: 68%
+2025-02-20 15:29:10,675 - INFO - 📊 Average Precision: 67%
+2025-02-20 15:29:10,675 - INFO - 📊 Average Recall: 70%
+2025-02-20 15:29:10,722 - INFO - 💾 Model saved to best_random_forest_tfidf.pkl
+2025-02-20 15:29:10,880 - INFO - 📈 Plot saved to best_random_forest_tfidf.png
+2025-02-20 15:29:11,016 - INFO - 📉 Loss plot saved to best_random_forest_tfidf_loss.png
+2025-02-20 15:29:11,018 - INFO - Model: random_forest
+2025-02-20 15:29:11,019 - INFO - 🔍 Method: word2vec...
+2025-02-20 15:29:11,021 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-20 15:39:29,223 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+2025-02-20 15:40:58,287 - INFO - 📊 Average Accuracy: 70%
+2025-02-20 15:40:58,289 - INFO - 📊 Average ROC AUC: 70%
+2025-02-20 15:40:58,290 - INFO - 📊 Average F1 Score: 70%
+2025-02-20 15:40:58,291 - INFO - 📊 Average Precision: 70%
+2025-02-20 15:40:58,292 - INFO - 📊 Average Recall: 69%
+2025-02-20 15:40:58,336 - INFO - 💾 Model saved to best_random_forest_word2vec.pkl
+2025-02-20 15:40:58,490 - INFO - 📈 Plot saved to best_random_forest_word2vec.png
+2025-02-20 15:40:58,639 - INFO - 📉 Loss plot saved to best_random_forest_word2vec_loss.png
+2025-02-20 15:41:40,411 - INFO - Model: random_forest
+2025-02-20 15:41:40,412 - INFO - Method: count
+2025-02-20 15:41:40,413 - INFO - --------------------------------------------------
+2025-02-20 15:41:40,413 - INFO - Accuracy: 0.5214
+2025-02-20 15:41:40,414 - INFO - Precision: 0.5359
+2025-02-20 15:41:40,417 - INFO - Recall: 0.4535
+2025-02-20 15:41:40,418 - INFO - F1 Score: 0.4913
+2025-02-20 15:41:40,418 - INFO - ROC AUC: 0.5287
+2025-02-20 15:41:40,419 - INFO - --------------------------------------------------
+2025-02-20 15:41:40,700 - INFO - Model: random_forest
+2025-02-20 15:41:40,701 - INFO - Method: tfidf
+2025-02-20 15:41:40,701 - INFO - --------------------------------------------------
+2025-02-20 15:41:40,702 - INFO - Accuracy: 0.5426
+2025-02-20 15:41:40,703 - INFO - Precision: 0.5385
+2025-02-20 15:41:40,703 - INFO - Recall: 0.7172
+2025-02-20 15:41:40,704 - INFO - F1 Score: 0.6151
+2025-02-20 15:41:40,705 - INFO - ROC AUC: 0.5674
+2025-02-20 15:41:40,707 - INFO - --------------------------------------------------
+2025-02-20 15:41:41,014 - INFO - Model: random_forest
+2025-02-20 15:41:41,014 - INFO - Method: word2vec
+2025-02-20 15:41:41,015 - INFO - --------------------------------------------------
+2025-02-20 15:41:41,016 - INFO - Accuracy: 0.6514
+2025-02-20 15:41:41,016 - INFO - Precision: 0.6594
+2025-02-20 15:41:41,017 - INFO - Recall: 0.6535
+2025-02-20 15:41:41,018 - INFO - F1 Score: 0.6564
+2025-02-20 15:41:41,019 - INFO - ROC AUC: 0.7113
+2025-02-20 15:41:41,019 - INFO - --------------------------------------------------
+2025-02-20 15:41:41,022 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
