@@ -47,4 +47,3 @@ store.txt
 *.keras
 *.h5
 src/models/tuner_results/*
-*.png
