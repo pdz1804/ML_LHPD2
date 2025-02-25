@@ -45,7 +45,6 @@ This repository is structured to ensure maintainability, scalability, and ease o
 │── 📂 data/                     # Contains datasets (raw, processed, final)  
 │── 📂 models/                   # Stores trained models and results  
 │── 📂 notebooks/                # Jupyter notebooks for EDA & experimentation  
-│── 📂 other/                    # Miscellaneous project-related files  
 │── 📂 reports/                  # Reports, figures, and documentation  
 │── 📂 src/                      # Source code for data processing, modeling, and visualization  
 │── 📂 tests/                    # Scripts for evaluating models and performance testing  

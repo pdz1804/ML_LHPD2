@@ -3,7 +3,7 @@ build_features.py
 
 Author: Nguyen Quang Phu
 Date: 2025-02-03
-Last Modified: 2025-02-25
+Updated: 2025-02-10
 
 This module includes:
 - Functions for creating and training various machine learning models.
@@ -20,7 +20,7 @@ from tqdm import tqdm
 from statistics import mean
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
-from sklearn.preprocessing import StandardScaler, MaxAbsScaler, MinMaxScaler
+from sklearn.preprocessing import StandardScaler, MaxAbsScaler, MinMaxScaler, KBinsDiscretizer
 from sklearn.model_selection import KFold, GridSearchCV, cross_val_score
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.linear_model import Perceptron, LogisticRegression
@@ -33,6 +33,8 @@ import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
 from sklearn_crfsuite import CRF
 from sklearn.metrics import log_loss, hinge_loss
+
+from sklearn.base import BaseEstimator, ClassifierMixin
 
 import tensorflow as tf
 from tensorflow import keras
@@ -52,7 +54,7 @@ from keras_tuner import RandomSearch
 
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import MaximumLikelihoodEstimator
-from pgmpy.inference import VariableElimination
+from pgmpy.inference import VariableElimination, BeliefPropagation
 
 import nltk
 import re
@@ -67,7 +69,207 @@ nltk.download('punkt')
 nltk.download('stopwords')
 
 # --------------------------------------------------
+# Loc defined
+class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
+    """
+    BayesianNetworkClassifier
 
+    This module provides a custom Bayesian Network classifier implementing scikit-learn's BaseEstimator and ClassifierMixin.
+    The classifier supports feature selection, discretization, dimensionality reduction, and inference using Bayesian Networks.
+
+    Key functionalities:
+    - Feature filtering based on unique values
+    - Principal Component Analysis (PCA) for dimensionality reduction
+    - Discretization of continuous features
+    - Training a Bayesian Network using Maximum Likelihood Estimation
+    - Inference using Belief Propagation or Variable Elimination
+    - Compatibility with scikit-learn's API for easy integration
+    """
+    
+    def __init__(self, structure=None, n_bins=2, strategy='kmeans', min_unique_values=2, max_features=20):
+        """
+        Initializes the BayesianNetworkClassifier with user-defined parameters.
+
+        Args:
+            structure (list, optional): A predefined structure for the Bayesian Network.
+            n_bins (int, optional): Number of bins for discretization (default is 2).
+            strategy (str, optional): Discretization strategy (default is 'kmeans').
+            min_unique_values (int, optional): Minimum unique values required per feature (default is 2).
+            max_features (int, optional): Maximum features allowed after PCA (default is 20).
+        """
+        self.structure = structure
+        self.n_bins = n_bins
+        self.strategy = strategy
+        self.min_unique_values = min_unique_values
+        self.max_features = max_features
+        self.model = None
+        self.inference = None
+        self.feature_names = None
+        self.discretizer = None
+        self.pca = None
+        self.filtered_columns = None  # Lưu cột sau khi lọc
+    
+    def fit(self, X, y):
+        """
+        Fits the Bayesian Network classifier to the training data.
+
+        Steps:
+        1. Converts `X` into a DataFrame if necessary.
+        2. Filters out low-variance features with fewer than `min_unique_values` unique values.
+        3. Applies PCA if the number of features exceeds `max_features`.
+        4. Discretizes the features based on the selected strategy.
+        5. Trains the Bayesian Network using Maximum Likelihood Estimation.
+        6. Initializes the inference engine for predictions.
+
+        Args:
+            X (array-like or pd.DataFrame): Feature matrix.
+            y (array-like): Target labels.
+
+        Returns:
+            self: Trained model instance.
+        """
+        if isinstance(X, np.ndarray):
+            X = pd.DataFrame(X, columns=[f"col_{i}" for i in range(X.shape[1])])
+        
+        # Loại bỏ các đặc trưng không đủ đa dạng
+        unique_counts = X.nunique()
+        self.filtered_columns = unique_counts[unique_counts >= self.min_unique_values].index.tolist()
+        if len(self.filtered_columns) < 1:
+            raise ValueError(f"No features with at least {self.min_unique_values} unique values.")
+        X = X[self.filtered_columns]
+        
+        print(f"After filtering: {len(self.filtered_columns)} features remain.")
+        print("Unique values per feature before discretization:\n", X.nunique())
+        
+        # Giảm số đặc trưng bằng PCA
+        if len(self.filtered_columns) > self.max_features:
+            self.pca = PCA(n_components=self.max_features)
+            X_reduced = self.pca.fit_transform(X)
+            X = pd.DataFrame(X_reduced, columns=[f"feat_{i}" for i in range(self.max_features)])
+            self.feature_names = X.columns.tolist()
+            print(f"After PCA: Reduced to {self.max_features} features.")
+        else:
+            self.feature_names = self.filtered_columns
+        
+        # Rời rạc hóa dữ liệu
+        is_discrete = all(X[col].apply(lambda x: x.is_integer() if pd.notna(x) else True).all() for col in X.columns)
+        if is_discrete:
+            X_discrete = X.astype(int)
+        else:
+            if X.max().max() < 1e-5:
+                X_discrete = (X > 0).astype(int)
+            else:
+                self.discretizer = KBinsDiscretizer(n_bins=self.n_bins, encode='ordinal', strategy=self.strategy)
+                X_discrete = pd.DataFrame(self.discretizer.fit_transform(X), columns=self.feature_names)
+        
+        print("Unique values per feature after discretization:\n", X_discrete.nunique())
+        
+        # Kiểm tra dữ liệu và nhãn
+        unique_values_per_feature = X_discrete.nunique()
+        if any(unique_values_per_feature < 2):
+            raise ValueError("Some features have fewer than 2 unique values after processing.")
+        y = pd.Series(y).astype(int).reset_index(drop=True)
+        if y.nunique() < 2:
+            raise ValueError(f"Label has fewer than 2 unique values in this fold: {y.value_counts().to_dict()}")
+        
+        # Tạo dữ liệu huấn luyện
+        data = X_discrete.copy()
+        data['label'] = y
+        
+        # Tạo cấu trúc đơn giản
+        if self.structure is None:
+            self.structure = [(feat, 'label') for feat in self.feature_names]
+        
+        # Huấn luyện mô hình
+        self.model = BayesianNetwork(self.structure)
+        self.model.fit(data, estimator=MaximumLikelihoodEstimator)
+        # self.inference = VariableElimination(self.model)
+        self.inference = BeliefPropagation(self.model)
+        return self
+    
+    def predict(self, X):
+        """
+        Predicts class labels for the given test data.
+
+        Steps:
+        1. Converts `X` into a DataFrame if necessary.
+        2. Applies the same filtering and transformations as in `fit()`.
+        3. Performs inference using the Bayesian Network.
+        
+        Args:
+            X (array-like or pd.DataFrame): Test feature matrix.
+
+        Returns:
+            np.array: Predicted class labels.
+        """
+        if isinstance(X, np.ndarray):
+            X = pd.DataFrame(X, columns=[f"col_{i}" for i in range(X.shape[1])])
+        
+        # Lọc dữ liệu kiểm tra bằng các cột đã lọc trong fit()
+        X = X[self.filtered_columns]
+        
+        # Áp dụng PCA nếu có
+        if self.pca is not None:
+            X = pd.DataFrame(self.pca.transform(X), columns=self.feature_names)
+        
+        # Áp dụng rời rạc hóa nếu có
+        if self.discretizer is not None:
+            X_discrete = pd.DataFrame(self.discretizer.transform(X), columns=self.feature_names)
+        else:
+            X_discrete = X.astype(int)
+        
+        # Dự đoán
+        y_pred = []
+        for i in range(len(X_discrete)):
+            evidence = {k: v for k, v in X_discrete.iloc[i].to_dict().items() if pd.notna(v)}
+            pred = self.inference.map_query(variables=['label'], evidence=evidence, show_progress=False)
+            y_pred.append(pred['label'])
+        return np.array(y_pred)
+    
+    def score(self, X, y):
+        """
+        Computes the accuracy of the classifier.
+
+        Args:
+            X (array-like or pd.DataFrame): Test feature matrix.
+            y (array-like): True labels.
+
+        Returns:
+            float: Accuracy score.
+        """
+        y_pred = self.predict(X)
+        return accuracy_score(y, y_pred)
+    
+    def get_params(self, deep=True):
+        """
+        Returns model parameters in a dictionary format.
+
+        Args:
+            deep (bool, optional): Whether to return parameters for sub-objects (default is True).
+
+        Returns:
+            dict: Model parameters.
+        """
+        return {"structure": self.structure, "n_bins": self.n_bins, "strategy": self.strategy, 
+                "min_unique_values": self.min_unique_values, "max_features": self.max_features}
+    
+    def set_params(self, **params):
+        """
+        Sets model parameters dynamically.
+
+        Args:
+            **params: Keyword arguments containing parameter names and values.
+
+        Returns:
+            self: Model instance with updated parameters.
+        """
+        for param, value in params.items():
+            setattr(self, param, value)
+        return self
+
+
+# --------------------------------------------------
+# Hung defined
 def create_population(num_features, population_size):
     """
     Creates an initial population of binary feature selectors.
@@ -454,6 +656,7 @@ def get_training_loss(model, X_train, y_train):
     return None  # Loss not available
 
 # --------------------------------------------------
+# Hung defined
 def train_bayes_net(df, model_save_path):
     """
     Trains a Bayesian Network on the given DataFrame.
@@ -680,106 +883,6 @@ def train_graphical_model(df, model_name, model_save_path):
         train_bayes_net(df, model_save_path)
 
 # --------------------------------------------------
-
-def build_cnn_model(hp, input_shape):
-    """
-    Builds a CNN model for hyperparameter tuning.
-
-    Args:
-        hp (HyperParameters): Hyperparameters for tuning.
-        input_shape (tuple): Shape of the input data.
-
-    Returns:
-        keras.Sequential: Compiled CNN model.
-    """
-    model = keras.Sequential()
-    
-    # CNN Layer 1
-    model.add(layers.Conv1D(
-        filters=hp.Int('filters_1', min_value=32, max_value=128, step=32),
-        kernel_size=hp.Choice('kernel_size_1', values=[3, 5]),
-        activation="relu",
-        input_shape=input_shape
-    ))
-    model.add(layers.MaxPooling1D(pool_size=2))
-    
-    # CNN Layer 2
-    model.add(layers.Conv1D(
-        filters=hp.Int('filters_2', min_value=64, max_value=256, step=64),
-        kernel_size=hp.Choice('kernel_size_2', values=[3, 5]),
-        activation="relu"
-    ))
-    model.add(layers.MaxPooling1D(pool_size=2))
-    
-    model.add(layers.Flatten())
-
-    # Dense Layer
-    model.add(layers.Dense(
-        units=hp.Int('dense_units', min_value=64, max_value=256, step=64),
-        activation="relu"
-    ))
-    
-    # Dropout
-    model.add(layers.Dropout(rate=hp.Float('dropout', min_value=0.2, max_value=0.5, step=0.1)))
-    
-    # Output Layer
-    model.add(layers.Dense(1, activation="sigmoid"))
-    
-    # Compile Model
-    model.compile(
-        optimizer=keras.optimizers.Adam(hp.Choice('learning_rate', values=[1e-3, 1e-4])),
-        loss="binary_crossentropy",
-        metrics=["accuracy"]
-    )
-    
-    return model
-
-def build_lstm_model(hp, input_shape):
-    """
-    Builds an LSTM model for hyperparameter tuning.
-
-    Args:
-        hp (HyperParameters): Hyperparameters for tuning.
-        input_shape (tuple): Shape of the input data.
-
-    Returns:
-        keras.Sequential: Compiled LSTM model.
-    """
-    model = keras.Sequential()
-    
-    # First LSTM Layer
-    model.add(layers.LSTM(
-        units=hp.Int('lstm_units_1', min_value=64, max_value=256, step=64),
-        return_sequences=True,
-        input_shape=input_shape
-    ))
-    
-    # Second LSTM Layer
-    model.add(layers.LSTM(
-        units=hp.Int('lstm_units_2', min_value=32, max_value=128, step=32),
-        return_sequences=False
-    ))
-    
-    # Dense Layer
-    model.add(layers.Dense(
-        units=hp.Int('dense_units', min_value=64, max_value=256, step=64),
-        activation="relu"
-    ))
-    
-    # Dropout
-    model.add(layers.Dropout(rate=hp.Float('dropout', min_value=0.2, max_value=0.5, step=0.1)))
-    
-    # Output Layer
-    model.add(layers.Dense(1, activation="sigmoid"))
-    
-    # Compile Model
-    model.compile(
-        optimizer=keras.optimizers.Adam(hp.Choice('learning_rate', values=[1e-3, 1e-4])),
-        loss="binary_crossentropy",
-        metrics=["accuracy"]
-    )
-    
-    return model
 
 def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, num_trials=5, epochs=10):
     """

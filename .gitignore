@@ -41,10 +41,9 @@ dist-ssr
 *.psd
 *.safetensors
 
-
 main.py
 store.txt
 *.keras
 *.h5
-src/models/tuner_results/*
+models/Ver02_25_02_25/trained/tuner_results/*
 other/*
