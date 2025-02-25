@@ -22,7 +22,9 @@ import spacy
 from collections import Counter
 from wordcloud import WordCloud
 
-# Load mô hình spaCy
+import os
+from datetime import datetime
+
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
@@ -79,12 +81,19 @@ class DataVisualizer:
             plt.title(f"Distribution of {column}")
             plt.xlabel(column)
             plt.ylabel("Frequency")
+            save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+            plt.savefig(save_path, dpi=300, bbox_inches="tight")
+            print(f"Saved plot to {save_path}")
             plt.show()
+
         else:
             sns.histplot(self.data[column], kde=True, bins=30, color="skyblue")
             plt.title(f"Distribution of {column}")
             plt.xlabel(column)
             plt.ylabel("Density")
+            save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+            plt.savefig(save_path, dpi=300, bbox_inches="tight")
+            print(f"Saved plot to {save_path}")
             plt.show()
 
     def plot_feature_relationship(self, feature1, feature2):
@@ -102,6 +111,9 @@ class DataVisualizer:
         plt.title(f"Relationship between {feature1} and {feature2}")
         plt.xlabel(feature1)
         plt.ylabel(feature2)
+        save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved plot to {save_path}")
         plt.show()
 
     def plot_all_distributions(self):
@@ -127,6 +139,9 @@ class DataVisualizer:
             return
         sns.pairplot(self.data[numeric_cols], diag_kind="kde", plot_kws={"alpha": 0.7})
         plt.suptitle("Pairwise Relationships", y=1.02)
+        save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved plot to {save_path}")
         plt.show()
 
     def plot_class_distribution_nega_posi(self, target_column='target'):
@@ -141,38 +156,69 @@ class DataVisualizer:
         plt.title('Distribution of class Positive and class Negative (Dữ liệu mẫu)')
         plt.xlabel('(0.0 = Negative, 1.0/4.0 = Positive)')
         plt.ylabel('Ammount')
+        save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved plot to {save_path}")
         plt.show()
 
-    def plot_top_words_and_wordcloud(self, text_column='text_clean', n_words=20, title_prefix="Toàn dataset (Dữ liệu mẫu)"):
+    def plot_top_words_and_wordcloud(self, text_column='text_clean', sentiment_column=None, sentiment_value=None, n_words=20, title_prefix="Toàn dataset (Dữ liệu mẫu)"):
         """
-        Generates a bar chart and a word cloud for the most frequent words in a text column.
+        Generates a bar chart and a word cloud for the most frequent words in a text column, optionally filtering by sentiment.
 
         Args:
             text_column (str): The column containing textual data.
+            sentiment_column (str, optional): The column containing sentiment labels.
+            sentiment_value (any, optional): The specific sentiment value to filter by.
             n_words (int): Number of top words to visualize.
             title_prefix (str): Custom title prefix for the plots.
         """
-        all_text = ' '.join(self.data[text_column].dropna().astype(str))
+        # Filter by sentiment if specified
+        if sentiment_column and sentiment_value is not None:
+            filtered_data = self.data[self.data[sentiment_column] == sentiment_value]
+            if filtered_data.empty:
+                print(f"No data found for sentiment = {sentiment_value}")
+                return
+            all_text = ' '.join(filtered_data[text_column].dropna().astype(str))
+            title_prefix = f"{title_prefix} - Sentiment {sentiment_value}"
+        else:
+            all_text = ' '.join(self.data[text_column].dropna().astype(str))
+
+        # Increase spaCy's max_length if text is too large
+        nlp.max_length = len(all_text) + 1000
+
         words = [token.text for token in nlp(all_text.lower()) if token.is_alpha] 
         words = [word for word in words if word.isalnum()]
         
         word_counts = Counter(words)
         top_words = word_counts.most_common(n_words)
         
+        # Bar Plot
         plt.figure(figsize=(10, 6))
         df_words = pd.DataFrame({'Word': [w for w, _ in top_words], 'Frequency': [c for _, c in top_words]})
-        sns.barplot(data=df_words, x='Frequency', y='Word', hue='Word', palette='Blues_d', legend=False)
-        plt.title(f'{title_prefix} - The top 20 most frequent words and their word cloud')
+        sns.barplot(data=df_words, x='Frequency', y='Word', palette='Blues_d')
+        plt.title(f'{title_prefix} - Top {n_words} Words')
         plt.xlabel('Frequency')
         plt.ylabel('Word')
+
+        save_path = f"/kaggle/working/top_words_{title_prefix.replace(' ', '_')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved bar plot to {save_path}")
+
         plt.show()
         
+        # Word Cloud
         wordcloud = WordCloud(width=800, height=400, max_words=n_words, background_color='white', colormap='viridis').generate(all_text)
         plt.figure(figsize=(10, 6))
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
         plt.title(f'Word Cloud {title_prefix}')
+
+        save_path = f"/kaggle/working/wordcloud_{title_prefix.replace(' ', '_')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved word cloud to {save_path}")
+
         plt.show()
+
 
     def plot_positive_words_and_wordcloud(self, text_column='text_clean', n_words=20):
         """
@@ -186,7 +232,7 @@ class DataVisualizer:
         if len(positive_data) == 0:
             print("There is no positive in the dataset.")
             return
-        self.plot_top_words_and_wordcloud(text_column=text_column, n_words=n_words, title_prefix="Class Positive (data_sample)")
+        self.plot_top_words_and_wordcloud(text_column=text_column, sentiment_column="target", sentiment_value=4, n_words=n_words, title_prefix="Class Positive (data_sample)")
 
     def plot_negative_words_and_wordcloud(self, text_column='text_clean', n_words=20):
         """
@@ -200,7 +246,7 @@ class DataVisualizer:
         if len(negative_data) == 0:
             print("There is no negative in the dataset.")
             return
-        self.plot_top_words_and_wordcloud(text_column=text_column, n_words=n_words, title_prefix="Class Negative (data_sample)")
+        self.plot_top_words_and_wordcloud(text_column=text_column, sentiment_column="target", sentiment_value=0, n_words=n_words, title_prefix="Class Negative (data_sample)")
         
     def plot_text_length_distribution(self, target_column='target', length_columns=['text_length', 'text_clean_length']):
         """
@@ -217,7 +263,7 @@ class DataVisualizer:
         for length_col in length_columns:
             # Box plot
             plt.figure(figsize=(10, 6))
-            sns.boxplot(x=target_column, y=length_col, data=self.data, hue=target_column, palette='pastel', legend=False)
+            sns.boxplot(x=target_column, y=length_col, data=self.data, hue=target_column, palette='pastel')
             plt.title(f'Distribution of {length_col} by sentiment')
             plt.xlabel('Sentiment (0.0 = Negative, 1.0/4.0 = Positive)')
             plt.ylabel(f'Length ({length_col})')
@@ -289,6 +335,9 @@ class DataVisualizer:
         sns.heatmap(pivot_table, annot=True, fmt='.0f', cmap='YlOrRd')
         plt.title('Word Frequency by Sentiment (Positive vs Negative)')
         plt.ylabel('Word')
+        save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved plot to {save_path}")
         plt.show()
 
         df_freq_long = df_freq.melt(id_vars=['Word'], var_name='Sentiment', value_name='Frequency')
@@ -298,6 +347,9 @@ class DataVisualizer:
         plt.xlabel('Word')
         plt.ylabel('Frequency')
         plt.xticks(rotation=45)
+        save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved plot to {save_path}")
         plt.show()
 
         
@@ -319,4 +371,8 @@ class DataVisualizer:
         plt.ylabel('Sentiment (0.0 = Negative, 1.0/4.0 = Positive)')
         plt.legend(title='Sentiment', bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.tight_layout()
+        save_path = f"/kaggle/working/plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"Saved plot to {save_path}")
         plt.show()
+
