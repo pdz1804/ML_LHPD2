@@ -113,6 +113,7 @@ def build_lstm_model(hp, input_shape):
     
     return model
 
+
 # Creating a reusable function for churning through all five binary classification algorithms
 def generate_binary_classification_model(X, y, model_algorithm, hyperparameters, needs_scaled = False, model_save_path="best_model.pkl", img_save_path=None, img_loss_path=None):
     """
@@ -273,6 +274,8 @@ def generate_binary_classification_model(X, y, model_algorithm, hyperparameters,
     #             f"{X.iloc[sample_id, model_algorithm.tree_.feature[node_id]]}) {threshold_sign} {model_algorithm.tree_.threshold[node_id]}")
 
     return model_algorithm
+
+
 
 def get_training_loss(model, X_train, y_train):
     """
