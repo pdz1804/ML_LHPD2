@@ -1,0 +1,78 @@
+2025-02-21 04:01:35,610 - INFO - Training set size: 40000
+2025-02-21 04:01:35,611 - INFO - Test set size: 10000
+2025-02-21 04:01:35,612 - INFO - Training labels size: 40000
+2025-02-21 04:01:35,613 - INFO - Test labels size: 10000
+2025-02-21 04:01:35,673 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-21 04:01:48,582 - INFO - Creating /root/gensim-data
+2025-02-21 04:05:06,201 - INFO - word2vec-google-news-300 downloaded
+2025-02-21 04:05:06,204 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-02-21 04:05:55,012 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-02-21T04:05:55.010312', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-21 04:07:31,178 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-21 04:07:31,181 - INFO - Model: mlp
+2025-02-21 04:07:31,183 - INFO - 🔍 Method: count...
+2025-02-21 04:07:31,183 - INFO - 🚀 Training new model: MLPClassifier...
+2025-02-21 04:24:45,133 - INFO - Best hyperparameters: {'activation': 'tanh', 'alpha': 0.01, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-02-21 04:34:47,439 - INFO - 📊 Average Accuracy: 63%
+2025-02-21 04:34:47,439 - INFO - 📊 Average ROC AUC: 63%
+2025-02-21 04:34:47,440 - INFO - 📊 Average F1 Score: 64%
+2025-02-21 04:34:47,441 - INFO - 📊 Average Precision: 64%
+2025-02-21 04:34:47,441 - INFO - 📊 Average Recall: 65%
+2025-02-21 04:34:47,455 - INFO - 💾 Model saved to best_mlp_count.pkl
+2025-02-21 04:34:47,706 - INFO - 📈 Plot saved to best_mlp_count.png
+2025-02-21 04:34:47,858 - INFO - 📉 Loss plot saved to best_mlp_count_loss.png
+2025-02-21 04:34:47,860 - INFO - Model: mlp
+2025-02-21 04:34:47,860 - INFO - 🔍 Method: tfidf...
+2025-02-21 04:34:47,862 - INFO - 🚀 Training new model: MLPClassifier...
+2025-02-21 04:51:06,411 - INFO - Best hyperparameters: {'activation': 'tanh', 'alpha': 0.001, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-02-21 04:52:48,505 - INFO - 📊 Average Accuracy: 66%
+2025-02-21 04:52:48,506 - INFO - 📊 Average ROC AUC: 66%
+2025-02-21 04:52:48,506 - INFO - 📊 Average F1 Score: 64%
+2025-02-21 04:52:48,507 - INFO - 📊 Average Precision: 68%
+2025-02-21 04:52:48,508 - INFO - 📊 Average Recall: 61%
+2025-02-21 04:52:48,515 - INFO - 💾 Model saved to best_mlp_tfidf.pkl
+2025-02-21 04:52:48,701 - INFO - 📈 Plot saved to best_mlp_tfidf.png
+2025-02-21 04:52:48,879 - INFO - 📉 Loss plot saved to best_mlp_tfidf_loss.png
+2025-02-21 04:52:48,882 - INFO - Model: mlp
+2025-02-21 04:52:48,883 - INFO - 🔍 Method: word2vec...
+2025-02-21 04:52:48,884 - INFO - 🚀 Training new model: MLPClassifier...
+2025-02-21 05:05:03,285 - INFO - Best hyperparameters: {'activation': 'tanh', 'alpha': 0.001, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-02-21 05:06:26,150 - INFO - 📊 Average Accuracy: 71%
+2025-02-21 05:06:26,152 - INFO - 📊 Average ROC AUC: 71%
+2025-02-21 05:06:26,153 - INFO - 📊 Average F1 Score: 71%
+2025-02-21 05:06:26,154 - INFO - 📊 Average Precision: 71%
+2025-02-21 05:06:26,155 - INFO - 📊 Average Recall: 72%
+2025-02-21 05:06:26,160 - INFO - 💾 Model saved to best_mlp_word2vec.pkl
+2025-02-21 05:06:26,308 - INFO - 📈 Plot saved to best_mlp_word2vec.png
+2025-02-21 05:06:26,453 - INFO - 📉 Loss plot saved to best_mlp_word2vec_loss.png
+2025-02-21 05:07:08,997 - INFO - Model: mlp
+2025-02-21 05:07:08,997 - INFO - Method: count
+2025-02-21 05:07:08,998 - INFO - --------------------------------------------------
+2025-02-21 05:07:08,998 - INFO - Accuracy: 0.5086
+2025-02-21 05:07:08,999 - INFO - Precision: 0.5198
+2025-02-21 05:07:09,000 - INFO - Recall: 0.4694
+2025-02-21 05:07:09,000 - INFO - F1 Score: 0.4933
+2025-02-21 05:07:09,002 - INFO - ROC AUC: 0.5185
+2025-02-21 05:07:09,003 - INFO - --------------------------------------------------
+2025-02-21 05:07:09,040 - INFO - Model: mlp
+2025-02-21 05:07:09,041 - INFO - Method: tfidf
+2025-02-21 05:07:09,042 - INFO - --------------------------------------------------
+2025-02-21 05:07:09,043 - INFO - Accuracy: 0.5330
+2025-02-21 05:07:09,044 - INFO - Precision: 0.5482
+2025-02-21 05:07:09,045 - INFO - Recall: 0.4757
+2025-02-21 05:07:09,046 - INFO - F1 Score: 0.5094
+2025-02-21 05:07:09,046 - INFO - ROC AUC: 0.5511
+2025-02-21 05:07:09,048 - INFO - --------------------------------------------------
+2025-02-21 05:07:09,074 - INFO - Model: mlp
+2025-02-21 05:07:09,075 - INFO - Method: word2vec
+2025-02-21 05:07:09,076 - INFO - --------------------------------------------------
+2025-02-21 05:07:09,078 - INFO - Accuracy: 0.6446
+2025-02-21 05:07:09,078 - INFO - Precision: 0.6475
+2025-02-21 05:07:09,079 - INFO - Recall: 0.6642
+2025-02-21 05:07:09,080 - INFO - F1 Score: 0.6558
+2025-02-21 05:07:09,081 - INFO - ROC AUC: 0.6973
+2025-02-21 05:07:09,082 - INFO - --------------------------------------------------
+2025-02-21 05:07:09,084 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

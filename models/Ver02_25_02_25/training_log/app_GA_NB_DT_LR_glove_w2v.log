@@ -1,0 +1,166 @@
+2025-02-24 01:09:32,532 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-24 01:09:32,536 - INFO - 
+🔍 Processing feature extraction using: word2vec...
+2025-02-24 01:09:32,537 - INFO - Creating /root/gensim-data
+2025-02-24 01:12:56,683 - INFO - word2vec-google-news-300 downloaded
+2025-02-24 01:12:56,686 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-02-24 01:13:43,839 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-02-24T01:13:43.839134', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-24 01:13:47,397 - INFO - ✅ word2vec - Train shape: (80000, 300), Test shape: (20000, 300)
+2025-02-24 01:13:47,399 - INFO - 
+🔍 Processing feature extraction using: glove...
+2025-02-24 01:14:03,458 - INFO - glove-wiki-gigaword-100 downloaded
+2025-02-24 01:14:03,460 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz
+2025-02-24 01:14:28,883 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 100) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-02-24T01:14:28.883298', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-24 01:14:32,711 - INFO - ✅ glove - Train shape: (80000, 100), Test shape: (20000, 100)
+2025-02-24 01:15:39,269 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-02-24 01:15:39,270 - INFO - 
+🚀 Training decision_tree models...
+
+2025-02-24 01:15:39,271 - INFO - 🔎 Training with Method: word2vec...
+2025-02-24 01:15:39,271 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-24 01:34:57,851 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2}
+2025-02-24 01:34:57,852 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:35:07,385 - INFO - 📊 Average Accuracy: 61%
+2025-02-24 01:35:07,387 - INFO - 📊 Average ROC AUC: 61%
+2025-02-24 01:35:07,387 - INFO - 📊 Average F1 Score: 61%
+2025-02-24 01:35:07,388 - INFO - 📊 Average Precision: 62%
+2025-02-24 01:35:07,389 - INFO - 📊 Average Recall: 60%
+2025-02-24 01:35:09,528 - INFO - 💾 Model saved to best_decision_tree_word2vec.pkl
+2025-02-24 01:35:09,756 - INFO - 📈 Plot saved to best_decision_tree_word2vec.png
+2025-02-24 01:35:09,915 - INFO - 📉 Loss plot saved to best_decision_tree_word2vec_loss.png
+2025-02-24 01:35:09,917 - INFO - 🔎 Training with Method: glove...
+2025-02-24 01:35:09,918 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-24 01:47:40,351 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2}
+2025-02-24 01:47:40,352 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:47:46,096 - INFO - 📊 Average Accuracy: 60%
+2025-02-24 01:47:46,097 - INFO - 📊 Average ROC AUC: 60%
+2025-02-24 01:47:46,098 - INFO - 📊 Average F1 Score: 61%
+2025-02-24 01:47:46,099 - INFO - 📊 Average Precision: 61%
+2025-02-24 01:47:46,101 - INFO - 📊 Average Recall: 60%
+2025-02-24 01:47:47,432 - INFO - 💾 Model saved to best_decision_tree_glove.pkl
+2025-02-24 01:47:47,584 - INFO - 📈 Plot saved to best_decision_tree_glove.png
+2025-02-24 01:47:47,734 - INFO - 📉 Loss plot saved to best_decision_tree_glove_loss.png
+2025-02-24 01:47:47,736 - INFO - 
+🚀 Training bayesian models...
+
+2025-02-24 01:47:47,736 - INFO - 🔎 Training with Method: word2vec...
+2025-02-24 01:47:47,737 - INFO - 🚀 Training new model: GaussianNB...
+2025-02-24 01:48:30,913 - INFO - Best hyperparameters: {'priors': [0.05, 0.95], 'var_smoothing': 1e-09}
+2025-02-24 01:48:30,914 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:48:34,544 - INFO - 📊 Average Accuracy: 61%
+2025-02-24 01:48:34,544 - INFO - 📊 Average ROC AUC: 61%
+2025-02-24 01:48:34,545 - INFO - 📊 Average F1 Score: 60%
+2025-02-24 01:48:34,547 - INFO - 📊 Average Precision: 64%
+2025-02-24 01:48:34,548 - INFO - 📊 Average Recall: 57%
+2025-02-24 01:48:34,887 - INFO - 💾 Model saved to best_bayesian_word2vec.pkl
+2025-02-24 01:48:35,041 - INFO - 📈 Plot saved to best_bayesian_word2vec.png
+2025-02-24 01:48:35,189 - INFO - 📉 Loss plot saved to best_bayesian_word2vec_loss.png
+2025-02-24 01:48:35,191 - INFO - 🔎 Training with Method: glove...
+2025-02-24 01:48:35,192 - INFO - 🚀 Training new model: GaussianNB...
+2025-02-24 01:48:49,710 - INFO - Best hyperparameters: {'priors': [0.2, 0.8], 'var_smoothing': 1e-09}
+2025-02-24 01:48:49,711 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:48:50,943 - INFO - 📊 Average Accuracy: 62%
+2025-02-24 01:48:50,945 - INFO - 📊 Average ROC AUC: 62%
+2025-02-24 01:48:50,945 - INFO - 📊 Average F1 Score: 65%
+2025-02-24 01:48:50,947 - INFO - 📊 Average Precision: 62%
+2025-02-24 01:48:50,948 - INFO - 📊 Average Recall: 68%
+2025-02-24 01:48:51,066 - INFO - 💾 Model saved to best_bayesian_glove.pkl
+2025-02-24 01:48:51,213 - INFO - 📈 Plot saved to best_bayesian_glove.png
+2025-02-24 01:48:51,360 - INFO - 📉 Loss plot saved to best_bayesian_glove_loss.png
+2025-02-24 01:48:51,361 - INFO - 
+🚀 Training logistic_regression models...
+
+2025-02-24 01:48:51,363 - INFO - 🔎 Training with Method: word2vec...
+2025-02-24 01:48:51,363 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-24 01:50:30,076 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-24 01:50:30,077 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:50:35,758 - INFO - 📊 Average Accuracy: 72%
+2025-02-24 01:50:35,759 - INFO - 📊 Average ROC AUC: 72%
+2025-02-24 01:50:35,760 - INFO - 📊 Average F1 Score: 73%
+2025-02-24 01:50:35,761 - INFO - 📊 Average Precision: 71%
+2025-02-24 01:50:35,762 - INFO - 📊 Average Recall: 75%
+2025-02-24 01:50:37,058 - INFO - 💾 Model saved to best_logistic_regression_word2vec.pkl
+2025-02-24 01:50:37,208 - INFO - 📈 Plot saved to best_logistic_regression_word2vec.png
+2025-02-24 01:50:37,350 - INFO - 📉 Loss plot saved to best_logistic_regression_word2vec_loss.png
+2025-02-24 01:50:37,351 - INFO - 🔎 Training with Method: glove...
+2025-02-24 01:50:37,352 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-24 01:51:06,472 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-24 01:51:06,473 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:51:08,838 - INFO - 📊 Average Accuracy: 69%
+2025-02-24 01:51:08,839 - INFO - 📊 Average ROC AUC: 69%
+2025-02-24 01:51:08,840 - INFO - 📊 Average F1 Score: 70%
+2025-02-24 01:51:08,841 - INFO - 📊 Average Precision: 69%
+2025-02-24 01:51:08,842 - INFO - 📊 Average Recall: 71%
+2025-02-24 01:51:09,316 - INFO - 💾 Model saved to best_logistic_regression_glove.pkl
+2025-02-24 01:51:09,464 - INFO - 📈 Plot saved to best_logistic_regression_glove.png
+2025-02-24 01:51:09,623 - INFO - 📉 Loss plot saved to best_logistic_regression_glove_loss.png
+2025-02-24 01:51:31,865 - INFO - 🔎 Predicting with Model: decision_tree, Method: word2vec...
+2025-02-24 01:51:31,933 - INFO - Model: decision_tree
+2025-02-24 01:51:31,934 - INFO - Method: word2vec
+2025-02-24 01:51:31,934 - INFO - --------------------------------------------------
+2025-02-24 01:51:31,935 - INFO - Accuracy: 0.6112
+2025-02-24 01:51:31,936 - INFO - Precision: 0.6291
+2025-02-24 01:51:31,936 - INFO - Recall: 0.5932
+2025-02-24 01:51:31,937 - INFO - F1 Score: 0.6106
+2025-02-24 01:51:31,939 - INFO - ROC AUC: 0.6561046825618829
+2025-02-24 01:51:31,939 - INFO - 🔎 Predicting with Model: decision_tree, Method: glove...
+2025-02-24 01:51:31,987 - INFO - Model: decision_tree
+2025-02-24 01:51:31,988 - INFO - Method: glove
+2025-02-24 01:51:31,989 - INFO - --------------------------------------------------
+2025-02-24 01:51:31,990 - INFO - Accuracy: 0.6075
+2025-02-24 01:51:31,990 - INFO - Precision: 0.6146
+2025-02-24 01:51:31,991 - INFO - Recall: 0.6331
+2025-02-24 01:51:31,993 - INFO - F1 Score: 0.6237
+2025-02-24 01:51:31,994 - INFO - ROC AUC: 0.6474088403290962
+2025-02-24 01:51:31,995 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-24 01:51:31,996 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-24 01:51:31,997 - INFO - 🔎 Predicting with Model: bayesian, Method: word2vec...
+2025-02-24 01:51:32,183 - INFO - Model: bayesian
+2025-02-24 01:51:32,183 - INFO - Method: word2vec
+2025-02-24 01:51:32,184 - INFO - --------------------------------------------------
+2025-02-24 01:51:32,185 - INFO - Accuracy: 0.6172
+2025-02-24 01:51:32,186 - INFO - Precision: 0.6438
+2025-02-24 01:51:32,187 - INFO - Recall: 0.5710
+2025-02-24 01:51:32,187 - INFO - F1 Score: 0.6052
+2025-02-24 01:51:32,189 - INFO - ROC AUC: 0.6742756499634603
+2025-02-24 01:51:32,190 - INFO - 🔎 Predicting with Model: bayesian, Method: glove...
+2025-02-24 01:51:32,286 - INFO - Model: bayesian
+2025-02-24 01:51:32,287 - INFO - Method: glove
+2025-02-24 01:51:32,288 - INFO - --------------------------------------------------
+2025-02-24 01:51:32,289 - INFO - Accuracy: 0.6258
+2025-02-24 01:51:32,290 - INFO - Precision: 0.6246
+2025-02-24 01:51:32,291 - INFO - Recall: 0.6808
+2025-02-24 01:51:32,293 - INFO - F1 Score: 0.6515
+2025-02-24 01:51:32,293 - INFO - ROC AUC: 0.670421287549724
+2025-02-24 01:51:32,294 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-24 01:51:32,295 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-24 01:51:32,295 - INFO - 🔎 Predicting with Model: logistic_regression, Method: word2vec...
+2025-02-24 01:51:32,360 - INFO - Model: logistic_regression
+2025-02-24 01:51:32,361 - INFO - Method: word2vec
+2025-02-24 01:51:32,362 - INFO - --------------------------------------------------
+2025-02-24 01:51:32,363 - INFO - Accuracy: 0.7271
+2025-02-24 01:51:32,363 - INFO - Precision: 0.7230
+2025-02-24 01:51:32,364 - INFO - Recall: 0.7602
+2025-02-24 01:51:32,365 - INFO - F1 Score: 0.7411
+2025-02-24 01:51:32,366 - INFO - ROC AUC: 0.8013266399175423
+2025-02-24 01:51:32,366 - INFO - 🔎 Predicting with Model: logistic_regression, Method: glove...
+2025-02-24 01:51:32,422 - INFO - Model: logistic_regression
+2025-02-24 01:51:32,423 - INFO - Method: glove
+2025-02-24 01:51:32,424 - INFO - --------------------------------------------------
+2025-02-24 01:51:32,425 - INFO - Accuracy: 0.6926
+2025-02-24 01:51:32,426 - INFO - Precision: 0.6931
+2025-02-24 01:51:32,427 - INFO - Recall: 0.7213
+2025-02-24 01:51:32,428 - INFO - F1 Score: 0.7069
+2025-02-24 01:51:32,429 - INFO - ROC AUC: 0.7618732477242464
+2025-02-24 01:51:32,429 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-24 01:51:32,430 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
