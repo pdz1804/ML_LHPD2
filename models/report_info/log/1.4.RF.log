@@ -1,0 +1,116 @@
+#####################################
+Random Forest 
+#####################################
+🚀 Training random_forest models...
+--------------------------------------
+"random_forest": {
+    "n_estimators": [100],
+    "max_depth": [10],
+    "min_samples_split": [2, 5],
+    "min_samples_leaf": [1, 2],
+    "max_features": ["sqrt", "log2"]
+},
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING AND TESTING 
+--------------------------------------
+2025-02-23 09:57:13,015 - INFO - 🔎 Training with Method: count...
+2025-02-23 09:57:13,016 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:01:55,060 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:01:55,061 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 15:03:01,880 - INFO - Accuracy: 0.6684
+2025-02-23 15:03:01,880 - INFO - Precision: 0.6230
+2025-02-23 15:03:01,881 - INFO - Recall: 0.9017
+2025-02-23 15:03:01,882 - INFO - F1 Score: 0.7369
+2025-02-23 15:03:01,882 - INFO - ROC AUC: 0.7627025723150836
+
+TESTING 
+2025-02-23 15:03:03,526 - INFO - Accuracy: 0.7251
+2025-02-23 15:03:03,527 - INFO - Precision: 0.6970
+2025-02-23 15:03:03,528 - INFO - Recall: 0.8247
+2025-02-23 15:03:03,528 - INFO - F1 Score: 0.7555
+2025-02-23 15:03:03,529 - INFO - ROC AUC: 0.8039885096586928
+
+--------------------------------------
+2025-02-23 10:03:04,933 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 10:03:04,934 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:07:53,098 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:07:53,099 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:08:48,792 - INFO - 📊 Average Accuracy: 66%
+2025-02-23 10:08:48,793 - INFO - 📊 Average ROC AUC: 65%
+2025-02-23 10:08:48,794 - INFO - 📊 Average F1 Score: 73%
+2025-02-23 10:08:48,796 - INFO - 📊 Average Precision: 61%
+2025-02-23 10:08:48,796 - INFO - 📊 Average Recall: 90%
+
+TESTING 
+2025-02-23 15:03:02,288 - INFO - Accuracy: 0.6599
+2025-02-23 15:03:02,289 - INFO - Precision: 0.6151
+2025-02-23 15:03:02,289 - INFO - Recall: 0.9078
+2025-02-23 15:03:02,290 - INFO - F1 Score: 0.7333
+2025-02-23 15:03:02,291 - INFO - ROC AUC: 0.7534060854769293
+
+--------------------------------------
+2025-02-23 10:09:02,009 - INFO - 🔎 Training with Method: word2vec...
+2025-02-23 10:09:02,010 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:29:21,140 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:29:21,141 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:32:42,498 - INFO - 📊 Average Accuracy: 69%
+2025-02-23 10:32:42,500 - INFO - 📊 Average ROC AUC: 69%
+2025-02-23 10:32:42,501 - INFO - 📊 Average F1 Score: 71%
+2025-02-23 10:32:42,502 - INFO - 📊 Average Precision: 70%
+2025-02-23 10:32:42,502 - INFO - 📊 Average Recall: 72%
+
+TESTING 
+2025-02-23 15:03:02,657 - INFO - Accuracy: 0.7000
+2025-02-23 15:03:02,658 - INFO - Precision: 0.7009
+2025-02-23 15:03:02,658 - INFO - Recall: 0.7283
+2025-02-23 15:03:02,659 - INFO - F1 Score: 0.7143
+2025-02-23 15:03:02,660 - INFO - ROC AUC: 0.7702233410069063
+
+--------------------------------------
+2025-02-23 10:33:32,669 - INFO - 🔎 Training with Method: glove...
+2025-02-23 10:33:32,671 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-02-23 10:46:46,019 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-02-23 10:46:46,020 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:48:47,115 - INFO - 📊 Average Accuracy: 67%
+2025-02-23 10:48:47,115 - INFO - 📊 Average ROC AUC: 67%
+2025-02-23 10:48:47,116 - INFO - 📊 Average F1 Score: 69%
+2025-02-23 10:48:47,118 - INFO - 📊 Average Precision: 68%
+2025-02-23 10:48:47,118 - INFO - 📊 Average Recall: 70%
+
+2025-02-23 15:03:02,982 - INFO - Accuracy: 0.6813
+2025-02-23 15:03:02,984 - INFO - Precision: 0.6832
+2025-02-23 15:03:02,984 - INFO - Recall: 0.7107
+2025-02-23 15:03:02,985 - INFO - F1 Score: 0.6967
+2025-02-23 15:03:02,986 - INFO - ROC AUC: 0.7470747472725452
+
+--------------------------------------
+BEST MODEL 
+- based on testing performance 
+- priority: based on Accuracy > F1 > Roc AUC
+--------------------------------------
+{
+    "method": "count",
+    "model": "RandomForestClassifier",
+    "hyperparameters": {
+        "max_depth": 10,
+        "max_features": "sqrt",
+        "min_samples_leaf": 1,
+        "min_samples_split": 5,
+        "n_estimators": 100
+    },
+    "performance": {
+        "accuracy": 0.7251,
+        "precision": 0.6970,
+        "recall": 0.8247,
+        "f1": 0.7555,
+        "roc_auc": 0.8039885096586928
+    }
+}

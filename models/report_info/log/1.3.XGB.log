@@ -1,0 +1,112 @@
+#####################################
+DECISION TREE 
+#####################################
+🚀 Training xgboost models...
+--------------------------------------
+"xgboost": {
+    "n_estimators": [100, 150],
+    "learning_rate": [0.001, 0.01, 0.1],
+    "max_depth": [10, 15]
+},
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING AND TESTING 
+--------------------------------------
+2025-02-23 10:49:17,222 - INFO - 🔎 Training with Method: count...
+2025-02-23 10:49:17,223 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 10:58:15,302 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-02-23 10:58:15,303 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:59:09,491 - INFO - 📊 Average Accuracy: 73%
+2025-02-23 10:59:09,493 - INFO - 📊 Average ROC AUC: 72%
+2025-02-23 10:59:09,494 - INFO - 📊 Average F1 Score: 75%
+2025-02-23 10:59:09,495 - INFO - 📊 Average Precision: 70%
+2025-02-23 10:59:09,495 - INFO - 📊 Average Recall: 82%
+
+TESTING 
+2025-02-23 15:03:03,526 - INFO - Accuracy: 0.7251
+2025-02-23 15:03:03,527 - INFO - Precision: 0.6970
+2025-02-23 15:03:03,528 - INFO - Recall: 0.8247
+2025-02-23 15:03:03,528 - INFO - F1 Score: 0.7555
+2025-02-23 15:03:03,529 - INFO - ROC AUC: 0.8039885096586928
+
+--------------------------------------
+2025-02-23 10:59:20,167 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 10:59:20,169 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 11:34:07,851 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-02-23 11:34:07,852 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 11:37:24,144 - INFO - 📊 Average Accuracy: 71%
+2025-02-23 11:37:24,145 - INFO - 📊 Average ROC AUC: 71%
+2025-02-23 11:37:24,146 - INFO - 📊 Average F1 Score: 75%
+2025-02-23 11:37:24,147 - INFO - 📊 Average Precision: 68%
+2025-02-23 11:37:24,148 - INFO - 📊 Average Recall: 83%
+
+TESTING 
+2025-02-23 15:03:04,082 - INFO - Accuracy: 0.7152
+2025-02-23 15:03:04,082 - INFO - Precision: 0.6837
+2025-02-23 15:03:04,083 - INFO - Recall: 0.8317
+2025-02-23 15:03:04,084 - INFO - F1 Score: 0.7505
+2025-02-23 15:03:04,084 - INFO - ROC AUC: 0.7874202582324092
+
+--------------------------------------
+2025-02-23 11:38:09,350 - INFO - 🔎 Training with Method: word2vec...
+2025-02-23 11:38:09,351 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 14:01:51,118 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 150}
+2025-02-23 14:01:51,119 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 14:08:02,890 - INFO - 📊 Average Accuracy: 71%
+2025-02-23 14:08:02,891 - INFO - 📊 Average ROC AUC: 71%
+2025-02-23 14:08:02,891 - INFO - 📊 Average F1 Score: 72%
+2025-02-23 14:08:02,892 - INFO - 📊 Average Precision: 71%
+2025-02-23 14:08:02,893 - INFO - 📊 Average Recall: 74%
+
+TESTING 
+2025-02-23 15:03:04,279 - INFO - Accuracy: 0.7168
+2025-02-23 15:03:04,280 - INFO - Precision: 0.7146
+2025-02-23 15:03:04,280 - INFO - Recall: 0.7495
+2025-02-23 15:03:04,281 - INFO - F1 Score: 0.7316
+2025-02-23 15:03:04,282 - INFO - ROC AUC: 0.7942710639575618
+
+--------------------------------------
+2025-02-23 14:09:26,015 - INFO - 🔎 Training with Method: glove...
+2025-02-23 14:09:26,016 - INFO - 🚀 Training new model: XGBClassifier...
+2025-02-23 14:57:39,910 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-02-23 14:57:39,911 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 15:01:34,667 - INFO - 📊 Average Accuracy: 69%
+2025-02-23 15:01:34,669 - INFO - 📊 Average ROC AUC: 69%
+2025-02-23 15:01:34,669 - INFO - 📊 Average F1 Score: 70%
+2025-02-23 15:01:34,670 - INFO - 📊 Average Precision: 70%
+2025-02-23 15:01:34,671 - INFO - 📊 Average Recall: 71%
+
+2025-02-23 15:03:04,539 - INFO - Accuracy: 0.6972
+2025-02-23 15:03:04,539 - INFO - Precision: 0.6971
+2025-02-23 15:03:04,540 - INFO - Recall: 0.7287
+2025-02-23 15:03:04,540 - INFO - F1 Score: 0.7125
+2025-02-23 15:03:04,541 - INFO - ROC AUC: 0.7650047642878591
+
+--------------------------------------
+BEST MODEL 
+- based on testing performance 
+- priority: based on Accuracy > F1 > Roc AUC
+--------------------------------------
+{
+    "method": "count",
+    "model": "XGBClassifier",
+    "hyperparameters": {
+        "learning_rate": 0.1,
+        "max_depth": 15,
+        "n_estimators": 150
+    },
+    "performance": {
+        "accuracy": 0.7251,
+        "precision": 0.6970,
+        "recall": 0.8247,
+        "f1": 0.7555,
+        "roc_auc": 0.8039885096586928
+    }
+}
