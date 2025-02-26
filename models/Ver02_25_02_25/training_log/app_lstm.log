@@ -1,0 +1,48 @@
+2025-02-25 05:23:59,235 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-25 05:23:59,238 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-02-25 05:24:02,238 - INFO - ✅ count - Train shape: (80000, 2000), Test shape: (20000, 2000)
+2025-02-25 05:24:02,239 - INFO - 
+🔍 Processing feature extraction using: tfidf...
+2025-02-25 05:24:05,571 - INFO - ✅ tfidf - Train shape: (80000, 2000), Test shape: (20000, 2000)
+2025-02-25 05:24:05,573 - INFO - 
+🔍 Processing feature extraction using: word2vec...
+2025-02-25 05:24:05,575 - INFO - Creating /root/gensim-data
+2025-02-25 05:27:24,478 - INFO - word2vec-google-news-300 downloaded
+2025-02-25 05:27:24,480 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-02-25 05:28:11,753 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-02-25T05:28:11.753436', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-25 05:28:15,313 - INFO - ✅ word2vec - Train shape: (80000, 300), Test shape: (20000, 300)
+2025-02-25 05:28:15,315 - INFO - 
+🔍 Processing feature extraction using: glove...
+2025-02-25 05:28:33,468 - INFO - glove-wiki-gigaword-100 downloaded
+2025-02-25 05:28:33,471 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz
+2025-02-25 05:28:59,602 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 100) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-02-25T05:28:59.601951', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-25 05:29:03,197 - INFO - ✅ glove - Train shape: (80000, 100), Test shape: (20000, 100)
+2025-02-25 05:30:09,548 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-02-25 05:30:09,549 - INFO - 
+🚀 Training lstm models...
+
+2025-02-25 05:30:12,613 - INFO - 
+🔍 Running Hyperparameter Tuning...
+2025-02-25 07:26:33,948 - INFO - 
+🚀 Training Final Model...
+2025-02-25 07:41:09,649 - INFO - 🔹 loss: 0.043880779296159744
+2025-02-25 07:41:09,649 - INFO - 🔹 val_loss: 1.526488184928894
+2025-02-25 07:41:09,650 - INFO - 🔹 accuracy: 0.9810500144958496
+2025-02-25 07:41:09,652 - INFO - 🔹 val_accuracy: 0.7102500200271606
+2025-02-25 07:41:09,652 - INFO - 🔹 precision: 0.6740335746188203
+2025-02-25 07:41:09,653 - INFO - 🔹 recall: 0.8485700436257877
+2025-02-25 07:41:09,654 - INFO - 🔹 f1_score: 0.7512982275438823
+2025-02-25 07:41:09,656 - INFO - 🔹 roc_auc: 0.789069594304949
+2025-02-25 07:41:09,865 - INFO - 
+✅ Model Training and Save Complete!
+2025-02-25 07:41:33,298 - INFO - 🔎 Predicting with Model: lstm, Method: count...
+2025-02-25 07:41:33,299 - INFO - 🔎 Predicting with Model: lstm, Method: tfidf...
+2025-02-25 07:41:33,300 - INFO - 🔎 Predicting with Model: lstm, Method: word2vec...
+2025-02-25 07:41:33,300 - INFO - 🔎 Predicting with Model: lstm, Method: glove...
+2025-02-25 07:41:33,301 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-25 07:41:33,302 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -45,7 +45,6 @@ This repository is structured to ensure maintainability, scalability, and ease o
 │── 📂 data/                     # Contains datasets (raw, processed, final)  
 │── 📂 models/                   # Stores trained models and results  
 │── 📂 notebooks/                # Jupyter notebooks for EDA & experimentation  
-│── 📂 other/                    # Miscellaneous project-related files  
 │── 📂 reports/                  # Reports, figures, and documentation  
 │── 📂 src/                      # Source code for data processing, modeling, and visualization  
 │── 📂 tests/                    # Scripts for evaluating models and performance testing  
@@ -123,7 +122,7 @@ For any questions or contributions, please contact:
 <h2 align="center">✨💟 Contributors 💟✨</h2>
 
 <p align="center">
-  <strong>We fairly contribute to this repository with dedication and teamwork!</strong> 💖
+  💖 <strong>We fairly contribute to this repository with dedication and teamwork!</strong> 💖
 </p>
 
 <div align="center">
