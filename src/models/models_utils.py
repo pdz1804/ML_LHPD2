@@ -68,6 +68,9 @@ from pgmpy.readwrite import BIFReader
 nltk.download('punkt')
 nltk.download('stopwords')
 
+import keras_nlp
+from tensorflow.keras.optimizers import Adam
+
 # --------------------------------------------------
 # Loc defined
 class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
@@ -1027,6 +1030,145 @@ def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_di
     
     return best_model, results
 
+
+# new for test
+def train_distilbert_sentiment(texts, labels, model_file_path, vocab_size=10000, max_length=160, num_trials=3, epochs=10):
+    """
+    Trains a DistilBERT sentiment analysis model on given text data.
+
+    Args:
+        texts (list): List of raw text sentences.
+        labels (list): List of binary sentiment labels (0 for negative, 1 for positive).
+        model_file_path (str): Path to save/load the trained model.
+        vocab_size (int): Vocabulary size for DistilBERT (unused here but kept for consistency). Defaults to 10000.
+        max_length (int): Maximum sequence length for tokenization. Defaults to 160.
+        num_trials (int): Number of trials for hyperparameter tuning. Defaults to 3.
+        epochs (int): Number of training epochs. Defaults to 10.
+
+    Returns:
+        keras_nlp.models.DistilBertClassifier: Trained DistilBERT model.
+        dict: Dictionary containing training and validation metrics.
+    """
+    # **Step 1: Load Preprocessor and Model**
+    preset = "distil_bert_base_en_uncased"  # Pretrained DistilBERT model
+    preprocessor = keras_nlp.models.DistilBertPreprocessor.from_preset(preset, sequence_length=max_length)
+    
+    # **Step 2: Define Model Building Function for Tuning**
+    def build_model(hp):
+        classifier = keras_nlp.models.DistilBertClassifier.from_preset(
+            preset, 
+            preprocessor=preprocessor, 
+            num_classes=2
+        )
+        
+        # Define optimizer with tunable learning rate and weight decay
+        optimizer = Adam(
+            learning_rate=hp.Choice('learning_rate', values=[5e-5, 2e-5, 1e-5]),
+            weight_decay=hp.Float('weight_decay', min_value=1e-6, max_value=1e-4, step=1e-5)
+        )
+        
+        # Compile the model
+        classifier.compile(
+            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+            optimizer=optimizer,
+            metrics=["accuracy"]
+        )
+        return classifier
+
+    # **Step 3: Prepare Data**
+    X_data = texts  # Raw text inputs, DistilBERT handles tokenization internally
+    y_data = np.array(labels)  # Convert labels to NumPy array
+    
+    # Split into training and validation sets
+    from sklearn.model_selection import train_test_split
+    X_train, X_val, y_train, y_val = train_test_split(X_data, y_data, test_size=0.2, random_state=42)
+
+    # **Step 4: Check for Pre-trained Model**
+    model_file_with_extension = f"{model_file_path}.keras"
+    if os.path.exists(model_file_with_extension):
+        print("\n📂 Loading pre-trained DistilBERT model...")
+        best_model = tf.keras.models.load_model(model_file_with_extension)
+    else:
+        # **Step 5: Hyperparameter Tuning**
+        tuner = kt.RandomSearch(
+            build_model,
+            objective="val_accuracy",
+            max_trials=num_trials,
+            executions_per_trial=1,
+            directory="tuner_results",
+            project_name="distilbert_sentiment_tuning"
+        )
+
+        print("\n🔍 Running Hyperparameter Tuning...")
+        tuner.search(
+            x=X_train, 
+            y=y_train, 
+            epochs=3,  # Short epochs for tuning
+            validation_data=(X_val, y_val), 
+            batch_size=32, 
+            verbose=1
+        )
+
+        # **Step 6: Retrieve Best Hyperparameters and Model**
+        best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+        best_model = tuner.hypermodel.build(best_hps)
+
+        # **Step 7: Final Training with Best Model**
+        print("\n🚀 Training Final DistilBERT Model...")
+        history = best_model.fit(
+            x=X_train,
+            y=y_train,
+            epochs=epochs,
+            validation_data=(X_val, y_val),
+            batch_size=32,
+            verbose=1
+        )
+
+        # **Step 8: Save the Trained Model**
+        best_model.save(model_file_with_extension)
+        print(f"\n✅ Model saved to {model_file_with_extension}")
+
+    # **Step 9: Predict on Validation Set**
+    y_pred_logits = best_model.predict(X_val)
+    y_pred_probs = tf.nn.softmax(y_pred_logits, axis=-1).numpy()
+    y_pred = np.argmax(y_pred_probs, axis=1)  # Convert probabilities to binary predictions
+
+    # **Step 10: Compute Metrics**
+    precision = precision_score(y_val, y_pred)
+    recall = recall_score(y_val, y_pred)
+    f1 = f1_score(y_val, y_pred)
+    roc_auc = roc_auc_score(y_val, y_pred_probs[:, 1])  # Use probability of positive class
+
+    # **Step 11: Store Results**
+    if 'history' in locals():  # If training occurred
+        results = {
+            "loss": history.history["loss"],
+            "val_loss": history.history["val_loss"],
+            "accuracy": history.history["accuracy"],
+            "val_accuracy": history.history["val_accuracy"],
+            "precision": precision,
+            "recall": recall,
+            "f1_score": f1,
+            "roc_auc": roc_auc
+        }
+    else:  # If model was loaded
+        results = {
+            "precision": precision,
+            "recall": recall,
+            "f1_score": f1,
+            "roc_auc": roc_auc
+        }
+
+    # **Step 12: Print Metrics**
+    print("\n📊 Final Metrics:")
+    for metric, value in results.items():
+        if isinstance(value, list):
+            print(f"🔹 {metric}: {value[-1]}")
+        else:
+            print(f"🔹 {metric}: {value}")
+
+    return best_model, results
+
 # --------------------------------------------------
 
 def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods, model_dict, param_dict, X_train_features_dict, X_test_features_dict, y_train, y_test):
@@ -1057,6 +1199,9 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
         try:
             if model_name == "cnn" or model_name == "lstm":
                 train_cnn_lstm(doc_lst, label_lst)
+                
+            elif model_name == "distilbert":
+                train_distilbert_sentiment(doc_lst, label_lst, model_file_path=f"best_{model_name}")
                 
             elif model_name == "hmm" or model_name == "bayesnet":
                 train_graphical_model(
@@ -1094,7 +1239,7 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
                         )
                         
         except Exception as e:
-            print(f"❌ Error with {method}: {e}")
+            print(f"❌ Error with {model_name}: {e}")
 
 # --------------------------------------------------  
 
