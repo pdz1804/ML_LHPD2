@@ -12,25 +12,45 @@ Trình bày cách thức tạo các hàm để train dùng GA + Gaussian NB th�
 PERFORMANCE METRICS DURING TESTING 
 --------------------------------------
 
-2025-02-23 10:27:23,709 - INFO - 🔎 Training with Method: count...
-2025-02-23 15:33:24,042 - INFO - Selected 1032 features out of 2000
-2025-02-23 15:33:26,661 - INFO - Has predict_proba
-2025-02-23 15:33:27,000 - INFO - Accuracy: 0.6653
-2025-02-23 15:33:27,000 - INFO - Precision: 0.6520
-2025-02-23 15:33:27,001 - INFO - Recall: 0.7481
-2025-02-23 15:33:27,002 - INFO - F1 Score: 0.6967
-2025-02-23 15:33:27,003 - INFO - ROC AUC: 0.7021
-2025-02-23 15:33:27,005 - INFO - 💾 Model saved to best_GA_count.pkl
+2025-02-27 03:40:47,736 - INFO - 🔎 Training with Method: count...
+2025-02-27 06:14:56,987 - INFO - Selected 1022 features out of 2000
+2025-02-27 06:14:58,325 - INFO - Has predict_proba
+2025-02-27 06:14:58,481 - INFO - Accuracy: 0.6520
+2025-02-27 06:14:58,482 - INFO - Precision: 0.6492
+2025-02-27 06:14:58,482 - INFO - Recall: 0.7056
+2025-02-27 06:14:58,483 - INFO - F1 Score: 0.6762
+2025-02-27 06:14:58,484 - INFO - ROC AUC: 0.6860
+2025-02-27 06:14:58,487 - INFO - 💾 Model saved to best_GA_count.pkl
 
-2025-02-23 15:33:27,009 - INFO - 🔎 Training with Method: tfidf...
-2025-02-23 19:58:56,075 - INFO - Selected 1009 features out of 2000
-2025-02-23 19:58:58,409 - INFO - Has predict_proba
-2025-02-23 19:58:58,754 - INFO - Accuracy: 0.6514
-2025-02-23 19:58:58,755 - INFO - Precision: 0.6849
-2025-02-23 19:58:58,756 - INFO - Recall: 0.5957
-2025-02-23 19:58:58,757 - INFO - F1 Score: 0.6372
-2025-02-23 19:58:58,758 - INFO - ROC AUC: 0.7042
-2025-02-23 19:58:58,760 - INFO - 💾 Model saved to best_GA_tfidf.pkl
+2025-02-27 06:14:58,489 - INFO - 🔎 Training with Method: tfidf...
+2025-02-27 08:27:04,420 - INFO - Selected 967 features out of 2000
+2025-02-27 08:27:05,553 - INFO - Has predict_proba
+2025-02-27 08:27:05,690 - INFO - Accuracy: 0.6209
+2025-02-27 08:27:05,691 - INFO - Precision: 0.6663
+2025-02-27 08:27:05,692 - INFO - Recall: 0.5287
+2025-02-27 08:27:05,693 - INFO - F1 Score: 0.5896
+2025-02-27 08:27:05,694 - INFO - ROC AUC: 0.6693
+2025-02-27 08:27:05,696 - INFO - 💾 Model saved to best_GA_tfidf.pkl
+
+2025-02-27 08:27:05,698 - INFO - 🔎 Training with Method: word2vec...
+2025-02-27 08:45:56,544 - INFO - Selected 152 features out of 300
+2025-02-27 08:45:56,758 - INFO - Has predict_proba
+2025-02-27 08:45:56,777 - INFO - Accuracy: 0.6031
+2025-02-27 08:45:56,778 - INFO - Precision: 0.6662
+2025-02-27 08:45:56,779 - INFO - Recall: 0.4596
+2025-02-27 08:45:56,780 - INFO - F1 Score: 0.5440
+2025-02-27 08:45:56,781 - INFO - ROC AUC: 0.6693
+2025-02-27 08:45:56,783 - INFO - 💾 Model saved to best_GA_word2vec.pkl
+
+2025-02-27 08:45:56,784 - INFO - 🔎 Training with Method: glove...
+2025-02-27 08:52:08,183 - INFO - Selected 54 features out of 100
+2025-02-27 08:52:08,262 - INFO - Has predict_proba
+2025-02-27 08:52:08,273 - INFO - Accuracy: 0.6176
+2025-02-27 08:52:08,273 - INFO - Precision: 0.6553
+2025-02-27 08:52:08,274 - INFO - Recall: 0.5431
+2025-02-27 08:52:08,275 - INFO - F1 Score: 0.5940
+2025-02-27 08:52:08,276 - INFO - ROC AUC: 0.6692
+2025-02-27 08:52:08,278 - INFO - 💾 Model saved to best_GA_glove.pkl
 
 --------------------------------------
 BEST MODEL (thg này hong có hyper thì bỏ khúc hyper để empty list)
@@ -41,10 +61,10 @@ BEST MODEL (thg này hong có hyper thì bỏ khúc hyper để empty list)
     "method": "count",
     "model": "GaussianNB + GA",
     "performance": {
-        "accuracy": 0.6653,
-        "precision": 0.6520,
-        "recall": 0.7481,
-        "f1": 0.6967,
-        "roc_auc": 0.7021
-    }
+        "accuracy": 0.6520,
+        "precision": 0.6492,
+        "recall": 0.7056,
+        "f1": 0.6762,
+        "roc_auc": 0.6860
+    },
 }

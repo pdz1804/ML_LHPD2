@@ -1,94 +1,96 @@
 #####################################
-Logistic Regression 
+MLP
 #####################################
-🚀 Training logistic_regression models...
+🚀 Training mlp models...
 --------------------------------------
-"logistic_regression": {
-    "penalty": ["l1", "l2", "elasticnet", None],
-    "C": [0.1, 1.0, 10.0],
-    "max_iter": [1000, 2000]
-}
+"mlp": {
+    "hidden_layer_sizes": [(100,)],
+    "activation": ["tanh", "logistic"],
+    "solver": ["sgd"],
+    "alpha": [0.01],
+    "batch_size": [32],
+    "max_iter": [2000],
+},
 --------------------------------------
 PERFORMANCE METRICS DURING TRAINING AND TESTING 
 --------------------------------------
-2025-02-23 19:58:58,766 - INFO - 🔎 Training with Method: count...
-2025-02-23 19:58:58,767 - INFO - 🚀 Training new model: LogisticRegression...
-2025-02-23 20:18:33,937 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
-2025-02-23 20:18:33,938 - INFO - 
+2025-02-24 09:34:21,399 - INFO - 🔎 Training with Method: count...
+2025-02-24 09:34:21,399 - INFO - 🚀 Training new model: MLPClassifier...
+2025-02-24 11:49:04,120 - INFO - Best hyperparameters: {'activation': 'logistic', 'alpha': 0.01, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-02-24 11:49:04,121 - INFO - 
 
 🎯 Running K-Fold Cross-Validation...
-2025-02-23 20:19:10,700 - INFO - 📊 Average Accuracy: 74%
-2025-02-23 20:19:10,701 - INFO - 📊 Average ROC AUC: 74%
-2025-02-23 20:19:10,702 - INFO - 📊 Average F1 Score: 76%
-2025-02-23 20:19:10,704 - INFO - 📊 Average Precision: 73%
-2025-02-23 20:19:10,704 - INFO - 📊 Average Recall: 79%
+2025-02-24 12:24:10,190 - INFO - 📊 Average Accuracy: 72%
+2025-02-24 12:24:10,191 - INFO - 📊 Average ROC AUC: 72%
+2025-02-24 12:24:10,192 - INFO - 📊 Average F1 Score: 74%
+2025-02-24 12:24:10,193 - INFO - 📊 Average Precision: 71%
+2025-02-24 12:24:10,193 - INFO - 📊 Average Recall: 76%
 
 TESTING 
-2025-02-23 20:40:23,942 - INFO - Accuracy: 0.7557
-2025-02-23 20:40:23,943 - INFO - Precision: 0.7403
-2025-02-23 20:40:23,944 - INFO - Recall: 0.8078
-2025-02-23 20:40:23,944 - INFO - F1 Score: 0.7726
-2025-02-23 20:40:23,945 - INFO - ROC AUC: 0.8297240739847278
+2025-02-24 17:22:55,639 - INFO - Accuracy: 0.7370
+2025-02-24 17:22:55,641 - INFO - Precision: 0.7269
+2025-02-24 17:22:55,642 - INFO - Recall: 0.7801
+2025-02-24 17:22:55,642 - INFO - F1 Score: 0.7526
+2025-02-24 17:22:55,643 - INFO - ROC AUC: 0.8126307881700076
 
 --------------------------------------
-2025-02-23 20:19:19,055 - INFO - 🔎 Training with Method: tfidf...
-2025-02-23 20:19:19,057 - INFO - 🚀 Training new model: LogisticRegression...
-2025-02-23 20:39:15,185 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
-2025-02-23 20:39:15,186 - INFO - 
+2025-02-24 12:31:47,672 - INFO - 🔎 Training with Method: tfidf...
+2025-02-24 12:31:47,673 - INFO - 🚀 Training new model: MLPClassifier...
+2025-02-24 15:12:52,793 - INFO - Best hyperparameters: {'activation': 'logistic', 'alpha': 0.01, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-02-24 15:12:52,794 - INFO - 
 
 🎯 Running K-Fold Cross-Validation...
-2025-02-23 20:39:59,355 - INFO - 📊 Average Accuracy: 74%
-2025-02-23 20:39:59,356 - INFO - 📊 Average ROC AUC: 73%
-2025-02-23 20:39:59,357 - INFO - 📊 Average F1 Score: 75%
-2025-02-23 20:39:59,358 - INFO - 📊 Average Precision: 73%
-2025-02-23 20:39:59,360 - INFO - 📊 Average Recall: 78%
+2025-02-24 15:51:24,923 - INFO - 📊 Average Accuracy: 68%
+2025-02-24 15:51:24,925 - INFO - 📊 Average ROC AUC: 68%
+2025-02-24 15:51:24,925 - INFO - 📊 Average F1 Score: 72%
+2025-02-24 15:51:24,926 - INFO - 📊 Average Precision: 68%
+2025-02-24 15:51:24,928 - INFO - 📊 Average Recall: 80%
 
 TESTING 
-2025-02-23 20:40:24,117 - INFO - Accuracy: 0.7527
-2025-02-23 20:40:24,119 - INFO - Precision: 0.7413
-2025-02-23 20:40:24,120 - INFO - Recall: 0.7968
-2025-02-23 20:40:24,121 - INFO - F1 Score: 0.7681
-2025-02-23 20:40:24,121 - INFO - ROC AUC: 0.8299441128183245
+2025-02-24 17:22:55,791 - INFO - Accuracy: 0.7318
+2025-02-24 17:22:55,792 - INFO - Precision: 0.7185
+2025-02-24 17:22:55,793 - INFO - Recall: 0.7840
+2025-02-24 17:22:55,793 - INFO - F1 Score: 0.7498
+2025-02-24 17:22:55,794 - INFO - ROC AUC: 0.8175351022002056
 
 --------------------------------------
-2025-02-24 01:48:51,363 - INFO - 🔎 Training with Method: word2vec...
-2025-02-24 01:48:51,363 - INFO - 🚀 Training new model: LogisticRegression...
-2025-02-24 01:50:30,076 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
-2025-02-24 01:50:30,077 - INFO - 
+2025-02-24 16:01:52,759 - INFO - 🔎 Training with Method: word2vec...
+2025-02-24 16:01:52,760 - INFO - 🚀 Training new model: MLPClassifier...
+2025-02-24 16:20:57,081 - INFO - Best hyperparameters: {'activation': 'logistic', 'alpha': 0.001, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-02-24 16:20:57,083 - INFO - 
 
 🎯 Running K-Fold Cross-Validation...
-2025-02-24 01:50:35,758 - INFO - 📊 Average Accuracy: 72%
-2025-02-24 01:50:35,759 - INFO - 📊 Average ROC AUC: 72%
-2025-02-24 01:50:35,760 - INFO - 📊 Average F1 Score: 73%
-2025-02-24 01:50:35,761 - INFO - 📊 Average Precision: 71%
-2025-02-24 01:50:35,762 - INFO - 📊 Average Recall: 75%
+2025-02-24 16:26:58,384 - INFO - 📊 Average Accuracy: 71%
+2025-02-24 16:26:58,385 - INFO - 📊 Average ROC AUC: 71%
+2025-02-24 16:26:58,386 - INFO - 📊 Average F1 Score: 72%
+2025-02-24 16:26:58,387 - INFO - 📊 Average Precision: 70%
+2025-02-24 16:26:58,389 - INFO - 📊 Average Recall: 74%
 
 TESTING 
-2025-02-24 01:51:32,363 - INFO - Accuracy: 0.7271
-2025-02-24 01:51:32,363 - INFO - Precision: 0.7230
-2025-02-24 01:51:32,364 - INFO - Recall: 0.7602
-2025-02-24 01:51:32,365 - INFO - F1 Score: 0.7411
-2025-02-24 01:51:32,366 - INFO - ROC AUC: 0.8013266399175423
+2025-02-24 17:22:55,843 - INFO - Accuracy: 0.7252
+2025-02-24 17:22:55,843 - INFO - Precision: 0.7166
+2025-02-24 17:22:55,844 - INFO - Recall: 0.7679
+2025-02-24 17:22:55,845 - INFO - F1 Score: 0.7414
+2025-02-24 17:22:55,846 - INFO - ROC AUC: 0.8045185131631843
 
 --------------------------------------
-2025-02-24 01:50:37,351 - INFO - 🔎 Training with Method: glove...
-2025-02-24 01:50:37,352 - INFO - 🚀 Training new model: LogisticRegression...
-2025-02-24 01:51:06,472 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
-2025-02-24 01:51:06,473 - INFO - 
+2025-02-24 16:28:18,576 - INFO - 🔎 Training with Method: glove...
+2025-02-24 16:28:18,577 - INFO - 🚀 Training new model: MLPClassifier...
+2025-02-24 17:04:41,767 - INFO - Best hyperparameters: {'activation': 'tanh', 'alpha': 0.01, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-02-24 17:04:41,769 - INFO - 
 
 🎯 Running K-Fold Cross-Validation...
-2025-02-24 01:51:08,838 - INFO - 📊 Average Accuracy: 69%
-2025-02-24 01:51:08,839 - INFO - 📊 Average ROC AUC: 69%
-2025-02-24 01:51:08,840 - INFO - 📊 Average F1 Score: 70%
-2025-02-24 01:51:08,841 - INFO - 📊 Average Precision: 69%
-2025-02-24 01:51:08,842 - INFO - 📊 Average Recall: 71%
+2025-02-24 17:18:39,538 - INFO - 📊 Average Accuracy: 68%
+2025-02-24 17:18:39,539 - INFO - 📊 Average ROC AUC: 69%
+2025-02-24 17:18:39,540 - INFO - 📊 Average F1 Score: 69%
+2025-02-24 17:18:39,541 - INFO - 📊 Average Precision: 70%
+2025-02-24 17:18:39,542 - INFO - 📊 Average Recall: 69%
 
-2025-02-24 01:51:32,425 - INFO - Accuracy: 0.6926
-2025-02-24 01:51:32,426 - INFO - Precision: 0.6931
-2025-02-24 01:51:32,427 - INFO - Recall: 0.7213
-2025-02-24 01:51:32,428 - INFO - F1 Score: 0.7069
-2025-02-24 01:51:32,429 - INFO - ROC AUC: 0.7618732477242464
-
+2025-02-24 17:22:55,880 - INFO - Accuracy: 0.7007
+2025-02-24 17:22:55,881 - INFO - Precision: 0.7131
+2025-02-24 17:22:55,881 - INFO - Recall: 0.6967
+2025-02-24 17:22:55,883 - INFO - F1 Score: 0.7048
+2025-02-24 17:22:55,883 - INFO - ROC AUC: 0.7770505271052502
 --------------------------------------
 BEST MODEL 
 - based on testing performance 
@@ -96,17 +98,20 @@ BEST MODEL
 --------------------------------------
 {
     "method": "count",
-    "model": "logistic_regression",
+    "model": "mlp",
     "hyperparameters": {
-        "C": 0.1,
+        "activation": "logistic",
+        "alpha": 0.01,
+        "batch_size": 32,
+        "hidden_layer_sizes": (100,),
         "max_iter": 1000,
-        "penalty": "l2"
+        "solver": "sgd"
     },
     "performance": {
-        "accuracy": 0.7557,
-        "precision": 0.7403,
-        "recall": 0.8078,
-        "f1": 0.7726,
-        "roc_auc": 0.8297240739847278
+        "accuracy": 0.7370,
+        "precision": 0.7269,
+        "recall": 0.7801,
+        "f1": 0.7526,
+        "roc_auc": 0.8126307881700076
     }
 }
