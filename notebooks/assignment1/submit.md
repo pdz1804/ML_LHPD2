@@ -18,7 +18,9 @@
 ---
 
 
-## 👥 **Team Members**
+## 👥 **Team Members and Team Repository Link**
+
+Our repository is at this link: [https://github.com/pdz1804/ML_LHPD2](https://github.com/pdz1804/ML_LHPD2) and this README that we submitted is at ```ML_LHPD2/notebooks/assignment1/submit.md```
 
 | Name | Student ID |
 |-------------------------|------------|
