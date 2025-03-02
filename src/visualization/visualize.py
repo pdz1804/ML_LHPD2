@@ -219,6 +219,16 @@ class DataVisualizer:
 
         plt.show()
 
+    def plot_class_distribution_nega_posi(self, target_column='target'):
+        """
+        Plot the distribution of positive and negative classes.
+        """
+        plt.figure(figsize=(8, 6))
+        sns.countplot(x=target_column, data=self.data, palette='pastel')
+        plt.title('Distribution of class Positive and class Negative (Dữ liệu mẫu)')
+        plt.xlabel('(0.0 = Negative, 1.0/4.0 = Positive)')
+        plt.ylabel('Ammount')
+        plt.show()
 
     def plot_positive_words_and_wordcloud(self, text_column='text_clean', n_words=20):
         """
