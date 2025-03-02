@@ -1,0 +1,161 @@
+\section{Model Comparison for Sentiment Analysis}
+
+\subsection{Introduction}
+
+This section presents the comparison of various machine learning models trained for sentiment analysis. The models include traditional classifiers such as \textbf{Logistic Regression}, \textbf{Decision Tree}, \textbf{XGBoost}, \textbf{Random Forest}, \textbf{Perceptron}, and \textbf{Naïve Bayes}, along with more complex models like \textbf{CNN-LSTM}, \textbf{HMM}, and \textbf{Bayesian Networks}. Each model's performance is evaluated using key metrics: \textbf{Accuracy}, \textbf{Precision}, \textbf{Recall}, \textbf{F1-score}, and \textbf{ROC AUC}.
+
+\subsubsection{Model Training and Evaluation Workflow}
+
+To ensure a robust evaluation of sentiment classification models, the following steps are undertaken:
+
+\begin{itemize}
+    \item \textbf{Instantiating a GridSearch Object:} The model is initialized with a set of hyperparameters using \textit{GridSearchCV}, allowing an exhaustive search over different hyperparameter combinations to identify the optimal settings.
+    
+    \item \textbf{Fitting the Training Data:} The training dataset is fed into the model, enabling it to learn patterns that distinguish between different sentiment classes.
+    
+    \item \textbf{K-Fold Cross-Validation:} To enhance generalization, \textit{K-Fold Cross-Validation} is applied, dividing the dataset into multiple subsets to train and validate the model iteratively.
+    
+    \item \textbf{Saving the Trained Model:} The best-performing model, based on cross-validation results, is stored for future use, ensuring consistency in later inference stages.
+    
+    \item \textbf{Testing on a Separate Dataset:} The trained model is evaluated on a test dataset to measure its real-world generalization ability, providing a reliable estimate of performance.
+    
+    \item \textbf{Logging Performance Metrics:} Key metrics such as \textbf{Accuracy}, \textbf{Precision}, \textbf{Recall}, \textbf{F1-score}, and \textbf{ROC AUC} are recorded to facilitate model comparison.
+\end{itemize}
+
+This workflow ensures a structured and reliable methodology for training, validating, and comparing sentiment analysis models, aiding in the selection of the most effective approach.
+
+\subsubsection{Evaluation Metrics Overview}
+
+To assess the performance of sentiment analysis models, we utilize five key evaluation metrics: \textbf{Accuracy}, \textbf{Precision}, \textbf{Recall}, \textbf{F1-score}, and \textbf{ROC AUC}. 
+
+\begin{itemize}
+    \item \textbf{Accuracy} measures the overall correctness of the model by calculating the proportion of correctly classified instances. However, it may not always be the best metric when dealing with imbalanced sentiment classes. 
+    
+    \item \textbf{Precision} quantifies the proportion of correctly predicted positive samples out of all predicted positive samples, which is crucial when minimizing false positives, such as in cases where detecting negative sentiment is critical. 
+    
+    \item Conversely, \textbf{Recall} indicates how well the model identifies actual positive cases, making it essential for scenarios where missing positive sentiment (e.g., detecting customer dissatisfaction) is more detrimental.  
+    
+    \item The \textbf{F1-score} provides a balanced measure of both precision and recall, ensuring that the model maintains strong predictive power across both metrics. 
+    
+    \item Lastly, \textbf{ROC AUC} (Receiver Operating Characteristic - Area Under the Curve) evaluates the model's ability to distinguish between different sentiment classes, providing insight into its overall discriminative power. By considering these metrics, we can determine the best-performing model based on different application needs, balancing between false positives and false negatives.
+\end{itemize}
+
+\subsection{Model Performance}
+
+\begin{table}[H]
+    \centering
+    \caption{Performance Comparison of Sentiment Analysis Models}
+    \label{tab:sentiment_model_comparison}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|l|l|c|c|c|c|c|}
+    \hline
+    \textbf{Method} & \textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC AUC} \\ \hline
+    
+    \textbf{count} & \textbf{Logistic Regression} & \underline{\textbf{0.7557}} & 0.7403 & 0.8078 & \underline{\textbf{0.7726}} & \underline{\textbf{0.8297}} \\ \hline
+    
+    \textbf{tfidf} & \textbf{Decision Tree} & 0.6300 & 0.5928 & 0.8940 & 0.7129 & 0.6694 \\ \hline
+    
+    \textbf{count} & \textbf{XGBoost} & 0.7251 & 0.6970 & 0.8247 & 0.7555 & 0.8040 \\ \hline
+    
+    \textbf{count} & \textbf{Random Forest} & 0.7251 & 0.6970 & 0.8247 & 0.7555 & 0.8040 \\ \hline
+    
+    \textbf{tfidf} & \textbf{Perceptron (ANN)} & 0.6927 & 0.7345 & 0.6296 & 0.6780 & 0.7737 \\ \hline
+
+    \textbf{count} & \textbf{MLP} & 0.7370 & 0.8126 & 0.7526 & 0.7269 & 0.7801 \\ \hline
+    
+    \textbf{count} & \textbf{GaussianNB} & 0.7134 & 0.7151 & 0.7350 & 0.7250 & 0.7463 \\ \hline
+    
+    \textbf{count} & \textbf{GaussianNB + GA} & 0.6520 & 0.6860 & 0.6762 & 0.6492 & 0.7056 \\  \hline
+    
+    \textbf{N/A} & \textbf{CNN-LSTM} & 0.7103 & 0.6740 & 0.8486 & 0.7513 & 0.7891 \\ \hline
+    
+    \textbf{N/A} & \textbf{HMM} & 0.5141 & 0.5156 & 0.9552 & 0.6697 & 0.4997 \\ \hline
+    
+    \textbf{N/A} & \textbf{Bayesian Network} & 0.6495 & 0.6364 & 0.7476 & 0.6875 & 0.7143 \\ \hline
+    
+    \end{tabular}
+    }
+\end{table}
+
+\subsubsection{Discussion}
+
+\begin{itemize}
+    \item \textbf{Embedding Methods:} The choice of embedding methods significantly impacts model performance. 
+    \textbf{CountVectorizer} and \textbf{TF-IDF} often yield better results for traditional models as they capture term frequency statistics effectively. 
+    In contrast, \textbf{Word2Vec} and \textbf{GloVe} provide dense representations that benefit deep learning models like \textbf{CNN-LSTM}. 
+    However, pre-trained embeddings may not always align well with domain-specific datasets, making TF-IDF and CountVectorizer preferable for structured, lexicon-heavy tasks like sentiment classification.
+
+    \item \textbf{Logistic Regression:} The logistic regression model serves as a strong baseline, achieving an accuracy of \textbf{75.57\%}, an F1-score of \textbf{77.26\%}, and the highest ROC AUC of \textbf{82.97\%} among traditional models. It provides balanced performance across all metrics, making it a reliable choice for sentiment classification.
+
+    \item \textbf{Decision Tree:} This model exhibits \textbf{high recall (89.40\%)}, meaning it is effective at capturing positive and negative sentiments. However, its low precision (\textbf{59.28\%}) indicates a high false-positive rate, leading to misclassifications.
+
+    \item \textbf{XGBoost and Random Forest:} Both models deliver \textbf{72.51\% accuracy, 80.40\% ROC AUC, and an F1-score of 75.55\%}. Their ensemble-based decision trees capture complex sentiment patterns better than individual models.
+
+    \item \textbf{Perceptron:} This linear classifier achieves \textbf{69.27\% accuracy}, but struggles with recall (\textbf{62.96\%}), leading to an imbalanced prediction performance.
+    
+    \item \textbf{MLP (Multi-Layer Perceptron):}  
+    The MLP model achieves an accuracy of \textbf{73.70\%}, which is competitive with other traditional models like Logistic Regression and Random Forest. Its precision (\textbf{81.26\%}) is the highest among all models, indicating that it is particularly effective at minimizing false positives. However, its recall (\textbf{75.26\%}) is slightly lower than some other models, suggesting it may miss some positive cases. The MLP's F1-score of \textbf{72.69\%} reflects a good balance between precision and recall, and its ROC AUC of \textbf{78.01\%} shows that it performs well in distinguishing between classes.
+
+    \item \textbf{Naïve Bayes and GA-Optimized Naïve Bayes:} The standard Gaussian Naïve Bayes model achieves \textbf{71.34\% accuracy}, and its GA-optimized variant does not significantly improve performance (\textbf{66.53\% accuracy}).
+
+    \item \textbf{CNN-LSTM:} The deep learning-based CNN-LSTM model achieves \textbf{71.03\% accuracy}, with \textbf{84.86\% recall}, making it useful for capturing contextual sentiment.
+
+    \item \textbf{HMM and Bayesian Network:} These probabilistic models underperform, with the HMM achieving only \textbf{51.41\% accuracy} and a ROC AUC of \textbf{49.97\%}, indicating near-random performance. The Bayesian Network slightly improves to \textbf{64.95\% accuracy} but remains behind tree-based models.
+
+\end{itemize}
+
+\subsubsection{Selecting the Best Model}
+
+\textbf{Our Criteria for Selection the best model:} 
+
+\begin{itemize}
+    \item \textbf{Accuracy}: Indicates the overall classification performance of the model.
+    \item \textbf{F1-score}: Provides a balance between precision and recall.
+    \item \textbf{ROC AUC}: Measures the model’s ability to distinguish between sentiment classes.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Best Model Performance Across Key Metrics}
+\label{tab:best_model}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Metric} & \textbf{Model} & \textbf{Value} \\ \hline
+\textbf{Accuracy} & Logistic Regression (Count) & 0.7557 \\ \hline
+\textbf{Precision} & MLP (Count) & 0.8126 \\ \hline
+\textbf{Recall} & CNN-LSTM & 0.8486 \\ \hline
+\textbf{F1-score} & Logistic Regression (Count) & 0.7726 \\ \hline
+\textbf{ROC AUC} & Logistic Regression (Count) & 0.8297 \\ \hline
+\end{tabular}
+\end{table}
+
+The best-performing model based on accuracy, F1-score, and ROC AUC is \textbf{Logistic Regression} (Count Vectorizer). However, \textbf{CNN-LSTM} achieves the highest recall, making it suitable for applications where recall is the priority. Tree-based models like \textbf{Random Forest} and \textbf{XGBoost} also show strong performance and could be considered when computational efficiency is a concern.
+
+\subsection{Type I and Type II Error Considerations}
+
+Sentiment analysis models must balance two types of errors:
+
+\begin{itemize}
+    \item \textbf{Type I Error (False Positives):} Occurs when neutral or negative sentiments are misclassified as positive. This can mislead businesses, causing them to overestimate customer satisfaction. Models with high precision, such as \textbf{Random Forest} and \textbf{Logistic Regression}, help mitigate this issue.
+    
+    \item \textbf{Type II Error (False Negatives):} Occurs when positive sentiments are misclassified as negative. This can result in missed opportunities for companies to identify positive trends. \textbf{CNN-LSTM}, with its high recall, minimizes this risk by ensuring that positive sentiments are correctly identified.
+    
+    \item \textbf{Balancing the Errors:} The \textbf{Logistic Regression} model offers a strong trade-off between precision and recall, making it a balanced choice for sentiment classification. On the other hand, \textbf{CNN-LSTM} is more recall-focused, making it suitable for applications where detecting positive sentiment is more critical.
+    
+    \item \textbf{Impact on Real-World Applications:} Selecting the right model depends on the application's needs. For customer feedback analysis, a high-precision model prevents false alarms about negative sentiments. In contrast, for social media monitoring, a high-recall model ensures no positive trends are overlooked.
+\end{itemize}
+
+\subsection{Conclusion}
+
+The results indicate that \textbf{Logistic Regression} (Count Vectorizer) is the most balanced model for sentiment classification, offering the best accuracy, F1-score, and ROC AUC. However, \textbf{CNN-LSTM} is the best choice for maximizing recall, making it useful for applications where missing positive sentiments is costly. 
+
+For real-world applications:
+\begin{itemize}
+    \item \textbf{Logistic Regression} is ideal for general-purpose sentiment analysis due to its balance of precision and recall.
+    \item \textbf{Random Forest} and \textbf{XGBoost} provide strong alternatives with high precision and efficiency.
+    \item \textbf{CNN-LSTM} is best suited for cases where identifying positive sentiment is critical.
+\end{itemize}
+
+In summary, the trade-off between accuracy, recall, and computational efficiency must be considered when selecting the best model for sentiment analysis.
+
+\newpage

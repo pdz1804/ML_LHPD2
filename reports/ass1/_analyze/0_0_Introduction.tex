@@ -1,0 +1,119 @@
+Before training machine learning models on a dataset and making predictions on a test set, a crucial step involves transforming the raw text data into a numerical representation that the models can effectively learn from. Specifically, we need to convert text into vectors of numbers. This section details the approach used for feature building.
+
+\subsection{Building Features}
+
+\subsubsection{Overview}
+
+In this project, a dedicated class called \texttt{FeatureBuilder} has been designed to handle the feature extraction and transformation process. This class encapsulates various methods for converting text data into numerical features suitable for machine learning models.
+
+\textbf{The \texttt{FeatureBuilder} Class}
+
+The \texttt{FeatureBuilder} class provides functionalities for different feature extraction methods, dimensionality reduction techniques, and model persistence. The code for the class is as follows:
+
+\begin{lstlisting}[language=Python]
+class FeatureBuilder:
+    def __init__(self, method="tfidf", save_dir="data/processed", reduce_dim=None, n_components=100):
+        self.method = method
+        self.save_dir = save_dir
+        self.reduce_dim = reduce_dim
+        self.n_components = n_components
+        os.makedirs(save_dir, exist_ok=True)
+        
+        if method == "tfidf":
+            self.vectorizer = TfidfVectorizer(max_features=2000, stop_words="english")
+        elif method == "count":
+            self.vectorizer = CountVectorizer(max_features=2000)
+        elif method == "binary_count":
+            self.vectorizer = CountVectorizer(binary=True, max_features=2000)
+        elif method == "word2vec":
+            self.word2vec_model = api.load("word2vec-google-news-300")  
+        elif method == "glove":
+            self.glove_model = api.load("glove-wiki-gigaword-100")      
+        elif method == "bert":
+            self.tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
+            self.bert_model = AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
+    
+        self.reducer = None
+        if self.reduce_dim == "pca":
+            self.reducer = PCA(n_components=self.n_components)
+        elif self.reduce_dim == "lda":
+            self.reducer = LDA(n_components=self.n_components)
+
+    def fit(self, texts, labels=None):
+        if self.method in ["tfidf", "count", "binary_count"]:
+            self.vectorizer.fit(texts)
+            if self.reduce_dim == "lda":
+                assert labels is not None, "LDA requires class labels (y)."
+                features = self.vectorizer.transform(texts).toarray()
+                self.reducer.fit(features, labels)
+            elif self.reduce_dim == "pca":
+                features = self.vectorizer.transform(texts).toarray()
+                self.reducer.fit(features)
+        elif self.method in ["word2vec", "glove", "bert"]:
+            if self.reduce_dim == "lda":
+                raise ValueError(f"LDA is not supported for method {self.method}")
+            
+    def transform(self, texts, labels=None):
+        if self.method in ["tfidf", "count", "binary_count"]:
+            features = self.vectorizer.transform(texts).toarray()
+            return self._apply_reducer(features, labels)
+
+        elif self.method == "word2vec":
+            word2vec_embeddings = []
+            for doc in tqdm(texts, desc="Processing Word2Vec", unit="document"):
+                word2vec_embeddings.append(self._get_word2vec_vector(doc))
+            features = np.array(word2vec_embeddings)
+            return features
+
+        elif self.method == "glove":
+            glove_embeddings = []
+            for doc in tqdm(texts, desc="Processing GloVe", unit="document"):
+                glove_embeddings.append(self._get_glove_vector(doc))
+            features = np.array(glove_embeddings)
+            return features
+
+        elif self.method == "bert":
+            bert_embeddings = []
+            for doc in tqdm(texts, desc="Processing BERT", unit="document"):
+                bert_embeddings.append(self._get_bert_embedding(doc))
+            features = np.array(bert_embeddings)
+            return features
+
+    def fit_transform(self, texts):
+        self.fit(texts)  # First fit the model (compute parameters)
+        return self.transform(texts)  
+\end{lstlisting}
+
+\subsubsection{Key Components and Functionalities}
+
+The \texttt{FeatureBuilder} class incorporates the following key components:
+
+\begin{itemize}
+    \item \textbf{Feature Extraction Methods:} Implements various feature extraction methods such as TF-IDF, Count Vectorization, Word2Vec, GloVe, and BERT embeddings.
+    \item \textbf{Dimensionality Reduction:} Supports dimensionality reduction techniques like PCA and LDA to reduce the complexity of the feature space and improve model performance.
+    \item \textbf{Model Persistence:} Provides functionalities to save and load fitted vectorizers, models, and dimensionality reduction objects for later use.
+\end{itemize}
+
+\subsubsection{Usage}
+
+The \texttt{FeatureBuilder} class is initialized with a specified feature engineering method, save directory, dimensionality reduction method, and the number of components for dimensionality reduction. It then uses this configuration to fit and transform the text data into numerical feature matrices, which can be used as inputs for training machine learning models.
+
+\subsection{General Training Methods}
+
+In this section, we analyze the training process of various machine learning models used for sentiment analysis. The goal is to assess their performance, convergence behavior, and overall effectiveness in classifying sentiments accurately. By studying training logs, we gain insights into model behavior, parameter optimization, and potential improvements.
+
+The models under consideration include:
+\begin{itemize}
+    \item \textbf{Logistic Regression} – Evaluating its linear classification approach and efficiency.
+    \item \textbf{Decision Tree} – Understanding feature selection strategies and pruning techniques.
+    \item \textbf{XGBoost} – Analyzing boosting performance and feature importance.
+    \item \textbf{Random Forest} – Examining ensemble decision-making and variance reduction.
+    \item \textbf{Perceptron} – Investigating its convergence properties and applicability in text classification.
+    \item \textbf{Multi-Layer Perceptron} – Studying network architecture and activation functions.
+    \item \textbf{Long Short-Term Memory} – Observing temporal dependencies in sentiment sequences.
+    \item \textbf{Naïve Bayes} – Assessing probabilistic assumptions and feature independence.
+    \item \textbf{Genetic Algorithm} – Exploring evolutionary strategies for text feature selection.
+    \item \textbf{Hidden Markov Model} – Analyzing sequential dependencies in sentiment trends.
+    \item \textbf{Bayesian Networks} – Evaluating probabilistic graphical modeling for text classification.
+\end{itemize}
+

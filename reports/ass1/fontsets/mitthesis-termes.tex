@@ -1,0 +1,59 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-termes.tex}[2024/10/12 v1.05 Load TeX Gyre Termes text and math fonts, Heros sans serif font, and Cursor monospaced font]
+
+%% TeX Gyre Termes (Times-like) text font with Termes math font and Heros sans serif font and Cursor monospaced font
+%
+% These fonts are available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+% install these as system fonts on your computer
+%
+\ifpdftex
+	\ClassError{\ClassName}{The termes fontset requires a unicode engine. Defaulting to CMR fonts}{To use the class option [fontset=termes], use a unicode engine such as LuaLaTeX.}
+	\RequirePackage[T1]{fontenc}	
+	\RequirePackage{bm}
+\else
+	\ClassNoteNoLine{\ClassName}{Loading TeX Gyre Termes text and math fonts, Heros sans serif font, and Cursor monospaced font}
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+    % suppress tiresome warnings about lack of integration between mathtools and unicode-math
+    % unicode-math loads the fontspec package
+	%
+    \setmainfont{TeXGyreTermesX}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+		WordSpace = {1,1.4,1},
+    	Extension = .otf,
+    	UprightFont = *-Regular,
+    	ItalicFont = *-Italic,
+    	BoldFont = *-Bold,
+    	BoldItalicFont = *-BoldItalic,
+		SlantedFont = *-Italic,
+		Numbers = Lining,
+	]
+    \setsansfont{texgyreheros}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+		WordSpace = {1,1.4,1},
+		Extension = .otf,
+    	UprightFont = *-regular,
+    	ItalicFont = *-italic,
+    	BoldFont = *-bold,
+    	BoldItalicFont = *-bolditalic,
+		Numbers = Lining,
+    	Scale=0.91,% same as used in newtx; former value 0.9 too small 2022/01/15
+	]        
+   \setmonofont{texgyrecursor}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+        %Scale=0.97,
+        Scale=1.03, % adjusted 2024/10/12 to bring x-size closer to other fonts
+        Extension = .otf,
+        UprightFont = *-Regular,
+        ItalicFont = *-Italic,
+        BoldFont = *-Bold, 
+    	BoldItalicFont = *-BoldItalic,
+%		BoldFeatures = { Color = VioletRed3 },
+    ]             
+    \setmathfont{texgyretermes-math}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+    	Scale=MatchUppercase,
+    	Extension = .otf,
+%		BoldFont = *, % termes-math does not have a bold version
+%       Color=Red3, 
+    ]
+    %   
+    \newcommand*{\FRAC}[1]{{\addfontfeature{Fractions=On}#1}}% use OpenType feature for fractions, \FRAC{1/2}
+\fi
