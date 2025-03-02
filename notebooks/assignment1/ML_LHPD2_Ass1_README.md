@@ -22,7 +22,7 @@
 
 Our repository is at this link: [https://github.com/pdz1804/ML_LHPD2](https://github.com/pdz1804/ML_LHPD2).
 
-This README that we submitted to you is stored in the repository at [ML_LHPD2/notebooks/assignment1/submit.md](https://github.com/pdz1804/ML_LHPD2/blob/main/notebooks/assignment1/submit.md).
+This README that we submitted to you is stored in the repository at [ML_LHPD2/notebooks/assignment1/ML_LHPD2_Ass1_README.md](https://github.com/pdz1804/ML_LHPD2/blob/main/notebooks/assignment1/ML_LHPD2_Ass1_README.md).
 
 Also, our team's report for this Assignment 1 is stored in the repository at [ML_LHPD2/reports/final_project/](https://github.com/pdz1804/ML_LHPD2/tree/main/reports/final_project/).
 
