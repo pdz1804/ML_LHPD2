@@ -1,0 +1,27 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Training Performance Metrics for Logistic Regression}}{36}{table.caption.18}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Testing Performance Metrics for Logistic Regression}}{37}{table.caption.19}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Training Performance Metrics for Decision Tree}}{41}{table.caption.22}%
+\contentsline {table}{\numberline {4.4}{\ignorespaces Testing Performance Metrics for Decision Tree}}{41}{table.caption.23}%
+\contentsline {table}{\numberline {4.5}{\ignorespaces Training Performance Metrics for XGBoost}}{45}{table.caption.26}%
+\contentsline {table}{\numberline {4.6}{\ignorespaces Testing Performance Metrics for XGBoost}}{45}{table.caption.27}%
+\contentsline {table}{\numberline {4.7}{\ignorespaces Training Performance Metrics for Random Forest (Cross-Validation)}}{50}{table.caption.30}%
+\contentsline {table}{\numberline {4.8}{\ignorespaces Testing Performance Metrics for Random Forest}}{50}{table.caption.31}%
+\contentsline {table}{\numberline {4.9}{\ignorespaces Training Performance Metrics for Perceptron (Cross-Validation Averages)}}{54}{table.caption.34}%
+\contentsline {table}{\numberline {4.10}{\ignorespaces Testing Performance Metrics for Perceptron}}{54}{table.caption.35}%
+\contentsline {table}{\numberline {4.11}{\ignorespaces MLP Cross-Validation Performance Metrics}}{58}{table.caption.38}%
+\contentsline {table}{\numberline {4.12}{\ignorespaces MLP Testing Performance Metrics}}{58}{table.caption.39}%
+\contentsline {table}{\numberline {4.13}{\ignorespaces CNN-LSTM Testing Performance}}{64}{table.caption.42}%
+\contentsline {table}{\numberline {4.14}{\ignorespaces Training Performance Metrics for Naïve Bayes (Cross-Validation Averages)}}{65}{table.caption.43}%
+\contentsline {table}{\numberline {4.15}{\ignorespaces Testing Performance Metrics for Naïve Bayes}}{66}{table.caption.44}%
+\contentsline {table}{\numberline {4.16}{\ignorespaces Training Performance Metrics for GA-based Model}}{72}{table.caption.47}%
+\contentsline {table}{\numberline {4.17}{\ignorespaces Testing Performance Metrics for GA-based Model}}{72}{table.caption.48}%
+\contentsline {table}{\numberline {4.18}{\ignorespaces Testing Performance Metrics for Hidden Markov Model}}{76}{table.caption.49}%
+\contentsline {table}{\numberline {4.19}{\ignorespaces Testing Performance Metrics for Bayesian Network}}{79}{table.caption.50}%
+\contentsline {table}{\numberline {4.20}{\ignorespaces Performance Comparison of Sentiment Analysis Models}}{83}{table.caption.51}%
+\contentsline {table}{\numberline {4.21}{\ignorespaces Best Model Performance Across Key Metrics}}{84}{table.caption.52}%
+\addvspace {10\p@ }

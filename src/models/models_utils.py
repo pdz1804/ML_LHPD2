@@ -619,8 +619,6 @@ def generate_binary_classification_model(X, y, model_algorithm, hyperparameters,
 
     return model_algorithm
 
-
-
 def get_training_loss(model, X_train, y_train):
     """
     Compute training loss based on model type.
