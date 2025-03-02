@@ -18,9 +18,14 @@
 ---
 
 
-## 👥 **Team Members and Team Repository Link**
+## 👥 **Team Members, Team Repository Link and Team Report**
 
-Our repository is at this link: [https://github.com/pdz1804/ML_LHPD2](https://github.com/pdz1804/ML_LHPD2) and this README that we submitted is at ```ML_LHPD2/notebooks/assignment1/submit.md```
+Our repository is at this link: [https://github.com/pdz1804/ML_LHPD2](https://github.com/pdz1804/ML_LHPD2).
+
+This README that we submitted to you is stored in the repository at [ML_LHPD2/notebooks/assignment1/submit.md](https://github.com/pdz1804/ML_LHPD2/blob/main/notebooks/assignment1/submit.md).
+
+Also, our team's report for this Assignment 1 is stored in the repository at [ML_LHPD2/reports/final_project/](https://github.com/pdz1804/ML_LHPD2/tree/main/reports/final_project/).
+
 
 | Name | Student ID |
 |-------------------------|------------|
