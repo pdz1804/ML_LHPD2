@@ -83,29 +83,6 @@
 2025-02-23 10:27:23,707 - INFO - 🔎 Training with Method: word2vec...
 2025-02-23 10:27:23,708 - INFO - ❌ Error with word2vec: 'word2vec'
 2025-02-23 10:27:23,708 - INFO - 
-🚀 Training GA models...
-
-2025-02-23 10:27:23,709 - INFO - 🔎 Training with Method: count...
-2025-02-23 15:33:24,042 - INFO - Selected 1032 features out of 2000
-2025-02-23 15:33:26,661 - INFO - Has predict_proba
-2025-02-23 15:33:27,000 - INFO - Accuracy: 0.6653
-2025-02-23 15:33:27,000 - INFO - Precision: 0.6520
-2025-02-23 15:33:27,001 - INFO - Recall: 0.7481
-2025-02-23 15:33:27,002 - INFO - F1 Score: 0.6967
-2025-02-23 15:33:27,003 - INFO - ROC AUC: 0.7021
-2025-02-23 15:33:27,005 - INFO - 💾 Model saved to best_GA_count.pkl
-2025-02-23 15:33:27,009 - INFO - 🔎 Training with Method: tfidf...
-2025-02-23 19:58:56,075 - INFO - Selected 1009 features out of 2000
-2025-02-23 19:58:58,409 - INFO - Has predict_proba
-2025-02-23 19:58:58,754 - INFO - Accuracy: 0.6514
-2025-02-23 19:58:58,755 - INFO - Precision: 0.6849
-2025-02-23 19:58:58,756 - INFO - Recall: 0.5957
-2025-02-23 19:58:58,757 - INFO - F1 Score: 0.6372
-2025-02-23 19:58:58,758 - INFO - ROC AUC: 0.7042
-2025-02-23 19:58:58,760 - INFO - 💾 Model saved to best_GA_tfidf.pkl
-2025-02-23 19:58:58,763 - INFO - 🔎 Training with Method: word2vec...
-2025-02-23 19:58:58,765 - INFO - ❌ Error with word2vec: 'word2vec'
-2025-02-23 19:58:58,765 - INFO - 
 🚀 Training logistic_regression models...
 
 2025-02-23 19:58:58,766 - INFO - 🔎 Training with Method: count...
@@ -184,10 +161,6 @@
 2025-02-23 20:40:23,627 - INFO - ❌ Error while predicting for bayesian with glove: [Errno 2] No such file or directory: '/kaggle/working/best_bayesian_glove.pkl'
 2025-02-23 20:40:23,628 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 2025-02-23 20:40:23,629 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-2025-02-23 20:40:23,629 - INFO - 🔎 Predicting with Model: GA, Method: count...
-2025-02-23 20:40:23,630 - INFO - 🔎 Predicting with Model: GA, Method: tfidf...
-2025-02-23 20:40:23,632 - INFO - 🔎 Predicting with Model: GA, Method: word2vec...
-2025-02-23 20:40:23,632 - INFO - 🔎 Predicting with Model: GA, Method: glove...
 2025-02-23 20:40:23,633 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 2025-02-23 20:40:23,634 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 2025-02-23 20:40:23,634 - INFO - 🔎 Predicting with Model: logistic_regression, Method: count...

@@ -1,0 +1,70 @@
+2025-02-27 03:34:38,762 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-27 03:34:38,765 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-02-27 03:34:40,531 - INFO - ✅ count - Train shape: (40000, 2000), Test shape: (10000, 2000)
+2025-02-27 03:34:40,533 - INFO - 
+🔍 Processing feature extraction using: tfidf...
+2025-02-27 03:34:42,229 - INFO - ✅ tfidf - Train shape: (40000, 2000), Test shape: (10000, 2000)
+2025-02-27 03:34:42,231 - INFO - 
+🔍 Processing feature extraction using: word2vec...
+2025-02-27 03:34:42,232 - INFO - Creating /root/gensim-data
+2025-02-27 03:37:56,928 - INFO - word2vec-google-news-300 downloaded
+2025-02-27 03:37:56,931 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-02-27 03:38:45,688 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-02-27T03:38:45.687985', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-27 03:38:47,587 - INFO - ✅ word2vec - Train shape: (40000, 300), Test shape: (10000, 300)
+2025-02-27 03:38:47,589 - INFO - 
+🔍 Processing feature extraction using: glove...
+2025-02-27 03:39:03,985 - INFO - glove-wiki-gigaword-100 downloaded
+2025-02-27 03:39:03,987 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz
+2025-02-27 03:39:28,879 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 100) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-02-27T03:39:28.879704', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-27 03:39:31,050 - INFO - ✅ glove - Train shape: (40000, 100), Test shape: (10000, 100)
+2025-02-27 03:40:47,734 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-02-27 03:40:47,735 - INFO - 
+🚀 Training GA models...
+
+2025-02-27 03:40:47,736 - INFO - 🔎 Training with Method: count...
+2025-02-27 06:14:56,987 - INFO - Selected 1022 features out of 2000
+2025-02-27 06:14:58,325 - INFO - Has predict_proba
+2025-02-27 06:14:58,481 - INFO - Accuracy: 0.6520
+2025-02-27 06:14:58,482 - INFO - Precision: 0.6492
+2025-02-27 06:14:58,482 - INFO - Recall: 0.7056
+2025-02-27 06:14:58,483 - INFO - F1 Score: 0.6762
+2025-02-27 06:14:58,484 - INFO - ROC AUC: 0.6860
+2025-02-27 06:14:58,487 - INFO - 💾 Model saved to best_GA_count.pkl
+2025-02-27 06:14:58,489 - INFO - 🔎 Training with Method: tfidf...
+2025-02-27 08:27:04,420 - INFO - Selected 967 features out of 2000
+2025-02-27 08:27:05,553 - INFO - Has predict_proba
+2025-02-27 08:27:05,690 - INFO - Accuracy: 0.6209
+2025-02-27 08:27:05,691 - INFO - Precision: 0.6663
+2025-02-27 08:27:05,692 - INFO - Recall: 0.5287
+2025-02-27 08:27:05,693 - INFO - F1 Score: 0.5896
+2025-02-27 08:27:05,694 - INFO - ROC AUC: 0.6693
+2025-02-27 08:27:05,696 - INFO - 💾 Model saved to best_GA_tfidf.pkl
+2025-02-27 08:27:05,698 - INFO - 🔎 Training with Method: word2vec...
+2025-02-27 08:45:56,544 - INFO - Selected 152 features out of 300
+2025-02-27 08:45:56,758 - INFO - Has predict_proba
+2025-02-27 08:45:56,777 - INFO - Accuracy: 0.6031
+2025-02-27 08:45:56,778 - INFO - Precision: 0.6662
+2025-02-27 08:45:56,779 - INFO - Recall: 0.4596
+2025-02-27 08:45:56,780 - INFO - F1 Score: 0.5440
+2025-02-27 08:45:56,781 - INFO - ROC AUC: 0.6693
+2025-02-27 08:45:56,783 - INFO - 💾 Model saved to best_GA_word2vec.pkl
+2025-02-27 08:45:56,784 - INFO - 🔎 Training with Method: glove...
+2025-02-27 08:52:08,183 - INFO - Selected 54 features out of 100
+2025-02-27 08:52:08,262 - INFO - Has predict_proba
+2025-02-27 08:52:08,273 - INFO - Accuracy: 0.6176
+2025-02-27 08:52:08,273 - INFO - Precision: 0.6553
+2025-02-27 08:52:08,274 - INFO - Recall: 0.5431
+2025-02-27 08:52:08,275 - INFO - F1 Score: 0.5940
+2025-02-27 08:52:08,276 - INFO - ROC AUC: 0.6692
+2025-02-27 08:52:08,278 - INFO - 💾 Model saved to best_GA_glove.pkl
+2025-02-27 08:52:41,561 - INFO - 🔎 Predicting with Model: GA, Method: count...
+2025-02-27 08:52:41,562 - INFO - 🔎 Predicting with Model: GA, Method: tfidf...
+2025-02-27 08:52:41,563 - INFO - 🔎 Predicting with Model: GA, Method: word2vec...
+2025-02-27 08:52:41,563 - INFO - 🔎 Predicting with Model: GA, Method: glove...
+2025-02-27 08:52:41,564 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-27 08:52:41,565 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

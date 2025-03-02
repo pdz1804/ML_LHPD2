@@ -71,11 +71,22 @@ class FeatureBuilder:
             self.tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
             self.bert_model = AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
     
-        # Initialize dimensionality reduction
+         # Initialize dimensionality reduction if required
+        self.reducer = None
         if self.reduce_dim == "pca":
             self.reducer = PCA(n_components=self.n_components)
         elif self.reduce_dim == "lda":
-            self.reducer = LDA(n_components=min(self.n_components, 1))  # LDA needs class labels, adjust accordingly
+            self.reducer = LDA(n_components=self.n_components)
+
+    def _apply_reducer(self, features, labels=None):
+        """Applies dimensionality reduction if enabled."""
+        if self.reducer is not None:
+            if isinstance(self.reducer, LDA):
+                assert labels is not None, "LDA requires class labels during transform."
+                features = self.reducer.fit_transform(features, labels)
+            else:
+                features = self.reducer.fit_transform(features)
+        return features
     
     def _get_word2vec_vector(self, doc):
         """
@@ -142,16 +153,18 @@ class FeatureBuilder:
         """
         if self.method in ["tfidf", "count", "binary_count"]:
             self.vectorizer.fit(texts)
+            if self.reduce_dim == "lda":
+                assert labels is not None, "LDA requires class labels (y)."
+                features = self.vectorizer.transform(texts).toarray()
+                self.reducer.fit(features, labels)
+            elif self.reduce_dim == "pca":
+                features = self.vectorizer.transform(texts).toarray()
+                self.reducer.fit(features)
+
         elif self.method in ["word2vec", "glove", "bert"]:
-            pass
-
-        # if self.reduce_dim == "lda" and labels is not None:
-        #     features = self.vectorizer.transform(texts).toarray()
-        #     self.reducer.fit(features, labels)
-        # elif self.reduce_dim == "pca":
-        #     features = self.vectorizer.transform(texts).toarray()
-        #     self.reducer.fit(features)
-
+            if self.reduce_dim == "lda":
+                raise ValueError(f"LDA is not supported for method {self.method}")
+            
     def transform(self, texts, labels=None):
         """
         Transforms new data based on the fitted model.
@@ -166,6 +179,7 @@ class FeatureBuilder:
         if self.method in ["tfidf", "count", "binary_count"]:
             # Transform the new data using the fitted vectorizer
             features = self.vectorizer.transform(texts).toarray()
+            return self._apply_reducer(features, labels)
 
         elif self.method == "word2vec":
             # Use the pre-trained Word2Vec model to generate embeddings
@@ -173,6 +187,7 @@ class FeatureBuilder:
             for doc in tqdm(texts, desc="Processing Word2Vec", unit="document"):
                 word2vec_embeddings.append(self._get_word2vec_vector(doc))
             features = np.array(word2vec_embeddings)
+            return features
 
         elif self.method == "glove":
             # Similar process for GloVe embeddings
@@ -180,6 +195,7 @@ class FeatureBuilder:
             for doc in tqdm(texts, desc="Processing GloVe", unit="document"):
                 glove_embeddings.append(self._get_glove_vector(doc))
             features = np.array(glove_embeddings)
+            return features
 
         elif self.method == "bert":
             # Use the pre-trained BERT model to generate embeddings
@@ -187,19 +203,10 @@ class FeatureBuilder:
             for doc in tqdm(texts, desc="Processing BERT", unit="document"):
                 bert_embeddings.append(self._get_bert_embedding(doc))
             features = np.array(bert_embeddings)
+            return features
 
-        # Apply dimensionality reduction if enabled
-        if self.reduce_dim and features is not None:
-            if self.reduce_dim == "lda" and labels is not None:
-                # features = self.vectorizer.transform(texts).toarray()
-                self.reducer.fit(features, labels)
-            elif self.reduce_dim == "pca":
-                # features = self.vectorizer.transform(texts).toarray()
-                self.reducer.fit(features)
-            
-            features = self.reducer.transform(features)
-
-        return features
+        # Apply dimensionality reduction if applicable
+        # return self._apply_reducer(features, labels)
 
     def fit_transform(self, texts):
         """
@@ -243,7 +250,7 @@ class FeatureBuilder:
             with open(model_path, "wb") as f:
                 pickle.dump(self.bert_model, f)
                 
-        if self.reduce_dim:
+        if self.reducer is not None:
             reducer_path = os.path.join(self.save_dir, f"{self.reduce_dim}_reducer.pkl")
             with open(reducer_path, "wb") as f:
                 pickle.dump(self.reducer, f)
@@ -279,10 +286,12 @@ class FeatureBuilder:
         
         if self.reduce_dim:
             reducer_path = os.path.join(self.save_dir, f"{self.reduce_dim}_reducer.pkl")
+            if not os.path.exists(reducer_path):
+                raise FileNotFoundError(f"No saved reducer found at {reducer_path}.")
             with open(reducer_path, "rb") as f:
                 self.reducer = pickle.load(f)
 
-def build_vector_for_text(df_sampled, feature_methods, project_root):
+def build_vector_for_text(df_sampled, feature_methods, project_root, reduce_dim=None, n_components=50):
     """
     Builds feature vectors for text data using specified feature extraction methods.
 
@@ -312,18 +321,26 @@ def build_vector_for_text(df_sampled, feature_methods, project_root):
         print(f"\n🔍 Processing feature extraction using: {method}...")
 
         try:
+            n_classes = len(y_train.unique())
+            if reduce_dim == "lda":
+                n_components = min(n_components, n_classes - 1)
+                
             # Initialize FeatureBuilder for the current method
+            reduce_dim_method = reduce_dim if method in ["tfidf", "count", "binary_count"] else None
+
             feature_builder = FeatureBuilder(
                 method=method,
                 save_dir=os.path.join(project_root, "data", "processed"),
-                reduce_dim=None,
-                n_components=50
+                reduce_dim=reduce_dim_method,  # Only apply reduction to vector-based methods
+                n_components=n_components
             )
 
-            # Step 2: Extract features separately for train and test sets
-            feature_builder.fit(df_sampled["text_clean"].tolist())
-            X_train = feature_builder.transform(df_train["text_clean"].tolist())
-            X_test = feature_builder.transform(df_test["text_clean"].tolist()) 
+            # Step 2: Fit on training data ONLY
+            feature_builder.fit(df_train["text_clean"].tolist(), y_train if reduce_dim == "lda" else None)
+
+            # Step 3: Transform train and test sets separately
+            X_train = feature_builder.transform(df_train["text_clean"].tolist(), n_classes if reduce_dim == "lda" else None)
+            X_test = feature_builder.transform(df_test["text_clean"].tolist())
 
             # Ensure feature matrices are DataFrames
             X_train_features_dict[method] = pd.DataFrame(X_train)

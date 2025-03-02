@@ -30,7 +30,7 @@ from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 import hmmlearn.hmm
 import xgboost as xgb
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier, StackingClassifier
 from sklearn_crfsuite import CRF
 from sklearn.metrics import log_loss, hinge_loss
 
@@ -67,6 +67,11 @@ from pgmpy.readwrite import BIFReader
 
 nltk.download('punkt')
 nltk.download('stopwords')
+
+import keras_nlp
+from tensorflow.keras.optimizers import Adam
+
+from statistics import mean
 
 # --------------------------------------------------
 # Loc defined
@@ -266,7 +271,6 @@ class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
         for param, value in params.items():
             setattr(self, param, value)
         return self
-
 
 # --------------------------------------------------
 # Hung defined
@@ -1058,6 +1062,9 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
             if model_name == "cnn" or model_name == "lstm":
                 train_cnn_lstm(doc_lst, label_lst)
                 
+            elif model_name == "distilbert":
+                train_distilbert_sentiment(doc_lst, label_lst, model_file_path=f"best_{model_name}")
+                
             elif model_name == "hmm" or model_name == "bayesnet":
                 train_graphical_model(
                     df, 
@@ -1094,7 +1101,7 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
                         )
                         
         except Exception as e:
-            print(f"❌ Error with {method}: {e}")
+            print(f"❌ Error with {model_name}: {e}")
 
 # --------------------------------------------------  
 
@@ -1181,3 +1188,193 @@ def predict_general_model(model_names, feature_methods, X_test_features_dict, y_
         print("%" * 50)
 
 # --------------------------------------------------
+# helper plot func
+def plot_results(accuracy, roc_auc, train_loss, val_loss, img_save_path, img_loss_path):
+    if img_save_path:
+        plt.figure()
+        plt.plot(accuracy, label="Accuracy", marker='o')
+        plt.plot(roc_auc, label="ROC AUC", marker='o')
+        plt.legend()
+        plt.title("Validation Performance")
+        plt.savefig(img_save_path)
+        print(f"📈 Performance plot saved to {img_save_path}")
+
+    if img_loss_path:
+        plt.figure()
+        plt.plot(train_loss, label="Train Loss", marker='o')
+        plt.plot(val_loss, label="Val Loss", marker='o')
+        plt.legend()
+        plt.title("Loss Curves")
+        plt.savefig(img_loss_path)
+        print(f"📉 Loss plot saved to {img_loss_path}")
+
+
+# Voting
+def train_voting_classifier(model_dict, param_dict, feature_method, X, y, voting_type='soft', model_save_path="voting_model.pkl", img_save_path=None, img_loss_path=None):
+    """
+    Trains a Voting Classifier using selected models with cross-validation.
+    
+    Args:
+        model_dict (dict): Dictionary of models.
+        param_dict (dict): Dictionary of best hyperparameters.
+        feature_method (str): Name of feature extraction method used.
+        X (array-like): Feature matrix.
+        y (array-like): Labels.
+        voting_type (str): 'hard' for majority vote, 'soft' for probability-based averaging.
+        model_save_path (str): Path to save the trained model.
+        img_save_path (str, optional): Path to save validation performance plot.
+        img_loss_path (str, optional): Path to save training loss plot.
+
+    Returns:
+        VotingClassifier model.
+    """
+
+    # Load existing model if available
+    if os.path.exists(model_save_path):
+        print(f"🔄 Loading existing model from {model_save_path}...")
+        return joblib.load(model_save_path)
+
+    print(f"\n🚀 Training Voting Classifier ({voting_type}) with feature method: {feature_method}\n")
+
+    # Create base models with their best parameters
+    base_models = []
+    for model_name in model_dict.keys():
+        try:
+            model = model_dict[model_name](**param_dict.get(model_name, {}))  # Use best params
+            base_models.append((model_name, model))
+        except Exception as e:
+            print(f"⚠️ Skipping {model_name} due to error: {e}")
+
+    # Ensure at least 2 models exist
+    if len(base_models) < 2:
+        print("❌ Not enough models to perform voting.")
+        return None
+
+    # Define VotingClassifier
+    voting_clf = VotingClassifier(estimators=base_models, voting=voting_type)
+    
+    # Cross-validation
+    accuracy_scores, roc_auc_scores, f1_scores, precision_scores, recall_scores = [], [], [], [], []
+    training_losses, validation_losses = [], []
+
+    k_fold = KFold(n_splits=5)
+    print("\n🎯 Running K-Fold Cross-Validation...")
+    for train_idx, val_idx in tqdm(k_fold.split(X), total=k_fold.get_n_splits(), desc="K-Fold Progress"):
+        X_train, X_val = X.iloc[train_idx, :], X.iloc[val_idx, :]
+        y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
+        
+        voting_clf.fit(X_train, y_train)
+
+        train_loss = get_training_loss(voting_clf, X_train, y_train)
+        val_loss = get_training_loss(voting_clf, X_val, y_val)
+
+        training_losses.append(train_loss)
+        validation_losses.append(val_loss)
+
+        val_preds = voting_clf.predict(X_val)
+
+        accuracy_scores.append(accuracy_score(y_val, val_preds))
+        roc_auc_scores.append(roc_auc_score(y_val, val_preds))
+        f1_scores.append(f1_score(y_val, val_preds))
+        precision_scores.append(precision_score(y_val, val_preds))
+        recall_scores.append(recall_score(y_val, val_preds))
+
+    # Print results
+    print(f'📊 Avg Accuracy: {mean(accuracy_scores):.4f}')
+    print(f'📊 Avg ROC AUC: {mean(roc_auc_scores):.4f}')
+    print(f'📊 Avg F1 Score: {mean(f1_scores):.4f}')
+    print(f'📊 Avg Precision: {mean(precision_scores):.4f}')
+    print(f'📊 Avg Recall: {mean(recall_scores):.4f}')
+
+    # Train on full dataset
+    voting_clf.fit(X, y)
+    joblib.dump(voting_clf, model_save_path)
+    print(f'💾 Model saved to {model_save_path}')
+
+    # Plot performance & loss curves
+    plot_results(accuracy_scores, roc_auc_scores, training_losses, validation_losses, img_save_path, img_loss_path)
+
+    return voting_clf
+
+# Stacking 
+def train_stacking_classifier(model_dict, param_dict, feature_method, X, y, final_estimator=LogisticRegression(), model_save_path="stacking_model.pkl", img_save_path=None, img_loss_path=None):
+    """
+    Trains a Stacking Classifier using selected models with cross-validation.
+    
+    Args:
+        model_dict (dict): Dictionary of models.
+        param_dict (dict): Dictionary of best hyperparameters.
+        feature_method (str): Name of feature extraction method used.
+        X (array-like): Feature matrix.
+        y (array-like): Labels.
+        final_estimator (sklearn model): Meta-model for final prediction (default: LogisticRegression).
+        model_save_path (str): Path to save the trained model.
+        img_save_path (str, optional): Path to save validation performance plot.
+        img_loss_path (str, optional): Path to save training loss plot.
+
+    Returns:
+        StackingClassifier model.
+    """
+
+    if os.path.exists(model_save_path):
+        print(f"🔄 Loading existing model from {model_save_path}...")
+        return joblib.load(model_save_path)
+
+    print(f"\n🚀 Training Stacking Classifier with feature method: {feature_method}\n")
+
+    base_models = []
+    for model_name in model_dict.keys():
+        try:
+            model = model_dict[model_name](**param_dict.get(model_name, {}))
+            base_models.append((model_name, model))
+        except Exception as e:
+            print(f"⚠️ Skipping {model_name} due to error: {e}")
+
+    if len(base_models) < 2:
+        print("❌ Not enough models to perform stacking.")
+        return None
+
+    stacking_clf = StackingClassifier(estimators=base_models, final_estimator=final_estimator)
+    
+    # Cross-validation
+    accuracy_scores, roc_auc_scores, f1_scores, precision_scores, recall_scores = [], [], [], [], []
+    training_losses, validation_losses = [], []
+    
+    k_fold = KFold(n_splits=5)
+    print("\n🎯 Running K-Fold Cross-Validation...")
+    for train_idx, val_idx in tqdm(k_fold.split(X), total=k_fold.get_n_splits(), desc="K-Fold Progress"):
+        X_train, X_val = X.iloc[train_idx, :], X.iloc[val_idx, :]
+        y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
+
+        stacking_clf.fit(X_train, y_train)
+
+        train_loss = get_training_loss(stacking_clf, X_train, y_train)
+        val_loss = get_training_loss(stacking_clf, X_val, y_val)
+
+        training_losses.append(train_loss)
+        validation_losses.append(val_loss)
+
+        val_preds = stacking_clf.predict(X_val)
+        
+        accuracy_scores.append(accuracy_score(y_val, val_preds))
+        roc_auc_scores.append(roc_auc_score(y_val, val_preds))
+        f1_scores.append(f1_score(y_val, val_preds))
+        precision_scores.append(precision_score(y_val, val_preds))
+        recall_scores.append(recall_score(y_val, val_preds))
+
+    # Print results
+    print(f'📊 Avg Accuracy: {mean(accuracy_scores):.4f}')
+    print(f'📊 Avg ROC AUC: {mean(roc_auc_scores):.4f}')
+    print(f'📊 Avg F1 Score: {mean(f1_scores):.4f}')
+    print(f'📊 Avg Precision: {mean(precision_scores):.4f}')
+    print(f'📊 Avg Recall: {mean(recall_scores):.4f}')
+    
+    stacking_clf.fit(X, y)
+    joblib.dump(stacking_clf, model_save_path)
+    print(f'💾 Model saved to {model_save_path}')
+
+    plot_results(accuracy_scores, roc_auc_scores, training_losses, validation_losses, img_save_path, img_loss_path)
+
+    return stacking_clf
+
+
