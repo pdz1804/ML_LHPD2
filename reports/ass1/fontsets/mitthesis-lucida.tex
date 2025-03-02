@@ -1,0 +1,152 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-lucida.tex}[2024/10/13 v1.04 Load Lucida fonts]
+
+%% Lucida Bright and Lucida Bright Math fonts (available from the TeX Users Group)
+
+\ClassNoteNoLine{\ClassName}{Lucida Bright and Lucida Bright Math fonts}
+
+\ifpdftex
+	\RequirePackage[LY1]{fontenc}
+	\RequirePackage[expert,vargreek,altbullet]{lucidabr}   % switch text and math fonts 
+	% some other options: seriftt (much larger quad size!), lucidasmallscale % 2024/10/13
+	\RequirePackage{bm}
+\else
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+    % suppress tiresome warnings about lack of integration between mathtools and unicode-math
+    % unicode-math loads the fontspec package
+
+    % FEATURE 	DESCRIPTION 											DEFAULT
+    % dlig 		discretionary ligatures (f-ligatures in typewriter fnt) off
+    % liga 		standard ligatures (f-ligatures, not monospaced fonts) 	on
+    % onum 		old style numbers (Lucida Bright only)					off
+    % smcp 		small caps 	(Lucida Bright, upright only)				off
+    % zero 		slashed zero (sans and monospaced fonts)				off
+    % locl 		script/language specific (localized) forms 				on
+    %
+    % FEATURE 	FONT 						DESCRIPTION
+    % ss01 		Lucida Sans & Typewriter 	use dotted zero: 𝟶 vs. default 0.
+    % ss01 		use Lucida-standard shapes:
+    % 			Lucida Grande Mono 			ØOQ vs. default 0OQ;
+    % 			Lucida Console 				ØOQ vs. default 0OQ.
+    
+    \setmainfont{LucidaBrightOT}[% main rm
+          Ligatures=TeX,
+          Extension=.otf,
+          UprightFont=*,
+          ItalicFont=*-Italic,
+          BoldFont=*-Demi,
+    	  BoldItalicFont=*-DemiItalic,
+    %     BoldItalicFeatures={Color=Purple4}, % fixed 2024/10/13
+    %     UprightFeatures={Color=Salmon3},
+    	  Scale=0.93,% increased from 0.92, 2024/10/13
+    %	  Numbers ={OldStyle}, 
+      ]
+    %
+    \setsansfont{LucidaSansOT}[% main sans
+          Ligatures=TeX,
+          Extension=.otf,
+          UprightFont=*,
+          ItalicFont=*-Italic,
+          BoldFont=*-Demi,
+    	  BoldItalicFont=*-DemiItalic,
+    	  Scale=MatchUppercase,
+      ]
+    %
+    \setmonofont{LucidaSansTypewriterOT}[% main typewriter
+          Ligatures=TeX,
+          Extension=.otf,
+          UprightFont=*,
+          ItalicFont=*-Oblique,
+          BoldFont=*-Bold,
+          BoldItalicFont=*-BoldOblique,
+          Scale=MatchLowercase,% changed from MatchUppercase, 2024/10/13
+      ]
+    
+    %% MATH FONTS
+    %
+    % ss01 	alternate Latin lower case math italic identical to text italic. This option is not recommended as Greek 𝜈 (nu) and Latin 𝑣 (vee) become too similar
+    % ss02 	smaller arrows (original Type 1 size): ⇑ vs. default ⇑.
+    % ss03 	attempt to imitate Type 1 fonts
+    % ss04 	calligraphic alternative (similar to the Type 1 design) to the math script alphabet
+    % ss05 	use a slashed-zero style for the empty set character (U+2205): Ø vs. default ∅
+    % ss08 	emphasize right and bottom edges of the d’Alembertian operator (U+29E0, \laplac), to follow the design of the Laplace operator (U+2206, \increment, Δ); the default design emphasizes the left and upper edges. Also available in the bold math font.
+    %
+    \setmathfont{LucidaBrightMathOT}[% main math
+    	  Scale=MatchUppercase,
+    	  Extension=.otf,
+    	  BoldFont=LucidaBrightMathOT-Demi.otf,
+%    	  BoldFeatures={Color=Chartreuse4},
+    	  RawFeature ={+ss04,+ss08}, %
+    ]
+ 
+%% LucidaMath-OT contains a *serif* typerwriter font. If you prefer a sans serif typerwriter font, you can use the following two settings. 
+% 
+%    \setmathfont{LucidaSansTypewriterOT}[% <== NB: setting a text font where math font should go.
+%    	  Scale=MatchUppercase,
+%          range=tt,
+%    	  Color=NavyBlue,
+%          Extension=.otf,
+%          script-features = {},     
+%          sscript-features = {},     
+%    	  BoldFont=LucidaSansTypewriterOT-Bold.otf,
+%    	  BoldFeatures={Color=Salmon3},
+%    ]
+%    %
+%    \setmathfontface\mathtt{LucidaSansTypewriterOT-Bold}[% bold upright typewriter font in boldmath.
+%    	  version=bold,
+%    	  Scale=MatchUppercase,
+%          Extension=.otf,    
+%    ]
+	%
+    \setmathfont{LucidaBrightMathOT}[%
+    	  range={scr},% to make scr differ from cal
+    	  RawFeature={-ss04},
+    	  Scale=MatchUppercase,
+          Extension=.otf,
+    	  BoldFont=LucidaBrightMathOT-Demi.otf,% could be overridden by bold separate version
+    ]
+    \setmathfont{LucidaBrightMathOT}[% -Demi .. sufficient this way, since bold set above.
+    	  range={bfscr},% need to call \symbfscr manually - bug in unicode-math version & range interaction
+    	  RawFeature={-ss04},
+    	  Scale=MatchUppercase,
+          Extension=.otf,
+    	  BoldFont=LucidaBrightMathOT-Demi.otf,
+    ]
+    %% Fix unicode-math operator font not set up for bold face (default \mathrm). See https://github.com/wspr/unicode-math/issues/468
+    \setoperatorfont\normalfont
+    %
+    % note \mathbfit = \symbfit
+    
+    % The specialized one-off Lucida fonts:
+    \newfontface\LucidaBlackletter{LucidaBlackletterOT}[%
+    	Scale=0.95,% <== NB
+    	Extension=.otf,
+    	]
+    \newfontface\LucidaCalligraphy{LucidaCalligraphyOT}[%
+    	Scale=MatchUppercase,
+    	Extension=.otf,
+    	]
+    \newfontface\LucidaHandwriting{LucidaHandwritingOT}[%
+    	Scale=MatchUppercase,
+    	Extension=.otf,
+     	]
+    % GrandeMono and Console fonts:
+    \newfontface\LucidaGrandeMonoDK{LucidaGrandeMonoDK}[%	
+    	Scale=MatchUppercase,
+    	Extension=.otf,
+        UprightFont=*,
+        ItalicFont=*-Italic,
+        BoldFont=*-Bold,
+        BoldItalicFont=*-BoldItalic,
+    	]
+    \newfontface\LucidaConsole{LucidaConsoleDK}[%
+    	Scale=MatchLowercase,% <=== NB
+    	Extension=.otf,
+        UprightFont=*,
+        ItalicFont=*-Italic,
+        BoldFont=*-Bold,
+        BoldItalicFont=*-BoldItalic,
+    	]
+\fi
