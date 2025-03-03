@@ -53,8 +53,8 @@ Also, our team's report for this Assignment 1 is stored in the repository at [ML
 
 ### **2️⃣ GitHub Repository Structure**
 We are implementing **ALL machine learning models from the syllabus** using:
-- **ONE unified dataset** before the midterm (Chapters 2-6) (which we do in this Assignment - Assignment 1).
-- **ANOTHER dataset** for the second stage after midterm (Chapters 6-10) (which we will do in our Assignment 2).
+- **ONE unified dataset** with one use-case before the midterm (Chapters 2-6) (which we do in this Assignment - Assignment 1).
+- **THAT dataset** for that same use-case for the second stage after midterm (Chapters 6-10) (which we will do in our Assignment 2).
 
 ✅ **Repository Setup**:
 - The **main repository** is created by the team lead.
@@ -134,9 +134,9 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 | **Team Member**  | **Task** |
 |------------------|----------|
 | **Nguyen Quang Phu** | Team leader; Repository management; Participate and Ensure everything stays on schedule and verify all work done by other members. 📂 |
-| **Pham Huynh Bao Dai** | Data preparation; Data preprocessing; feature engineering; Document Data Collecting; Preprocessing and Merging. ⚙️|
-| **Nguyen Thanh Dat** | Consistent model training and evaluating; Model implementation (Decision Tree, Random Forest); Document Model Implementation. 🌳 |
-| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (SVM, Logistic Regression); Document Model Implementation. 📈 |
+| **Pham Huynh Bao Dai** | Data preparation; Data preprocessing; feature engineering; Visualization; Document Data Collecting; Preprocessing and Merging. ⚙️|
+| **Nguyen Thanh Dat** | Consistent model training and evaluating; Model implementation (Decision Tree, Random Forest, XGBoost, Perceptron - ANN, MLP); Document Model Implementation. 🌳 |
+| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (GA, HMM, Logistic Regression, LSTM); Document Model Implementation. 📈 |
 | **Nguyen Thien Loc** | Model evaluation, hyperparameter tuning, Model Comparison, Document Performance analysis. 🔍 |
 
 ---
