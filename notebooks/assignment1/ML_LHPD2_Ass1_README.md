@@ -150,7 +150,16 @@ git clone https://github.com/pdz1804/ML_LHPD2
 cd ML_LHPD2
 ```
 
-### 2️⃣ **Explore the Project**
+### 2️⃣ Setting Up the Environment
+
+If you want to train the model in local (on your computer, in VSC...), to install the necessary dependencies, refer to the environment file (```environment.yml```) provided in the repository. Ensure you have Conda installed to create and activate the required environment.
+
+```bash
+conda env create -f environment.yml
+conda activate ml_env  # Replace ml_env with your environment name
+```
+
+### 3️⃣ **Explore the Project**
 
 - First, you should revisit the Project structure above to see what is the use of those folders and subfolders in this project.
 - In details:
