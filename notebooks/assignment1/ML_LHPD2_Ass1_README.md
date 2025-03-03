@@ -118,10 +118,11 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 - **Train and Evaluate Models** 🚀
   - Decision Tree 
   - Random Forest 
+  - XGBoost
   - Logistic Regression 
   - Naive Bayes
-  - Support Vector Machine (SVM) 
-  - MLPClassifier and simple Perceptron 
+  - GA, HMM, Bayesian Network
+  - MLPClassifier and simple Perceptron (ANN)
   - CNN / LSTM for deep learning 
 
 - **Compare Model Performance** 🏆
@@ -136,7 +137,7 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 | **Nguyen Quang Phu** | Team leader; Repository management; Participate and Ensure everything stays on schedule and verify all work done by other members. 📂 |
 | **Pham Huynh Bao Dai** | Data preparation; Data preprocessing; feature engineering; Visualization; Document Data Collecting; Preprocessing and Merging. ⚙️|
 | **Nguyen Thanh Dat** | Consistent model training and evaluating; Model implementation (Decision Tree, Random Forest, XGBoost, Perceptron - ANN, MLP); Document Model Implementation. 🌳 |
-| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (GA, HMM, Logistic Regression, LSTM); Document Model Implementation. 📈 |
+| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (GA, HMM Bayesian Network, Logistic Regression, LSTM); Document Model Implementation. 📈 |
 | **Nguyen Thien Loc** | Model evaluation, hyperparameter tuning, Model Comparison, Document Performance analysis. 🔍 |
 
 ---
