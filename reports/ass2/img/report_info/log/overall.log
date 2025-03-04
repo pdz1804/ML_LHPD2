@@ -1,0 +1,213 @@
+--------------------------------------------
+- Instantiating a GridSearch object with the inputted model algorithm and hyperparameters
+- Fitting the training data to the GridSearch object
+- Running K-Fold Cross-Validation to evaluate the model's performance
+- Saving the trained model
+- Testing the model on the testing data
+- Saving the model's performance metrics
+--------------------------------------------
+{
+    "method": "count",
+    "model": "logistic_regression",
+    "hyperparameters": {
+        "C": 0.1,
+        "max_iter": 1000,
+        "penalty": "l2"
+    },
+    "performance": {
+        "accuracy": 0.7557,
+        "precision": 0.7403,
+        "recall": 0.8078,
+        "f1": 0.7726,
+        "roc_auc": 0.8297240739847278
+    }
+}
+--------------------------------------------
+{
+    "method": "tfidf",
+    "model": "DecisionTreeClassifier",
+    "hyperparameters": {
+        "criterion": "gini",
+        "max_depth": 40,
+        "max_features": "sqrt",
+        "min_samples_leaf": 4,
+        "min_samples_split": 10
+    },
+    "performance": {
+        "accuracy": 0.6300,
+        "precision": 0.5928,
+        "recall": 0.8940,
+        "f1": 0.7129,
+        "roc_auc": 0.6693930886229694
+    }
+}
+--------------------------------------------
+{
+    "method": "count",
+    "model": "XGBClassifier",
+    "hyperparameters": {
+        "learning_rate": 0.1,
+        "max_depth": 15,
+        "n_estimators": 150
+    },
+    "performance": {
+        "accuracy": 0.7251,
+        "precision": 0.6970,
+        "recall": 0.8247,
+        "f1": 0.7555,
+        "roc_auc": 0.8039885096586928
+    }
+}
+--------------------------------------------
+{
+    "method": "count",
+    "model": "RandomForestClassifier",
+    "hyperparameters": {
+        "max_depth": 10,
+        "max_features": "sqrt",
+        "min_samples_leaf": 1,
+        "min_samples_split": 5,
+        "n_estimators": 100
+    },
+    "performance": {
+        "accuracy": 0.7251,
+        "precision": 0.6970,
+        "recall": 0.8247,
+        "f1": 0.7555,
+        "roc_auc": 0.8039885096586928
+    }
+}
+--------------------------------------------
+{
+    "method": "tfidf",
+    "model": "perceptron",
+    "hyperparameters": {
+        "alpha": 0.0001,
+        "eta0": 0.001,
+        "max_iter": 1000,
+        "penalty": None,
+        "tol": 0.001
+    },
+    "performance": {
+        "accuracy": 0.6927,
+        "precision": 0.7345,
+        "recall": 0.6296,
+        "f1": 0.6780,
+        "roc_auc": 0.7736825739021294
+    }
+}
+--------------------------------------------
+{
+    "method": "count",
+    "model": "logistic_regression",
+    "hyperparameters": {
+        "C": 0.1,
+        "max_iter": 1000,
+        "penalty": "l2"
+    },
+    "performance": {
+        "accuracy": 0.7557,
+        "precision": 0.7403,
+        "recall": 0.8078,
+        "f1": 0.7726,
+        "roc_auc": 0.8297240739847278
+    }
+}
+--------------------------------------------
+{
+    "hyperparameters": {
+        "filters_1": 64,
+        "kernel_size_1": 3,
+        "filters_2": 128,
+        "kernel_size_2": 3,
+        "lstm_units": 64,
+        "dense_units": 128,
+        "dropout": 0.3,
+        "learning_rate": 0.0005
+    },
+    "performance": {
+        "val_accuracy": 0.7103,
+        "precision": 0.6740,
+        "recall": 0.8486,
+        "f1_score": 0.7513,
+        "roc_auc": 0.7891
+    }
+}
+--------------------------------------------
+{
+    "method": "count",
+    "model": "GaussianNB",
+    "hyperparameters": {
+        "priors": [0.3, 0.7],
+        "var_smoothing": 1e-09
+    },
+    "performance": {
+        "accuracy": 0.7134,
+        "precision": 0.7151,
+        "recall": 0.7350,
+        "f1": 0.7250,
+        "roc_auc": 0.7463491512402551
+    }
+}
+--------------------------------------------
+{
+    "method": "count",
+    "model": "GaussianNB + GA",
+    "performance": {
+        "accuracy": 0.6653,
+        "precision": 0.6520,
+        "recall": 0.7481,
+        "f1": 0.6967,
+        "roc_auc": 0.7021
+    }
+}
+--------------------------------------------
+{
+    "model": "HMM",
+    "performance": {
+        "accuracy": 0.5141,
+        "precision": 0.5156,
+        "recall": 0.9552,
+        "f1": 0.6697,
+        "roc_auc": 0.4997
+    }
+}
+--------------------------------------------
+{
+    "method": "Bayesian Network",
+    "performance": {
+        "accuracy": 0.6495,
+        "precision": 0.6364,
+        "recall": 0.7476,
+        "f1": 0.6875,
+        "roc_auc": 0.7143
+    }
+}
+--------------------------------------------
+{
+    "accuracy": {
+        "model": "logistic_regression",
+        "method": "count",
+        "value": 0.7557
+    },
+    "precision": {
+        "model": "logistic_regression",
+        "method": "count",
+        "value": 0.7403
+    },
+    "recall": {
+        "model": "CNN-LSTM",
+        "value": 0.8486
+    },
+    "f1_score": {
+        "model": "logistic_regression",
+        "method": "count",
+        "value": 0.7726
+    },
+    "roc_auc": {
+        "model": "logistic_regression",
+        "method": "count",
+        "value": 0.8297
+    }
+}
+--------------------------------------------

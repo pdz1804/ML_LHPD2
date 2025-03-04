@@ -1,0 +1,189 @@
+2025-02-23 09:43:32,743 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-23 09:43:32,746 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-02-23 09:43:35,851 - INFO - ✅ count - Train shape: (80000, 2000), Test shape: (20000, 2000)
+2025-02-23 09:43:35,853 - INFO - 
+🔍 Processing feature extraction using: tfidf...
+2025-02-23 09:43:39,307 - INFO - ✅ tfidf - Train shape: (80000, 2000), Test shape: (20000, 2000)
+2025-02-23 09:43:39,309 - INFO - 
+🔍 Processing feature extraction using: word2vec...
+2025-02-23 09:43:39,310 - INFO - Creating /root/gensim-data
+2025-02-23 09:45:25,489 - INFO - ❌ Error with word2vec: <urlopen error retrieval incomplete: got only 933542730 out of 1743563840 bytes>. Skipping this method.
+2025-02-23 09:45:25,491 - INFO - 
+🔍 Processing feature extraction using: glove...
+2025-02-23 09:45:46,051 - INFO - glove-wiki-gigaword-100 downloaded
+2025-02-23 09:45:46,053 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz
+2025-02-23 09:46:12,403 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 100) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-100/glove-wiki-gigaword-100.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-02-23T09:46:12.403613', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-23 09:46:15,711 - INFO - ✅ glove - Train shape: (80000, 100), Test shape: (20000, 100)
+2025-02-23 09:46:53,566 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-02-23 09:46:53,567 - INFO - 
+🚀 Training decision_tree models...
+
+2025-02-23 09:46:53,568 - INFO - 🔎 Training with Method: count...
+2025-02-23 09:46:53,569 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-23 10:01:52,289 - INFO - Best hyperparameters: {'criterion': 'gini', 'max_depth': 40, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5}
+2025-02-23 10:01:52,290 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:02:04,503 - INFO - 📊 Average Accuracy: 60%
+2025-02-23 10:02:04,504 - INFO - 📊 Average ROC AUC: 59%
+2025-02-23 10:02:04,505 - INFO - 📊 Average F1 Score: 69%
+2025-02-23 10:02:04,506 - INFO - 📊 Average Precision: 57%
+2025-02-23 10:02:04,507 - INFO - 📊 Average Recall: 85%
+2025-02-23 10:02:06,364 - INFO - 💾 Model saved to best_decision_tree_count.pkl
+2025-02-23 10:02:06,627 - INFO - 📈 Plot saved to best_decision_tree_count.png
+2025-02-23 10:02:06,788 - INFO - 📉 Loss plot saved to best_decision_tree_count_loss.png
+2025-02-23 10:02:06,793 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 10:02:06,794 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-23 10:16:48,660 - INFO - Best hyperparameters: {'criterion': 'gini', 'max_depth': 40, 'max_features': 'sqrt', 'min_samples_leaf': 4, 'min_samples_split': 10}
+2025-02-23 10:16:48,661 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:17:00,322 - INFO - 📊 Average Accuracy: 59%
+2025-02-23 10:17:00,324 - INFO - 📊 Average ROC AUC: 58%
+2025-02-23 10:17:00,325 - INFO - 📊 Average F1 Score: 69%
+2025-02-23 10:17:00,325 - INFO - 📊 Average Precision: 56%
+2025-02-23 10:17:00,326 - INFO - 📊 Average Recall: 89%
+2025-02-23 10:17:02,186 - INFO - 💾 Model saved to best_decision_tree_tfidf.pkl
+2025-02-23 10:17:02,325 - INFO - 📈 Plot saved to best_decision_tree_tfidf.png
+2025-02-23 10:17:02,468 - INFO - 📉 Loss plot saved to best_decision_tree_tfidf_loss.png
+2025-02-23 10:17:02,473 - INFO - 🔎 Training with Method: word2vec...
+2025-02-23 10:17:02,474 - INFO - ❌ Error with word2vec: 'word2vec'
+2025-02-23 10:17:02,474 - INFO - 
+🚀 Training bayesian models...
+
+2025-02-23 10:17:02,476 - INFO - 🔎 Training with Method: count...
+2025-02-23 10:17:02,476 - INFO - 🚀 Training new model: GaussianNB...
+2025-02-23 10:22:08,752 - INFO - Best hyperparameters: {'priors': [0.3, 0.7], 'var_smoothing': 1e-09}
+2025-02-23 10:22:08,753 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:22:34,741 - INFO - 📊 Average Accuracy: 69%
+2025-02-23 10:22:34,741 - INFO - 📊 Average ROC AUC: 69%
+2025-02-23 10:22:34,743 - INFO - 📊 Average F1 Score: 71%
+2025-02-23 10:22:34,745 - INFO - 📊 Average Precision: 69%
+2025-02-23 10:22:34,746 - INFO - 📊 Average Recall: 72%
+2025-02-23 10:22:37,266 - INFO - 💾 Model saved to best_bayesian_count.pkl
+2025-02-23 10:22:37,415 - INFO - 📈 Plot saved to best_bayesian_count.png
+2025-02-23 10:22:37,549 - INFO - 📉 Loss plot saved to best_bayesian_count_loss.png
+2025-02-23 10:22:37,554 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 10:22:37,554 - INFO - 🚀 Training new model: GaussianNB...
+2025-02-23 10:26:58,021 - INFO - Best hyperparameters: {'priors': [0.05, 0.95], 'var_smoothing': 1e-07}
+2025-02-23 10:26:58,022 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:27:21,358 - INFO - 📊 Average Accuracy: 69%
+2025-02-23 10:27:21,358 - INFO - 📊 Average ROC AUC: 69%
+2025-02-23 10:27:21,359 - INFO - 📊 Average F1 Score: 70%
+2025-02-23 10:27:21,360 - INFO - 📊 Average Precision: 69%
+2025-02-23 10:27:21,361 - INFO - 📊 Average Recall: 71%
+2025-02-23 10:27:23,407 - INFO - 💾 Model saved to best_bayesian_tfidf.pkl
+2025-02-23 10:27:23,561 - INFO - 📈 Plot saved to best_bayesian_tfidf.png
+2025-02-23 10:27:23,702 - INFO - 📉 Loss plot saved to best_bayesian_tfidf_loss.png
+2025-02-23 10:27:23,707 - INFO - 🔎 Training with Method: word2vec...
+2025-02-23 10:27:23,708 - INFO - ❌ Error with word2vec: 'word2vec'
+2025-02-23 10:27:23,708 - INFO - 
+🚀 Training logistic_regression models...
+
+2025-02-23 19:58:58,766 - INFO - 🔎 Training with Method: count...
+2025-02-23 19:58:58,767 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-23 20:18:33,937 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-23 20:18:33,938 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 20:19:10,700 - INFO - 📊 Average Accuracy: 74%
+2025-02-23 20:19:10,701 - INFO - 📊 Average ROC AUC: 74%
+2025-02-23 20:19:10,702 - INFO - 📊 Average F1 Score: 76%
+2025-02-23 20:19:10,704 - INFO - 📊 Average Precision: 73%
+2025-02-23 20:19:10,704 - INFO - 📊 Average Recall: 79%
+2025-02-23 20:19:18,655 - INFO - 💾 Model saved to best_logistic_regression_count.pkl
+2025-02-23 20:19:18,861 - INFO - 📈 Plot saved to best_logistic_regression_count.png
+2025-02-23 20:19:19,049 - INFO - 📉 Loss plot saved to best_logistic_regression_count_loss.png
+2025-02-23 20:19:19,055 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 20:19:19,057 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-23 20:39:15,185 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-23 20:39:15,186 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 20:39:59,355 - INFO - 📊 Average Accuracy: 74%
+2025-02-23 20:39:59,356 - INFO - 📊 Average ROC AUC: 73%
+2025-02-23 20:39:59,357 - INFO - 📊 Average F1 Score: 75%
+2025-02-23 20:39:59,358 - INFO - 📊 Average Precision: 73%
+2025-02-23 20:39:59,360 - INFO - 📊 Average Recall: 78%
+2025-02-23 20:40:07,918 - INFO - 💾 Model saved to best_logistic_regression_tfidf.pkl
+2025-02-23 20:40:08,100 - INFO - 📈 Plot saved to best_logistic_regression_tfidf.png
+2025-02-23 20:40:08,244 - INFO - 📉 Loss plot saved to best_logistic_regression_tfidf_loss.png
+2025-02-23 20:40:08,249 - INFO - 🔎 Training with Method: word2vec...
+2025-02-23 20:40:08,250 - INFO - ❌ Error with word2vec: 'word2vec'
+2025-02-23 20:40:20,844 - INFO - 🔎 Predicting with Model: decision_tree, Method: count...
+2025-02-23 20:40:21,109 - INFO - Model: decision_tree
+2025-02-23 20:40:21,110 - INFO - Method: count
+2025-02-23 20:40:21,111 - INFO - --------------------------------------------------
+2025-02-23 20:40:21,111 - INFO - Accuracy: 0.6062
+2025-02-23 20:40:21,112 - INFO - Precision: 0.5745
+2025-02-23 20:40:21,114 - INFO - Recall: 0.9008
+2025-02-23 20:40:21,114 - INFO - F1 Score: 0.7016
+2025-02-23 20:40:21,115 - INFO - ROC AUC: 0.6621702766315567
+2025-02-23 20:40:21,116 - INFO - 🔎 Predicting with Model: decision_tree, Method: tfidf...
+2025-02-23 20:40:21,359 - INFO - Model: decision_tree
+2025-02-23 20:40:21,360 - INFO - Method: tfidf
+2025-02-23 20:40:21,361 - INFO - --------------------------------------------------
+2025-02-23 20:40:21,361 - INFO - Accuracy: 0.6300
+2025-02-23 20:40:21,362 - INFO - Precision: 0.5928
+2025-02-23 20:40:21,363 - INFO - Recall: 0.8940
+2025-02-23 20:40:21,365 - INFO - F1 Score: 0.7129
+2025-02-23 20:40:21,365 - INFO - ROC AUC: 0.6693930886229694
+2025-02-23 20:40:21,367 - INFO - 🔎 Predicting with Model: decision_tree, Method: word2vec...
+2025-02-23 20:40:21,368 - INFO - ❌ Error while predicting for decision_tree with word2vec: [Errno 2] No such file or directory: '/kaggle/working/best_decision_tree_word2vec.pkl'
+2025-02-23 20:40:21,368 - INFO - 🔎 Predicting with Model: decision_tree, Method: glove...
+2025-02-23 20:40:21,370 - INFO - ❌ Error while predicting for decision_tree with glove: [Errno 2] No such file or directory: '/kaggle/working/best_decision_tree_glove.pkl'
+2025-02-23 20:40:21,370 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 20:40:21,371 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 20:40:21,372 - INFO - 🔎 Predicting with Model: bayesian, Method: count...
+2025-02-23 20:40:22,534 - INFO - Model: bayesian
+2025-02-23 20:40:22,535 - INFO - Method: count
+2025-02-23 20:40:22,536 - INFO - --------------------------------------------------
+2025-02-23 20:40:22,537 - INFO - Accuracy: 0.7134
+2025-02-23 20:40:22,537 - INFO - Precision: 0.7151
+2025-02-23 20:40:22,538 - INFO - Recall: 0.7350
+2025-02-23 20:40:22,539 - INFO - F1 Score: 0.7250
+2025-02-23 20:40:22,540 - INFO - ROC AUC: 0.7463491512402551
+2025-02-23 20:40:22,541 - INFO - 🔎 Predicting with Model: bayesian, Method: tfidf...
+2025-02-23 20:40:23,617 - INFO - Model: bayesian
+2025-02-23 20:40:23,617 - INFO - Method: tfidf
+2025-02-23 20:40:23,618 - INFO - --------------------------------------------------
+2025-02-23 20:40:23,620 - INFO - Accuracy: 0.7013
+2025-02-23 20:40:23,620 - INFO - Precision: 0.7038
+2025-02-23 20:40:23,621 - INFO - Recall: 0.7228
+2025-02-23 20:40:23,622 - INFO - F1 Score: 0.7132
+2025-02-23 20:40:23,622 - INFO - ROC AUC: 0.7357288573949905
+2025-02-23 20:40:23,623 - INFO - 🔎 Predicting with Model: bayesian, Method: word2vec...
+2025-02-23 20:40:23,624 - INFO - ❌ Error while predicting for bayesian with word2vec: [Errno 2] No such file or directory: '/kaggle/working/best_bayesian_word2vec.pkl'
+2025-02-23 20:40:23,625 - INFO - 🔎 Predicting with Model: bayesian, Method: glove...
+2025-02-23 20:40:23,627 - INFO - ❌ Error while predicting for bayesian with glove: [Errno 2] No such file or directory: '/kaggle/working/best_bayesian_glove.pkl'
+2025-02-23 20:40:23,628 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 20:40:23,629 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 20:40:23,633 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 20:40:23,634 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 20:40:23,634 - INFO - 🔎 Predicting with Model: logistic_regression, Method: count...
+2025-02-23 20:40:23,940 - INFO - Model: logistic_regression
+2025-02-23 20:40:23,941 - INFO - Method: count
+2025-02-23 20:40:23,942 - INFO - --------------------------------------------------
+2025-02-23 20:40:23,942 - INFO - Accuracy: 0.7557
+2025-02-23 20:40:23,943 - INFO - Precision: 0.7403
+2025-02-23 20:40:23,944 - INFO - Recall: 0.8078
+2025-02-23 20:40:23,944 - INFO - F1 Score: 0.7726
+2025-02-23 20:40:23,945 - INFO - ROC AUC: 0.8297240739847278
+2025-02-23 20:40:23,946 - INFO - 🔎 Predicting with Model: logistic_regression, Method: tfidf...
+2025-02-23 20:40:24,115 - INFO - Model: logistic_regression
+2025-02-23 20:40:24,116 - INFO - Method: tfidf
+2025-02-23 20:40:24,116 - INFO - --------------------------------------------------
+2025-02-23 20:40:24,117 - INFO - Accuracy: 0.7527
+2025-02-23 20:40:24,119 - INFO - Precision: 0.7413
+2025-02-23 20:40:24,120 - INFO - Recall: 0.7968
+2025-02-23 20:40:24,121 - INFO - F1 Score: 0.7681
+2025-02-23 20:40:24,121 - INFO - ROC AUC: 0.8299441128183245
+2025-02-23 20:40:24,122 - INFO - 🔎 Predicting with Model: logistic_regression, Method: word2vec...
+2025-02-23 20:40:24,123 - INFO - ❌ Error while predicting for logistic_regression with word2vec: [Errno 2] No such file or directory: '/kaggle/working/best_logistic_regression_word2vec.pkl'
+2025-02-23 20:40:24,124 - INFO - 🔎 Predicting with Model: logistic_regression, Method: glove...
+2025-02-23 20:40:24,124 - INFO - ❌ Error while predicting for logistic_regression with glove: [Errno 2] No such file or directory: '/kaggle/working/best_logistic_regression_glove.pkl'
+2025-02-23 20:40:24,125 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-02-23 20:40:24,126 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

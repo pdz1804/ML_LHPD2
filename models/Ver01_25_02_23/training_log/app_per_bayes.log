@@ -1,0 +1,89 @@
+2025-02-20 08:23:39,017 - INFO - Training set size: 400000
+2025-02-20 08:23:39,019 - INFO - Test set size: 100000
+2025-02-20 08:23:39,019 - INFO - Training labels size: 400000
+2025-02-20 08:23:39,021 - INFO - Test labels size: 100000
+2025-02-20 08:23:39,076 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-20 08:25:43,326 - INFO - Creating /root/gensim-data
+2025-02-20 08:29:00,207 - INFO - word2vec-google-news-300 downloaded
+2025-02-20 08:29:00,209 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-02-20 08:29:47,268 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-02-20T08:29:47.266469', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-02-20 08:31:41,729 - INFO - 
+🔎 Running feature extraction...
+
+2025-02-20 08:31:41,734 - INFO - Model: perceptron
+2025-02-20 08:31:41,735 - INFO - 🔍 Method: count...
+2025-02-20 08:31:41,735 - INFO - 🚀 Training new model: Perceptron...
+2025-02-20 08:39:23,649 - INFO - Best hyperparameters: {'alpha': 0.001, 'eta0': 0.1, 'max_iter': 1000, 'penalty': 'l2', 'tol': 0.001}
+2025-02-20 08:39:27,370 - INFO - 📊 Average Accuracy: 56%
+2025-02-20 08:39:27,372 - INFO - 📊 Average ROC AUC: 56%
+2025-02-20 08:39:27,373 - INFO - 📊 Average F1 Score: 55%
+2025-02-20 08:39:27,374 - INFO - 📊 Average Precision: 58%
+2025-02-20 08:39:27,375 - INFO - 📊 Average Recall: 56%
+2025-02-20 08:39:27,377 - INFO - 💾 Model saved to best_perceptron_count.pkl
+2025-02-20 08:39:27,622 - INFO - 📈 Plot saved to best_perceptron_count.png
+2025-02-20 08:39:28,136 - INFO - 📉 Loss plot saved to best_perceptron_count_loss.png
+2025-02-20 08:39:28,139 - INFO - Model: perceptron
+2025-02-20 08:39:28,140 - INFO - 🔍 Method: tfidf...
+2025-02-20 08:39:28,141 - INFO - 🚀 Training new model: Perceptron...
+2025-02-20 08:46:27,062 - INFO - Best hyperparameters: {'alpha': 0.0001, 'eta0': 0.001, 'max_iter': 1000, 'penalty': None, 'tol': 0.001}
+2025-02-20 08:46:30,557 - INFO - 📊 Average Accuracy: 60%
+2025-02-20 08:46:30,557 - INFO - 📊 Average ROC AUC: 60%
+2025-02-20 08:46:30,559 - INFO - 📊 Average F1 Score: 62%
+2025-02-20 08:46:30,560 - INFO - 📊 Average Precision: 62%
+2025-02-20 08:46:30,561 - INFO - 📊 Average Recall: 66%
+2025-02-20 08:46:30,563 - INFO - 💾 Model saved to best_perceptron_tfidf.pkl
+2025-02-20 08:46:30,719 - INFO - 📈 Plot saved to best_perceptron_tfidf.png
+2025-02-20 08:46:30,871 - INFO - 📉 Loss plot saved to best_perceptron_tfidf_loss.png
+2025-02-20 08:46:30,874 - INFO - Model: perceptron
+2025-02-20 08:46:30,875 - INFO - 🔍 Method: word2vec...
+2025-02-20 08:46:30,876 - INFO - 🚀 Training new model: Perceptron...
+2025-02-20 08:53:26,279 - INFO - Best hyperparameters: {'alpha': 0.0001, 'eta0': 0.1, 'max_iter': 1000, 'penalty': 'l1', 'tol': 0.0001}
+2025-02-20 08:53:32,992 - INFO - 📊 Average Accuracy: 67%
+2025-02-20 08:53:32,993 - INFO - 📊 Average ROC AUC: 67%
+2025-02-20 08:53:32,994 - INFO - 📊 Average F1 Score: 68%
+2025-02-20 08:53:32,995 - INFO - 📊 Average Precision: 68%
+2025-02-20 08:53:32,996 - INFO - 📊 Average Recall: 67%
+2025-02-20 08:53:32,998 - INFO - 💾 Model saved to best_perceptron_word2vec.pkl
+2025-02-20 08:53:33,141 - INFO - 📈 Plot saved to best_perceptron_word2vec.png
+2025-02-20 08:53:33,295 - INFO - 📉 Loss plot saved to best_perceptron_word2vec_loss.png
+2025-02-20 08:53:33,301 - INFO - Model: bayesian
+2025-02-20 08:53:33,302 - INFO - 🔍 Method: count...
+2025-02-20 08:53:33,303 - INFO - 🚀 Training new model: GaussianNB...
+2025-02-20 08:54:04,393 - INFO - Best hyperparameters: {'priors': [0.5, 0.5], 'var_smoothing': 1e-09}
+2025-02-20 08:54:07,187 - INFO - 📊 Average Accuracy: 59%
+2025-02-20 08:54:07,188 - INFO - 📊 Average ROC AUC: 59%
+2025-02-20 08:54:07,188 - INFO - 📊 Average F1 Score: 63%
+2025-02-20 08:54:07,189 - INFO - 📊 Average Precision: 58%
+2025-02-20 08:54:07,190 - INFO - 📊 Average Recall: 67%
+2025-02-20 08:54:07,193 - INFO - 💾 Model saved to best_bayesian_count.pkl
+2025-02-20 08:54:07,348 - INFO - 📈 Plot saved to best_bayesian_count.png
+2025-02-20 08:54:07,502 - INFO - 📉 Loss plot saved to best_bayesian_count_loss.png
+2025-02-20 08:54:07,504 - INFO - Model: bayesian
+2025-02-20 08:54:07,505 - INFO - 🔍 Method: tfidf...
+2025-02-20 08:54:07,505 - INFO - 🚀 Training new model: GaussianNB...
+2025-02-20 08:54:37,913 - INFO - Best hyperparameters: {'priors': [0.5, 0.5], 'var_smoothing': 1e-09}
+2025-02-20 08:54:41,179 - INFO - 📊 Average Accuracy: 61%
+2025-02-20 08:54:41,182 - INFO - 📊 Average ROC AUC: 61%
+2025-02-20 08:54:41,182 - INFO - 📊 Average F1 Score: 65%
+2025-02-20 08:54:41,183 - INFO - 📊 Average Precision: 60%
+2025-02-20 08:54:41,184 - INFO - 📊 Average Recall: 72%
+2025-02-20 08:54:41,186 - INFO - 💾 Model saved to best_bayesian_tfidf.pkl
+2025-02-20 08:54:41,336 - INFO - 📈 Plot saved to best_bayesian_tfidf.png
+2025-02-20 08:54:41,487 - INFO - 📉 Loss plot saved to best_bayesian_tfidf_loss.png
+2025-02-20 08:54:41,490 - INFO - Model: bayesian
+2025-02-20 08:54:41,491 - INFO - 🔍 Method: word2vec...
+2025-02-20 08:54:41,492 - INFO - 🚀 Training new model: GaussianNB...
+2025-02-20 08:55:12,959 - INFO - Best hyperparameters: {'priors': [0.3, 0.7], 'var_smoothing': 1e-09}
+2025-02-20 08:55:15,786 - INFO - 📊 Average Accuracy: 63%
+2025-02-20 08:55:15,787 - INFO - 📊 Average ROC AUC: 63%
+2025-02-20 08:55:15,788 - INFO - 📊 Average F1 Score: 64%
+2025-02-20 08:55:15,788 - INFO - 📊 Average Precision: 64%
+2025-02-20 08:55:15,789 - INFO - 📊 Average Recall: 64%
+2025-02-20 08:55:15,793 - INFO - 💾 Model saved to best_bayesian_word2vec.pkl
+2025-02-20 08:55:15,935 - INFO - 📈 Plot saved to best_bayesian_word2vec.png
+2025-02-20 08:55:16,080 - INFO - 📉 Loss plot saved to best_bayesian_word2vec_loss.png
+2025-02-20 08:55:16,084 - INFO - Model: svm
+2025-02-20 08:55:16,087 - INFO - 🔍 Method: count...
+2025-02-20 08:55:16,088 - INFO - 🚀 Training new model: SVC...

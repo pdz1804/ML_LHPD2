@@ -1,0 +1,119 @@
+\subsection{Model: Hidden Markov Model}
+
+\subsubsection{Introduction}
+
+This part evaluates the performance of the \textbf{Hidden Markov Model (HMM)} trained with various embedding methods. The HMM model, implemented using the \texttt{GaussianHMM} class from the \texttt{hmmlearn} library, was used to model sequential dependencies in the data. Unlike traditional classification approaches, HMM is particularly suited for handling sequential patterns and temporal dependencies, making it an effective choice for structured data. 
+
+The primary goal was to optimize the model's ability to classify sequences accurately while ensuring strong generalization across different embedding techniques. The Gaussian emission probabilities in the HMM allow it to handle continuous-valued features, making it flexible in modeling text-based embeddings such as Count Vectorizer, TF-IDF, Word2Vec, and GloVe. Various hyperparameter configurations, including the number of hidden states and covariance types, were explored to enhance performance.
+
+
+\subsubsection{Training Configuration}
+
+The training process for the Hidden Markov Model (HMM) differs from traditional machine learning models used in previous experiments (such as Logistic Regression or Naïve Bayes). Unlike those models, which can directly process word embeddings like Word2Vec or GloVe, HMM requires discrete integer sequences as input. This constraint arises because the GaussianHMM model from \texttt{hmmlearn.hmm} expects integer-based feature representations rather than continuous-valued embeddings. 
+
+Thus, only Count-based methods, such as Count Vectorizer, are suitable for training HMM. These methods convert text into integer-based token sequences, making them compatible with the model. Below, we outline the steps involved in training and evaluating the HMM:
+
+\begin{itemize}
+    \item \textbf{Feature Extraction:} 
+        \begin{itemize}
+            \item Construct a vocabulary of the most frequent words from the dataset (e.g., the top 5000 words).
+            \item Convert text into sequences of integers, representing the index of words in the vocabulary.
+        \end{itemize}
+    \item \textbf{Data Preprocessing:}
+        \begin{itemize}
+            \item Since HMM requires sequences of equal length, each sequence is padded to a fixed size (e.g., 50 words).
+            \item The dataset is split into training and testing sets.
+        \end{itemize}
+    \item \textbf{Model Training:}
+        \begin{itemize}
+            \item A \texttt{GaussianHMM} model is initialized with various hyperparameters.
+            \item The model is trained on the integer-encoded text sequences.
+        \end{itemize}
+    \item \textbf{Hyperparameter Configuration:}
+        \begin{itemize}
+            \item \texttt{n\_components}: The number of hidden states. It is tested with values \{2, 3, 4\}, representing different levels of complexity in the hidden state transitions.
+            \item \texttt{covariance\_type}: The type of covariance matrix used in Gaussian emissions, tested with \{"diag", "full", "tied"\}.
+            \item \texttt{n\_iter}: The number of iterations for the Expectation-Maximization (EM) algorithm, set to \{100, 200\} for convergence tuning.
+            \item \texttt{init\_params}: Determines which parameters are initialized before training. Tested values include:
+                \begin{itemize}
+                    \item "c" - Initializes only the means.
+                    \item "s" - Initializes only the covariances.
+                    \item "cs" - Initializes both means and covariances.
+                \end{itemize}
+            \item \texttt{params}: Specifies which parameters should be updated during training, with tested values:
+                \begin{itemize}
+                    \item "c" - Updates only the means.
+                    \item "t" - Updates only the transition matrix.
+                    \item "ct" - Updates both means and transition matrix.
+                \end{itemize}
+        \end{itemize}
+    \item \textbf{Evaluation:}
+        \begin{itemize}
+            \item Predictions are made on the test set using the \texttt{predict} function.
+            \item Performance metrics such as Accuracy, Precision, Recall, F1 Score, and ROC AUC are computed.
+        \end{itemize}
+\end{itemize}
+
+The \texttt{train\_hmm} function implements this process, ensuring the model is saved for later use. Given the sequential nature of HMMs, this model could be particularly effective in capturing word-order dependencies in text classification tasks.
+
+\subsubsection{Training and Evaluation Results}
+
+The Hidden Markov Model (HMM) was trained using the Count Vectorizer method to ensure compatibility with its integer-based input requirement. Unlike other machine learning models in this study, HMM requires count-based features since GaussianHMM operates on discrete numerical sequences rather than dense embeddings. The training process involved padding sequences to a fixed length (50 words) and optimizing model parameters using the Expectation-Maximization (EM) algorithm.
+
+\textbf{Testing Performance Metrics:}
+
+\begin{table}[H]
+    \centering
+    \caption{Testing Performance Metrics for Hidden Markov Model}
+    \label{tab:hmm-testing-metrics}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
+        \hline
+        Count Vectorizer & 0.5141 & 0.4997 & 0.6697 & 0.5156 & 0.9552 \\ 
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Best Model Selection Criteria:}
+
+\begin{itemize}
+    \item Since only one variation of HMM was tested, there is no direct comparison between different hyperparameter configurations.
+    \item Model selection priority follows: Accuracy > F1 Score > ROC AUC.
+\end{itemize}
+
+\begin{verbatim}
+{
+    "model": "HMM",
+    "performance": {
+        "accuracy": 0.5141,
+        "precision": 0.5156,
+        "recall": 0.9552,
+        "f1": 0.6697,
+        "roc_auc": 0.4997
+    }
+}
+\end{verbatim}
+
+\textbf{Conclusion:} The Hidden Markov Model demonstrated strong recall (\textbf{95.52\%}), meaning it effectively captured positive instances, but suffered from low precision (\textbf{51.56\%}) and an overall weak discriminative ability (\textbf{ROC AUC = 49.97\%}). These results suggest that while HMM can detect many true positives, its high false-positive rate limits its practical application. Future improvements may involve hyperparameter tuning, different sequence lengths, or alternative sequence models such as RNNs to improve overall classification performance.
+
+\subsubsection{Performance Analysis}
+
+\begin{itemize}
+    \item \textbf{Accuracy Analysis}: The HMM model achieved an accuracy of \textbf{51.41\%}, indicating that its classification performance is only slightly better than random guessing. This suggests potential limitations in the model's ability to generalize effectively.
+    
+    \item \textbf{Recall vs. Precision}: The model exhibited an extremely high recall (\textbf{95.52\%}), meaning it successfully identified most positive instances. However, this came at the cost of low precision (\textbf{51.56\%}), indicating a high false-positive rate. The imbalance between recall and precision suggests that the model favors sensitivity over specificity.
+    
+    \item \textbf{F1 Score}: The F1 Score of \textbf{66.97\%} reflects the trade-off between precision and recall. While the model excels in recall, its low precision lowers the overall F1 Score, making it less reliable in practical applications where false positives are costly.
+    
+    \item \textbf{ROC AUC}: With a ROC AUC of \textbf{49.97\%}, the model struggles to distinguish between positive and negative classes. This score indicates that the model's decision boundary is not well-formed, leading to weak discriminative ability.
+    
+    \item \textbf{Effect of Count-Based Features}: Unlike other machine learning models that leverage dense embeddings (e.g., Word2Vec, GloVe), HMM can only operate on count-based integer inputs. This constraint limits its ability to capture contextual relationships effectively, potentially contributing to its suboptimal performance.
+\end{itemize}
+
+\subsubsection{Conclusion}
+
+The Hidden Markov Model (HMM) trained with Count Vectorizer features demonstrated high sensitivity but lacked the precision required for balanced classification. While its recall of \textbf{95.52\%} suggests that it rarely misses positive instances, the low ROC AUC score (\textbf{49.97\%}) indicates poor overall discrimination between classes. 
+
+The results suggest that HMM may not be the best-suited model for this classification task, particularly due to its reliance on integer-based inputs and its inability to leverage richer feature representations like dense embeddings. Future improvements could explore hybrid models, additional preprocessing techniques, or alternative sequence models such as Recurrent Neural Networks (RNNs) to enhance performance.
+

@@ -1,0 +1,241 @@
+\subsection{Model: Genatic Algorithm and GaussianNB}
+
+\subsubsection{Introduction}
+This report evaluates the performance of the Genetic Algorithm and the GaussianNB model trained with various embedding methods. The GaussianNB model, implemented using the \texttt{GaussianNB} class from \texttt{scikit-learn}, was tested with different penalty terms along with three additional functions related to the Genetic Algorithm. The main goal was to maximize classification accuracy while ensuring strong generalization across different embedding techniques.
+
+\subsubsection{Training Configuration}
+
+\textbf{Why Use Genetic Algorithm (GA) with GaussianNB?}
+
+Feature selection plays a crucial role in improving the performance of machine learning models. Instead of using traditional methods such as \textit{Recursive Feature Elimination (RFE)} or \textit{Lasso}, we apply \textbf{Genetic Algorithm (GA)}, an evolutionary approach that efficiently explores the feature space.
+
+${}$\\
+\textbf{Reasons for choosing GaussianNB:}
+
+\begin{itemize}
+    \item GaussianNB (Naïve Bayes with Gaussian distribution assumption) is simple, fast to train, and does not require extensive hyperparameter tuning.
+    \item GaussianNB performs well when features are assumed to be independent, enabling better generalization without overfitting.
+    \item When combined with GA, GaussianNB provides a fast and efficient way to evaluate different feature subsets, making it a suitable choice over more complex models such as SVM or Random Forest.
+\end{itemize}
+
+Thus, GA helps in selecting the optimal feature subset, while GaussianNB ensures efficient and reliable model training.
+
+${}$\\
+\textbf{Key Steps in Genetic Algorithm}
+
+${}$\\
+The Genetic Algorithm is inspired by biological evolution and consists of the following steps:
+
+\begin{enumerate}
+    \item \textbf{Initialize Population}
+    \item \textbf{Evaluate Fitness}
+    \item \textbf{Selection of Best Individuals}
+    \item \textbf{Crossover (Recombination)}
+    \item \textbf{Mutation for Diversity}
+    \item \textbf{Repeat Until Convergence or Maximum Generations Reached}
+\end{enumerate}
+
+\textbf{Implementation of GA Functions}
+${}$\\
+\textbf{1. Population Initialization: \texttt{create\_population}}
+
+This function generates an initial population of binary feature selectors, where each individual represents a feature subset.
+
+\begin{lstlisting}[language=Python]
+def create_population(num_features, population_size):
+    return np.random.randint(2, size=(population_size, num_features))
+\end{lstlisting}
+
+Each individual is a binary vector of length equal to the number of features, where 1 means the feature is selected, and 0 means it is not.
+
+${}$\\
+\textbf{2. Fitness Evaluation: \texttt{fitness\_function}}
+
+Each individual (feature subset) is evaluated by training a \texttt{GaussianNB} model and computing cross-validation accuracy.
+
+\begin{lstlisting}[language=Python]
+def fitness_function(features, X_train, y_train):
+    selected_features = [i for i, f in enumerate(features) if f == 1]
+    if not selected_features:  
+        return 0 
+    
+    X_train_selected = X_train[:, selected_features]
+    nb_model = GaussianNB(var_smoothing=1e-8)
+    
+    try:
+        scores = cross_val_score(nb_model, X_train_selected, y_train, cv=5)
+        return np.mean(scores)
+    except ValueError:
+        return 0
+\end{lstlisting}
+
+This ensures that only meaningful feature sets contribute to the evolutionary process.
+
+${}$\\
+\textbf{3. Selection of Best Individuals: \texttt{selection}}
+
+Based on fitness scores, individuals with higher probabilities are selected to generate the next generation.
+
+\begin{lstlisting}[language=Python]
+def selection(population, fitness_scores):
+    probabilities = fitness_scores / np.sum(fitness_scores)
+    selected_indices = np.random.choice(len(population), size=len(population), p=probabilities)
+    return [population[idx] for idx in selected_indices]
+\end{lstlisting}
+
+${}$\\
+\textbf{4. Crossover (Recombination): \texttt{crossover}}
+
+A single-point crossover is used to create new individuals by combining parts of two parents.
+
+\begin{lstlisting}[language=Python]
+def crossover(parent1, parent2):
+    point = np.random.randint(1, len(parent1) - 1)
+    offspring1 = np.concatenate((parent1[:point], parent2[point:]))
+    offspring2 = np.concatenate((parent2[:point], parent1[point:]))
+    return offspring1, offspring2
+\end{lstlisting}
+
+${}$\\
+\textbf{5. Mutation for Diversity: \texttt{mutate}}
+
+A small probability of mutation is applied to introduce variations and avoid premature convergence.
+
+\begin{lstlisting}[language=Python]
+def mutate(individual, mutation_rate=0.1):
+    for i in range(len(individual)):
+        if np.random.rand() < mutation_rate:
+            individual[i] = 1 - individual[i]
+    return individual
+\end{lstlisting}
+
+${}$\\
+\textbf{6. Training with GA: \texttt{genetic\_algorithm}}
+
+This function executes the evolutionary process.
+
+\begin{lstlisting}[language=Python]
+def genetic_algorithm(X_train, y_train, population_size=20, num_generations=100):
+    num_features = X_train.shape[1]
+    population = create_population(num_features, population_size)
+
+    for generation in range(num_generations):
+        fitness_scores = np.array([fitness_function(ind, X_train, y_train) for ind in population])
+        population = selection(population, fitness_scores)
+
+        next_generation = []
+        for j in range(0, population_size, 2):
+            offspring1, offspring2 = crossover(population[j], population[j + 1])
+            next_generation.append(mutate(offspring1))
+            next_generation.append(mutate(offspring2))
+
+        population = next_generation
+
+    best_individual = population[np.argmax(fitness_scores)]
+    return best_individual
+\end{lstlisting}
+
+${}$\\
+\textbf{Training the Final Model with Selected Features}
+
+Once GA selects the optimal feature subset, we train a \texttt{GaussianNB} model:
+
+\begin{lstlisting}[language=Python]
+best_features = genetic_algorithm(X_train, y_train)
+X_train_selected = X_train[:, best_features]
+nb_model = GaussianNB()
+nb_model.fit(X_train_selected, y_train)
+\end{lstlisting}
+
+${}$\\
+\textbf{Model Evaluation}  
+
+The model is evaluated using the following metrics: \textbf{Accuracy}, \textbf{Precision}, \textbf{Recall}, \textbf{F1 Score}, and \textbf{ROC AUC}.
+
+By using GA, we ensure that only the most relevant features are selected, leading to a simpler yet more efficient model.
+
+\subsubsection{Training and Evaluation Results}
+
+The GA-based model was trained and evaluated using different feature extraction methods: Count Vectorizer, TF-IDF, Word2Vec, and GloVe. Genetic Algorithm (GA) was used for feature selection, reducing the dimensionality while maintaining competitive performance. The best model was selected based on Accuracy, followed by F1-score and ROC AUC.
+
+${}$\\
+\textbf{Training Performance Metrics:}
+
+\begin{table}[H]
+    \centering
+    \caption{Training Performance Metrics for GA-based Model}
+    \label{tab:ga-training-metrics}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
+        \hline
+        Count Vectorizer & 0.6520 & 0.6860 & 0.6762 & 0.6492 & 0.7056 \\ 
+        \hline
+        TF-IDF & 0.6209 & 0.6693 & 0.5896 & 0.6663 & 0.5287 \\ 
+        \hline
+        Word2Vec & 0.6031 & 0.6693 & 0.5440 & 0.6662 & 0.4596 \\ 
+        \hline
+        GloVe & 0.6176 & 0.6692 & 0.5940 & 0.6553 & 0.5431 \\ 
+        \hline
+    \end{tabular}
+\end{table}
+
+${}$\\
+\textbf{Testing Performance Metrics:}
+
+\begin{table}[H]
+    \centering
+    \caption{Testing Performance Metrics for GA-based Model}
+    \label{tab:ga-testing-metrics}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
+        \hline
+        Count Vectorizer (Best Run) & 0.6520 & 0.6860 & 0.6762 & 0.6492 & 0.7056 \\ 
+        \hline
+    \end{tabular}
+\end{table}
+
+${}$\\
+\textbf{Best Model Selection Criteria:}
+
+\begin{itemize}
+    \item The best model is chosen based on testing rather than training performance.
+    \item The selection priority follows: Accuracy > F1 Score > ROC AUC.
+    \item Based on this criterion, the best model is:
+\end{itemize}
+
+\begin{verbatim}
+{
+    "method": "count",
+    "model": "GA-based Model",
+    "performance": {
+        "accuracy": 0.6520,
+        "precision": 0.6492,
+        "recall": 0.7056,
+        "f1": 0.6762,
+        "roc_auc": 0.6860
+    }
+}
+\end{verbatim}
+
+\textbf{Conclusion:} The Genetic Algorithm successfully selected a reduced feature set, decreasing dimensionality from 2000 features to approximately 1022 in the Count Vectorizer method while maintaining an accuracy of \textbf{65.20\%}. This approach offers an effective balance between feature reduction and classification performance, making it a computationally efficient alternative to traditional models.
+
+\subsubsection{Performance Analysis}
+
+\begin{itemize}
+    \item \textbf{Accuracy Analysis}: The best-performing GA-optimized model using Count Vectorizer achieved an accuracy of 66.53\%. While lower than Logistic Regression, this result highlights the effectiveness of Genetic Algorithm in feature selection.
+    \item \textbf{Feature Selection Efficiency}: The model successfully reduced the feature space from 2000 to around 1000 features, improving computational efficiency while maintaining reasonable classification performance.
+    \item \textbf{ROC AUC}: The model demonstrated moderate discriminative power with an ROC AUC of 70.21\%, indicating its capability to distinguish between classes.
+    \item \textbf{Precision and Recall}: The model exhibited a recall of 74.81\%, showing strong sensitivity in identifying positive cases, though precision (65.20\%) was slightly lower, suggesting a trade-off with false positives.
+    \item \textbf{Impact of GA on Model Performance}: The use of GA for feature selection improved model interpretability by reducing dimensionality while keeping classification performance competitive. However, further optimization could be explored to enhance accuracy.
+\end{itemize}
+
+\subsubsection{Conclusion}
+
+The GA-optimized GaussianNB model performed best with Count Vectorizer embeddings, achieving an accuracy of 66.53\%. While it did not surpass Logistic Regression in overall performance, it demonstrated effective feature selection, reducing the dimensionality from 2000 to around 1000 features while maintaining competitive classification results. The model also exhibited a solid recall of 74.81\%, making it useful in applications where correctly identifying positive cases is critical.
+
+Future improvements could include: Enhancing the genetic algorithm with adaptive mutation and crossover strategies to refine feature selection, incorporating ensemble methods to improve robustness, and experimenting with hybrid approaches that combine GA with other classifiers for better performance.
+
+Overall, the GA + GaussianNB model showcases the potential of evolutionary algorithms for feature selection, offering a trade-off between model interpretability and classification performance.
+
