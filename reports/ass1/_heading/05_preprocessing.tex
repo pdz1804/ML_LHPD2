@@ -91,6 +91,39 @@ becomes:
 
 This pipeline was applied to every tweet in the merged dataset using vectorized operations in \texttt{pandas} and \texttt{tqdm} for efficiency. The result was a new DataFrame column with cleaned text (as strings or token lists), ready for feature extraction.
 
+\subsection{Exploratory Data Analysis (EDA)}
+
+To better understand the dataset, we performed Exploratory Data Analysis (EDA) on key features. Below are some visualizations that provide insights into the data distribution.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/dataset/distribution_target.png}
+    \caption{Distribution of Target Variable}
+    \label{fig:distribution-target}
+\end{figure}
+
+Figure~\ref{fig:distribution-target} shows the distribution of the target variable in the dataset. The dataset is imbalanced, with a significantly higher number of samples labeled as 4.0 (positive sentiment) and 0.0 (negative sentiment) compared to 2.0 (neutral sentiment). Due to this imbalance, our team decided to ignore the neutral target (2.0) and focus on training and evaluating models for positive and negative sentiment only.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/dataset/distribution_text_clean_length.png}
+    \caption{Overall Text Cleaned Length Distribution}
+    \label{fig:distribution-clean-length}
+\end{figure}
+
+Figure~\ref{fig:distribution-clean-length} illustrates the distribution of cleaned text lengths across all tweets. Most tweets have a cleaned length between 5 and 15 tokens, with a long tail for shorter or longer tweets.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/dataset/distribution_text_length.png}
+    \caption{Distribution of Raw Text Lengths}
+    \label{fig:distribution-raw-length}
+\end{figure}
+
+Figure~\ref{fig:distribution-raw-length} depicts the distribution of raw text lengths before cleaning. This visualization highlights the variability in tweet lengths prior to preprocessing.
+
+These visualizations helped us identify key patterns in the data, such as class imbalance and typical text lengths, which informed subsequent preprocessing and modeling decisions.
+
 \subsection{Publishing the Merged Dataset on Kaggle}
 
 We published the cleaned, merged dataset on Kaggle to enable further analysis. The process involved:

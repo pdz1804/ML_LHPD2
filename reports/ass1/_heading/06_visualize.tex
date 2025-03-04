@@ -1,28 +1,30 @@
 \section{Visualization}
 
-\subsection{Distribution of Target Label}
+\textbf{Small note}: We only take a subset of our dataset to visualize these important things.
 
-The visualization of the dataset begins with the \textbf{Distribution of Target} bar chart, which illustrates the sentiment distribution of the tweets. It reveals approximately 50,000 positive tweets (target = 4.0) and 45,000 negative tweets (target = 0.0), indicating a relatively balanced dataset suitable for sentiment analysis or machine learning tasks. This balance minimizes potential bias in model training.
+% \subsection{Distribution of Target Label}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{img/visualize_pic/distribution.png}
-    \caption{The Distribution of Target}
-\end{figure}
+% The visualization of the dataset begins with the \textbf{Distribution of Target} bar chart, which illustrates the sentiment distribution of the tweets. It reveals approximately 50,000 positive tweets (target = 4.0) and 45,000 negative tweets (target = 0.0), indicating a relatively balanced dataset suitable for sentiment analysis or machine learning tasks. This balance minimizes potential bias in model training.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{img/visualize_pic/distribution.png}
+%     \caption{The Distribution of Target}
+% \end{figure}
 
 \subsection{Relationships of the Attributes}
 
-Complementing this, the \textbf{Pairwise Relationships} Pairplot provides deeper insights into the numerical features of the dataset, including 'target', 'text\_length', and 'text\_clean\_length'. The histograms show that tweet lengths are typically short, with 'text\_length' peaking between 0–100 characters and 'text\_clean\_length' peaking between 0–40 characters, reflecting the impact of the cleaning process in reducing text length by removing unnecessary characters. Scatter plots reveal no clear correlation between text length (original or cleaned) and sentiment, suggesting that tweet length does not influence sentiment classification. However, a strong linear relationship between 'text\_length' and 'text\_clean\_length' confirms the effectiveness of text cleaning in simplifying the data. Together, these visualizations offer a comprehensive understanding of the dataset’s structure and characteristics, facilitating further analysis and modeling.
+Complementing this, the \textbf{Pairwise Relationships} Pairplot highlights numerical features such as 'target', 'text\_length', and 'text\_clean\_length'. Histograms show that tweets are generally short, with 'text\_length' peaking at 0–100 characters and 'text\_clean\_length' at 0–40 characters, reflecting the impact of cleaning. Scatter plots reveal no strong correlation between text length and sentiment, while a linear relationship between 'text\_length' and 'text\_clean\_length' confirms the effectiveness of cleaning. These visualizations offer insights into the dataset’s structure for further modeling.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{img/visualize_pic/pairwise.png}
+    \includegraphics[width=0.8\textwidth]{img/visualize_pic/pairwise.png}
     \caption{Pairwise Relationships}
 \end{figure}
 
 \subsection{Top Words Visualizations}
 
-The visual portrayal of the entire dataset showcases the top 20 most frequent words from the 'text\_clean' column, depicted through a graphical chart and a word-based cloud visualization. The chart indicates that 'i' (14,000 occurrences), 'm' (12,000), and 'modi' (10,000) lead in frequency, accompanied by common verbs like 'get,' 'like,' and 'go,' and positive expressions such as 'good,' 'love,' and 'great.' The word-based cloud visualization enhances this by emphasizing high-frequency terms like 'i,' 'm,' and 'modi' with larger, bolder fonts, while presenting smaller fonts for less frequent words like 'great' and 'lol.' Together, these visualizations illuminate the prevailing lexicon in the dataset, highlighting frequent pronouns, verbs, and sentiment-related terms, which reflect the informal tone of Twitter interactions and offer valuable insights into the dataset’s linguistic patterns.
+The visualizations highlight the top 20 most frequent words in the 'text\_clean' column through a bar chart and a word cloud. The chart shows 'i' (14,000 occurrences), 'm' (12,000), and 'modi' (10,000) as the most common words, alongside verbs like 'get,' 'like,' and 'go,' and positive terms such as 'good,' 'love,' and 'great.' The word cloud emphasizes high-frequency words like 'i,' 'm,' and 'modi' with larger fonts, while less frequent words like 'great' and 'lol' appear smaller. Together, these visualizations reveal the dataset's informal Twitter tone and frequent sentiment-related terms, offering insights into its linguistic patterns.
 
 \begin{figure}[H]
     \centering
@@ -35,7 +37,7 @@ The visual portrayal of the entire dataset showcases the top 20 most frequent wo
     \caption{Top 20 of entire dataset}
 \end{figure}
 
-The visualization for the positive class in the sampled dataset is illustrated through the bar chart and word cloud of the top 20 most frequent words from tweets with a 'target' value of 4.0. The bar chart shows that 'i' (5,000 occurrences), 'm' (4,500), and 'modi' (4,000) are the most frequent, followed by positive sentiment words such as 'good' (3,500), 'love' (3,000), 'thanks' (1,800), and 'great' (500), alongside casual terms like 'lol' and 'haha.' The word cloud visually reinforces this, with larger, bolder fonts for high-frequency words like 'i,' 'm,' 'modi,' and 'good,' and smaller fonts for less frequent words like 'haha' and 'great.' These visualizations highlight the linguistic characteristics of positive tweets, emphasizing optimism, gratitude, and humor, which are typical of this sentiment class in the dataset.
+The positive class visualization (target = 4.0) uses a bar chart and word cloud to display the top 20 most frequent words. The bar chart highlights 'i' (5,000 occurrences), 'm' (4,500), and 'modi' (4,000) as the most frequent, followed by positive words like 'good' (3,500), 'love' (3,000), 'thanks' (1,800), and casual terms like 'lol' and 'haha.' The word cloud reinforces this, with larger fonts for frequent words like 'i,' 'm,' and 'good,' and smaller fonts for less common ones like 'haha.' These visualizations emphasize optimism, gratitude, and humor in positive tweets.
 
 \begin{figure}[H]
     \centering
@@ -48,7 +50,7 @@ The visualization for the positive class in the sampled dataset is illustrated t
     \caption{Top 20 of class Positive}
 \end{figure}
 
-The visualization for the negative class in the sampled dataset is depicted through the bar chart and word cloud of the top 20 most frequent words from tweets with a 'target' value of 0.0. The bar chart indicates that 'i' (10,000 occurrences), 'm' (9,000), and 'don’t' (8,000) are the most frequent, followed by words like 'get' (7,000), 'go' (6,000), and 'ca' (5,000), along with negative or frustrated terms such as 'really,' 'want,' 'still,' 'think,' 'need,' and 'miss.' The word cloud visually emphasizes these findings, with larger, bolder fonts for high-frequency words like 'i,' 'm,' 'don’t,' and 'get,' and smaller fonts for less frequent words like 'miss' and 'need.' These visualizations reveal the linguistic patterns of negative tweets, underscoring sentiments of frustration, restriction, and dissatisfaction, which are characteristic of this sentiment class in the dataset.
+The negative class visualization (target = 0.0) uses a bar chart and word cloud to display the top 20 most frequent words. The bar chart shows 'i' (10,000 occurrences), 'm' (9,000), and 'don’t' (8,000) as the most frequent, followed by words like 'get' (7,000), 'go' (6,000), and negative terms such as 'really,' 'want,' 'still,' and 'miss.' The word cloud reinforces this with larger fonts for frequent words like 'i,' 'm,' and 'don’t,' and smaller fonts for less common ones like 'miss.' These visualizations highlight frustration, restriction, and dissatisfaction in negative tweets.
 
 \begin{figure}[H]
     \centering

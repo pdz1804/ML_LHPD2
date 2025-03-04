@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.11.13)  2 MAR 2025 21:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.11.13)  4 MAR 2025 12:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**e:/2_LEARNING_BKU/2_File_2/K22_HK242/CO3117_Machine_Learning/ML_Ass1_MIT/main.tex
-(e:/2_LEARNING_BKU/2_File_2/K22_HK242/CO3117_Machine_Learning/ML_Ass1_MIT/main.tex
+**e:/2_LEARNING_BKU/2_File_2/K22_HK242/CO3117_Machine_Learning/ML_Ass1_MIT_v1/main.tex
+(e:/2_LEARNING_BKU/2_File_2/K22_HK242/CO3117_Machine_Learning/ML_Ass1_MIT_v1/main.tex
 LaTeX2e <2024-11-01>
 L3 programming layer <2024-11-02>
 (C:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/mitthesis\mitthesis.cls
@@ -1919,7 +1919,7 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.24 ...et Description}{16}{subsubsection.4.1.3.1}
+l.24 ...et Description}{16}{subsubsection.4.1.2.1}
                                                   % [1
 
 
@@ -2002,8 +2002,8 @@ Underfull \hbox (badness 1629) in paragraph at lines 21--21
  []
 
 
-Underfull \hbox (badness 2689) in paragraph at lines 21--21
-[]|\T5/lmr/m/n/12 Model im-ple-men-ta-tion (De-ci-sion Tree,
+Underfull \hbox (badness 2020) in paragraph at lines 21--21
+\T5/lmr/m/n/12 For-est, XG-Boost, Per-cep-tron - ANN,
  []
 
 
@@ -2017,38 +2017,54 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 31
  (C:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
+Overfull \hbox (27.95035pt too wide) in paragraph at lines 34--35
+\T5/lmr/m/n/12 pdz1804 / ML _ LHPD2 / blob / main / notebooks / assignment1 / ML _ LHPD2 _ Ass1 _ README .
+ []
+
+
 
 [12{C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
-<img/progress/github_repo.PNG, id=660, 623.931pt x 505.28775pt>
+<img/progress/github_repo.PNG, id=683, 623.931pt x 505.28775pt>
 File: img/progress/github_repo.PNG Graphic file (type png)
 <use img/progress/github_repo.PNG>
-Package pdftex.def Info: img/progress/github_repo.PNG  used on input line 67.
-(pdftex.def)             Requested size: 469.75502pt x 380.4375pt.
+Package pdftex.def Info: img/progress/github_repo.PNG  used on input line 69.
+(pdftex.def)             Requested size: 352.31625pt x 285.3262pt.
+ (C:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+) (C:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2024/09/23 1.10c listings language file
+)
 
-
-[13 <./img/progress/github_repo.PNG>])
-Chapter 4.
-(_heading/04_dataset.tex
-LaTeX Font Info:    Trying to load font information for T5+lmtt on input line 20.
+[13 <./img/progress/github_repo.PNG>]
+LaTeX Font Info:    Trying to load font information for T5+lmtt on input line 78.
  (C:\Users\User\AppData\Local\Programs\MiKTeX\tex/latex/lm\t5lmtt.fd
 File: t5lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
 Package microtype Warning: I cannot find a protrusion list for font
 (microtype)                `T5/lmtt/m/n/12'. Switching off
-(microtype)                protrusion for this font on input line 20.
+(microtype)                protrusion for this font on input line 78.
+
+
+Package microtype Warning: I cannot find a protrusion list for font
+(microtype)                `T5/lmtt/m/n/10'. Switching off
+(microtype)                protrusion for this font on input line 78.
 
 
 
-[14
+[14])
+Chapter 4.
+(_heading/04_dataset.tex
+
+[15
 
 ]
 
-[15]
-
 [16]
 
-[17]) (_heading/05_preprocessing.tex
+[17]
+
+[18]) (_heading/05_preprocessing.tex
 Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
@@ -2059,132 +2075,137 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 11.
 
 
-Package microtype Warning: I cannot find a protrusion list for font
-(microtype)                `T5/lmtt/m/n/10'. Switching off
-(microtype)                protrusion for this font on input line 11.
-
-
-
-[18]
+[19]
 Overfull \hbox (23.08116pt too wide) in paragraph at lines 61--62
 []\T5/lmr/bx/n/12 Removing Spe-cial Char-ac-ters and Punc-tu-a-tion: \T5/lmr/m/n/12 We fil-tered out all non-alphanumeric
  []
 
 
 
-[19]
-
 [20]
+
+[21]
 
 Package microtype Warning: I cannot find a protrusion list for font
 (microtype)                `T5/lmtt/m/n/10.95'. Switching off
 (microtype)                protrusion for this font on input line 83.
 
+<img/dataset/distribution_target.png, id=776, 431.4519pt x 334.6101pt>
+File: img/dataset/distribution_target.png Graphic file (type png)
+<use img/dataset/distribution_target.png>
+Package pdftex.def Info: img/dataset/distribution_target.png  used on input line 100.
+(pdftex.def)             Requested size: 328.82707pt x 255.02623pt.
+<img/dataset/distribution_text_clean_length.png, id=778, 432.1746pt x 327.3831pt>
+File: img/dataset/distribution_text_clean_length.png Graphic file (type png)
+<use img/dataset/distribution_text_clean_length.png>
+Package pdftex.def Info: img/dataset/distribution_text_clean_length.png  used on input line 109.
+(pdftex.def)             Requested size: 328.82707pt x 249.10347pt.
 
-Overfull \hbox (13.94252pt too wide) in paragraph at lines 99--100
+
+[22 <./img/dataset/distribution_target.png>]
+<img/dataset/distribution_text_length.png, id=785, 432.1746pt x 327.3831pt>
+File: img/dataset/distribution_text_length.png Graphic file (type png)
+<use img/dataset/distribution_text_length.png>
+Package pdftex.def Info: img/dataset/distribution_text_length.png  used on input line 118.
+(pdftex.def)             Requested size: 328.82707pt x 249.10347pt.
+
+
+[23 <./img/dataset/distribution_text_clean_length.png> <./img/dataset/distribution_text_length.png>]
+Overfull \hbox (13.94252pt too wide) in paragraph at lines 132--133
 []\T5/lmr/bx/n/12 Saving the Dataset: \T5/lmr/m/n/12 The pre-pro-cessed data was saved as \T5/lmtt/m/n/12 merged_cleaned_tweets.csv\T5/lmr/m/n/12 ,
  []
 
 
 
-[21]) (_heading/06_visualize.tex
-<img/visualize_pic/distribution.png, id=752, 352.9185pt x 277.035pt>
-File: img/visualize_pic/distribution.png Graphic file (type png)
-<use img/visualize_pic/distribution.png>
-Package pdftex.def Info: img/visualize_pic/distribution.png  used on input line 9.
-(pdftex.def)             Requested size: 469.75502pt x 368.7605pt.
-
-
-[22 <./img/visualize_pic/distribution.png>]
-<img/visualize_pic/pairwise.png, id=758, 416.757pt x 432.4155pt>
+[24]) (_heading/06_visualize.tex
+<img/visualize_pic/pairwise.png, id=804, 416.757pt x 432.4155pt>
 File: img/visualize_pic/pairwise.png Graphic file (type png)
 <use img/visualize_pic/pairwise.png>
-Package pdftex.def Info: img/visualize_pic/pairwise.png  used on input line 19.
-(pdftex.def)             Requested size: 469.75502pt x 487.40977pt.
+Package pdftex.def Info: img/visualize_pic/pairwise.png  used on input line 21.
+(pdftex.def)             Requested size: 375.80544pt x 389.92914pt.
 
 
-[23 <./img/visualize_pic/pairwise.png>]
-<img/visualize_pic/top20.png, id=764, 484.81125pt x 305.943pt>
+[25 <./img/visualize_pic/pairwise.png>]
+<img/visualize_pic/top20.png, id=810, 484.81125pt x 305.943pt>
 File: img/visualize_pic/top20.png Graphic file (type png)
 <use img/visualize_pic/top20.png>
-Package pdftex.def Info: img/visualize_pic/top20.png  used on input line 30.
+Package pdftex.def Info: img/visualize_pic/top20.png  used on input line 32.
 (pdftex.def)             Requested size: 225.4804pt x 142.29002pt.
-<img/visualize_pic/top20_word_cloud.png, id=765, 443.85825pt x 241.50224pt>
+<img/visualize_pic/top20_word_cloud.png, id=811, 443.85825pt x 241.50224pt>
 File: img/visualize_pic/top20_word_cloud.png Graphic file (type png)
 <use img/visualize_pic/top20_word_cloud.png>
-Package pdftex.def Info: img/visualize_pic/top20_word_cloud.png  used on input line 33.
+Package pdftex.def Info: img/visualize_pic/top20_word_cloud.png  used on input line 35.
 (pdftex.def)             Requested size: 225.4804pt x 122.68544pt.
-<img/visualize_pic/top20_posi.png, id=766, 489.027pt x 307.74976pt>
+<img/visualize_pic/top20_posi.png, id=812, 489.027pt x 307.74976pt>
 File: img/visualize_pic/top20_posi.png Graphic file (type png)
 <use img/visualize_pic/top20_posi.png>
-Package pdftex.def Info: img/visualize_pic/top20_posi.png  used on input line 43.
+Package pdftex.def Info: img/visualize_pic/top20_posi.png  used on input line 45.
 (pdftex.def)             Requested size: 225.4804pt x 141.90001pt.
-<img/visualize_pic/posi_wordcloud.png, id=767, 444.4605pt x 239.09325pt>
+<img/visualize_pic/posi_wordcloud.png, id=813, 444.4605pt x 239.09325pt>
 File: img/visualize_pic/posi_wordcloud.png Graphic file (type png)
 <use img/visualize_pic/posi_wordcloud.png>
-Package pdftex.def Info: img/visualize_pic/posi_wordcloud.png  used on input line 46.
+Package pdftex.def Info: img/visualize_pic/posi_wordcloud.png  used on input line 48.
 (pdftex.def)             Requested size: 225.4804pt x 121.29384pt.
 
 
-[24 <./img/visualize_pic/top20.png> <./img/visualize_pic/top20_word_cloud.png>]
-<img/visualize_pic/top20_nega.png, id=775, 482.40225pt x 308.352pt>
+[26 <./img/visualize_pic/top20.png> <./img/visualize_pic/top20_word_cloud.png> <./img/visualize_pic/top20_posi.png> <./img/visualize_pic/posi_wordcloud.png>]
+<img/visualize_pic/top20_nega.png, id=822, 482.40225pt x 308.352pt>
 File: img/visualize_pic/top20_nega.png Graphic file (type png)
 <use img/visualize_pic/top20_nega.png>
-Package pdftex.def Info: img/visualize_pic/top20_nega.png  used on input line 56.
+Package pdftex.def Info: img/visualize_pic/top20_nega.png  used on input line 58.
 (pdftex.def)             Requested size: 225.4804pt x 144.1303pt.
-<img/visualize_pic/nega_wordcloud.png, id=776, 446.26724pt x 242.1045pt>
+<img/visualize_pic/nega_wordcloud.png, id=823, 446.26724pt x 242.1045pt>
 File: img/visualize_pic/nega_wordcloud.png Graphic file (type png)
 <use img/visualize_pic/nega_wordcloud.png>
-Package pdftex.def Info: img/visualize_pic/nega_wordcloud.png  used on input line 59.
+Package pdftex.def Info: img/visualize_pic/nega_wordcloud.png  used on input line 61.
 (pdftex.def)             Requested size: 225.4804pt x 122.32275pt.
-
-
-[25 <./img/visualize_pic/top20_posi.png> <./img/visualize_pic/posi_wordcloud.png> <./img/visualize_pic/top20_nega.png> <./img/visualize_pic/nega_wordcloud.png>]
-<img/visualize_pic/text_length.png, id=785, 476.37975pt x 305.34074pt>
+<img/visualize_pic/text_length.png, id=824, 476.37975pt x 305.34074pt>
 File: img/visualize_pic/text_length.png Graphic file (type png)
 <use img/visualize_pic/text_length.png>
-Package pdftex.def Info: img/visualize_pic/text_length.png  used on input line 71.
+Package pdftex.def Info: img/visualize_pic/text_length.png  used on input line 73.
 (pdftex.def)             Requested size: 225.4804pt x 144.5212pt.
-<img/visualize_pic/histogram_text_length.png, id=786, 487.8225pt x 307.1475pt>
+<img/visualize_pic/histogram_text_length.png, id=825, 487.8225pt x 307.1475pt>
 File: img/visualize_pic/histogram_text_length.png Graphic file (type png)
 <use img/visualize_pic/histogram_text_length.png>
-Package pdftex.def Info: img/visualize_pic/histogram_text_length.png  used on input line 75.
+Package pdftex.def Info: img/visualize_pic/histogram_text_length.png  used on input line 77.
 (pdftex.def)             Requested size: 225.4804pt x 141.96913pt.
-<img/visualize_pic/text_clean.png, id=787, 473.3685pt x 305.943pt>
+
+
+[27 <./img/visualize_pic/top20_nega.png> <./img/visualize_pic/nega_wordcloud.png>]
+<img/visualize_pic/text_clean.png, id=832, 473.3685pt x 305.943pt>
 File: img/visualize_pic/text_clean.png Graphic file (type png)
 <use img/visualize_pic/text_clean.png>
-Package pdftex.def Info: img/visualize_pic/text_clean.png  used on input line 85.
+Package pdftex.def Info: img/visualize_pic/text_clean.png  used on input line 87.
 (pdftex.def)             Requested size: 225.4804pt x 145.73056pt.
-<img/visualize_pic/text_clean_histogram.png, id=788, 489.027pt x 308.95425pt>
+<img/visualize_pic/text_clean_histogram.png, id=833, 489.027pt x 308.95425pt>
 File: img/visualize_pic/text_clean_histogram.png Graphic file (type png)
 <use img/visualize_pic/text_clean_histogram.png>
-Package pdftex.def Info: img/visualize_pic/text_clean_histogram.png  used on input line 89.
+Package pdftex.def Info: img/visualize_pic/text_clean_histogram.png  used on input line 91.
 (pdftex.def)             Requested size: 225.4804pt x 142.45538pt.
 
-
-[26 <./img/visualize_pic/text_length.png> <./img/visualize_pic/histogram_text_length.png>]
-Overfull \hbox (20.0918pt too wide) in paragraph at lines 96--97
+Overfull \hbox (20.0918pt too wide) in paragraph at lines 98--99
 \T5/lmr/m/n/12 ^^Pgood,^^Q ^^Pgot,^^Q ^^Plike,^^Q ^^Plol,^^Q ^^Plove,^^Q ^^Pm,^^Q ^^Pmodi,^^Q ^^Pnt,^^Q ^^Ps,^^Q ^^Pthanks,^^Q ^^Pto-day,^^Q and ^^Pwork^^Q^^Vwith
  []
 
-<img/visualize_pic/word_frequency.png, id=796, 498.06075pt x 364.36125pt>
+
+
+[28 <./img/visualize_pic/text_length.png> <./img/visualize_pic/histogram_text_length.png> <./img/visualize_pic/text_clean.png> <./img/visualize_pic/text_clean_histogram.png>]
+<img/visualize_pic/word_frequency.png, id=844, 498.06075pt x 364.36125pt>
 File: img/visualize_pic/word_frequency.png Graphic file (type png)
 <use img/visualize_pic/word_frequency.png>
-Package pdftex.def Info: img/visualize_pic/word_frequency.png  used on input line 100.
+Package pdftex.def Info: img/visualize_pic/word_frequency.png  used on input line 102.
 (pdftex.def)             Requested size: 469.75502pt x 343.67271pt.
 
 
-[27 <./img/visualize_pic/text_clean.png> <./img/visualize_pic/text_clean_histogram.png>]
-<img/visualize_pic/comparision.png, id=804, 501.072pt x 280.04625pt>
+[29 <./img/visualize_pic/word_frequency.png>]
+<img/visualize_pic/comparision.png, id=850, 501.072pt x 280.04625pt>
 File: img/visualize_pic/comparision.png Graphic file (type png)
 <use img/visualize_pic/comparision.png>
-Package pdftex.def Info: img/visualize_pic/comparision.png  used on input line 108.
+Package pdftex.def Info: img/visualize_pic/comparision.png  used on input line 110.
 (pdftex.def)             Requested size: 469.75502pt x 262.54697pt.
 
 
-[28 <./img/visualize_pic/word_frequency.png>]
-
-[29 <./img/visualize_pic/comparision.png>]) (_heading/07_analyze_result.tex (_analyze/0_0_Introduction.tex
+[30 <./img/visualize_pic/comparision.png>]) (_heading/07_analyze_result.tex (_analyze/0_0_Introduction.tex
 LaTeX Font Info:    Font shape `T5/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `T5/lmtt/b/n' tried instead on input line 9.
 
@@ -2195,394 +2216,392 @@ Package microtype Warning: I cannot find a protrusion list for font
 
 
 
-[30]
-
 [31]
 
-[32]) (_analyze/0_0_GeneralTrainingMethod.tex
+[32]
+
+[33]) (_analyze/0_0_GeneralTrainingMethod.tex
 Overfull \hbox (14.47221pt too wide) in paragraph at lines 20--21
 \T5/lmr/m/n/12 Our team has en-sured high \T5/lmr/bx/n/12 Im-ple-men-ta-tion Qual-ity \T5/lmr/m/n/12 by main-tain-ing mod-u-lar, well-structured
  []
 
 
 
-[33]
-
 [34]
 
-[35]) (_analyze/1_1_LogisticRegression.tex
+[35]
 
-[36]
+[36]) (_analyze/1_1_LogisticRegression.tex
 
 [37]
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count_loss.png, id=922, 722.7pt x 433.62pt>
+
+[38]
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count_loss.png, id=963, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count_loss.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count_loss.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count_loss.png  used on input line 110.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf_loss.png, id=923, 722.7pt x 433.62pt>
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf_loss.png, id=964, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf_loss.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf_loss.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf_loss.png  used on input line 115.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec_loss.png, id=924, 722.7pt x 433.62pt>
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec_loss.png, id=965, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec_loss.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec_loss.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec_loss.png  used on input line 121.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove_loss.png, id=925, 722.7pt x 433.62pt>
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove_loss.png, id=966, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove_loss.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove_loss.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove_loss.png  used on input line 126.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count.png, id=926, 722.7pt x 433.62pt>
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count.png, id=967, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count.png  used on input line 138.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf.png, id=927, 722.7pt x 433.62pt>
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf.png, id=968, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf.png  used on input line 143.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec.png, id=928, 722.7pt x 433.62pt>
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec.png, id=969, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec.png  used on input line 149.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove.png, id=929, 722.7pt x 433.62pt>
+<img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove.png, id=970, 722.7pt x 433.62pt>
 File: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove.png Graphic file (type png)
 <use img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove.png>
 Package pdftex.def Info: img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove.png  used on input line 154.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
 
 
-[38 <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count_loss.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf_loss.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec_loss.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove_loss.png>]
+[39 <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count_loss.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf_loss.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec_loss.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove_loss.png>]
 
-[39 <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove.png>]) (_analyze/1_2_DecisionTree.tex
-
-[40]
+[40 <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_count.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_tfidf.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_word2vec.png> <./img/report_info/img/1.1.LogisticRegression/best_logistic_regression_glove.png>]) (_analyze/1_2_DecisionTree.tex
 
 [41]
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_count_loss.png, id=954, 722.7pt x 433.62pt>
+
+[42]
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_count_loss.png, id=996, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_count_loss.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_count_loss.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_count_loss.png  used on input line 116.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf_loss.png, id=955, 722.7pt x 433.62pt>
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf_loss.png, id=997, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf_loss.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf_loss.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf_loss.png  used on input line 121.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec_loss.png, id=956, 722.7pt x 433.62pt>
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec_loss.png, id=998, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec_loss.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec_loss.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec_loss.png  used on input line 127.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_glove_loss.png, id=957, 722.7pt x 433.62pt>
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_glove_loss.png, id=999, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_glove_loss.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_glove_loss.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_glove_loss.png  used on input line 132.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
 
 
-[42]
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_count.png, id=963, 722.7pt x 433.62pt>
+[43]
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_count.png, id=1004, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_count.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_count.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_count.png  used on input line 144.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf.png, id=964, 722.7pt x 433.62pt>
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf.png, id=1005, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf.png  used on input line 149.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec.png, id=965, 722.7pt x 433.62pt>
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec.png, id=1006, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec.png  used on input line 155.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.2.DecisionTree/best_decision_tree_glove.png, id=966, 722.7pt x 433.62pt>
+<img/report_info/img/1.2.DecisionTree/best_decision_tree_glove.png, id=1007, 722.7pt x 433.62pt>
 File: img/report_info/img/1.2.DecisionTree/best_decision_tree_glove.png Graphic file (type png)
 <use img/report_info/img/1.2.DecisionTree/best_decision_tree_glove.png>
 Package pdftex.def Info: img/report_info/img/1.2.DecisionTree/best_decision_tree_glove.png  used on input line 160.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
 
 
-[43 <./img/report_info/img/1.2.DecisionTree/best_decision_tree_count_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_glove_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_count.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_glove.png>]) (_analyze/1_3_XGB.tex
-
-[44]
+[44 <./img/report_info/img/1.2.DecisionTree/best_decision_tree_count_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_glove_loss.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_count.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_tfidf.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_word2vec.png> <./img/report_info/img/1.2.DecisionTree/best_decision_tree_glove.png>]) (_analyze/1_3_XGB.tex
 
 [45]
 
 [46]
-<img/report_info/img/1.3.XGB/best_xgboost_count_loss.png, id=991, 722.7pt x 433.62pt>
+
+[47]
+<img/report_info/img/1.3.XGB/best_xgboost_count_loss.png, id=1032, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_count_loss.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_count_loss.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_count_loss.png  used on input line 116.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
-<img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png, id=992, 722.7pt x 433.62pt>
+<img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png, id=1033, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png  used on input line 121.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
-<img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png, id=993, 722.7pt x 433.62pt>
+<img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png, id=1034, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png  used on input line 127.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
-<img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png, id=994, 722.7pt x 433.62pt>
+<img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png, id=1035, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png  used on input line 132.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
-<img/report_info/img/1.3.XGB/best_xgboost_count.png, id=995, 722.7pt x 433.62pt>
+<img/report_info/img/1.3.XGB/best_xgboost_count.png, id=1036, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_count.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_count.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_count.png  used on input line 144.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
-<img/report_info/img/1.3.XGB/best_xgboost_tfidf.png, id=996, 722.7pt x 433.62pt>
+<img/report_info/img/1.3.XGB/best_xgboost_tfidf.png, id=1037, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_tfidf.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_tfidf.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_tfidf.png  used on input line 149.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
-<img/report_info/img/1.3.XGB/best_xgboost_word2vec.png, id=997, 722.7pt x 433.62pt>
+<img/report_info/img/1.3.XGB/best_xgboost_word2vec.png, id=1038, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_word2vec.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_word2vec.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_word2vec.png  used on input line 155.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
-<img/report_info/img/1.3.XGB/best_xgboost_glove.png, id=998, 722.7pt x 433.62pt>
+<img/report_info/img/1.3.XGB/best_xgboost_glove.png, id=1039, 722.7pt x 433.62pt>
 File: img/report_info/img/1.3.XGB/best_xgboost_glove.png Graphic file (type png)
 <use img/report_info/img/1.3.XGB/best_xgboost_glove.png>
 Package pdftex.def Info: img/report_info/img/1.3.XGB/best_xgboost_glove.png  used on input line 160.
 (pdftex.def)             Requested size: 220.78543pt x 132.46893pt.
 
 
-[47 <./img/report_info/img/1.3.XGB/best_xgboost_count_loss.png> <./img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png> <./img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png> <./img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png>]
+[48 <./img/report_info/img/1.3.XGB/best_xgboost_count_loss.png> <./img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png> <./img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png> <./img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png>]
 
-[48 <./img/report_info/img/1.3.XGB/best_xgboost_count.png> <./img/report_info/img/1.3.XGB/best_xgboost_tfidf.png> <./img/report_info/img/1.3.XGB/best_xgboost_word2vec.png> <./img/report_info/img/1.3.XGB/best_xgboost_glove.png>]) (_analyze/1_4_RF.tex
-
-[49]
+[49 <./img/report_info/img/1.3.XGB/best_xgboost_count.png> <./img/report_info/img/1.3.XGB/best_xgboost_tfidf.png> <./img/report_info/img/1.3.XGB/best_xgboost_word2vec.png> <./img/report_info/img/1.3.XGB/best_xgboost_glove.png>]) (_analyze/1_4_RF.tex
 
 [50]
-<img/report_info/img/1.4.RF/best_random_forest_count_loss.png, id=1024, 722.7pt x 433.62pt>
+
+[51]
+<img/report_info/img/1.4.RF/best_random_forest_count_loss.png, id=1065, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_count_loss.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_count_loss.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_count_loss.png  used on input line 121.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.4.RF/best_random_forest_tfidf_loss.png, id=1025, 722.7pt x 433.62pt>
+<img/report_info/img/1.4.RF/best_random_forest_tfidf_loss.png, id=1066, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_tfidf_loss.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_tfidf_loss.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_tfidf_loss.png  used on input line 126.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.4.RF/best_random_forest_word2vec_loss.png, id=1026, 722.7pt x 433.62pt>
+<img/report_info/img/1.4.RF/best_random_forest_word2vec_loss.png, id=1067, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_word2vec_loss.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_word2vec_loss.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_word2vec_loss.png  used on input line 132.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.4.RF/best_random_forest_glove_loss.png, id=1027, 722.7pt x 433.62pt>
+<img/report_info/img/1.4.RF/best_random_forest_glove_loss.png, id=1068, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_glove_loss.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_glove_loss.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_glove_loss.png  used on input line 137.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/1.4.RF/best_random_forest_count.png, id=1028, 722.7pt x 433.62pt>
+<img/report_info/img/1.4.RF/best_random_forest_count.png, id=1069, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_count.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_count.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_count.png  used on input line 149.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.4.RF/best_random_forest_tfidf.png, id=1029, 722.7pt x 433.62pt>
+<img/report_info/img/1.4.RF/best_random_forest_tfidf.png, id=1070, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_tfidf.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_tfidf.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_tfidf.png  used on input line 154.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.4.RF/best_random_forest_word2vec.png, id=1030, 722.7pt x 433.62pt>
+<img/report_info/img/1.4.RF/best_random_forest_word2vec.png, id=1071, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_word2vec.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_word2vec.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_word2vec.png  used on input line 160.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/1.4.RF/best_random_forest_glove.png, id=1031, 722.7pt x 433.62pt>
+<img/report_info/img/1.4.RF/best_random_forest_glove.png, id=1072, 722.7pt x 433.62pt>
 File: img/report_info/img/1.4.RF/best_random_forest_glove.png Graphic file (type png)
 <use img/report_info/img/1.4.RF/best_random_forest_glove.png>
 Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_glove.png  used on input line 165.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
 
 
-[51 <./img/report_info/img/1.4.RF/best_random_forest_count_loss.png> <./img/report_info/img/1.4.RF/best_random_forest_tfidf_loss.png> <./img/report_info/img/1.4.RF/best_random_forest_word2vec_loss.png> <./img/report_info/img/1.4.RF/best_random_forest_glove_loss.png>]
+[52 <./img/report_info/img/1.4.RF/best_random_forest_count_loss.png> <./img/report_info/img/1.4.RF/best_random_forest_tfidf_loss.png> <./img/report_info/img/1.4.RF/best_random_forest_word2vec_loss.png> <./img/report_info/img/1.4.RF/best_random_forest_glove_loss.png>]
 
-[52 <./img/report_info/img/1.4.RF/best_random_forest_count.png> <./img/report_info/img/1.4.RF/best_random_forest_tfidf.png> <./img/report_info/img/1.4.RF/best_random_forest_word2vec.png> <./img/report_info/img/1.4.RF/best_random_forest_glove.png>]) (_analyze/2_1_Perceptron.tex
+[53 <./img/report_info/img/1.4.RF/best_random_forest_count.png> <./img/report_info/img/1.4.RF/best_random_forest_tfidf.png> <./img/report_info/img/1.4.RF/best_random_forest_word2vec.png> <./img/report_info/img/1.4.RF/best_random_forest_glove.png>]) (_analyze/2_1_Perceptron.tex
 
-[53]
+[54]
 Overfull \hbox (14.26215pt too wide) in paragraph at lines 56--57
 [] []|\T5/lmr/bx/n/12 4.4.8.2.1 Train-ing Per-for-mance Met-rics (Cross--Val-i-da-tion):[] Test-ing Per-for-mance
  []
 
 
 
-[54]
-<img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png, id=1057, 722.7pt x 433.62pt>
+[55]
+<img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png, id=1098, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png  used on input line 122.
 (pdftex.def)             Requested size: 187.89914pt x 112.73854pt.
-<img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png, id=1058, 722.7pt x 433.62pt>
+<img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png, id=1099, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png  used on input line 127.
 (pdftex.def)             Requested size: 187.89914pt x 112.73854pt.
-<img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png, id=1059, 722.7pt x 433.62pt>
+<img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png, id=1100, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png  used on input line 133.
 (pdftex.def)             Requested size: 187.89914pt x 112.73854pt.
-<img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png, id=1060, 722.7pt x 433.62pt>
+<img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png, id=1101, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png  used on input line 138.
 (pdftex.def)             Requested size: 187.89914pt x 112.73854pt.
-<img/report_info/img/2.1.Perceptron/best_perceptron_count.png, id=1061, 722.7pt x 433.62pt>
+<img/report_info/img/2.1.Perceptron/best_perceptron_count.png, id=1102, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_count.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_count.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_count.png  used on input line 150.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/2.1.Perceptron/best_perceptron_tfidf.png, id=1062, 722.7pt x 433.62pt>
+<img/report_info/img/2.1.Perceptron/best_perceptron_tfidf.png, id=1103, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_tfidf.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_tfidf.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_tfidf.png  used on input line 155.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/2.1.Perceptron/best_perceptron_word2vec.png, id=1063, 722.7pt x 433.62pt>
+<img/report_info/img/2.1.Perceptron/best_perceptron_word2vec.png, id=1104, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_word2vec.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_word2vec.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_word2vec.png  used on input line 161.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/2.1.Perceptron/best_perceptron_glove.png, id=1064, 722.7pt x 433.62pt>
+<img/report_info/img/2.1.Perceptron/best_perceptron_glove.png, id=1105, 722.7pt x 433.62pt>
 File: img/report_info/img/2.1.Perceptron/best_perceptron_glove.png Graphic file (type png)
 <use img/report_info/img/2.1.Perceptron/best_perceptron_glove.png>
 Package pdftex.def Info: img/report_info/img/2.1.Perceptron/best_perceptron_glove.png  used on input line 166.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
 
 
-[55 <./img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png>]) (_analyze/2_2_MLP.tex
+[56 <./img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png>]) (_analyze/2_2_MLP.tex
 
-[56 <./img/report_info/img/2.1.Perceptron/best_perceptron_count.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_tfidf.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_word2vec.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_glove.png>]
-
-[57]
+[57 <./img/report_info/img/2.1.Perceptron/best_perceptron_count.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_tfidf.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_word2vec.png> <./img/report_info/img/2.1.Perceptron/best_perceptron_glove.png>]
 
 [58]
-<img/report_info/img/2.2.MLP/best_mlp_count_loss.png, id=1089, 722.7pt x 433.62pt>
+
+[59]
+<img/report_info/img/2.2.MLP/best_mlp_count_loss.png, id=1130, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_count_loss.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_count_loss.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_count_loss.png  used on input line 108.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png, id=1090, 722.7pt x 433.62pt>
+<img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png, id=1131, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png  used on input line 113.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png, id=1091, 722.7pt x 433.62pt>
+<img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png, id=1132, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png  used on input line 119.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
-<img/report_info/img/2.2.MLP/best_mlp_glove_loss.png, id=1092, 722.7pt x 433.62pt>
+<img/report_info/img/2.2.MLP/best_mlp_glove_loss.png, id=1133, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_glove_loss.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_glove_loss.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_glove_loss.png  used on input line 124.
 (pdftex.def)             Requested size: 206.69334pt x 124.01305pt.
 
 
-[59]
-<img/report_info/img/2.2.MLP/best_mlp_count.png, id=1097, 722.7pt x 433.62pt>
+[60]
+<img/report_info/img/2.2.MLP/best_mlp_count.png, id=1139, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_count.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_count.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_count.png  used on input line 136.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/2.2.MLP/best_mlp_tfidf.png, id=1098, 722.7pt x 433.62pt>
+<img/report_info/img/2.2.MLP/best_mlp_tfidf.png, id=1140, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_tfidf.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_tfidf.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_tfidf.png  used on input line 141.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/2.2.MLP/best_mlp_word2vec.png, id=1099, 722.7pt x 433.62pt>
+<img/report_info/img/2.2.MLP/best_mlp_word2vec.png, id=1141, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_word2vec.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_word2vec.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_word2vec.png  used on input line 147.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/2.2.MLP/best_mlp_glove.png, id=1100, 722.7pt x 433.62pt>
+<img/report_info/img/2.2.MLP/best_mlp_glove.png, id=1142, 722.7pt x 433.62pt>
 File: img/report_info/img/2.2.MLP/best_mlp_glove.png Graphic file (type png)
 <use img/report_info/img/2.2.MLP/best_mlp_glove.png>
 Package pdftex.def Info: img/report_info/img/2.2.MLP/best_mlp_glove.png  used on input line 152.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
 
 
-[60 <./img/report_info/img/2.2.MLP/best_mlp_count_loss.png> <./img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png> <./img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png> <./img/report_info/img/2.2.MLP/best_mlp_glove_loss.png>]
+[61 <./img/report_info/img/2.2.MLP/best_mlp_count_loss.png> <./img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png> <./img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png> <./img/report_info/img/2.2.MLP/best_mlp_glove_loss.png>]
 
-[61 <./img/report_info/img/2.2.MLP/best_mlp_count.png> <./img/report_info/img/2.2.MLP/best_mlp_tfidf.png> <./img/report_info/img/2.2.MLP/best_mlp_word2vec.png> <./img/report_info/img/2.2.MLP/best_mlp_glove.png>]) (_analyze/2_3_LSTM.tex
-
-[62]
+[62 <./img/report_info/img/2.2.MLP/best_mlp_count.png> <./img/report_info/img/2.2.MLP/best_mlp_tfidf.png> <./img/report_info/img/2.2.MLP/best_mlp_word2vec.png> <./img/report_info/img/2.2.MLP/best_mlp_glove.png>]) (_analyze/2_3_LSTM.tex
 
 [63]
 
-[64{C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}]) (_analyze/3_1_NaiveBayes.tex
+[64]
+
+[65{C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}{C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}]) (_analyze/3_1_NaiveBayes.tex
 Overfull \hbox (5.46893pt too wide) in paragraph at lines 27--28
 \T5/lmr/m/n/12 The Na^^D^^Yve Bayes model was trained and eval-u-ated us-ing Count Vec-tor-izer, TF-IDF, Word2Vec,
  []
 
 
 
-[65]
-
 [66]
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_count_loss.png, id=1142, 722.7pt x 433.62pt>
+
+[67]
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_count_loss.png, id=1183, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_count_loss.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_count_loss.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_count_loss.png  used on input line 113.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf_loss.png, id=1143, 722.7pt x 433.62pt>
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf_loss.png, id=1184, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf_loss.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf_loss.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf_loss.png  used on input line 118.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec_loss.png, id=1144, 722.7pt x 433.62pt>
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec_loss.png, id=1185, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec_loss.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec_loss.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec_loss.png  used on input line 124.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_glove_loss.png, id=1145, 722.7pt x 433.62pt>
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_glove_loss.png, id=1186, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_glove_loss.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_glove_loss.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_glove_loss.png  used on input line 129.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_count.png, id=1146, 722.7pt x 433.62pt>
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_count.png, id=1187, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_count.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_count.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_count.png  used on input line 141.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf.png, id=1147, 722.7pt x 433.62pt>
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf.png, id=1188, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf.png  used on input line 146.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec.png, id=1148, 722.7pt x 433.62pt>
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec.png, id=1189, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec.png  used on input line 152.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
-<img/report_info/img/3.1.NaiveBayes/best_bayesian_glove.png, id=1149, 722.7pt x 433.62pt>
+<img/report_info/img/3.1.NaiveBayes/best_bayesian_glove.png, id=1190, 722.7pt x 433.62pt>
 File: img/report_info/img/3.1.NaiveBayes/best_bayesian_glove.png Graphic file (type png)
 <use img/report_info/img/3.1.NaiveBayes/best_bayesian_glove.png>
 Package pdftex.def Info: img/report_info/img/3.1.NaiveBayes/best_bayesian_glove.png  used on input line 157.
 (pdftex.def)             Requested size: 225.4804pt x 135.28757pt.
 
 
-[67 <./img/report_info/img/3.1.NaiveBayes/best_bayesian_count_loss.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf_loss.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec_loss.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_glove_loss.png>]
+[68 <./img/report_info/img/3.1.NaiveBayes/best_bayesian_count_loss.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf_loss.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec_loss.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_glove_loss.png>]
 Overfull \hbox (12.00108pt too wide) in paragraph at lines 172--173
 []\T5/lmr/m/n/12 Count Vec-tor-izer and TF-IDF tend to ex-hibit less fluc-tu-a-tion com-pared to Word2Vec
  []
 
 
 
-[68 <./img/report_info/img/3.1.NaiveBayes/best_bayesian_count.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_glove.png>]) (_analyze/3_2_GA.tex
-
-[69]
+[69 <./img/report_info/img/3.1.NaiveBayes/best_bayesian_count.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_tfidf.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_word2vec.png> <./img/report_info/img/3.1.NaiveBayes/best_bayesian_glove.png>]) (_analyze/3_2_GA.tex
 
 [70]
 
@@ -2590,55 +2609,57 @@ Overfull \hbox (12.00108pt too wide) in paragraph at lines 172--173
 
 [72]
 
-[73]) (_analyze/5_1_HMM.tex
+[73]
 
-[74]
+[74]) (_analyze/5_1_HMM.tex
+
+[75]
 Overfull \hbox (0.91937pt too wide) in paragraph at lines 37--39
 []\T5/lmtt/m/n/12 init_params\T5/lmr/m/n/12 : De-ter-mines which pa-ram-e-ters are ini-tial-ized be-fore train-ing. Tested
  []
 
 
 
-[75]
+[76]
 
-[76]) (_analyze/5_2_BayesNet.tex
+[77]) (_analyze/5_2_BayesNet.tex
 
-[77]
+[78]
 Overfull \hbox (3.41574pt too wide) in paragraph at lines 16--18
 \T5/lmtt/m/n/12 pgmpy.estimators.MaximumLikelihoodEstimator \T5/lmr/m/n/12 to learn con-di-tional prob-a-bil-ity dis-
  []
 
 
 
-[78]
-
 [79]
 
 [80]
+
+[81]
 Overfull \hbox (2.62782pt too wide) in paragraph at lines 118--119
 \T5/lmr/m/n/12 meth-ods, or hy-brid mod-els com-bin-ing Bayesian Net-works with deep learn-ing ap-proaches. 
  []
 
 ) (_analyze/0_0_model_comp.tex
 
-[81]
-
 [82]
+
+[83]
 Overfull \hbox (5.08626pt too wide) in paragraph at lines 83--87
 \T5/lmr/m/n/12 specific datasets, mak-ing TF-IDF and CountVec-tor-izer prefer-able for struc-tured, lexicon-
  []
 
 
 
-[83]
-
 [84]
 
-[85]))
+[85]
+
+[86]))
 Chapter 5.
 (_heading/future_developments.tex) (_heading/special_thanks.tex
 
-[86
+[87
 
 ])
 
@@ -2646,7 +2667,7 @@ Chapter 5.
 File: se-pdfdoc.def 2019/11/29 v1.12 stringenc: PDFDocEncoding
 ) (C:\Users\User\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\se-utf8.def
 File: se-utf8.def 2019/11/29 v1.12 stringenc: UTF-8
-) [87] 
+) [88] 
 enddocument/afterlastpage: lastpage setting LastPage.
 (main.aux (_heading/02_abstract_description.aux))
  ***********
@@ -2662,17 +2683,17 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 63805 strings out of 473681
- 1467900 string characters out of 5719670
- 2735452 words of memory out of 5000000
- 85323 multiletter control sequences out of 15000+600000
+ 63935 strings out of 473681
+ 1470312 string characters out of 5719670
+ 2736656 words of memory out of 5000000
+ 85436 multiletter control sequences out of 15000+600000
  646876 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 103i,12n,144p,1521b,3850s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 103i,12n,144p,1524b,3850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr6.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on main.pdf (88 pages, 3412861 bytes).
+Output written on main.pdf (89 pages, 3458671 bytes).
 PDF statistics:
- 1871 PDF objects out of 2073 (max. 8388607)
- 456 named destinations out of 1000 (max. 500000)
- 11849 words of extra memory for PDF output out of 12000 (max. 10000000)
+ 1928 PDF objects out of 2073 (max. 8388607)
+ 469 named destinations out of 1000 (max. 500000)
+ 11891 words of extra memory for PDF output out of 12000 (max. 10000000)
 
