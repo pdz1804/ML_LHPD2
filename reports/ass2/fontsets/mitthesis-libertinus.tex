@@ -1,0 +1,65 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-libertinus.tex}[2024/10/26 v1.00 Load Libertinus and related fonts]
+
+%% Linux Libertine (serif) text font with newtxmath[libertine] (pdftex) or Libertinus (unicode) math font
+%
+%  These fonts are available here https://ctan.org/tex-archive/fonts/libertine/opentype 
+%						 and here https://github.com/alerque/libertinus
+% install these as system fonts on your computer
+%
+\ifpdftex
+	\ClassNoteNoLine{\ClassName}{Loading Libertinus type1 text fonts and newtx-libertinus math fonts}
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage[lf,t,semibold,ScaleTT=0.9]{libertinus} % tabular lining figures
+    \RequirePackage[libertinus,vvarbb,subscriptcorrection]{newtxmath}% see package documentation for options
+    \RequirePackage{bm}% load after all math to give access to bold math
+\else
+	\ClassNoteNoLine{\ClassName}{Loading Libertinus OTF text and math fonts}
+	%
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+    % suppress tiresome warnings about lack of integration between mathtools and unicode-math
+    % unicode math loads the fontspec package
+ 	%
+    \setmainfont{LibertinusSerif}[% 
+    	Extension = .otf,
+    	UprightFont = *-Regular,
+    	ItalicFont = *-Italic,
+    	BoldFont = *-Semibold, 
+    	BoldItalicFont = *-SemiboldItalic,
+    	RawFeature={+ss05,+dlig,+tnum}, 
+		% +ss02 would change J, K, R; +ss05 changes W; onum = oldstyle figures; hlig = historical ligatures
+        ]    
+    \setsansfont{LibertinusSans}[% 
+    	Extension = .otf,
+    	UprightFont = *-Regular,
+    	ItalicFont = *-Italic,
+    	BoldFont = *-Bold,
+	    BoldItalicFont = *-Bold,% does not have bold italic
+    	Scale=MatchUppercase]
+	%
+    \setmonofont{LibertinusMono}[% 
+    	Scale=0.9,% 2024/10/13
+	    Extension = .otf,
+    	UprightFont = *-Regular,
+    	ItalicFont = *-Regular,% does not have italic
+    	BoldFont = *-Regular,% does not have bold 
+	    BoldItalicFont = *-Regular,% does not have bold italic
+	] 
+	% 
+	\newfontfamily\LibertinusDisplay{LibertinusSerifDisplay-Regular.otf}% a display font, as for titles
+	%
+	\newfontfamily\LibertinusInitials{LibertinusSerifInitials-Regular.otf}% Large initial letters, as for first word in chapter
+	%	     	
+    %% a Libertinus math font
+    \setmathfont{libertinusmath-regular}[%
+     	Extension = .otf,   
+    	Scale=MatchUppercase,
+%		BoldFont = *,% This font lacks a bold version
+    	RawFeature={+ss08},% +ss08 gives slanted integrals (no other features) 	
+    	]
+	\setmathfont{Latin Modern Math}[range=\nabla,Scale=0.91] % I hate the backward nabla in Libertinus Math...
+	
+    \newcommand*{\FRAC}[1]{{\addfontfeature{Fractions=On}#1}}% use OpenType feature for fractions, \FRAC{1/2} 
+\fi

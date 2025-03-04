@@ -1,0 +1,93 @@
+\subsection{Model: Long Short-Term Memory}
+
+\subsubsection{Introduction}
+
+Long Short-Term Memory (LSTM) networks are a special class of recurrent neural networks designed to capture long-term dependencies in sequential data. By incorporating memory cells and gating mechanisms, LSTMs help alleviate the vanishing or exploding gradient issues commonly found in vanilla RNNs. In this experiment, we integrate a CNN-LSTM pipeline for text-based sentiment classification, leveraging convolutional layers for local feature extraction and LSTM layers for sequential modeling.
+
+\subsubsection{Training Configuration}
+
+The CNN-LSTM training procedure is implemented in the \texttt{train\_cnn\_lstm} function, which handles text tokenization, model building, hyperparameter tuning, and final evaluation. Key configurations include:
+
+\begin{itemize}
+    \item \textbf{Vocabulary Size} (\texttt{vocab\_size}): 10{,}000 words, restricting the tokenized vocabulary to the most frequent terms.
+    \item \textbf{Sequence Length} (\texttt{max\_length}): 500 tokens per input sequence, with shorter texts padded (or longer texts truncated).
+    \item \textbf{Embedding Dimension} (\texttt{embedding\_dim}): 100, defining the size of word embedding vectors.
+    \item \textbf{CNN Blocks}: 
+    \begin{itemize}
+        \item \texttt{filters\_1} and \texttt{filters\_2} chosen from \{64, 128, 192, 256, 384, 512\}.
+        \item \texttt{kernel\_size\_1} and \texttt{kernel\_size\_2} chosen from \{3, 5, 7\}, \{3, 5\} respectively.
+        \item \textbf{Activation}: ReLU, with max-pooling for dimensionality reduction.
+        \item \textbf{BatchNormalization}: Stabilizes intermediate activations.
+    \end{itemize}
+    \item \textbf{LSTM Layer}:
+    \begin{itemize}
+        \item \texttt{lstm\_units} chosen from \{64, 128, 192, 256\}.
+        \item Bi-directional LSTM configuration for better capture of contextual information.
+    \end{itemize}
+    \item \textbf{Fully Connected Layer}:
+    \begin{itemize}
+        \item \texttt{dense\_units} chosen from \{128, 256, 384, 512\} with ReLU activation.
+        \item \texttt{dropout} from \{0.3, 0.4, 0.5, 0.6\} to combat overfitting.
+    \end{itemize}
+    \item \textbf{Optimizer}: Adam with \texttt{learning\_rate} in \{5e-4, 1e-4, 5e-5, 1e-5\}.
+    \item \textbf{Epochs}: 10 (default), balanced against computational constraints.
+\end{itemize}
+
+We perform Keras Tuner-based random search (\texttt{RandomSearch}) over the hyperparameters to identify an optimal set of configurations, determined by validation accuracy.
+
+\subsubsection{Training and Evaluation Results}
+
+Throughout training, the best hyperparameter set was:
+
+\begin{verbatim}
+{
+    "filters_1": 64,
+    "kernel_size_1": 3,
+    "filters_2": 128,
+    "kernel_size_2": 3,
+    "lstm_units": 64,
+    "dense_units": 128,
+    "dropout": 0.3,
+    "learning_rate": 0.0005
+}
+\end{verbatim}
+
+Using these final hyperparameters, the model was retrained and evaluated on a withheld test set. The primary performance metrics—accuracy, precision, recall, F1-score, and ROC AUC—are summarized below:
+
+\begin{table}[H]
+\centering
+\caption{CNN-LSTM Testing Performance}
+\label{tab:lstm-testing-metrics}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Metric} & \textbf{Value} \\ \hline
+Accuracy & 0.7103 \\
+Precision & 0.6740 \\
+Recall & 0.8486 \\
+F1-Score & 0.7513 \\
+ROC AUC & 0.7891 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Performance Analysis}
+
+\begin{itemize}
+    \item \textbf{Accuracy Analysis}: Achieving $\sim71\%$ accuracy suggests the model captures key linguistic cues, though there is room for improvement.
+    \item \textbf{Precision and Recall}: The relatively high recall (84.86\%) indicates that the model correctly identifies a substantial fraction of positive cases, but occasionally misclassifies negative samples (precision at 67.40\%).
+    \item \textbf{ROC AUC}: The AUC of 0.7891 denotes satisfactory discriminative capability.
+    \item \textbf{Model Complexity}: With both convolutional and LSTM components, the model effectively extracts local phrase structures (CNN) and long-range dependencies (LSTM). However, it is more computationally intensive than simpler baselines.
+    \item \textbf{Hyperparameter Influence}: Filter sizes (3), lower CNN filter counts, and moderate \texttt{lstm\_units} (64) struck a good balance between underfitting and overfitting, aided by dropout (0.3) to mitigate over-training.
+\end{itemize}
+
+\subsubsection{Conclusion}
+
+By combining CNN layers for local pattern extraction with LSTM units for long-term sequence modeling, the proposed architecture demonstrates competent text classification performance. The best model configuration achieved 71.03\% accuracy and an F1 of 0.7513, making it a robust baseline for tasks involving longer texts or richer linguistic structures. For future improvements, one might explore:
+\begin{itemize}
+    \item Advanced regularization or fine-tuning strategies (e.g., additional Dropout or data augmentation).
+    \item Pre-trained word embeddings (e.g., GloVe, FastText) or transformer-based embedding approaches.
+    \item Deeper stacking of LSTM layers, attention mechanisms, or bidirectional LSTMs to enhance context capture.
+\end{itemize}
+
+Overall, the CNN-LSTM model successfully balances feature extraction and sequence learning, demonstrating the viability of hybrid architectures in end-to-end text classification.
+
