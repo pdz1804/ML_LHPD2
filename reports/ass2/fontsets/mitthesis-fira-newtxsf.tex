@@ -1,0 +1,38 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-fira-newtxsf.tex}[2024/10/10 v1.06 Load Fira Sans text font with newtx sans serif math font and Inconsolata typewriter font]
+
+%% Adjusted sizes of text, math, and typewriter fonts, 2024/10/11
+%% Fira Sans text font with newtx sans serif math font and Inconsolata typewriter font
+%
+\ifpdftex
+	\ClassNoteNoLine{\ClassName}{Loading Fira sans text font with newtx sans serif math font and Inconsolata typewriter}
+	\RequirePackage[U,T1]{fontenc}
+    \RequirePackage[varqu,varl]{zi4} % inconsolata font for typewriter
+    \RequirePackage[sfdefault,tabular,lf]{FiraSans} % sans serif text package
+    % Use option lf to get lining figures rather than default, old style figures. Use tabular to get tabular figures, not proportional figures.
+    % Best choice will vary, depending on what type of content you have. With some effort, these settings can be changed according to content,
+    % See, e.g.: https://tex.stackexchange.com/q/114331/119566
+    \renewcommand\rmdefault{\fira@family} % roman font for math (e.g., for operators) and for \textrm{..}
+    \RequirePackage[scaled=1.1]{newtxsf}  % sans serif math; [noSTIXops] option suppresses STIX figures in favor of text font figures, 
+    % in the most recent versions of newtxsf, but using the following for backward compatibility. NB: 'figures' means numbers: 0123456789.
+    % This matters, for example, in tables that mix text and math figures.
+        \DeclareSymbolFont{mynumbers}{T1}{FiraSans-TLF}{m}{n}
+        \DeclareMathSymbol{0}{\mathord}{mynumbers}{`0}
+        \DeclareMathSymbol{1}{\mathord}{mynumbers}{`1}
+        \DeclareMathSymbol{2}{\mathord}{mynumbers}{`2}
+        \DeclareMathSymbol{3}{\mathord}{mynumbers}{`3}
+        \DeclareMathSymbol{4}{\mathord}{mynumbers}{`4}
+        \DeclareMathSymbol{5}{\mathord}{mynumbers}{`5}
+        \DeclareMathSymbol{6}{\mathord}{mynumbers}{`6}
+        \DeclareMathSymbol{7}{\mathord}{mynumbers}{`7}
+        \DeclareMathSymbol{8}{\mathord}{mynumbers}{`8}
+        \DeclareMathSymbol{9}{\mathord}{mynumbers}{`9}
+ 	\RequirePackage{bm}
+\else
+	\ClassWarning{\ClassName}{The fira-newtxsf font set requires pdflatex. Defaulting to LMR fonts}
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+    % suppress tiresome warnings about lack of integration between mathtools and unicode-math.
+    % Unicode-math loads the fontspec package, but the default fonts are not selected by fontspec in this case.
+\fi

@@ -1,0 +1,210 @@
+\documentclass[openany]{mitthesis}
+
+% Encoding and Language Settings
+\usepackage[utf8]{inputenc}       % Enables UTF-8 encoding
+\usepackage[T5]{fontenc}          % Supports Vietnamese characters
+\usepackage[english]{babel}       % Language support (can change to [vietnamese])
+
+% Typography and Font Settings
+\usepackage{lmodern}
+\usepackage[protrusion=true, expansion=false]{microtype}
+\usepackage{ragged2e} % Provides the \RaggedRight command
+
+\usepackage{neuralnetwork}
+
+% Math and Theorem Environments
+\usepackage{amsmath, amssymb, amsthm, bm}
+\usepackage{mathtools}
+\DeclareMathOperator{\Erf}{erf}
+\DeclareMathOperator{\Erfc}{erfc}
+\DeclarePairedDelimiterXPP\erf[1]{\Erf\mkern1mu}(){}{#1}
+\DeclarePairedDelimiterXPP\erfc[1]{\Erfc\mkern1mu}(){}{#1}
+
+% Theorem Styles
+\newtheorem{theorem}{{\bf Theorem}}
+\newtheorem{property}{{\bf Property}}
+\newtheorem{proposition}{{\bf Proposition}}
+\newtheorem{corollary}[proposition]{{\bf Corollary}}
+\newtheorem{lemma}[proposition]{{\bf Lemma}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+% Graphics and Colors
+\usepackage{graphicx, tikz}
+\usetikzlibrary{arrows, snakes, backgrounds, patterns, shapes, calc, positioning, matrix, fit}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\definecolor{gray}{RGB}{247, 247, 247}
+\definecolor{pr}{RGB}{0, 32, 128}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\usepackage{csquotes}
+
+% Code Listings
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta}, numberstyle=\tiny\color{gray},
+  stringstyle=\color{codepurple}, basicstyle=\ttfamily\footnotesize,
+  breaklines=true, numbers=left, numbersep=5pt, tabsize=2
+}
+\lstset{style=mystyle}
+
+% Tables
+\usepackage{array, tabularx, booktabs, longtable, multirow, adjustbox, caption}
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+
+% Algorithm and Pseudocode
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% Hyperlinks and References
+\usepackage{hyperref}
+\usepackage{bookmark}
+\hypersetup{
+  colorlinks=true,
+  linktoc=all,
+  linkcolor=blue,
+  citecolor=black,
+  urlcolor=black,
+  pdfsubject={MIT Thesis Template with Added Features},
+  % pdfkeywords={Massachusetts Institute of Technology, MIT},
+  pdfkeywords={Ho Chi Minh City University of Technology, MIT},
+  pdfauthortitle={}
+}
+
+% Fancy Header and Footer
+\usepackage{fancyhdr, lastpage}
+
+% Markdown Support
+\usepackage[fencedCode,citations,definitionLists,hashEnumerators,smartEllipses,pipeTables,tableCaptions,hybrid]{markdown}
+
+% Section Depth Configuration
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\makeatletter
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\@alph\c@subsubsubsection}
+\newcommand\subsubsubsection{\@startsection{subsubsubsection}{4}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\makeatother
+
+% Custom Commands and Boxes
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+    \node[shape=circle,draw,inner sep=0.1pt] (char) {#1};}}
+
+\usepackage[most]{tcolorbox}
+\newtcolorbox{cmt}[1]{
+  boxrule=0pt, boxsep=0pt, colback=gray,
+  detach title, before upper={\tcbtitle \ },
+  fonttitle=\bfseries\sffamily, coltitle=pr, title=#1,
+  borderline west={2.5pt}{0pt}{pr}, enhanced jigsaw,
+  before skip=10pt, after skip=10pt, breakable
+}
+
+\newcommand{\myItemize}[1]{%
+    \begin{itemize}
+        #1
+    \end{itemize}
+}
+
+\usepackage{makecell}
+
+%%%%%%%%%%% Bibliography %%%%%%%%%%%%
+\usepackage[style=ext-numeric-comp,giveninits=true,maxbibnames=10,sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+\setlength{\parskip}{0.5em}       % Paragraph spacing
+\setlength{\parindent}{0pt}       % Disable paragraph indentation
+
+\begin{document}
+
+%%% edit the following commands to match your thesis %%%%%%%%%%
+
+\begin{titlepage}
+% Temporarily adjust margins for this page only
+\newgeometry{top=2cm, bottom=4cm, left=2cm, right=2.5cm} % Adjust as needed
+\begin{center}
+VIETNAM NATIONAL UNIVERSITY, HO CHI MINH CITY \\
+UNIVERSITY OF TECHNOLOGY \\
+FACULTY OF COMPUTER SCIENCE AND ENGINEERING
+\end{center}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=6cm]{hcmut.png}
+\end{center}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{c}
+\multicolumn{1}{l}{\textbf{{\Large MACHINE LEARNING (CO3117)}}}\\
+~~\\
+\hline
+\\
+\multicolumn{1}{l}{\textbf{{\Large Report:}}}\\
+\\
+\textbf{{\Huge Assignment 2}}\\
+\\
+\textbf{{Team LHPD2}}\\
+\\
+\textbf{Semester 2, Academic Year 2024 - 2025}\\
+\\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{1cm}
+
+\begin{table}[h]
+\begin{tabular}{rrll}
+\hspace{5 cm} & Teacher: & Nguyen An Khuong & \\
+& Students: & Nguyen Quang Phu &- 2252621 (\textbf{\textit{Leader}})  \\
+& & Nguyen Thanh Dat &- 2252145 (Member) \\
+& & Pham Huynh Bao Dai &- 2252139 (Member) \\
+& & Nguyen Tien Hung &- 2252280 (Member) \\
+& & Nguyen Thien Loc &- 2252460 (Member) \\
+\end{tabular}
+\end{table}
+
+\begin{center}
+{\footnotesize HO CHI MINH CITY, APRIL 2025}
+\end{center}
+\restoregeometry
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\pgfplotsset{compat=1.18}
+
+%\include{_heading/01_list_and_workload}
+\include{_heading/02_abstract_description}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Project Organization and Repository Structure}
+    \input{_heading/03_progress}
+
+\chapter{Code Engineering}
+    \input{_heading/04_dataset}
+    \input{_heading/05_preprocessing}
+    \input{_heading/06_visualize}
+    \input{_heading/07_analyze_result}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Self-Reflection}
+    \input{_heading/future_developments}
+    \input{_heading/special_thanks}
+
+% \include{_heading/09_ref.tex}
+
+\end{document} 
+ 
