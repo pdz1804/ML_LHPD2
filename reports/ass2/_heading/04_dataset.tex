@@ -1,0 +1,97 @@
+\section{Datasets}
+
+This project utilizes three key datasets for training and testing the model in order to test and analyze sentiment scores using every model in the syllabus. These datasets have been curated to provide a comprehensive range of content for robust sentiment analysis.Below are the descriptions of the datasets:
+
+\subsection{sentiment140-dataset}
+
+The \textbf{Sentiment140 dataset} is a large-scale collection of \textbf{1,600,000 tweets} obtained using the \textbf{Twitter API}. This dataset is designed for \textbf{sentiment analysis} and has been preprocessed by removing emoticons to provide a cleaner textual representation of tweets.
+
+\subsubsection{Dataset Description}
+
+The dataset was created using the Twitter API and contains a large collection of tweets labeled for sentiment analysis. Sentiments were automatically assigned using distant supervision, leveraging emoticons as indicators of sentiment polarity. The dataset is widely used for machine learning applications in sentiment classification.
+
+\subsubsection{Dataset Format}
+
+The dataset contains six fields, each representing specific attributes of a tweet:
+
+\begin{itemize}
+    \item \textbf{target}: Sentiment label of the tweet (0 = Negative, 2 = Neutral, 4 = Positive).
+    \item \textbf{ids}: Unique tweet ID.
+    \item \textbf{date}: Timestamp of the tweet (e.g., \texttt{Sat May 16 23:58:44 UTC 2009}).
+    \item \textbf{flag}: Query keyword used to retrieve the tweet (e.g., \texttt{lyx}). If no keyword was used, this field contains \texttt{NO\_QUERY}.
+    \item \textbf{user}: Username of the person who tweeted (e.g., \texttt{robotickilldozr}).
+    \item \textbf{text}: Actual content of the tweet (e.g., \texttt{Lyx is cool}), with emoticons removed for sentiment classification.
+\end{itemize}
+
+\subsubsection{Dataset Notes}
+
+\begin{itemize}
+    \item \textbf{Preprocessed Version}: This version of the dataset (\texttt{raining.1600000.\allowbreak processed.\allowbreak noemoticon.csv}) has \textbf{no emoticons}, making it suitable for text-based sentiment analysis without relying on emoticon cues.
+    \item \textbf{Large-scale Dataset}: The dataset contains \textbf{1.6 million tweets}, making it one of the largest sentiment analysis datasets available.
+    \item \textbf{Automated Labeling}: Since sentiment was assigned based on emoticons, there may be \textbf{biases} or \textbf{inaccuracies} in certain cases.
+    \item \textbf{Historical Data}: The dataset was collected in \textbf{2009}, meaning language patterns and sentiment expressions may differ from modern Twitter usage.
+\end{itemize}
+
+The link to this dataset can be found here: \url{https://www.kaggle.com/datasets/kazanova/sentiment140}
+
+\subsection{twitter-tweets-sentiment-dataset}
+
+The \textbf{Twitter Tweets Sentiment Dataset} is a dataset designed for \textbf{sentiment analysis in natural language processing (NLP)}. It contains a collection of tweets labeled with sentiment polarity, which can be used to develop models for sentiment classification.
+
+\subsubsection{Dataset Description}
+
+The dataset was sourced from Kaggle competitions and includes labeled tweets aimed at detecting positive, neutral, or negative sentiments. The dataset is useful for training and evaluating machine learning models that classify sentiments and identify key phrases that exemplify the provided sentiment. It is particularly useful for identifying and filtering hateful or negative content on Twitter.
+
+\subsubsection{Dataset Format}
+
+The dataset consists of four fields, each representing specific attributes of a tweet:
+
+\begin{itemize}
+    \item \textbf{textID}: Unique identifier for each tweet.
+    \item \textbf{text}: The actual content of the tweet, representing the user’s post on Twitter.
+    \item \textbf{selected\_text}: A word or phrase extracted from the tweet that encapsulates the sentiment.
+    \item \textbf{sentiment}: Sentiment label of the tweet (e.g., \texttt{positive}, \texttt{neutral}, \texttt{negative}).
+\end{itemize}
+
+\subsubsection{Dataset Notes}
+
+\begin{itemize}
+    \item \textbf{Preprocessing Considerations}: When parsing the CSV file, ensure that beginning and ending quotes from the text field are removed to avoid incorrect tokenization.
+    \item \textbf{Size and Scope}: The dataset contains \textbf{27.5k tweets}, making it suitable for training NLP-based sentiment classifiers.
+    \item \textbf{Objective}: The goal is to develop a machine learning model that can accurately predict sentiment and extract the key text that represents it.
+    \item \textbf{Classification Models}: Various classification algorithms can be applied and compared based on evaluation metrics to determine the best approach for sentiment classification.
+    \item \textbf{License and Updates}: The dataset is under \textbf{CC0: Public Domain} and is expected to be updated annually.
+\end{itemize}
+
+The dataset can be accessed here: \url{https://www.kaggle.com/c/tweet-sentiment-extraction/data?select=train.csv}
+
+\subsection{twitter-sentiments-dataset}
+
+The \textbf{Twitter Sentiments Dataset} is a dataset designed for sentiment analysis, containing labeled tweets categorized into three sentiments: negative (-1), neutral (0), and positive (+1). It provides essential data for training models that classify sentiments in social media text.
+
+\subsubsection{Dataset Description}
+
+This dataset contains two fields: the cleaned tweet text and its corresponding sentiment label. The dataset is widely used for text classification and sentiment analysis in NLP applications.
+
+\subsubsection{Dataset Format}
+
+The dataset consists of the following fields:
+
+\begin{itemize}
+    \item \textbf{clean\_text}: Processed tweet text without unnecessary characters or formatting.
+    \item \textbf{category}: Sentiment category of the tweet (\texttt{-1 = negative}, \texttt{0 = neutral}, \texttt{+1 = positive}).
+\end{itemize}
+
+\subsubsection{Dataset Notes}
+
+\begin{itemize}
+    \item \textbf{Acknowledgements}: The dataset was provided by \textbf{Hussein, Sherif (2021)}, titled \textit{“Twitter Sentiments Dataset”}, available on Mendeley Data (DOI: \url{10.17632/z9zw7nt5h2.1}).
+    \item \textbf{Size and Scope}: The dataset is \textbf{20.9 MB} and contains a significant number of labeled tweets, making it ideal for sentiment analysis research.
+    \item \textbf{Usability Score}: Rated \textbf{10.00} in usability, ensuring it is well-structured for machine learning applications.
+    \item \textbf{License and Updates}: This dataset is released under the \textbf{Attribution 4.0 International (CC BY 4.0)} license and has no expected updates.
+\end{itemize}
+
+The dataset can be accessed here: \url{https://www.mendeley.com/datasets/z9zw7nt5h2.1}
+
+\newpage
+

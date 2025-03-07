@@ -36,6 +36,23 @@
 
 ---
 
+## 🚀 Getting Started with ML_LHPD2
+
+Welcome to the **Machine Learning Course - Group LHPD2** repository! This project is structured to help users understand our approach to machine learning, from data preprocessing to model training and evaluation.
+
+---
+
+### 📥 Clone the Repository
+
+To get started, visit our repository and clone it to your local machine using the provided GitHub link. Once cloned, navigate into the repository.
+
+```bash
+git clone https://github.com/pdz1804/ML_LHPD2.git
+cd ML_LHPD2
+```
+
+---
+
 ## Project Directory Structure
 
 This repository is structured to ensure maintainability, scalability, and ease of collaboration. It contains raw and processed data, model implementations, notebooks for exploratory data analysis, reports, source code, tests, and project metadata files.
@@ -55,23 +72,6 @@ This repository is structured to ensure maintainability, scalability, and ease o
 ```
 
 This structured layout ensures an organized workflow and smooth project management.
-
----
-
-## 🚀 Getting Started with ML_LHPD2
-
-Welcome to the **Machine Learning Course - Group LHPD2** repository! This project is structured to help users understand our approach to machine learning, from data preprocessing to model training and evaluation.
-
----
-
-### 📥 Clone the Repository
-
-To get started, visit our repository and clone it to your local machine using the provided GitHub link. Once cloned, navigate into the repository.
-
-```bash
-git clone https://github.com/pdz1804/ML_LHPD2.git
-cd ML_LHPD2
-```
 
 ---
 
