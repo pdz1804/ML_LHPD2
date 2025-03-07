@@ -1,0 +1,69 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-heros-stix2.tex}[2024/10/13 v1.05 Load TeX Gyre Heros (sans serif) text font with STIX Two Math font and Inconsolata monospaced font]
+
+%% TeX Gyre Heros (sans serif) text font with STIX Two Math font and Inconsolata monospaced font
+%
+% These fonts are available at: 
+%				http://www.gust.org.pl/projects/e-foundry/tex-gyre 
+%				https://github.com/stipub/stixfonts 
+%				https://ctan.org/tex-archive/fonts/inconsolata
+% Install these as system fonts on your computer
+%
+\ifpdftex
+	\ClassError{\ClassName}{The heros-stix2 fontset requires a unicode engine. Defaulting to CMR fonts}{To use the class option [fontset=heros-stix2] you must use a unicode engine, such as LuaLaTeX.}
+	\RequirePackage[T1]{fontenc}
+	\RequirePackage{bm}
+\else
+	\ClassNoteNoLine{\ClassName}{TeX Gyre Heros (sans serif) text font with STIX2 math font and Inconsolata monospaced font}
+	%
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+    % suppress tiresome warnings about lack of integration between mathtools and unicode-math
+    % unicode-math loads the fontspec package
+
+    \setmainfont{texgyreheros}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+		WordSpace = {1,1.4,1},
+		Extension = .otf,
+    	UprightFont = *-regular,
+    	ItalicFont = *-italic,
+    	BoldFont = *-bold,
+    	BoldItalicFont = *-bolditalic,
+		Numbers = Lining,
+    	Scale=0.91,
+	]        
+    \setsansfont{texgyreheros}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+		WordSpace = {1,1.4,1},
+		Extension = .otf,
+    	UprightFont = *-regular,
+    	ItalicFont = *-italic,
+    	BoldFont = *-bold,
+    	BoldItalicFont = *-bolditalic,
+		Numbers = Lining,
+    	Scale=0.91,
+	]        
+   \setmonofont{Inconsolatazi4}[% This otf font ships with the LaTeX Inconsolata package and is in CTAN https://ctan.org/tex-archive/fonts/inconsolata
+        Scale=1.04,
+        Extension = .otf,
+        UprightFont = *-Regular,
+        ItalicFont = *-Regular,% has no italic face
+        BoldFont = *-Bold, 
+    	BoldItalicFont = *-Bold,% has no bold italic face
+        RawFeature = {+ss01,+ss02,+ss03},
+    ]             
+    \setmathfont{STIXTwoMath-Regular}[% nice glyphs, but \mkern sometimes needed %% https://github.com/stipub/stixfonts
+    	Scale=0.95,%MatchUppercase,%MatchLowercase,
+		% scaling is a matter of taste ... the x-heights of STIX2 are greater than for Heros...
+    	Extension = .otf,
+%		BoldFont = *,% STIX Two Math has no bold face
+%       Color=NavyBlue, 
+    	RawFeature = {+ss01, -ss02, -ss08},
+    ]
+    % ss01 -- switch calligraphic to script; +ss02 -- variants of g, u, v, w, z; +ss08 -- upright integrals
+    %    
+    \setmathfontface\mathbf{STIXTwoText-Bold.otf}[]% to not get Heros bold, https://github.com/stipub/stixfonts
+    \setmathfontface\mathit{STIXTwoText-Italic.otf}[]
+    \setmathfontface\mathrm{STIXTwoText-Regular.otf}[]% to get roman letters from STIX Two
+     %         
+    \newcommand*{\FRAC}[1]{{\addfontfeature{Fractions=On}#1}}% use OpenType feature for fractions, \FRAC{1/2} 
+\fi

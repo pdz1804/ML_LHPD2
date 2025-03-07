@@ -1,0 +1,68 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-termes-stix2.tex}[2024/10/12 v1.06 Load TeX Gyre Termes text font with STIX2 math font, Heros sans serif font, and Inconsolata monospaced font]
+
+%% TeX Gyre Termes text font and Heros sans serif font with STIX2 math font and Inconsolata monospaced font
+%
+% These fonts are available at: 
+%				http://www.gust.org.pl/projects/e-foundry/tex-gyre 
+%				https://github.com/stipub/stixfonts 
+%				https://ctan.org/tex-archive/fonts/inconsolata
+% Install these as system fonts on your computer
+%
+\ifpdftex
+	\ClassError{\ClassName}{The termes-stix2 fontset requires a unicode engine. Defaulting to CMR fonts}{To use the class option [fontset=termes-stix2], use a unicode engine such as LuaLaTeX.}
+	\RequirePackage[T1]{fontenc}	
+	\RequirePackage{bm}
+\else
+	\ClassNoteNoLine{\ClassName}{Loading TeX Gyre Termes text font with STIX2 math font, Heros sans serif font, and Inconsolata monospaced font}
+	%
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+    % suppress tiresome warnings about lack of integration between mathtools and unicode-math
+    % unicode-math loads the fontspec package
+	%
+    \setmainfont{TeXGyreTermesX}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+		WordSpace = {1,1.4,1},%% This stretch matches newtxtext a little better. 1.4
+    	Extension = .otf,
+    	UprightFont = *-Regular,
+    	ItalicFont = *-Italic,
+    	BoldFont = *-Bold,
+    	BoldItalicFont = *-BoldItalic,
+		SlantedFont = *-Italic,
+		Numbers = Lining,
+	]
+	\setsansfont{texgyreheros}[% Presumes these are system fonts! Available at: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+		WordSpace = {1,1.4,1},
+		Extension = .otf,
+    	UprightFont = *-regular,
+    	ItalicFont = *-italic,
+    	BoldFont = *-bold,
+    	BoldItalicFont = *-bolditalic,
+		Numbers = Lining,
+    	Scale=0.91,% same as for newtx; former value 0.9 too small 2022/01/15
+	]        
+	\setmonofont{Inconsolatazi4}[% This otf font ships with the LaTeX Inconsolata package (it's in TeX Live)
+        Scale=1,% reset to 1, 2024/10/12 %1.03,% rescaled from 1, 22/03/10
+        Extension = .otf,
+        UprightFont = *-Regular,
+        ItalicFont = *-Regular,% has no italic face
+        BoldFont = *-Bold, 
+    	BoldItalicFont = *-Bold,% has no bold italic face
+        RawFeature = {+ss01,+ss02,+ss03},
+    ]             
+	\setmathfont{STIXTwoMath-Regular}[% nice glyphs, but \mkern sometimes needed %% https://github.com/stipub/stixfonts
+    	Scale=MatchUppercase,
+    	Extension = .otf,
+%		BoldFont = *,% STIX Two Math has no bold face
+%       Color=NavyBlue, 
+    	RawFeature = {+ss01, -ss02, -ss08},
+   ]
+   % ss01 -- switch calligraphic to script; +ss02 -- variants of g, u, v, w, z; +ss08 -- upright integrals
+   %
+   \setmathfontface\mathbf{STIXTwoText-Bold.otf}[]% to not get Termes bold, https://github.com/stipub/stixfonts
+   \setmathfontface\mathit{STIXTwoText-Italic.otf}[]
+   \setmathfontface\mathrm{STIXTwoText-Regular.otf}[]% to get roman letters from STIX, not Termes
+    %      
+   \newcommand*{\FRAC}[1]{{\addfontfeature{Fractions=On}#1}}% use OpenType feature for fractions, \FRAC{1/2} 
+\fi
