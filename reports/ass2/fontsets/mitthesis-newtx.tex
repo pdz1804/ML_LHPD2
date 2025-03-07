@@ -1,0 +1,20 @@
+% From mitthesis package
+% Documentation: https://ctan.org/pkg/mitthesis
+
+\ProvidesFile{mitthesis-newtx.tex}[2024/06/28 v1.04 Load newtx text and math fonts]
+
+\ifpdftex
+	\ClassNoteNoLine{\ClassName}{Loading newtx fonts with inconsolata typewriter}
+	\RequirePackage[T1]{fontenc}
+    \RequirePackage[subscriptcorrection,varvw,helvratio=0.91]{newtx}% stix2, upint
+    \RequirePackage[varl,varqu,hyphenate,mono]{inconsolata}% sans typewriter font; mono = fixed word spacing, hyphenate = allow hyphenation 
+	\RequirePackage{bm}
+	\let\textsuperscript\textsu% newtx changes the default superiors font; this is needed to get commas aligned in sequential footnotes
+\else
+	\ClassWarning{\ClassName}{The newtx font set requires pdflatex.  Defaulting to LMR fonts}
+    \RequirePackage[warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+    % suppress tiresome warnings about lack of integration between mathtools and unicode-math.
+    % Unicode-math loads the fontspec package, but the default fonts are not selected by fontspec in this case.
+\fi
+
+	
