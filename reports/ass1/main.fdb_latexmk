@@ -1,11 +1,11 @@
 # Fdb version 4
-["biber main"] 1741527352.38813 "main.bcf" "main.bbl" "main" 1741528455.33155 0
-  "main.bcf" 1741528453 108860 927ce0f456983cfa0cd6691c05203070 "pdflatex"
+["biber main"] 1741527352.38813 "main.bcf" "main.bbl" "main" 1741538002.39051 0
+  "main.bcf" 1741537993 108860 927ce0f456983cfa0cd6691c05203070 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1741528435.358 "e:/2_LEARNING_BKU/2_File_2/K22_HK242/CO3117_Machine_Learning/ML_Ass1_MIT_v1/main.tex" "main.pdf" "main" 1741528455.33294 0
+["pdflatex"] 1741537910.59029 "e:/2_LEARNING_BKU/2_File_2/K22_HK242/CO3117_Machine_Learning/ML_Ass1_MIT_v1/main.tex" "main.pdf" "main" 1741538002.39284 0
   "C:/Users/User/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1740572812 88371 b965f57369ed322039596060d18f4416 ""
   "C:/Users/User/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1731468450 11986479 415e1fb509c50d60bd46c6af7dddeabf ""
   "C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc" 1256929440 2405 5dcf2c1b967ee25cc46c58cd52244aed ""
@@ -393,20 +393,20 @@
   "C:/Users/User/AppData/Local/Programs/MiKTeX/tex/latex/xkeyval/xkeyval.sty" 1656236919 4937 4ce600ce9bd4ec84d0250eb6892fcf4f ""
   "_analyze/0_0_GeneralTrainingMethod.tex" 1740620355 4423 fbc89333bdeb5b490f272d67ae442849 ""
   "_analyze/0_0_Introduction.tex" 1740923636 6968 f5212e3e54436f9a879f2a2d5299970a ""
-  "_analyze/0_0_model_comp.tex" 1741528411 25229 69efa506614a723235aee403a5a8b8b8 ""
+  "_analyze/0_0_model_comp.tex" 1741537073 25295 7fded15c8906a9208d9f0ca257491a2b ""
   "_analyze/0_2_preproducibility.tex" 1741528229 16896 ebe32197ce1eeaeb113488e0fbbbdc22 ""
   "_analyze/1_1_LogisticRegression.tex" 1741523499 12133 3347c01d493dbcb6f89e4ecda7b477c4 ""
   "_analyze/1_2_DecisionTree.tex" 1741523811 13002 a236195814466e72397c8c3610c0d192 ""
   "_analyze/1_3_XGB.tex" 1741524160 12802 541ee4c16bf0a68d1379ad9da0b0ab1e ""
-  "_analyze/1_4_RF.tex" 1741524489 12031 220aa0792aa8bd872a2ff8bc3018705d ""
-  "_analyze/2_1_Perceptron.tex" 1741524662 10586 ae714a033ae80278f2725fa0adb2c989 ""
+  "_analyze/1_4_RF.tex" 1741536478 11914 858a1903aaf96669fe60ed4a93f89658 ""
+  "_analyze/2_1_Perceptron.tex" 1741537799 10590 2f118bab893a8f023dc54c49ba30827f ""
   "_analyze/2_2_MLP.tex" 1741524998 12007 0bcd6f3d18188f46c32f8c7f16f92e3a ""
   "_analyze/2_3_LSTM.tex" 1741525309 8129 76f71e94319d89fb4e9d77194bd18b91 ""
   "_analyze/3_1_NaiveBayes.tex" 1741525649 9914 99121fbf2e2f114cad5791e53d94ff38 ""
   "_analyze/3_2_GA.tex" 1741525654 12914 3959768fedda5626f66151f27f62f9ba ""
   "_analyze/5_1_HMM.tex" 1741525929 10964 55777ba20cdcdd716d72044374b8443b ""
   "_analyze/5_2_BayesNet.tex" 1741525698 9628 45305b24d07ba71b2ff032e19a7c1805 ""
-  "_heading/02_abstract_description.aux" 1741528442 5357 33dbfe829583b378869ca7c4004afd7b "pdflatex"
+  "_heading/02_abstract_description.aux" 1741537948 5357 33dbfe829583b378869ca7c4004afd7b "pdflatex"
   "_heading/02_abstract_description.tex" 1740920661 3001 e02b0644222ab6ba445486c7beb40e28 ""
   "_heading/03_progress.tex" 1741066074 6333 1fd75580d1dbc031f1012a44d718430f ""
   "_heading/04_dataset.tex" 1740919750 6735 2a6f1714a7e2d6f80f1e2fa40999b63c ""
@@ -492,13 +492,13 @@
   "img/visualize_pic/top20_posi.png" 1740829120 37177 e3108e4a67df3c1ea076041f7f06f7f7 ""
   "img/visualize_pic/top20_word_cloud.png" 1740829120 123720 3764a48315146137a418d004e1ba431c ""
   "img/visualize_pic/word_frequency.png" 1740829120 56340 8a259d28e2b6e25a7b9e37842a0ad740 ""
-  "main.aux" 1741528453 121819 3cec529a2dd215cc4cfe76a9fd1a69ca "pdflatex"
+  "main.aux" 1741537993 121608 f2a53203869cb4b413cc4ca3efadbf7e "pdflatex"
   "main.bbl" 1741527383 486 76d65a242ec496c9b4361af646ff12cb "biber main"
-  "main.lof" 1741528453 3511 9e408420a2a173a2e78e0eba2d3a3ae7 "pdflatex"
-  "main.lot" 1741528453 3227 cbf245395a5363a8f8f0aef7b0e5e16e "pdflatex"
-  "main.run.xml" 1741528453 2502 6a0224c85e2a4293f29e13a94b6641d8 "pdflatex"
+  "main.lof" 1741537993 3511 9e408420a2a173a2e78e0eba2d3a3ae7 "pdflatex"
+  "main.lot" 1741537993 3227 cbf245395a5363a8f8f0aef7b0e5e16e "pdflatex"
+  "main.run.xml" 1741537993 2502 6a0224c85e2a4293f29e13a94b6641d8 "pdflatex"
   "main.tex" 1741527588 5972 b710d0035a1a120a68ba6034336d64ae ""
-  "main.toc" 1741528453 17245 f7cad6bdde828d906c9707c766ffdd5c "pdflatex"
+  "main.toc" 1741537993 17232 782e9f67257042c94ef09b99291ad3a7 "pdflatex"
   (generated)
   "_heading/02_abstract_description.aux"
   "main.aux"

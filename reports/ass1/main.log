@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.11.13)  9 MAR 2025 20:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.11.13)  9 MAR 2025 23:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2448,11 +2448,6 @@ Package pdftex.def Info: img/report_info/img/1.4.RF/best_random_forest_glove.png
 [61]
 
 [62]) (_analyze/2_1_Perceptron.tex
-Overfull \hbox (14.26215pt too wide) in paragraph at lines 56--57
-[] []|\T5/lmr/bx/n/12 4.4.8.2.1 Train-ing Per-for-mance Met-rics (Cross--Val-i-da-tion):[] Test-ing Per-for-mance
- []
-
-
 
 [63]
 
@@ -2767,15 +2762,15 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 64366 strings out of 473681
- 1476737 string characters out of 5719670
+ 64363 strings out of 473681
+ 1476689 string characters out of 5719670
  2746026 words of memory out of 5000000
- 85598 multiletter control sequences out of 15000+600000
+ 85595 multiletter control sequences out of 15000+600000
  652134 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  103i,12n,144p,1524b,3850s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbxi10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr6.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtk10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/User/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on main.pdf (120 pages, 3606315 bytes).
+Output written on main.pdf (120 pages, 3606122 bytes).
 PDF statistics:
  2527 PDF objects out of 2984 (max. 8388607)
  730 named destinations out of 1000 (max. 500000)

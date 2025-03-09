@@ -88,10 +88,10 @@
 \contentsline {subsection}{\numberline {4.4.8}Model: Perceptron (ANN)}{63}{subsection.4.4.8}%
 \contentsline {subsubsection}{\numberline {4.4.8.1}Introduction}{63}{subsubsection.4.4.8.1}%
 \contentsline {subsubsection}{\numberline {4.4.8.2}Training Configuration}{63}{subsubsection.4.4.8.2}%
-\contentsline {paragraph}{\numberline {4.4.8.2.1}Training Performance Metrics (Cross-Validation):}{63}{paragraph.4.4.8.2.1}%
-\contentsline {subsubsection}{\numberline {4.4.8.3}Performance Analysis}{64}{subsubsection.4.4.8.3}%
-\contentsline {subsubsection}{\numberline {4.4.8.4}Visualization of Training Results}{65}{subsubsection.4.4.8.4}%
-\contentsline {subsubsection}{\numberline {4.4.8.5}Conclusion}{67}{subsubsection.4.4.8.5}%
+\contentsline {subsubsection}{\numberline {4.4.8.3}Training and Evaluation Results}{63}{subsubsection.4.4.8.3}%
+\contentsline {subsubsection}{\numberline {4.4.8.4}Performance Analysis}{64}{subsubsection.4.4.8.4}%
+\contentsline {subsubsection}{\numberline {4.4.8.5}Visualization of Training Results}{65}{subsubsection.4.4.8.5}%
+\contentsline {subsubsection}{\numberline {4.4.8.6}Conclusion}{67}{subsubsection.4.4.8.6}%
 \contentsline {subsection}{\numberline {4.4.9}Model: Multi-Layer Perceptron}{68}{subsection.4.4.9}%
 \contentsline {subsubsection}{\numberline {4.4.9.1}Introduction}{68}{subsubsection.4.4.9.1}%
 \contentsline {subsubsection}{\numberline {4.4.9.2}Training Configuration}{68}{subsubsection.4.4.9.2}%
