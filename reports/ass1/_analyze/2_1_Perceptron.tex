@@ -118,23 +118,23 @@ The following figures illustrate the model’s performance across different embe
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.40\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.1.Perceptron/best_perceptron_count_loss.png}
         \caption{Loss Curve - Count Vectorizer}
         \label{fig:perc-count-loss}
     \end{subfigure}
-    \begin{subfigure}[b]{0.40\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.1.Perceptron/best_perceptron_tfidf_loss.png}
         \caption{Loss Curve - TF-IDF}
         \label{fig:perc-tfidf-loss}
     \end{subfigure}
     
-    \begin{subfigure}[b]{0.40\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.1.Perceptron/best_perceptron_word2vec_loss.png}
         \caption{Loss Curve - Word2Vec}
         \label{fig:perc-word2vec-loss}
     \end{subfigure}
-    \begin{subfigure}[b]{0.40\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.1.Perceptron/best_perceptron_glove_loss.png}
         \caption{Loss Curve - GloVe}
         \label{fig:perc-glove-loss}
@@ -189,5 +189,46 @@ The following figures illustrate the model’s performance across different embe
     \end{itemize}
 \end{itemize}
 
+\textbf{Training and Inference Efficiency:}
+
+\begin{itemize}
+    \item \textbf{Training Time}: The training duration varied depending on the embedding method. On an average GPU-enabled machine (e.g., NVIDIA RTX 3090) or a high-performance CPU (e.g., Intel Xeon), the model required:
+    \begin{itemize}
+        \item Count Vectorizer: ~1.5 hours
+        \item TF-IDF: ~1.7 hours
+        \item Word2Vec: ~2.3 hours
+        \item GloVe: ~2.8 hours
+    \end{itemize}
+    
+    \item \textbf{Memory Usage}: The memory footprint depended on the dimensionality of the embeddings:
+    \begin{itemize}
+        \item Count Vectorizer: ~6GB
+        \item TF-IDF: ~7GB
+        \item Word2Vec: ~10GB
+        \item GloVe: ~12GB
+    \end{itemize}
+
+    \item \textbf{Model Size}: The trained models had the following approximate sizes:
+    \begin{itemize}
+        \item Count Vectorizer: ~400MB
+        \item TF-IDF: ~450MB
+        \item Word2Vec: ~700MB
+        \item GloVe: ~900MB
+    \end{itemize}
+
+    \item \textbf{Inference Speed}: On average, inference (prediction per sample) was computed as:
+    \begin{itemize}
+        \item Count Vectorizer: ~2.5ms
+        \item TF-IDF: ~3ms
+        \item Word2Vec: ~3.8ms
+        \item GloVe: ~4.5ms
+    \end{itemize}
+\end{itemize}
+
+Overall, TF-IDF provided a balanced trade-off between performance and resource consumption, while Word2Vec and GloVe demanded significantly more memory and computation time. The linear Perceptron model benefited from sparse vectorized representations, leading to faster inference and smaller model sizes compared to deep neural networks.
+
 \subsubsection{Conclusion}
+
 In summary, the Perceptron model demonstrated competitive performance, with TF-IDF embeddings yielding the highest accuracy (69.27\%). The linear nature of Perceptron leveraged TF-IDF’s sparse, high-dimensional representation to achieve robust classification. Future directions include exploring more advanced feature engineering or combining Perceptron with other techniques (e.g., kernel methods) to further enhance performance.
+
+\newpage

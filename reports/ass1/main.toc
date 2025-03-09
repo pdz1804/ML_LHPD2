@@ -1,140 +1,175 @@
 \babel@toc {english}{}\relax 
-\contentsline {frontmatter}{List of Figures}{6}{listoffigures}%
-\contentsline {frontmatter}{List of Tables}{8}{listoftables}%
-\contentsline {chapter}{\numberline {1}Abstract}{9}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Description}{10}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Project Organization and Repository Structure}{11}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Team Members and Workloads}{11}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Project Organization and Requirements}{12}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Team Collaboration and Version Control}{12}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}GitHub Repository Structure}{12}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Key Requirements}{13}{subsection.3.2.3}%
-\contentsline {section}{\numberline {3.3}Repository Structure}{13}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}How to Run This Project}{14}{subsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.1.1}Clone the Repository}{14}{subsubsection.3.3.1.1}%
-\contentsline {subsubsection}{\numberline {3.3.1.2}Environment Setup}{14}{subsubsection.3.3.1.2}%
-\contentsline {subsection}{\numberline {3.3.2}Project Exploration}{14}{subsection.3.3.2}%
-\contentsline {chapter}{\numberline {4}Code Engineering}{15}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Datasets}{15}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}sentiment140-dataset}{15}{subsection.4.1.1}%
-\contentsline {subsubsection}{\numberline {4.1.1.1}Dataset Description}{15}{subsubsection.4.1.1.1}%
-\contentsline {subsubsection}{\numberline {4.1.1.2}Dataset Format}{15}{subsubsection.4.1.1.2}%
-\contentsline {subsubsection}{\numberline {4.1.1.3}Dataset Notes}{16}{subsubsection.4.1.1.3}%
-\contentsline {subsection}{\numberline {4.1.2}twitter-tweets-sentiment-dataset}{16}{subsection.4.1.2}%
-\contentsline {subsubsection}{\numberline {4.1.2.1}Dataset Description}{16}{subsubsection.4.1.2.1}%
-\contentsline {subsubsection}{\numberline {4.1.2.2}Dataset Format}{16}{subsubsection.4.1.2.2}%
-\contentsline {subsubsection}{\numberline {4.1.2.3}Dataset Notes}{17}{subsubsection.4.1.2.3}%
-\contentsline {subsection}{\numberline {4.1.3}twitter-sentiments-dataset}{17}{subsection.4.1.3}%
-\contentsline {subsubsection}{\numberline {4.1.3.1}Dataset Description}{17}{subsubsection.4.1.3.1}%
-\contentsline {subsubsection}{\numberline {4.1.3.2}Dataset Format}{18}{subsubsection.4.1.3.2}%
-\contentsline {subsubsection}{\numberline {4.1.3.3}Dataset Notes}{18}{subsubsection.4.1.3.3}%
-\contentsline {section}{\numberline {4.2}Data Preprocessing}{19}{section.4.2}%
-\contentsline {subsection}{\numberline {4.2.1}Data Collection Process}{19}{subsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.2.2}Data Preprocessing and Merging}{19}{subsection.4.2.2}%
-\contentsline {subsection}{\numberline {4.2.3}Data Cleaning and Preparation}{20}{subsection.4.2.3}%
-\contentsline {subsection}{\numberline {4.2.4}Exploratory Data Analysis (EDA)}{22}{subsection.4.2.4}%
-\contentsline {subsection}{\numberline {4.2.5}Publishing the Merged Dataset on Kaggle}{24}{subsection.4.2.5}%
-\contentsline {subsection}{\numberline {4.2.6}Final Remarks}{24}{subsection.4.2.6}%
-\contentsline {section}{\numberline {4.3}Visualization}{25}{section.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Relationships of the Attributes}{25}{subsection.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Top Words Visualizations}{26}{subsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}The distribution of Text Length}{27}{subsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.3.4}Word Frequencies by Labels}{29}{subsection.4.3.4}%
-\contentsline {section}{\numberline {4.4}Analyze the Training Process of Models}{31}{section.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Building Features}{31}{subsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.1.1}Overview}{31}{subsubsection.4.4.1.1}%
-\contentsline {subsubsection}{\numberline {4.4.1.2}Key Components and Functionalities}{33}{subsubsection.4.4.1.2}%
-\contentsline {subsubsection}{\numberline {4.4.1.3}Usage}{33}{subsubsection.4.4.1.3}%
-\contentsline {subsection}{\numberline {4.4.2}General Training Methods}{33}{subsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Project Workflow and Implementation}{34}{subsection.4.4.3}%
-\contentsline {subsubsection}{\numberline {4.4.3.1}Training and Evaluation Workflow}{34}{subsubsection.4.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.4.3.2}Implementation Quality and Code Efficiency}{34}{subsubsection.4.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.4.3.3}Data Preprocessing and Model Tuning}{35}{subsubsection.4.4.3.3}%
-\contentsline {subsubsection}{\numberline {4.4.3.4}Performance Analysis and Model Evaluation}{35}{subsubsection.4.4.3.4}%
-\contentsline {subsubsection}{\numberline {4.4.3.5}Documentation and Reproducibility}{35}{subsubsection.4.4.3.5}%
-\contentsline {subsubsection}{\numberline {4.4.3.6}Project Management and Collaboration}{36}{subsubsection.4.4.3.6}%
-\contentsline {subsection}{\numberline {4.4.4}Model: Logistic Regression}{37}{subsection.4.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.4.1}Introduction}{37}{subsubsection.4.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.4.2}Training Configuration}{37}{subsubsection.4.4.4.2}%
-\contentsline {subsubsection}{\numberline {4.4.4.3}Training and Evaluation Results}{37}{subsubsection.4.4.4.3}%
-\contentsline {subsubsection}{\numberline {4.4.4.4}Performance Analysis}{38}{subsubsection.4.4.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.4.5}Visualization of Training Results}{39}{subsubsection.4.4.4.5}%
-\contentsline {subsubsection}{\numberline {4.4.4.6}Conclusion}{40}{subsubsection.4.4.4.6}%
-\contentsline {subsection}{\numberline {4.4.5}Model: Decision Tree}{41}{subsection.4.4.5}%
-\contentsline {subsubsection}{\numberline {4.4.5.1}Introduction}{41}{subsubsection.4.4.5.1}%
-\contentsline {subsubsection}{\numberline {4.4.5.2}Training Configuration}{41}{subsubsection.4.4.5.2}%
-\contentsline {subsubsection}{\numberline {4.4.5.3}Training and Evaluation Results}{41}{subsubsection.4.4.5.3}%
-\contentsline {subsubsection}{\numberline {4.4.5.4}Performance Analysis}{43}{subsubsection.4.4.5.4}%
-\contentsline {subsubsection}{\numberline {4.4.5.5}Visualization of Training Results}{43}{subsubsection.4.4.5.5}%
-\contentsline {subsubsection}{\numberline {4.4.5.6}Conclusion}{45}{subsubsection.4.4.5.6}%
-\contentsline {subsection}{\numberline {4.4.6}Model: XGB}{45}{subsection.4.4.6}%
-\contentsline {subsubsection}{\numberline {4.4.6.1}Introduction}{45}{subsubsection.4.4.6.1}%
-\contentsline {subsubsection}{\numberline {4.4.6.2}Training Configuration}{46}{subsubsection.4.4.6.2}%
-\contentsline {subsubsection}{\numberline {4.4.6.3}Training and Evaluation Results}{46}{subsubsection.4.4.6.3}%
-\contentsline {subsubsection}{\numberline {4.4.6.4}Performance Analysis}{47}{subsubsection.4.4.6.4}%
-\contentsline {subsubsection}{\numberline {4.4.6.5}Visualization of Training Results}{48}{subsubsection.4.4.6.5}%
-\contentsline {subsubsection}{\numberline {4.4.6.6}Conclusion}{50}{subsubsection.4.4.6.6}%
-\contentsline {subsection}{\numberline {4.4.7}Model: Random Forest}{50}{subsection.4.4.7}%
-\contentsline {subsubsection}{\numberline {4.4.7.1}Introduction}{50}{subsubsection.4.4.7.1}%
-\contentsline {subsubsection}{\numberline {4.4.7.2}Training Configuration}{50}{subsubsection.4.4.7.2}%
-\contentsline {subsubsection}{\numberline {4.4.7.3}Training and Evaluation Results}{50}{subsubsection.4.4.7.3}%
-\contentsline {subsubsection}{\numberline {4.4.7.4}Performance Analysis}{52}{subsubsection.4.4.7.4}%
-\contentsline {subsubsection}{\numberline {4.4.7.5}Visualization of Training Results}{52}{subsubsection.4.4.7.5}%
-\contentsline {subsubsection}{\numberline {4.4.7.6}Conclusion}{54}{subsubsection.4.4.7.6}%
-\contentsline {subsection}{\numberline {4.4.8}Model: Perceptron (ANN)}{54}{subsection.4.4.8}%
-\contentsline {subsubsection}{\numberline {4.4.8.1}Introduction}{54}{subsubsection.4.4.8.1}%
-\contentsline {subsubsection}{\numberline {4.4.8.2}Training Configuration}{54}{subsubsection.4.4.8.2}%
-\contentsline {paragraph}{\numberline {4.4.8.2.1}Training Performance Metrics (Cross-Validation):}{55}{paragraph.4.4.8.2.1}%
-\contentsline {subsubsection}{\numberline {4.4.8.3}Performance Analysis}{56}{subsubsection.4.4.8.3}%
-\contentsline {subsubsection}{\numberline {4.4.8.4}Visualization of Training Results}{56}{subsubsection.4.4.8.4}%
-\contentsline {subsubsection}{\numberline {4.4.8.5}Conclusion}{58}{subsubsection.4.4.8.5}%
-\contentsline {subsection}{\numberline {4.4.9}Model: Multi-Layer Perceptron}{58}{subsection.4.4.9}%
-\contentsline {subsubsection}{\numberline {4.4.9.1}Introduction}{58}{subsubsection.4.4.9.1}%
-\contentsline {subsubsection}{\numberline {4.4.9.2}Training Configuration}{58}{subsubsection.4.4.9.2}%
-\contentsline {subsubsection}{\numberline {4.4.9.3}Training and Evaluation Results}{59}{subsubsection.4.4.9.3}%
-\contentsline {subsubsection}{\numberline {4.4.9.4}Performance Analysis}{60}{subsubsection.4.4.9.4}%
-\contentsline {subsubsection}{\numberline {4.4.9.5}Visualization of Training Results}{60}{subsubsection.4.4.9.5}%
-\contentsline {subsubsection}{\numberline {4.4.9.6}Conclusion}{63}{subsubsection.4.4.9.6}%
-\contentsline {subsection}{\numberline {4.4.10}Model: Long Short-Term Memory}{63}{subsection.4.4.10}%
-\contentsline {subsubsection}{\numberline {4.4.10.1}Introduction}{63}{subsubsection.4.4.10.1}%
-\contentsline {subsubsection}{\numberline {4.4.10.2}Training Configuration}{63}{subsubsection.4.4.10.2}%
-\contentsline {subsubsection}{\numberline {4.4.10.3}Training and Evaluation Results}{64}{subsubsection.4.4.10.3}%
-\contentsline {subsubsection}{\numberline {4.4.10.4}Performance Analysis}{65}{subsubsection.4.4.10.4}%
-\contentsline {subsubsection}{\numberline {4.4.10.5}Conclusion}{65}{subsubsection.4.4.10.5}%
-\contentsline {subsection}{\numberline {4.4.11}Model: Naïve Bayes}{66}{subsection.4.4.11}%
-\contentsline {subsubsection}{\numberline {4.4.11.1}Introduction}{66}{subsubsection.4.4.11.1}%
-\contentsline {subsubsection}{\numberline {4.4.11.2}Training Configuration}{66}{subsubsection.4.4.11.2}%
-\contentsline {subsubsection}{\numberline {4.4.11.3}Training and Evaluation Results}{66}{subsubsection.4.4.11.3}%
-\contentsline {subsubsection}{\numberline {4.4.11.4}Performance Analysis}{67}{subsubsection.4.4.11.4}%
-\contentsline {subsubsection}{\numberline {4.4.11.5}Visualization of Training Results}{68}{subsubsection.4.4.11.5}%
-\contentsline {subsubsection}{\numberline {4.4.11.6}Conclusion}{70}{subsubsection.4.4.11.6}%
-\contentsline {subsection}{\numberline {4.4.12}Model: Genatic Algorithm and GaussianNB}{70}{subsection.4.4.12}%
-\contentsline {subsubsection}{\numberline {4.4.12.1}Introduction}{70}{subsubsection.4.4.12.1}%
-\contentsline {subsubsection}{\numberline {4.4.12.2}Training Configuration}{70}{subsubsection.4.4.12.2}%
-\contentsline {subsubsection}{\numberline {4.4.12.3}Training and Evaluation Results}{73}{subsubsection.4.4.12.3}%
-\contentsline {subsubsection}{\numberline {4.4.12.4}Performance Analysis}{74}{subsubsection.4.4.12.4}%
-\contentsline {subsubsection}{\numberline {4.4.12.5}Conclusion}{75}{subsubsection.4.4.12.5}%
-\contentsline {subsection}{\numberline {4.4.13}Model: Hidden Markov Model}{75}{subsection.4.4.13}%
-\contentsline {subsubsection}{\numberline {4.4.13.1}Introduction}{75}{subsubsection.4.4.13.1}%
-\contentsline {subsubsection}{\numberline {4.4.13.2}Training Configuration}{75}{subsubsection.4.4.13.2}%
-\contentsline {subsubsection}{\numberline {4.4.13.3}Training and Evaluation Results}{77}{subsubsection.4.4.13.3}%
-\contentsline {subsubsection}{\numberline {4.4.13.4}Performance Analysis}{78}{subsubsection.4.4.13.4}%
-\contentsline {subsubsection}{\numberline {4.4.13.5}Conclusion}{78}{subsubsection.4.4.13.5}%
-\contentsline {subsection}{\numberline {4.4.14}Model: BayesNet}{78}{subsection.4.4.14}%
-\contentsline {subsubsection}{\numberline {4.4.14.1}Introduction}{78}{subsubsection.4.4.14.1}%
-\contentsline {subsubsection}{\numberline {4.4.14.2}Training Configuration}{79}{subsubsection.4.4.14.2}%
-\contentsline {subsubsection}{\numberline {4.4.14.3}Training and Evaluation Results}{80}{subsubsection.4.4.14.3}%
-\contentsline {subsubsection}{\numberline {4.4.14.4}Performance Analysis}{81}{subsubsection.4.4.14.4}%
-\contentsline {subsubsection}{\numberline {4.4.14.5}Conclusion}{81}{subsubsection.4.4.14.5}%
-\contentsline {section}{\numberline {4.5}Model Comparison for Sentiment Analysis}{82}{section.4.5}%
-\contentsline {subsection}{\numberline {4.5.1}Introduction}{82}{subsection.4.5.1}%
-\contentsline {subsubsection}{\numberline {4.5.1.1}Model Training and Evaluation Workflow}{82}{subsubsection.4.5.1.1}%
-\contentsline {subsubsection}{\numberline {4.5.1.2}Evaluation Metrics Overview}{83}{subsubsection.4.5.1.2}%
-\contentsline {subsection}{\numberline {4.5.2}Model Performance}{84}{subsection.4.5.2}%
-\contentsline {subsubsection}{\numberline {4.5.2.1}Discussion}{84}{subsubsection.4.5.2.1}%
-\contentsline {subsubsection}{\numberline {4.5.2.2}Selecting the Best Model}{85}{subsubsection.4.5.2.2}%
-\contentsline {subsection}{\numberline {4.5.3}Type I and Type II Error Considerations}{86}{subsection.4.5.3}%
-\contentsline {subsection}{\numberline {4.5.4}Conclusion}{86}{subsection.4.5.4}%
-\contentsline {chapter}{\numberline {5}Self-Reflection}{87}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Future Developments}{87}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Special Thanks}{88}{section.5.2}%
+\contentsline {frontmatter}{List of Figures}{7}{listoffigures}%
+\contentsline {frontmatter}{List of Tables}{9}{listoftables}%
+\contentsline {chapter}{\numberline {1}Abstract}{10}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Description}{11}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Project Organization and Repository Structure}{12}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Team Members and Workloads}{12}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Project Organization and Requirements}{13}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Team Collaboration and Version Control}{13}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}GitHub Repository Structure}{13}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Key Requirements}{14}{subsection.3.2.3}%
+\contentsline {section}{\numberline {3.3}Repository Structure}{14}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}How to Run This Project}{15}{subsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.1.1}Clone the Repository}{15}{subsubsection.3.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.3.1.2}Environment Setup}{15}{subsubsection.3.3.1.2}%
+\contentsline {subsection}{\numberline {3.3.2}Project Exploration}{15}{subsection.3.3.2}%
+\contentsline {chapter}{\numberline {4}Code Engineering}{16}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Datasets}{16}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}sentiment140-dataset}{16}{subsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.1.1}Dataset Description}{16}{subsubsection.4.1.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.1.2}Dataset Format}{16}{subsubsection.4.1.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.1.3}Dataset Notes}{17}{subsubsection.4.1.1.3}%
+\contentsline {subsection}{\numberline {4.1.2}twitter-tweets-sentiment-dataset}{17}{subsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.2.1}Dataset Description}{17}{subsubsection.4.1.2.1}%
+\contentsline {subsubsection}{\numberline {4.1.2.2}Dataset Format}{17}{subsubsection.4.1.2.2}%
+\contentsline {subsubsection}{\numberline {4.1.2.3}Dataset Notes}{18}{subsubsection.4.1.2.3}%
+\contentsline {subsection}{\numberline {4.1.3}twitter-sentiments-dataset}{18}{subsection.4.1.3}%
+\contentsline {subsubsection}{\numberline {4.1.3.1}Dataset Description}{18}{subsubsection.4.1.3.1}%
+\contentsline {subsubsection}{\numberline {4.1.3.2}Dataset Format}{19}{subsubsection.4.1.3.2}%
+\contentsline {subsubsection}{\numberline {4.1.3.3}Dataset Notes}{19}{subsubsection.4.1.3.3}%
+\contentsline {section}{\numberline {4.2}Data Preprocessing}{20}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Data Collection Process}{20}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Data Preprocessing and Merging}{20}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Data Cleaning and Preparation}{21}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Exploratory Data Analysis (EDA)}{23}{subsection.4.2.4}%
+\contentsline {subsection}{\numberline {4.2.5}Publishing the Merged Dataset on Kaggle}{25}{subsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.2.6}Final Remarks}{25}{subsection.4.2.6}%
+\contentsline {section}{\numberline {4.3}Visualization}{26}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Relationships of the Attributes}{26}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Top Words Visualizations}{27}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}The distribution of Text Length}{28}{subsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.3.4}Word Frequencies by Labels}{30}{subsection.4.3.4}%
+\contentsline {section}{\numberline {4.4}Discussion of the Training Process for all trained Models}{32}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Building Features}{32}{subsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.1.1}Overview}{32}{subsubsection.4.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.4.1.2}Key Components and Functionalities}{34}{subsubsection.4.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.4.1.3}Usage}{34}{subsubsection.4.4.1.3}%
+\contentsline {subsection}{\numberline {4.4.2}General Training Methods}{34}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Project Workflow and Implementation}{35}{subsection.4.4.3}%
+\contentsline {subsubsection}{\numberline {4.4.3.1}Training and Evaluation Workflow}{35}{subsubsection.4.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.4.3.2}Implementation Quality and Code Efficiency}{35}{subsubsection.4.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.4.3.3}Data Preprocessing and Model Tuning}{36}{subsubsection.4.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.4.3.4}Performance Analysis and Model Evaluation}{36}{subsubsection.4.4.3.4}%
+\contentsline {subsubsection}{\numberline {4.4.3.5}Documentation and Reproducibility}{36}{subsubsection.4.4.3.5}%
+\contentsline {subsubsection}{\numberline {4.4.3.6}Project Management and Collaboration}{37}{subsubsection.4.4.3.6}%
+\contentsline {subsection}{\numberline {4.4.4}Model: Logistic Regression}{38}{subsection.4.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.4.1}Introduction}{38}{subsubsection.4.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.4.2}Training Configuration}{38}{subsubsection.4.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.4.3}Training and Evaluation Results}{38}{subsubsection.4.4.4.3}%
+\contentsline {subsubsection}{\numberline {4.4.4.4}Performance Analysis}{39}{subsubsection.4.4.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.4.5}Visualization of Training Results}{40}{subsubsection.4.4.4.5}%
+\contentsline {subsubsection}{\numberline {4.4.4.6}Computational Resource Analysis}{41}{subsubsection.4.4.4.6}%
+\contentsline {subsubsection}{\numberline {4.4.4.7}Conclusion}{43}{subsubsection.4.4.4.7}%
+\contentsline {subsection}{\numberline {4.4.5}Model: Decision Tree}{44}{subsection.4.4.5}%
+\contentsline {subsubsection}{\numberline {4.4.5.1}Introduction}{44}{subsubsection.4.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.4.5.2}Training Configuration}{44}{subsubsection.4.4.5.2}%
+\contentsline {subsubsection}{\numberline {4.4.5.3}Training and Evaluation Results}{44}{subsubsection.4.4.5.3}%
+\contentsline {subsubsection}{\numberline {4.4.5.4}Performance Analysis}{45}{subsubsection.4.4.5.4}%
+\contentsline {subsubsection}{\numberline {4.4.5.5}Visualization of Training Results}{46}{subsubsection.4.4.5.5}%
+\contentsline {subsubsection}{\numberline {4.4.5.6}Computational Resource Analysis}{48}{subsubsection.4.4.5.6}%
+\contentsline {subsubsection}{\numberline {4.4.5.7}Conclusion}{50}{subsubsection.4.4.5.7}%
+\contentsline {subsection}{\numberline {4.4.6}Model: XGB}{51}{subsection.4.4.6}%
+\contentsline {subsubsection}{\numberline {4.4.6.1}Introduction}{51}{subsubsection.4.4.6.1}%
+\contentsline {subsubsection}{\numberline {4.4.6.2}Training Configuration}{51}{subsubsection.4.4.6.2}%
+\contentsline {subsubsection}{\numberline {4.4.6.3}Training and Evaluation Results}{51}{subsubsection.4.4.6.3}%
+\contentsline {subsubsection}{\numberline {4.4.6.4}Performance Analysis}{52}{subsubsection.4.4.6.4}%
+\contentsline {subsubsection}{\numberline {4.4.6.5}Visualization of Training Results}{53}{subsubsection.4.4.6.5}%
+\contentsline {subsubsection}{\numberline {4.4.6.6}Computational Resource Analysis}{55}{subsubsection.4.4.6.6}%
+\contentsline {subsubsection}{\numberline {4.4.6.7}Conclusion}{56}{subsubsection.4.4.6.7}%
+\contentsline {subsection}{\numberline {4.4.7}Model: Random Forest}{57}{subsection.4.4.7}%
+\contentsline {subsubsection}{\numberline {4.4.7.1}Introduction}{57}{subsubsection.4.4.7.1}%
+\contentsline {subsubsection}{\numberline {4.4.7.2}Training Configuration}{57}{subsubsection.4.4.7.2}%
+\contentsline {subsubsection}{\numberline {4.4.7.3}Training and Evaluation Results}{57}{subsubsection.4.4.7.3}%
+\contentsline {subsubsection}{\numberline {4.4.7.4}Performance Analysis}{58}{subsubsection.4.4.7.4}%
+\contentsline {subsubsection}{\numberline {4.4.7.5}Visualization of Training Results}{59}{subsubsection.4.4.7.5}%
+\contentsline {subsubsection}{\numberline {4.4.7.6}Computational Resource Analysis}{61}{subsubsection.4.4.7.6}%
+\contentsline {subsubsection}{\numberline {4.4.7.7}Conclusion}{62}{subsubsection.4.4.7.7}%
+\contentsline {subsection}{\numberline {4.4.8}Model: Perceptron (ANN)}{63}{subsection.4.4.8}%
+\contentsline {subsubsection}{\numberline {4.4.8.1}Introduction}{63}{subsubsection.4.4.8.1}%
+\contentsline {subsubsection}{\numberline {4.4.8.2}Training Configuration}{63}{subsubsection.4.4.8.2}%
+\contentsline {paragraph}{\numberline {4.4.8.2.1}Training Performance Metrics (Cross-Validation):}{63}{paragraph.4.4.8.2.1}%
+\contentsline {subsubsection}{\numberline {4.4.8.3}Performance Analysis}{64}{subsubsection.4.4.8.3}%
+\contentsline {subsubsection}{\numberline {4.4.8.4}Visualization of Training Results}{65}{subsubsection.4.4.8.4}%
+\contentsline {subsubsection}{\numberline {4.4.8.5}Conclusion}{67}{subsubsection.4.4.8.5}%
+\contentsline {subsection}{\numberline {4.4.9}Model: Multi-Layer Perceptron}{68}{subsection.4.4.9}%
+\contentsline {subsubsection}{\numberline {4.4.9.1}Introduction}{68}{subsubsection.4.4.9.1}%
+\contentsline {subsubsection}{\numberline {4.4.9.2}Training Configuration}{68}{subsubsection.4.4.9.2}%
+\contentsline {subsubsection}{\numberline {4.4.9.3}Training and Evaluation Results}{68}{subsubsection.4.4.9.3}%
+\contentsline {subsubsection}{\numberline {4.4.9.4}Performance Analysis}{70}{subsubsection.4.4.9.4}%
+\contentsline {subsubsection}{\numberline {4.4.9.5}Visualization of Training Results}{70}{subsubsection.4.4.9.5}%
+\contentsline {subsubsection}{\numberline {4.4.9.6}Computational Efficiency Analysis}{72}{subsubsection.4.4.9.6}%
+\contentsline {subsubsection}{\numberline {4.4.9.7}Conclusion}{73}{subsubsection.4.4.9.7}%
+\contentsline {subsection}{\numberline {4.4.10}Model: Long Short-Term Memory}{74}{subsection.4.4.10}%
+\contentsline {subsubsection}{\numberline {4.4.10.1}Introduction}{74}{subsubsection.4.4.10.1}%
+\contentsline {subsubsection}{\numberline {4.4.10.2}Training Configuration}{74}{subsubsection.4.4.10.2}%
+\contentsline {subsubsection}{\numberline {4.4.10.3}Training and Evaluation Results}{75}{subsubsection.4.4.10.3}%
+\contentsline {subsubsection}{\numberline {4.4.10.4}Performance Analysis}{75}{subsubsection.4.4.10.4}%
+\contentsline {subsubsection}{\numberline {4.4.10.5}Computational Efficiency Analysis}{76}{subsubsection.4.4.10.5}%
+\contentsline {subsubsection}{\numberline {4.4.10.6}Conclusion}{77}{subsubsection.4.4.10.6}%
+\contentsline {subsection}{\numberline {4.4.11}Model: Naïve Bayes}{78}{subsection.4.4.11}%
+\contentsline {subsubsection}{\numberline {4.4.11.1}Introduction}{78}{subsubsection.4.4.11.1}%
+\contentsline {subsubsection}{\numberline {4.4.11.2}Training Configuration}{78}{subsubsection.4.4.11.2}%
+\contentsline {subsubsection}{\numberline {4.4.11.3}Training and Evaluation Results}{78}{subsubsection.4.4.11.3}%
+\contentsline {subsubsection}{\numberline {4.4.11.4}Performance Analysis}{79}{subsubsection.4.4.11.4}%
+\contentsline {subsubsection}{\numberline {4.4.11.5}Visualization of Training Results}{80}{subsubsection.4.4.11.5}%
+\contentsline {subsubsection}{\numberline {4.4.11.6}Computational Resources and Efficiency}{82}{subsubsection.4.4.11.6}%
+\contentsline {subsubsection}{\numberline {4.4.11.7}Conclusion}{82}{subsubsection.4.4.11.7}%
+\contentsline {subsection}{\numberline {4.4.12}Model: Genatic Algorithm and GaussianNB}{83}{subsection.4.4.12}%
+\contentsline {subsubsection}{\numberline {4.4.12.1}Introduction}{83}{subsubsection.4.4.12.1}%
+\contentsline {subsubsection}{\numberline {4.4.12.2}Training Configuration}{83}{subsubsection.4.4.12.2}%
+\contentsline {subsubsection}{\numberline {4.4.12.3}Training and Evaluation Results}{86}{subsubsection.4.4.12.3}%
+\contentsline {subsubsection}{\numberline {4.4.12.4}Performance Analysis}{87}{subsubsection.4.4.12.4}%
+\contentsline {subsubsection}{\numberline {4.4.12.5}Computational Resources and Efficiency}{87}{subsubsection.4.4.12.5}%
+\contentsline {subsubsection}{\numberline {4.4.12.6}Conclusion}{88}{subsubsection.4.4.12.6}%
+\contentsline {subsection}{\numberline {4.4.13}Model: Hidden Markov Model}{89}{subsection.4.4.13}%
+\contentsline {subsubsection}{\numberline {4.4.13.1}Introduction}{89}{subsubsection.4.4.13.1}%
+\contentsline {subsubsection}{\numberline {4.4.13.2}Training Configuration}{89}{subsubsection.4.4.13.2}%
+\contentsline {subsubsection}{\numberline {4.4.13.3}Training and Evaluation Results}{90}{subsubsection.4.4.13.3}%
+\contentsline {subsubsection}{\numberline {4.4.13.4}Performance Analysis}{91}{subsubsection.4.4.13.4}%
+\contentsline {subsubsection}{\numberline {4.4.13.5}Computational Resources and Efficiency}{92}{subsubsection.4.4.13.5}%
+\contentsline {subsubsection}{\numberline {4.4.13.6}Conclusion}{93}{subsubsection.4.4.13.6}%
+\contentsline {subsection}{\numberline {4.4.14}Model: BayesNet}{94}{subsection.4.4.14}%
+\contentsline {subsubsection}{\numberline {4.4.14.1}Introduction}{94}{subsubsection.4.4.14.1}%
+\contentsline {subsubsection}{\numberline {4.4.14.2}Training Configuration}{94}{subsubsection.4.4.14.2}%
+\contentsline {subsubsection}{\numberline {4.4.14.3}Training and Evaluation Results}{95}{subsubsection.4.4.14.3}%
+\contentsline {subsubsection}{\numberline {4.4.14.4}Performance Analysis}{96}{subsubsection.4.4.14.4}%
+\contentsline {subsubsection}{\numberline {4.4.14.5}Computational Resources and Efficiency}{97}{subsubsection.4.4.14.5}%
+\contentsline {subsubsection}{\numberline {4.4.14.6}Conclusion}{97}{subsubsection.4.4.14.6}%
+\contentsline {chapter}{\numberline {5}Discussion and Analysis}{99}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Reproducibility Implementation}{99}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Environment Configuration Management}{99}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Versioned Model Storage}{99}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Deterministic Execution Control}{100}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Result Reproducibility}{101}{subsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.1.5}Pipeline Automation Architecture}{103}{subsection.5.1.5}%
+\contentsline {subsubsection}{\numberline {5.1.5.1}Training Pipeline}{103}{subsubsection.5.1.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.5.2}Prediction Pipeline}{104}{subsubsection.5.1.5.2}%
+\contentsline {subsubsection}{\numberline {5.1.5.3}Feature Building Pipeline}{105}{subsubsection.5.1.5.3}%
+\contentsline {section}{\numberline {5.2}Model Comparison for Sentiment Analysis based on Trained Results}{107}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Introduction}{107}{subsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.1.1}Model Training and Evaluation Workflow}{107}{subsubsection.5.2.1.1}%
+\contentsline {subsubsection}{\numberline {5.2.1.2}Evaluation Metrics Overview}{108}{subsubsection.5.2.1.2}%
+\contentsline {subsection}{\numberline {5.2.2}Model Performance}{108}{subsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.2.1}Discussion}{109}{subsubsection.5.2.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2.2}Selecting the Best Model}{110}{subsubsection.5.2.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Type I and Type II Error Considerations}{110}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}Comparison with Theory}{111}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Logistic Regression}{111}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Decision Tree}{111}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}XGBoost}{112}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Random Forest}{112}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Multi-Layer Perceptron (MLP)}{112}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}CNN-LSTM}{113}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.7}Naïve Bayes}{113}{subsection.5.3.7}%
+\contentsline {subsection}{\numberline {5.3.8}Bayesian Networks and Hidden Markov Models (HMM)}{114}{subsection.5.3.8}%
+\contentsline {section}{\numberline {5.4}Limitation Discussion}{114}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}General Limitations}{114}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Model-Specific Limitations}{115}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Conclusion}{115}{subsection.5.4.3}%
+\contentsline {section}{\numberline {5.5}Use-case Fit Analysis of Sentiment Analysis Models}{116}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Suitable Models}{116}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Unsuitable Models}{116}{subsection.5.5.2}%
+\contentsline {chapter}{\numberline {6}Self-Reflection}{118}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Future Developments}{118}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Special Thanks}{119}{section.6.2}%
