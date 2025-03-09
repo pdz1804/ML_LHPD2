@@ -57,7 +57,7 @@ To assess the performance of sentiment analysis models, we utilize five key eval
     
     \textbf{count} & \textbf{XGBoost} & 0.7251 & 0.6970 & 0.8247 & 0.7555 & 0.8040 \\ \hline
     
-    \textbf{count} & \textbf{Random Forest} & 0.7251 & 0.6970 & 0.8247 & 0.7555 & 0.8040 \\ \hline
+    \textbf{word2vec} & \textbf{Random Forest} & 0.7000 & 0.7009 & 0.7283 & 0.7143 & 0.7702 \\ \hline
     
     \textbf{tfidf} & \textbf{Perceptron (ANN)} & 0.6927 & 0.7345 & 0.6296 & 0.6780 & 0.7737 \\ \hline
 
@@ -89,7 +89,7 @@ To assess the performance of sentiment analysis models, we utilize five key eval
 
     \item \textbf{Decision Tree:} This model exhibits \textbf{high recall (89.40\%)}, meaning it is effective at capturing positive and negative sentiments. However, its low precision (\textbf{59.28\%}) indicates a high false-positive rate, leading to misclassifications.
 
-    \item \textbf{XGBoost and Random Forest:} Both models deliver \textbf{72.51\% accuracy, 80.40\% ROC AUC, and an F1-score of 75.55\%}. Their ensemble-based decision trees capture complex sentiment patterns better than individual models.
+    \item \textbf{XGBoost and Random Forest:} Both models deliver high accuracy, ROC AUC and F1 score \textbf{72.51\% - 70\% accuracy, 80.40\% - 77.02\% ROC AUC, and an F1-score of 75.55\% - 71.43\%}. Their ensemble-based decision trees capture complex sentiment patterns better than individual models.
 
     \item \textbf{Perceptron:} This linear classifier achieves \textbf{69.27\% accuracy}, but struggles with recall (\textbf{62.96\%}), leading to an imbalanced prediction performance.
     
@@ -194,7 +194,7 @@ Ideal for high-stakes sentiment classification where interpretability is less cr
 \subsection{Random Forest}
 
 \textbf{Feature Importance and Model Behavior Analysis} \\
-Random Forest leverages multiple decision trees to improve stability and reduce overfitting. It exhibited strong generalization, achieving a ROC AUC of 80.40\%.
+Random Forest leverages multiple decision trees to improve stability and reduce overfitting. It exhibited strong generalization, achieving a ROC AUC of 77.02\%.
 
 \textbf{Limitation Discussion} \\
 While less prone to overfitting, it remains computationally demanding and lacks the interpretability of simpler models.
@@ -287,7 +287,7 @@ Finally, computational complexity poses a constraint for certain models. Deep le
     \item \textbf{Logistic Regression} performs strongly (Accuracy: 0.7557, F1-Score: 0.7726, ROC AUC: 0.8297), but it may struggle with non-linear patterns in tweet data.
     \item \textbf{Decision Tree} (Accuracy: 0.6300, ROC AUC: 0.5928) suffers from overfitting, with unbalanced precision (0.5946) and recall (0.6078).
     \item \textbf{XGBoost} achieves strong performance (Accuracy: 0.7251, ROC AUC: 0.8070), though its slightly lower precision (0.7157) compared to recall (0.7517) suggests a potential bias toward predicting the positive class.
-    \item \textbf{Random Forest} offers stability (Accuracy: 0.7231, ROC AUC: 0.8030), but its F1-Score (0.7157) is less competitive than Logistic Regression.
+    \item \textbf{Random Forest} offers stability (Accuracy: 0.7000, ROC AUC: 0.7702), but its F1-Score (0.7143) is less competitive than Logistic Regression.
     \item \textbf{MLP} achieves reasonable accuracy (0.7300) and an F1-Score of 0.7260, though its ROC AUC (0.7526) indicates possible overfitting.
     \item \textbf{CNN} and \textbf{LSTM} yield competitive results (Accuracy: 0.7103/0.7157, F1-Score: 0.7513/0.7519), yet their ROC AUC (0.7513/0.7519) is lower than Logistic Regression, and their computational demands are higher.
     \item \textbf{Genetic Algorithm-based model} shows moderate performance (Accuracy: 0.6520, F1-Score: 0.6720, ROC AUC: 0.6800), with an imbalance between precision and recall.
@@ -310,7 +310,7 @@ The performance of various models on the \textit{Tweets Clean PosNeg v1} dataset
 
 \begin{itemize}
     \item \textbf{Logistic Regression} emerges as the most suitable model, achieving the highest accuracy (0.7557), an F1-Score of 0.7726, and an ROC AUC of 0.8297. Its balanced precision (0.7403) and recall (0.7403) ensure reliable classification of both positive and negative tweets, while its low computational complexity makes it well-suited for processing large tweet volumes efficiently.
-    \item \textbf{Random Forest} also proves suitable, with an accuracy of 0.7231, an F1-Score of 0.7157, and an ROC AUC of 0.8030. Its stability and robustness against overfitting, compared to Decision Tree, make it a reliable choice.
+    \item \textbf{Random Forest} also proves suitable, with an accuracy of 0.7000, an F1-Score of 0.7143, and an ROC AUC of 0.7702. Its stability and robustness against overfitting, compared to Decision Tree, make it a reliable choice.
     \item \textbf{XGBoost} performs well, with an accuracy of 0.7251, an F1-Score of 0.8070, and an ROC AUC of 0.8070. Its high recall (0.7517) ensures that it captures a large proportion of true sentiments, making it effective for comprehensive sentiment analysis.
     \item \textbf{MLP} demonstrates reasonable performance with an accuracy of 0.7300, an F1-Score of 0.7260, and an ROC AUC of 0.7526. Its high precision (0.7290) makes it suitable for applications where minimizing false positives is critical.
     \item \textbf{CNN and LSTM} are viable options, with accuracies of 0.7103 and 0.7157, F1-Scores of 0.7513 and 0.7519, and ROC AUCs of 0.7513 and 0.7519, respectively. LSTM, in particular, is effective for capturing sequential patterns in tweets, as evidenced by its high recall (0.7517).

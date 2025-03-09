@@ -42,7 +42,7 @@ We evaluated the Random Forest model under different feature extraction methods.
         \hline
         \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
         \hline
-        Count Vectorizer & 0.67 & 0.76 & 0.74 & 0.62 & 0.90 \\ 
+        Count Vectorizer & 0.67 & 0.66 & 0.73 & 0.62 & 0.89 \\ 
         \hline
         TF-IDF & 0.66 & 0.65 & 0.73 & 0.61 & 0.90 \\ 
         \hline
@@ -63,7 +63,7 @@ We evaluated the Random Forest model under different feature extraction methods.
         \hline
         \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
         \hline
-        Count Vectorizer & 0.73 & 0.80 & 0.76 & 0.70 & 0.82 \\ 
+        Count Vectorizer & 0.67 & 0.76 & 0.74 & 0.62 & 0.90 \\ 
         \hline
         TF-IDF & 0.66 & 0.75 & 0.73 & 0.62 & 0.91 \\ 
         \hline
@@ -83,21 +83,21 @@ We evaluated the Random Forest model under different feature extraction methods.
 
 \begin{verbatim}
 {
-    "method": "count",
+    "method": "word2vec",
     "model": "RandomForestClassifier",
     "hyperparameters": {
         "max_depth": 10,
         "max_features": "sqrt",
-        "min_samples_leaf": 1,
+        "min_samples_leaf": 2,
         "min_samples_split": 5,
         "n_estimators": 100
     },
     "performance": {
-        "accuracy": 0.7251,
-        "precision": 0.6970,
-        "recall": 0.8247,
-        "f1": 0.7555,
-        "roc_auc": 0.8039885096586928
+        "accuracy": 0.7000,
+        "precision": 0.7009,
+        "recall": 0.7283,
+        "f1": 0.7143,
+        "roc_auc": 0.7702233410069063
     }
 }
 \end{verbatim}
@@ -105,11 +105,11 @@ We evaluated the Random Forest model under different feature extraction methods.
 \subsubsection{Performance Analysis}
 
 \begin{itemize}
-    \item \textbf{Accuracy Analysis}: The Random Forest model trained on Count Vectorizer achieved the highest testing accuracy (72.51\%), outperforming TF-IDF, Word2Vec, and GloVe.
+    \item \textbf{Accuracy Analysis}: The Random Forest model trained on Word2Vec achieved the highest testing accuracy (70\%), outperforming TF-IDF, CountVectorizer, and GloVe.
     \item \textbf{Ensemble Strength}: By aggregating multiple Decision Trees, the model showed resilience to overfitting, maintaining solid generalization performance.
-    \item \textbf{ROC AUC}: The best model reached 0.80 in ROC AUC, indicating strong discriminative ability between the sentiment classes.
-    \item \textbf{Precision and Recall}: A precision of 69.70\% and recall of 82.47\% suggest a relatively balanced performance, with a slight emphasis on correctly identifying positive cases.
-    \item \textbf{Embedding Effectiveness}: Similar to other classification models in our study, simple Count Vectorizer features worked effectively. Embedding-based methods performed well but did not surpass the Count Vectorizer in final testing accuracy.
+    \item \textbf{ROC AUC}: The best model reached 0.77 in ROC AUC, indicating strong discriminative ability between the sentiment classes.
+    \item \textbf{Precision and Recall}: A precision of 70\% and recall of 73\% suggest a relatively balanced performance, with a slight emphasis on correctly identifying positive cases.
+    \item \textbf{Embedding Effectiveness}: Embedding-based methods performed well and did surpass the Count Vectorizer in final testing accuracy.
 \end{itemize}
 
 \subsubsection{Visualization of Training Results}
