@@ -180,7 +180,25 @@ The following figures illustrate the model’s performance across different embe
     \end{itemize}
 \end{itemize}
 
+\subsubsection{Computational Resources and Efficiency}
+
+Naïve Bayes is a computationally lightweight model, making it highly efficient in terms of training time and resource consumption. Given the dataset size of 500,000 samples, we estimate the following computational costs:
+
+\begin{itemize}
+    \item \textbf{Training Time:} Less than 5 minutes on a modern CPU (Intel Core i7-12700K or equivalent) since Naïve Bayes only requires a single pass over the data to estimate probabilities.
+    \item \textbf{Memory Usage:} Approximately 1-2GB RAM during training, depending on the feature extraction method.
+    \begin{itemize}
+        \item \textbf{Count Vectorizer / TF-IDF:} Requires around 1GB RAM for matrix storage and computations.
+        \item \textbf{Word2Vec / GloVe:} Can require up to 2GB RAM due to the dense nature of word embeddings.
+    \end{itemize}
+    \item \textbf{Inference Speed:} Extremely fast, taking less than 1 millisecond per sample, making it suitable for real-time applications.
+    \item \textbf{Disk Space:} The trained model file size is relatively small, typically under 50MB when storing probability tables.
+\end{itemize}
+
+Due to its low computational cost, Naïve Bayes is an excellent choice for large-scale text classification tasks where training and inference speed are critical.
+
 \subsubsection{Conclusion}
 
 Naïve Bayes (GaussianNB) proved effective for sentiment classification when coupled with Count Vectorizer features, achieving a 71.34\% accuracy. The class priors [0.3, 0.7] suggest that accommodating class imbalance can be beneficial for this dataset. While TF-IDF also delivered competitive results, the simpler bag-of-words representation ultimately offered the best balance of accuracy and F1 performance for Naïve Bayes in this study.
 
+\newpage

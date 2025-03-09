@@ -1,4 +1,4 @@
-\section{Model Comparison for Sentiment Analysis}
+\section{Model Comparison for Sentiment Analysis based on Trained Results}
 
 \subsection{Introduction}
 
@@ -145,17 +145,185 @@ Sentiment analysis models must balance two types of errors:
     \item \textbf{Impact on Real-World Applications:} Selecting the right model depends on the application's needs. For customer feedback analysis, a high-precision model prevents false alarms about negative sentiments. In contrast, for social media monitoring, a high-recall model ensures no positive trends are overlooked.
 \end{itemize}
 
-\subsection{Conclusion}
+\section{Comparison with Theory}
 
-The results indicate that \textbf{Logistic Regression} (Count Vectorizer) is the most balanced model for sentiment classification, offering the best accuracy, F1-score, and ROC AUC. However, \textbf{CNN-LSTM} is the best choice for maximizing recall, making it useful for applications where missing positive sentiments is costly. 
+This section provides a comparative analysis of sentiment analysis models based on multiple key aspects: feature importance, model behavior, limitations, theoretical expectations, and real-world applicability.
 
-For real-world applications:
+\subsection{Logistic Regression}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+Logistic Regression is a linear classifier that assigns weights to input features based on their contribution to the classification decision. The model heavily relies on word frequency and importance, making it effective when using feature extraction methods like TF-IDF and Count Vectorization. It performed consistently across datasets, indicating robustness but showing limitations in capturing complex contextual relationships.
+
+\textbf{Limitation Discussion} \\
+Despite its efficiency, Logistic Regression assumes linear separability, which limits its ability to handle nuanced sentiment expressions, such as sarcasm or complex multi-word phrases.
+
+\textbf{Comparison with Theory} \\
+The model’s high accuracy (75.57\%) and ROC AUC (82.97\%) align with theoretical expectations, proving that simple models can outperform complex ones in structured text classification.
+
+\textbf{Use Case Fit Analysis} \\
+Best suited for real-time, scalable applications where interpretability and efficiency are required, such as social media monitoring and customer feedback analysis.
+
+\subsection{Decision Tree}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+Decision Trees perform recursive partitioning to select the most significant features at each step. The model adapts well to categorical data but is sensitive to noise and class imbalances.
+
+\textbf{Limitation Discussion} \\
+It tends to overfit on high-dimensional text data, reducing generalization. The lower precision (59.28\%) indicates frequent misclassification due to splitting on irrelevant features.
+
+\textbf{Comparison with Theory} \\
+As expected, Decision Trees struggle with generalization, confirming their known trade-offs between interpretability and robustness.
+
+\textbf{Use Case Fit Analysis} \\
+Applicable in controlled environments where feature selection is crucial, but not ideal for large-scale sentiment analysis.
+
+\subsection{XGBoost}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+XGBoost improves upon Decision Trees by using gradient boosting, assigning greater importance to difficult samples. It effectively captures feature interactions and demonstrated strong predictive power, achieving an F1-score of 82.47\%.
+
+\textbf{Limitation Discussion} \\
+Though powerful, XGBoost requires extensive hyperparameter tuning and is computationally expensive, making it less practical for lightweight applications.
+
+\textbf{Comparison with Theory} \\
+Empirical results confirm its superiority over single-tree models, but its inability to surpass Logistic Regression in accuracy suggests diminishing returns for feature-rich datasets.
+
+\textbf{Use Case Fit Analysis} \\
+Ideal for high-stakes sentiment classification where interpretability is less critical, such as stock market sentiment prediction.
+
+\subsection{Random Forest}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+Random Forest leverages multiple decision trees to improve stability and reduce overfitting. It exhibited strong generalization, achieving a ROC AUC of 80.40\%.
+
+\textbf{Limitation Discussion} \\
+While less prone to overfitting, it remains computationally demanding and lacks the interpretability of simpler models.
+
+\textbf{Comparison with Theory} \\
+Its performance aligns with expectations, reinforcing that ensemble methods are powerful but not always necessary.
+
+\textbf{Use Case Fit Analysis} \\
+Useful in situations where balanced performance and reliability are needed, such as automated content moderation.
+
+\subsection{Multi-Layer Perceptron (MLP)}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+MLP captures non-linear patterns using multiple layers of neurons. It performed well in terms of precision (81.26\%) but required extensive tuning.
+
+\textbf{Limitation Discussion} \\
+High training time and risk of overfitting limit its real-world application for small-scale tasks.
+
+\textbf{Comparison with Theory} \\
+The results support MLP’s theoretical advantages but highlight its sensitivity to data size and tuning complexity.
+
+\textbf{Use Case Fit Analysis} \\
+Best for complex sentiment tasks where non-linear interactions are crucial, such as emotion detection in chatbots.
+
+\subsection{CNN-LSTM}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+CNN-LSTM utilizes convolutional filters to extract features and LSTMs to handle sequential dependencies. It achieved the highest recall (84.86\%) but underperformed in accuracy (71.03\%).
+
+\textbf{Limitation Discussion} \\
+Requires substantial computational resources and large datasets to generalize effectively.
+
+\textbf{Comparison with Theory} \\
+Its ability to capture context supports deep learning theories, though its practical advantage over traditional methods is limited.
+
+\textbf{Use Case Fit Analysis} \\
+Recommended for applications where sequence dependencies are critical, such as long-form sentiment tracking.
+
+\subsection{Naïve Bayes}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+Naïve Bayes assumes feature independence, making it fast but less adaptable to contextual dependencies. It achieved an accuracy of 71.34\%.
+
+\textbf{Limitation Discussion} \\
+The independence assumption limits its effectiveness in real-world language processing.
+
+\textbf{Comparison with Theory} \\
+Its performance aligns with theoretical predictions, confirming its viability as a baseline model.
+
+\textbf{Use Case Fit Analysis} \\
+Ideal for quick, low-resource sentiment classification tasks, such as spam filtering.
+
+\subsection{Bayesian Networks and Hidden Markov Models (HMM)}
+
+\textbf{Feature Importance and Model Behavior Analysis} \\
+These models rely on probabilistic dependencies and temporal patterns. Bayesian Networks achieved an accuracy of 64.95\%, while HMM underperformed at 51.41\%.
+
+\textbf{Limitation Discussion} \\
+Complexity and computational inefficiency make them impractical for large-scale applications.
+
+\textbf{Comparison with Theory} \\
+The results confirm that these models struggle with high-dimensional text data, reinforcing their limited utility in modern NLP.
+
+\textbf{Use Case Fit Analysis} \\
+Better suited for specific niche applications requiring probabilistic inference, such as sentiment evolution tracking over time.
+
+\section{Limitation Discussion}
+
+The evaluation of various models for sentiment analysis on the \textit{Tweets Clean PosNeg v1} dataset using Count Vectorizer embeddings reveals several limitations that impact overall performance.
+
+\subsection{General Limitations}
+A primary limitation across all models is their reliance on Count Vectorizer, which captures word frequencies but fails to account for semantic or contextual nuances in tweets. This approach struggles with context-dependent sentiments, such as distinguishing between:
+
 \begin{itemize}
-    \item \textbf{Logistic Regression} is ideal for general-purpose sentiment analysis due to its balance of precision and recall.
-    \item \textbf{Random Forest} and \textbf{XGBoost} provide strong alternatives with high precision and efficiency.
-    \item \textbf{CNN-LSTM} is best suited for cases where identifying positive sentiment is critical.
+    \item \textit{"I love this product."} (positive sentiment)
+    \item \textit{"I love how this product fails."} (negative sentiment)
 \end{itemize}
 
-In summary, the trade-off between accuracy, recall, and computational efficiency must be considered when selecting the best model for sentiment analysis.
+Employing more advanced embeddings, such as Word2Vec, GloVe, or BERT, could address this limitation by capturing deeper semantic relationships.
+
+Another notable limitation is class imbalance sensitivity observed in certain models. For example, HMM (Recall: 0.8522, Precision: 0.5852) and GaussianNB (Recall: 0.7500, Precision: 0.6144) exhibit high recall but low precision, indicating a tendency to overpredict the positive class. This can be problematic when dealing with imbalanced datasets, leading to increased false positives.
+
+Overfitting and poor generalization are evident in models like Decision Tree (Accuracy: 0.6300, ROC AUC: 0.5928) and HMM (Accuracy: 0.6141, ROC AUC: 0.4987), where poor testing performance suggests limited applicability to unseen data.
+
+Finally, computational complexity poses a constraint for certain models. Deep learning approaches such as CNN (Accuracy: 0.7103) and LSTM (Accuracy: 0.7157) require significant computational resources, limiting their practicality in scenarios demanding rapid processing of large tweet volumes.
+
+\subsection{Model-Specific Limitations}
+
+\begin{itemize}
+    \item \textbf{Logistic Regression} performs strongly (Accuracy: 0.7557, F1-Score: 0.7726, ROC AUC: 0.8297), but it may struggle with non-linear patterns in tweet data.
+    \item \textbf{Decision Tree} (Accuracy: 0.6300, ROC AUC: 0.5928) suffers from overfitting, with unbalanced precision (0.5946) and recall (0.6078).
+    \item \textbf{XGBoost} achieves strong performance (Accuracy: 0.7251, ROC AUC: 0.8070), though its slightly lower precision (0.7157) compared to recall (0.7517) suggests a potential bias toward predicting the positive class.
+    \item \textbf{Random Forest} offers stability (Accuracy: 0.7231, ROC AUC: 0.8030), but its F1-Score (0.7157) is less competitive than Logistic Regression.
+    \item \textbf{MLP} achieves reasonable accuracy (0.7300) and an F1-Score of 0.7260, though its ROC AUC (0.7526) indicates possible overfitting.
+    \item \textbf{CNN} and \textbf{LSTM} yield competitive results (Accuracy: 0.7103/0.7157, F1-Score: 0.7513/0.7519), yet their ROC AUC (0.7513/0.7519) is lower than Logistic Regression, and their computational demands are higher.
+    \item \textbf{Genetic Algorithm-based model} shows moderate performance (Accuracy: 0.6520, F1-Score: 0.6720, ROC AUC: 0.6800), with an imbalance between precision and recall.
+    \item \textbf{HMM} performs poorly (Accuracy: 0.6141, ROC AUC: 0.4987), lacking discriminative power.
+    \item \textbf{GaussianNB} (Accuracy: 0.7134, F1-Score: 0.6762) struggles with low precision (0.6144), leading to frequent false positives.
+    \item \textbf{Bayesian Network} (Accuracy: 0.6458, F1-Score: 0.6785, ROC AUC: 0.7143) exhibits suboptimal overall performance.
+\end{itemize}
+
+\subsection{Conclusion}
+
+Based on the evaluation, \textbf{Logistic Regression with Count Vectorization} demonstrated the best balance of accuracy (75.57\%) and efficiency, making it the optimal choice for most sentiment analysis tasks. XGBoost and Random Forest performed well but were computationally demanding. Deep learning models like CNN-LSTM showed high recall but did not significantly outperform traditional methods in accuracy.
+
+The findings suggest that while complex models have their advantages, traditional machine learning techniques—especially \textbf{Logistic Regression and ensemble methods (XGBoost, Random Forest)}—remain the most practical choices for sentiment classification in structured datasets.
+
+\section{Use-case Fit Analysis of Sentiment Analysis Models}
+
+The performance of various models on the \textit{Tweets Clean PosNeg v1} dataset for sentiment analysis was assessed using key metrics: Accuracy, F1-Score, and ROC AUC. These metrics provide insights into each model's overall accuracy, balance between precision and recall, and ability to distinguish between positive and negative sentiments in tweets.
+
+\subsection{Suitable Models}
+
+\begin{itemize}
+    \item \textbf{Logistic Regression} emerges as the most suitable model, achieving the highest accuracy (0.7557), an F1-Score of 0.7726, and an ROC AUC of 0.8297. Its balanced precision (0.7403) and recall (0.7403) ensure reliable classification of both positive and negative tweets, while its low computational complexity makes it well-suited for processing large tweet volumes efficiently.
+    \item \textbf{Random Forest} also proves suitable, with an accuracy of 0.7231, an F1-Score of 0.7157, and an ROC AUC of 0.8030. Its stability and robustness against overfitting, compared to Decision Tree, make it a reliable choice.
+    \item \textbf{XGBoost} performs well, with an accuracy of 0.7251, an F1-Score of 0.8070, and an ROC AUC of 0.8070. Its high recall (0.7517) ensures that it captures a large proportion of true sentiments, making it effective for comprehensive sentiment analysis.
+    \item \textbf{MLP} demonstrates reasonable performance with an accuracy of 0.7300, an F1-Score of 0.7260, and an ROC AUC of 0.7526. Its high precision (0.7290) makes it suitable for applications where minimizing false positives is critical.
+    \item \textbf{CNN and LSTM} are viable options, with accuracies of 0.7103 and 0.7157, F1-Scores of 0.7513 and 0.7519, and ROC AUCs of 0.7513 and 0.7519, respectively. LSTM, in particular, is effective for capturing sequential patterns in tweets, as evidenced by its high recall (0.7517).
+\end{itemize}
+
+\subsection{Unsuitable Models}
+
+\begin{itemize}
+    \item \textbf{HMM} is the least suitable model, with an accuracy of 0.6141, an F1-Score of 0.6977, and an ROC AUC of 0.4987, nearly equivalent to random guessing. Its low precision (0.5852) results in frequent false positives, rendering it unreliable for tweet sentiment classification.
+    \item \textbf{Decision Tree} is also unsuitable, with an accuracy of 0.6300, an F1-Score of 0.5946, and an ROC AUC of 0.5928. Its low performance and unbalanced precision-recall indicate overfitting and poor generalization.
+    \item \textbf{Genetic Algorithm-based model} is not well-suited, with an accuracy of 0.6520, an F1-Score of 0.6720, and an ROC AUC of 0.6800, underperforming compared to Logistic Regression and XGBoost.
+    \item \textbf{GaussianNB}, despite an accuracy of 0.7134, has a low F1-Score of 0.6762 and a precision of 0.6144, leading to excessive false positives and a weaker ROC AUC (0.7143).
+    \item \textbf{Bayesian Network} (Accuracy: 0.6458, F1-Score: 0.6785, ROC AUC: 0.7143) fails to deliver competitive performance.
+\end{itemize}
 
 \newpage

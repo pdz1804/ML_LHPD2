@@ -950,6 +950,10 @@ INPUT .\img\report_info\img\1.1.LogisticRegression\best_logistic_regression_glov
 INPUT .\img\report_info\img\1.1.LogisticRegression\best_logistic_regression_glove.png
 INPUT .\img\report_info\img\1.1.LogisticRegression\best_logistic_regression_glove.png
 INPUT .\img\report_info\img\1.1.LogisticRegression\best_logistic_regression_glove.png
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\t5-lmr8.tfm
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-mathsy.enc
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-rm.enc
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-mathit.enc
 INPUT .\_analyze\1_2_DecisionTree.tex
 INPUT .\_analyze\1_2_DecisionTree.tex
 INPUT .\_analyze\1_2_DecisionTree.tex
@@ -1260,8 +1264,6 @@ INPUT .\_analyze\2_3_LSTM.tex
 INPUT .\_analyze\2_3_LSTM.tex
 INPUT .\_analyze\2_3_LSTM.tex
 INPUT _analyze\2_3_LSTM.tex
-INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-mathsy.enc
-INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-rm.enc
 INPUT .\_analyze\3_1_NaiveBayes.tex
 INPUT .\_analyze\3_1_NaiveBayes.tex
 INPUT .\_analyze\3_1_NaiveBayes.tex
@@ -1338,6 +1340,16 @@ INPUT .\_analyze\5_2_BayesNet.tex
 INPUT .\_analyze\5_2_BayesNet.tex
 INPUT .\_analyze\5_2_BayesNet.tex
 INPUT _analyze\5_2_BayesNet.tex
+INPUT .\_heading\07_comparison.tex
+INPUT .\_heading\07_comparison.tex
+INPUT .\_heading\07_comparison.tex
+INPUT .\_heading\07_comparison.tex
+INPUT _heading\07_comparison.tex
+INPUT .\_analyze\0_2_preproducibility.tex
+INPUT .\_analyze\0_2_preproducibility.tex
+INPUT .\_analyze\0_2_preproducibility.tex
+INPUT .\_analyze\0_2_preproducibility.tex
+INPUT _analyze\0_2_preproducibility.tex
 INPUT .\_analyze\0_0_model_comp.tex
 INPUT .\_analyze\0_0_model_comp.tex
 INPUT .\_analyze\0_0_model_comp.tex
@@ -1369,6 +1381,10 @@ INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx12.p
 INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbx12.pfb
 INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbxi10.pfb
 INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmbxi10.pfb
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi12.pfb
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi12.pfb
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi8.pfb
+INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi8.pfb
 INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr10.pfb
 INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr10.pfb
 INPUT C:\Users\User\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmr12.pfb

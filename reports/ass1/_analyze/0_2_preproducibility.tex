@@ -1,0 +1,314 @@
+\section{Reproducibility Implementation}
+\subsection{Environment Configuration Management}
+The computational environment is precisely replicated using Conda with strict version control:
+
+\begin{lstlisting}[caption={Conda Environment Specification},label={lst:env}]
+# GitHub: https://github.com/pdz1804/ML_LHPD2/blob/main/environment.yml
+name: ml_pipeline
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10.12
+  - numpy=1.26.2
+  - scipy=1.11.4
+  - scikit-learn=1.3.2
+  - pandas=2.1.1
+  - tensorflow=2.13.0
+  - pytorch=2.0.1
+  - dvc=3.29.0
+  - pip:
+    - mlflow==2.8.1
+    - wandb==0.15.12
+\end{lstlisting}
+
+\subsection{Versioned Model Storage}
+
+\textbf{Purpose:}  
+This directory helps organize and version control trained models, making it easier:  
+
+\begin{itemize}
+    \item Track different versions of models as you experiment and improve them.
+    \item Reproduce past results by accessing corresponding trained models, logs, and visualizations.
+    \item Understand the evolution of models over time.
+    \item Share trained models and their associated data with others.
+\end{itemize}
+
+\textbf{Key Components:}  
+
+\begin{enumerate}
+    \item \textbf{Versioned Subdirectories:}  
+    Each subdirectory represents a specific version of trained models. The directory name typically includes a date or version number (e.g., Ver01\_25\_02\_23, Ver02\_25\_02\_25).
+
+    \item \textbf{img/ (Within Versioned Subdirectories):}  
+    Contains images visualizing the model's performance during training (e.g., loss curves, accuracy plots, k-fold validation results).
+
+    \item \textbf{trained/ (Within Versioned Subdirectories):}  
+    Contains serialized, fully trained model files that can be loaded and used for prediction. The specific file format depends on the training framework used (e.g., \texttt{.pkl} for scikit-learn, \texttt{.h5} for Keras).
+
+    \item \textbf{training\_log/ (Within Versioned Subdirectories):}  
+    Contains log files capturing details of the training process, including hyperparameters, epoch-level metrics, and any errors or warnings.
+
+    \item \textbf{README.md (Within Each Directory):}  
+    Provides documentation specific to that directory, explaining its contents and how to use the trained models.
+\end{enumerate}
+
+This structure ensures proper organization and reproducibility of machine learning workflows by maintaining detailed records of model versions and their associated artifacts.
+
+
+\subsection{Deterministic Execution Control}
+Consistent random seed management across all components is crucial for ensuring reproducibility in machine learning workflows. By setting a fixed seed value, we can control the inherent randomness in various processes, from data splitting to model initialization and training.
+
+
+\begin{lstlisting}[language=python,caption={Global Seed Configuration},label={lst:seeds}]
+SEED = 42  # Master seed for all stochastic processes
+
+# Framework-specific seeding
+random.seed(SEED)
+np.random.seed(SEED)
+tf.random.set_seed(SEED)
+torch.manual_seed(SEED)
+
+# Data splitting with seed control
+df_train, df_test = train_test_split(
+    data, 
+    test_size=0.2, 
+    random_state=SEED, 
+    stratify=labels
+)
+\end{lstlisting}
+
+The global seed configuration serves multiple purposes:
+
+\begin{enumerate}
+    \item \textbf{Reproducibility}: It enables researchers and data scientists to recreate exact experimental conditions, facilitating result verification and debugging.
+    
+    \item \textbf{Comparability}: When evaluating different models or hyperparameters, a fixed seed ensures that performance differences are due to actual changes rather than random variations.
+    
+    \item \textbf{Debugging}: Consistent outputs make it easier to identify and fix issues in the model or data pipeline.
+\end{enumerate}
+
+
+It's important to note that while setting a fixed seed is crucial for development and debugging, it should be used cautiously:
+
+\begin{enumerate}
+    \item \textbf{Multiple Seeds}: For robust evaluation, experiments should be repeated with different seed values to ensure results are not seed-dependent.
+    
+    \item \textbf{Production Deployment}: In production environments, the random seed should typically be removed to allow for natural variability and prevent overfitting to a specific random state.
+    
+    \item \textbf{Hardware Considerations}: Complete reproducibility across different hardware or GPU configurations may require additional steps, such as setting environment variables for CUDA operations.
+    
+    \item \textbf{Version Control}: The specific versions of libraries and frameworks should be documented, as changes in underlying implementations can affect random number generation even with a fixed seed.
+\end{enumerate}
+
+By implementing thorough seed management, we can strike a balance between the need for reproducibility in research and development and the benefits of randomness in creating robust, generalizable models.
+
+\subsection{Result Reproducibility}
+
+The \textbf{Models Directory} serves as the central repository for all trained machine learning models and their associated artifacts. It contains different versions of trained models, along with supporting data like training logs and performance visualizations.
+
+\textbf{Directory Structure:}
+\begin{itemize}
+    \item \texttt{models/}: Contains all model versions, training data, and logs.
+    \begin{itemize}
+        \item \texttt{Ver01\_25\_02\_23/}: Version 1 of the models (February 25, 2023).
+        \begin{itemize}
+            \item \texttt{img/}: Stores images related to training/validation (e.g., loss curves, accuracy plots).
+            \item \texttt{trained/}: Stores fully trained models for later use (e.g., serialized files like \texttt{.pkl} or \texttt{.h5}).
+            \item \texttt{training\_log/}: Logs generated during the training process, including hyperparameters and epoch-level metrics.
+            \item \texttt{README.md}: Documentation for the Ver01\_25\_02\_23 directory.
+        \end{itemize}
+        \item \texttt{Ver02\_25\_02\_25/}: Version 2 of the models (February 25, 2025).
+        \begin{itemize}
+            \item \texttt{img/}: Stores images related to training/validation.
+            \item \texttt{other/}: Relevant files such as preprocessing scripts or train/test splits.
+            \item \texttt{trained/}: Stores fully trained models for later use.
+            \item \texttt{training\_log/}: Logs generated during the training process.
+            \item \texttt{README.md}: Documentation for the Ver02\_25\_02\_25 directory.
+        \end{itemize}
+    \end{itemize}
+    \item \texttt{README.md}: Documentation for the overall models directory.
+\end{itemize}
+
+\textbf{Purpose:}
+This directory helps organize and version control trained models, making it easier to:
+\begin{enumerate}
+    \item Track different versions of your models as you experiment and improve them.
+    \item Reproduce past results by accessing corresponding trained models, logs, and visualizations.
+    \item Understand the evolution of your models over time.
+    \item Share your trained models and their associated data with others.
+\end{enumerate}
+
+\textbf{Key Components:}
+\begin{enumerate}
+    \item Versioned Subdirectories (e.g., Ver01\_25\_02\_23, Ver02\_25\_02\_25): Each subdirectory represents a specific version of trained models. The directory name typically includes a date or version number.
+    \item img/: Contains images visualizing the model's performance during training (e.g., loss curves, accuracy plots, k-fold validation results).
+    \item trained/: Contains serialized, fully trained model files that can be loaded and used for prediction. The specific file format depends on the training framework used (e.g., .pkl for scikit-learn, .h5 for Keras).
+    \item training\_log/: Contains log files capturing details of the training process, including hyperparameters, epoch-level metrics, and any errors or warnings.
+    \item README.md: Provides documentation specific to each directory, explaining its contents and how to use the trained models.
+\end{enumerate}
+
+\textbf{Versioning Strategy:}
+The directory structure uses a simple versioning scheme based on dates. Each time you significantly retrain or modify your models, create a new versioned subdirectory (e.g., Ver03\_YY\_MM\_DD) to store updated models and data. This ensures that you can always access and reproduce past results. The other/ directory should be used to store all supporting files such as preprocessing scripts, train/test splits, and anything else that is not part of training logs, image results, or serialized trained models.
+
+By organizing your model artifacts in this structured way, you ensure reproducibility across experiments while maintaining a clear history of model evolution over time.
+
+\subsection{Pipeline Automation Architecture}
+
+We have implemented a unified pipeline for training, predicting, and building features for all models in Assignment 1. This pipeline ensures consistency and reproducibility across experiments by automating the feature extraction, model training, and prediction processes.
+
+\subsubsection{Training Pipeline}
+The training pipeline supports multiple models and feature extraction methods, allowing for flexibility and scalability. Below is the implementation:
+
+\begin{lstlisting}[language=python,caption={Unified Training Pipeline},label={lst:train}]
+def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods, 
+                        model_dict, param_dict, X_train_features_dict, 
+                        X_test_features_dict, y_train, y_test):
+    print("\nRunning feature extraction and model training loop...\n")
+    
+    for model_name in model_name_lst:
+        print(f"\nTraining {model_name} models...\n")
+
+        try:
+            if model_name == "cnn" or model_name == "lstm":
+                train_cnn_lstm(doc_lst, label_lst)
+                
+            elif model_name == "distilbert":
+                train_distilbert_sentiment(doc_lst, label_lst, 
+                                           model_file_path=f"best_{model_name}")
+                
+            elif model_name == "hmm" or model_name == "bayesnet":
+                train_graphical_model(df, model_name, 
+                                      model_save_path=f"best_{model_name}.pkl")
+                
+            else:
+                for method in feature_methods:
+                    print(f"Training with Method: {method}...")
+                    
+                    if model_name == "GA":
+                        genetic_algorithm(X_train_features_dict[method], y_train,
+                                          X_test_features_dict[method], y_test,
+                                          model_save_path=f"best_{model_name}_{method}.pkl")
+                    
+                    else:
+                        model_api = model_dict[model_name]()
+                        model_params = param_dict[model_name]
+                        
+                        generate_binary_classification_model(
+                            X=X_train_features_dict[method], 
+                            y=y_train, 
+                            model_algorithm=model_api, 
+                            hyperparameters=model_params,
+                            needs_scaled=False,
+                            model_save_path=f"best_{model_name}_{method}.pkl",
+                            img_save_path=f"best_{model_name}_{method}.png",
+                            img_loss_path=f"best_{model_name}_{method}_loss.png"
+                        )
+                        
+        except Exception as e:
+            print(f"Error with {model_name}: {e}")
+\end{lstlisting}
+
+\subsubsection{Prediction Pipeline}
+The prediction pipeline automates the evaluation process using trained models. Below is the implementation:
+
+\begin{lstlisting}[language=python,caption={Unified Prediction Pipeline},label={lst:predict}]
+    for model_name in model_names:
+        if model_name in ["GA", "hmm", "bayesnet", "lstm"]:
+            print(f"Already trained and tested model: {model_name}")
+            continue
+        for method in feature_methods:
+            print(f"Predicting with Model: {model_name}, Method: {method}...")
+            
+            try:
+                if model_name in ["cnn"]:
+                    model_filename = os.path.join(output_dir, f"best_{model_name}.keras")
+                    model = tf.keras.models.load_model(model_filename)
+
+                    X_test_features = np.array(X_test_features_dict[method])
+                    if model_name == "lstm":
+                        input_shape = (1, X_test_features.shape[1])
+                        X_test_features = X_test_features.reshape(X_test_features.shape[0], *input_shape)
+                    else:
+                        input_shape = (X_test_features.shape[1], 1)
+                        X_test_features = X_test_features.reshape(-1, X_test_features.shape[1], 1)
+
+                    y_prob = model.predict(X_test_features).flatten()
+                    y_pred = (y_prob > 0.5).astype(int)
+
+                else: 
+                    model_filename = os.path.join(output_dir, f"best_{model_name}_{method}.pkl")
+                    with open(model_filename, 'rb') as model_file:
+                        model = joblib.load(model_file)
+
+                    y_pred = model.predict(X_test_features_dict[method])
+                    
+                    if hasattr(model, "predict_proba"):
+                        y_prob = model.predict_proba(X_test_features_dict[method])[:, 1]  # Take the positive class probabilities
+                    elif hasattr(model, "decision_function"):
+                        y_prob = model.decision_function(X_test_features_dict[method])
+                    else:
+                        y_prob = None
+
+                accuracy = accuracy_score(y_test, y_pred)
+                precision = precision_score(y_test, y_pred, average='binary')
+                recall = recall_score(y_test, y_pred, average='binary')
+                f1 = f1_score(y_test, y_pred, average='binary')
+                roc_auc = roc_auc_score(y_test, y_prob) if y_prob is not None else "N/A"
+
+            except Exception as e:
+                print(f"Error while predicting for {model_name} with {method}: {e}")
+\end{lstlisting}
+
+\subsubsection{Feature Building Pipeline}
+The pipeline automates feature extraction using various methods like TF-IDF, Word2Vec, BERT embeddings:
+
+\begin{lstlisting}[language=python,caption={Feature Building Pipeline},label={lst:features}]
+def build_vector_for_text(df_sampled, feature_methods, project_root,
+                          reduce_dim=None, n_components=50):
+    X_train_features_dict = {}
+    X_test_features_dict = {}
+
+    df_train, df_test = train_test_split(df_sampled, test_size=0.2, random_state=42, stratify=df_sampled["target"])
+
+    y_train = df_train["target"].reset_index(drop=True)
+    y_test = df_test["target"].reset_index(drop=True)
+
+    print("\nRunning feature extraction...\n")
+    for method in tqdm(feature_methods, desc="Feature Extraction Progress"):
+        print(f"\nProcessing feature extraction using: {method}...")
+
+        try:
+            n_classes = len(y_train.unique())
+            if reduce_dim == "lda":
+                n_components = min(n_components, n_classes - 1)
+                
+            reduce_dim_method = reduce_dim if method in ["tfidf", "count", "binary_count"] else None
+
+            feature_builder = FeatureBuilder(
+                method=method,
+                save_dir=os.path.join(project_root, "data", "processed"),
+                reduce_dim=reduce_dim_method,  # Only apply reduction to vector-based methods
+                n_components=n_components
+            )
+
+            feature_builder.fit(df_train["text_clean"].tolist(), y_train if reduce_dim == "lda" else None)
+
+            X_train = feature_builder.transform(df_train["text_clean"].tolist(), n_classes if reduce_dim == "lda" else None)
+            X_test = feature_builder.transform(df_test["text_clean"].tolist())
+
+            X_train_features_dict[method] = pd.DataFrame(X_train)
+            X_test_features_dict[method] = pd.DataFrame(X_test)
+
+            print(f"{method} - Train shape: {X_train.shape}, Test shape: {X_test.shape}")
+
+        except Exception as e:
+            print(f"Error with {method}: {e}. Skipping this method.")
+
+    return X_train_features_dict, X_test_features_dict, y_train, y_test
+    pass  
+\end{lstlisting}
+
+This unified pipeline ensures that all tasks related to training and prediction across different models are handled systematically while maintaining reproducibility and scalability. Feature extraction is automated with support for multiple methods like TF-IDF, Word2Vec embeddings, and BERT embeddings. The modular design allows easy integration of new models or methods as needed.
+
+
