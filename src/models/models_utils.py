@@ -33,6 +33,7 @@ import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier, StackingClassifier
 from sklearn_crfsuite import CRF
 from sklearn.metrics import log_loss, hinge_loss
+from sklearn.metrics import classification_report
 
 from sklearn.base import BaseEstimator, ClassifierMixin
 
@@ -45,8 +46,6 @@ from src.features.build_features_utils import *
 
 import keras
 from keras import layers
-import tensorflow as tf
-import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
@@ -72,6 +71,9 @@ import keras_nlp
 from tensorflow.keras.optimizers import Adam
 
 from statistics import mean
+
+# added
+from transformers import BertTokenizer, TFBertForSequenceClassification
 
 # --------------------------------------------------
 # Loc defined
@@ -345,7 +347,7 @@ def mutate(individual, mutation_rate=0.1):
             individual[i] = 1 - individual[i]
     return individual
 
-def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, population_size=20, num_generations=100, mutation_rate=0.1, crossover_rate=0.7):
+def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, img_save_path=None, img_loss_path=None, population_size=20, num_generations=100, mutation_rate=0.1, crossover_rate=0.7):
     """
     Runs a genetic algorithm to optimize feature selection for Naive Bayes.
 
@@ -413,43 +415,85 @@ def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, po
 
     # Train Naive Bayes with selected features
     nb_model = GaussianNB()
-    nb_model.fit(X_train_selected, y_train)
-    y_pred = nb_model.predict(X_test_selected)
     
-    # Compute metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, average='binary')
-    recall = recall_score(y_test, y_pred, average='binary')
-    f1 = f1_score(y_test, y_pred, average='binary')
-    
-    # ROC AUC can be computed if the model outputs probabilities
-    # Handle models that do not support `predict_proba`
-    if hasattr(nb_model, "predict_proba"):
-        print("Has predict_proba")
-        y_prob = nb_model.predict_proba(X_test_selected)[:, 1]
-        roc_auc = roc_auc_score(y_test, y_prob)
-    elif hasattr(nb_model, "decision_function"):
-        print("Has decision_function")
-        y_prob = nb_model.decision_function(X_test_selected)
-        roc_auc = roc_auc_score(y_test, y_prob)
-    else:
-        print("Does not have predict_proba or decision_function")
-        roc_auc = "N/A"  # Not applicable for models like Perceptron
+    # Set up K-Fold Cross-Validation
+    print("\n🎯 Running K-Fold Cross-Validation...")
+    k_fold = KFold(n_splits=5, shuffle=True, random_state=42)
 
-    # Print metrics
-    print(f"Accuracy: {accuracy:.4f}")
-    print(f"Precision: {precision:.4f}")
-    print(f"Recall: {recall:.4f}")
-    print(f"F1 Score: {f1:.4f}")
-    if hasattr(nb_model, "predict_proba") or hasattr(nb_model, "decision_function"):
-        print(f"ROC AUC: {roc_auc:.4f}")
-    else:
-        print("ROC AUC: N/A")
-    
-    # Save the trained model
+    # Prepare containers for metrics
+    accuracy_scores = []
+    roc_auc_scores = []
+    f1_scores = []
+    precision_scores = []
+    recall_scores = []
+    training_losses = []
+    validation_losses = []
+
+    # Perform CV loop
+    for train_index, val_index in tqdm(k_fold.split(X_train_selected), total=k_fold.get_n_splits(), desc="K-Fold Progress"):
+        X_train_cv, X_val_cv = X_train_selected[train_index], X_train_selected[val_index]
+        y_train_cv, y_val_cv = y_train[train_index], y_train[val_index]
+        
+        model_cv = GaussianNB()
+        model_cv.fit(X_train_cv, y_train_cv)
+
+        # Loss
+        train_loss = get_training_loss(model_cv, X_train_cv, y_train_cv)
+        val_loss = get_training_loss(model_cv, X_val_cv, y_val_cv)
+        training_losses.append(train_loss)
+        validation_losses.append(val_loss)
+
+        # Predictions
+        val_preds = model_cv.predict(X_val_cv)
+        val_probs = model_cv.predict_proba(X_val_cv)[:, 1]
+
+        # Metrics
+        accuracy_scores.append(accuracy_score(y_val_cv, val_preds))
+        roc_auc_scores.append(roc_auc_score(y_val_cv, val_probs))
+        f1_scores.append(f1_score(y_val_cv, val_preds))
+        precision_scores.append(precision_score(y_val_cv, val_preds))
+        recall_scores.append(recall_score(y_val_cv, val_preds))
+
+    # Print average scores
+    print(f'📊 Average Accuracy: {int(mean(accuracy_scores) * 100)}%')
+    print(f'📊 Average ROC AUC: {int(mean(roc_auc_scores) * 100)}%')
+    print(f'📊 Average F1 Score: {int(mean(f1_scores) * 100)}%')
+    print(f'📊 Average Precision: {int(mean(precision_scores) * 100)}%')
+    print(f'📊 Average Recall: {int(mean(recall_scores) * 100)}%')
+
+    # Retrain final model on full training set
+    nb_model.fit(X_train_selected, y_train)
+
+    # Save model
     if model_save_path:
         joblib.dump(nb_model, model_save_path)
         print(f'💾 Model saved to {model_save_path}')
+
+    # Plot accuracy & ROC AUC per fold
+    if img_save_path:
+        plt.figure(figsize=(10, 6))
+        plt.plot(range(1, len(accuracy_scores) + 1), accuracy_scores, label="Accuracy", marker='o')
+        plt.plot(range(1, len(roc_auc_scores) + 1), roc_auc_scores, label="ROC AUC", marker='o')
+        plt.title("Validation Performance Across K-Folds")
+        plt.xlabel("Fold Number")
+        plt.ylabel("Score")
+        plt.legend()
+        plt.savefig(img_save_path)
+        plt.close()
+        print(f"📈 Plot saved to {img_save_path}")
+
+    # Plot loss curves
+    if img_loss_path:
+        plt.figure(figsize=(10, 6))
+        plt.plot(range(1, len(training_losses) + 1), training_losses, label="Training Loss", marker='o')
+        plt.plot(range(1, len(validation_losses) + 1), validation_losses, label="Validation Loss", marker='o')
+        plt.title("Training & Validation Loss Across K-Folds")
+        plt.xlabel("Fold Number")
+        plt.ylabel("Loss")
+        plt.legend()
+        plt.savefig(img_loss_path)
+        plt.close()
+        print(f"📉 Loss plot saved to {img_loss_path}")
 
 # --------------------------------------------------
 
@@ -590,32 +634,6 @@ def generate_binary_classification_model(X, y, model_algorithm, hyperparameters,
         plt.savefig(img_loss_path)
         plt.close()
         print(f"📉 Loss plot saved to {img_loss_path}")
-    
-    # ---- Additional Decision Tree Analysis ---- #
-    # if isinstance(model_algorithm, DecisionTreeClassifier):
-    #     print("\n🌳 Performing Decision Tree Analysis...")
-
-    #     # Plot the decision tree
-    #     plt.figure(figsize=(20, 10))
-    #     plot_tree(model_algorithm, filled=True, class_names=[str(label) for label in model_algorithm.classes_], rounded=True)
-    #     plt.title("Decision Tree Visualization")
-    #     plt.show()
-
-    #     # Print decision path for a sample
-    #     sample_id = 0  # Change for other samples if needed
-    #     node_indicator = model_algorithm.decision_path(X)
-    #     leaf_id = model_algorithm.apply(X)
-
-    #     # print(f"\n📝 Rules used to predict sample {sample_id}: {X_train[sample_id]}")
-    #     print(f"\n📝 Rules used to predict sample {sample_id}:")
-    #     node_index = node_indicator.indices[node_indicator.indptr[sample_id]: node_indicator.indptr[sample_id + 1]]
-
-    #     for node_id in node_index:
-    #         continue
-
-    #     threshold_sign = "<=" if X.iloc[sample_id, model_algorithm.tree_.feature[node_id]] <= model_algorithm.tree_.threshold[node_id] else ">"
-    #     print(f"🔹 Decision node {node_id}: (X[{sample_id}, {model_algorithm.tree_.feature[node_id]}] = "
-    #             f"{X.iloc[sample_id, model_algorithm.tree_.feature[node_id]]}) {threshold_sign} {model_algorithm.tree_.threshold[node_id]}")
 
     return model_algorithm
 
@@ -888,7 +906,7 @@ def train_graphical_model(df, model_name, model_save_path):
 
 # --------------------------------------------------
 
-def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, num_trials=5, epochs=10):
+def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, num_trials=5, epochs=30):
     """
     Trains a CNN-LSTM sentiment analysis model on given text data.
 
@@ -1029,7 +1047,214 @@ def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_di
 
     print("\n✅ Model Training and Save Complete!")
     
+    # === Plot Training & Validation Loss ===
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["loss"], label="Training Loss")
+    plt.plot(history.history["val_loss"], label="Validation Loss")
+    plt.title("📉 Training and Validation Loss over Epochs")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("cnn_lstm_loss.png")
+    plt.close()
+
+    # === Plot Training & Validation Accuracy ===
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["accuracy"], label="Training Accuracy")
+    plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
+    plt.title("📈 Training and Validation Accuracy over Epochs")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("cnn_lstm_accuracy.png")
+    plt.close()
+
+    print("📊 Training curves saved: cnn_lstm_loss.png, cnn_lstm_accuracy.png")
+    
     return best_model, results
+
+def train_bilstm_model(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, epochs=30):
+    tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
+    tokenizer.fit_on_texts(texts)
+    sequences = tokenizer.texts_to_sequences(texts)
+    X_data = pad_sequences(sequences, maxlen=max_length)
+    y_data = np.array(labels)
+
+    X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.2, random_state=42)
+
+    model = keras.Sequential([
+        layers.Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=max_length),
+        layers.Bidirectional(layers.LSTM(128, return_sequences=False)),
+        layers.Dense(128, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(1, activation="sigmoid")
+    ])
+
+    model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+
+    print("\n🚀 Training Bi-LSTM model...")
+    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=32, epochs=epochs, verbose=1)
+
+    y_pred_prob = model.predict(X_test)
+    y_pred = (y_pred_prob > 0.5).astype(int)
+
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    roc_auc = roc_auc_score(y_test, y_pred_prob)
+
+    results = {
+        "loss": history.history["loss"],
+        "val_loss": history.history["val_loss"],
+        "accuracy": history.history["accuracy"],
+        "val_accuracy": history.history["val_accuracy"],
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "roc_auc": roc_auc
+    }
+
+    print(f'🔹 loss: {history.history["loss"][-1]}')
+    print(f'🔹 val_loss: {history.history["val_loss"][-1]}')
+    print(f'🔹 accuracy: {history.history["accuracy"][-1]}')
+    print(f'🔹 val_accuracy: {history.history["val_accuracy"][-1]}')
+    print(f'🔹 precision: {precision}')
+    print(f'🔹 recall: {recall}')
+    print(f'🔹 f1_score: {f1}')
+    print(f'🔹 roc_auc: {roc_auc}')
+
+    model.save("best_bilstm_model.keras")
+
+    # Plot Loss
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["loss"], label="Training Loss")
+    plt.plot(history.history["val_loss"], label="Validation Loss")
+    plt.title("📉 Bi-LSTM Training and Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bilstm_loss.png")
+    plt.close()
+
+    # Plot Accuracy
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["accuracy"], label="Training Accuracy")
+    plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
+    plt.title("📈 Bi-LSTM Training and Validation Accuracy")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bilstm_accuracy.png")
+    plt.close()
+
+    print("📊 Training curves saved: bilstm_loss.png, bilstm_accuracy.png")
+
+    return model, results
+
+def train_bert_model(texts, labels, model_name='bert-base-uncased', epochs=4, batch_size=32, max_length=128):
+    # Step 1: Tokenization
+    tokenizer = BertTokenizer.from_pretrained(model_name)
+
+    def encode_texts(texts, labels):
+        return tokenizer(
+            texts,
+            padding=True,
+            truncation=True,
+            max_length=max_length,
+            return_tensors='tf'
+        ), tf.convert_to_tensor(labels)
+
+    X_encoded, y_encoded = encode_texts(texts, labels)
+
+    # Step 2: Split dataset
+    X_train, X_test, y_train, y_test = train_test_split(X_encoded['input_ids'], y_encoded, test_size=0.2, random_state=42)
+
+    # Step 3: Model definition
+    model = TFBertForSequenceClassification.from_pretrained(model_name, num_labels=2)
+
+    optimizer = keras.optimizers.Adam(learning_rate=2e-5)
+    loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+    metrics = ['accuracy']
+
+    model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
+
+    # Step 4: Train the model
+    print("\n🚀 Training BERT model...")
+    history = model.fit(
+        X_train, y_train,
+        validation_data=(X_test, y_test),
+        batch_size=batch_size,
+        epochs=epochs,
+        verbose=1
+    )
+
+    # Step 5: Inference
+    y_pred_logits = model.predict(X_test).logits
+    y_pred = np.argmax(y_pred_logits, axis=1)
+
+    # Step 6: Metrics
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    roc_auc = roc_auc_score(y_test, tf.nn.softmax(y_pred_logits)[:, 1])
+
+    results = {
+        "loss": history.history["loss"],
+        "val_loss": history.history["val_loss"],
+        "accuracy": history.history["accuracy"],
+        "val_accuracy": history.history["val_accuracy"],
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "roc_auc": roc_auc
+    }
+
+    # Step 7: Save
+    model.save_pretrained("best_bert_model")
+
+    print("\n📊 Metrics:")
+    print(f'🔹 Precision: {precision}')
+    print(f'🔹 Recall: {recall}')
+    print(f'🔹 F1-Score: {f1}')
+    print(f'🔹 ROC AUC: {roc_auc}')
+
+    # Plot Loss
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["loss"], label="Training Loss")
+    plt.plot(history.history["val_loss"], label="Validation Loss")
+    plt.title("📉 BERT Training and Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bert_loss.png")
+    plt.close()
+
+    # Plot Accuracy
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["accuracy"], label="Training Accuracy")
+    plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
+    plt.title("📈 BERT Training and Validation Accuracy")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bert_accuracy.png")
+    plt.close()
+
+    print("✅ Model saved. Training curves saved as bert_loss.png and bert_accuracy.png")
+
+    return model, results
 
 # --------------------------------------------------
 
@@ -1062,8 +1287,11 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
             if model_name == "cnn" or model_name == "lstm":
                 train_cnn_lstm(doc_lst, label_lst)
                 
-            elif model_name == "distilbert":
-                train_distilbert_sentiment(doc_lst, label_lst, model_file_path=f"best_{model_name}")
+            elif model_name == "bilstm":
+                train_bilstm_model(doc_lst, label_lst)
+                
+            elif model_name == "bert":
+                train_bert_model(doc_lst, label_lst)
                 
             elif model_name == "hmm" or model_name == "bayesnet":
                 train_graphical_model(
@@ -1082,7 +1310,9 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
                             y_train, 
                             X_test_features_dict[method], 
                             y_test, 
-                            model_save_path=f"best_{model_name}_{method}.pkl"
+                            model_save_path=f"best_{model_name}_{method}.pkl",
+                            img_save_path=f"best_{model_name}_{method}.png",
+                            img_loss_path=f"best_{model_name}_{method}_loss.png"
                         )
                     
                     else:
@@ -1179,6 +1409,10 @@ def predict_general_model(model_names, feature_methods, X_test_features_dict, y_
                 print(f"Recall: {recall:.4f}")
                 print(f"F1 Score: {f1:.4f}")
                 print(f"ROC AUC: {roc_auc if roc_auc != 'N/A' else 'N/A'}")
+                # Print classification report for binary classification (0 = negative, 1 = positive)
+                print("\n🔬 Classification Report:")
+                print(classification_report(y_test, y_pred, labels=[0, 1], target_names=["negative", "positive"]))
+
                     
             except Exception as e:
                 print(f"❌ Error while predicting for {model_name} with {method}: {e}")
@@ -1208,8 +1442,7 @@ def plot_results(accuracy, roc_auc, train_loss, val_loss, img_save_path, img_los
         plt.savefig(img_loss_path)
         print(f"📉 Loss plot saved to {img_loss_path}")
 
-
-# Voting
+# Voting - test ok
 def train_voting_classifier(model_dict, param_dict, feature_method, X, y, voting_type='soft', model_save_path="voting_model.pkl", img_save_path=None, img_loss_path=None):
     """
     Trains a Voting Classifier using selected models with cross-validation.
@@ -1296,7 +1529,7 @@ def train_voting_classifier(model_dict, param_dict, feature_method, X, y, voting
 
     return voting_clf
 
-# Stacking 
+# Stacking - test ok
 def train_stacking_classifier(model_dict, param_dict, feature_method, X, y, final_estimator=LogisticRegression(), model_save_path="stacking_model.pkl", img_save_path=None, img_loss_path=None):
     """
     Trains a Stacking Classifier using selected models with cross-validation.
