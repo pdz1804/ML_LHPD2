@@ -1258,6 +1258,268 @@ def train_bert_model(texts, labels, model_name='bert-base-uncased', epochs=4, ba
 
 # --------------------------------------------------
 
+from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
+import matplotlib.pyplot as plt
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+import os
+# from keras.preprocessing.text import Tokenizer
+# from keras.utils import pad_sequences
+import optuna
+from torch.utils.data import Dataset, DataLoader
+import json
+
+START_TAG = "<START>"
+STOP_TAG = "<STOP>"
+tag_to_ix = {START_TAG: 0, STOP_TAG: 1, "NEG": 2, "POS": 3}
+ix_to_tag = {v: k for k, v in tag_to_ix.items()}
+
+def argmax(vec):
+    return torch.argmax(vec)
+
+def log_sum_exp(vec):
+    max_score = vec.max()
+    max_score_broadcast = max_score.view(1, -1).expand(1, vec.size()[1])
+    return max_score + torch.log(torch.sum(torch.exp(vec - max_score_broadcast)))
+
+class BiLSTM_CRF_FeatureExtractor(nn.Module):
+    def __init__(self, vocab_size, tag_to_ix, embedding_dim, hidden_dim):
+        super(BiLSTM_CRF_FeatureExtractor, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.lstm = nn.LSTM(embedding_dim, hidden_dim // 2,
+                            num_layers=1, bidirectional=True, batch_first=True)
+        self.hidden2tag = nn.Linear(hidden_dim, len(tag_to_ix))
+        self.transitions = nn.Parameter(torch.randn(len(tag_to_ix), len(tag_to_ix)))
+        self.tag_to_ix = tag_to_ix
+
+        self.transitions.data[tag_to_ix[START_TAG], :] = -10000.
+        self.transitions.data[:, tag_to_ix[STOP_TAG]] = -10000.
+
+    def _get_lstm_features(self, sentence):
+        embeds = self.embedding(sentence)
+        lstm_out, _ = self.lstm(embeds)
+        return self.hidden2tag(lstm_out)
+
+    def _forward_alg(self, feats):
+        init_alphas = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
+        init_alphas[0][self.tag_to_ix[START_TAG]] = 0.
+        forward_var = init_alphas
+        for feat in feats:
+            alphas_t = []
+            for next_tag in range(len(self.tag_to_ix)):
+                emit_score = feat[next_tag].view(1, -1).expand(1, len(self.tag_to_ix))
+                trans_score = self.transitions[next_tag].view(1, -1)
+                next_tag_var = forward_var + trans_score + emit_score
+                alphas_t.append(log_sum_exp(next_tag_var).view(1))
+            forward_var = torch.cat(alphas_t).view(1, -1)
+        terminal_var = forward_var + self.transitions[self.tag_to_ix[STOP_TAG]]
+        return log_sum_exp(terminal_var)
+
+    def _score_sentence(self, feats, tags):
+        score = torch.zeros(1, device=feats.device)
+        tags = torch.cat([torch.tensor([self.tag_to_ix[START_TAG]], device=feats.device), tags])
+        for i, feat in enumerate(feats):
+            score += self.transitions[tags[i + 1], tags[i]] + feat[tags[i + 1]]
+        score += self.transitions[self.tag_to_ix[STOP_TAG], tags[-1]]
+        return score
+
+    def _viterbi_decode(self, feats):
+        backpointers = []
+        init_vvars = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
+        init_vvars[0][self.tag_to_ix[START_TAG]] = 0
+        forward_var = init_vvars
+
+        for feat in feats:
+            bptrs_t = []
+            viterbivars_t = []
+            for next_tag in range(len(self.tag_to_ix)):
+                next_tag_var = forward_var + self.transitions[next_tag]
+                best_tag_id = argmax(next_tag_var)
+                bptrs_t.append(best_tag_id.item())
+                viterbivars_t.append(next_tag_var[0][best_tag_id].view(1))
+            forward_var = (torch.cat(viterbivars_t) + feat).view(1, -1)
+            backpointers.append(bptrs_t)
+
+        terminal_var = forward_var + self.transitions[self.tag_to_ix[STOP_TAG]]
+        best_tag_id = argmax(terminal_var)
+        best_path = [best_tag_id.item()]
+        for bptrs_t in reversed(backpointers):
+            best_tag_id = bptrs_t[best_tag_id]
+            best_path.append(best_tag_id)
+        start = best_path.pop()
+        best_path.reverse()
+        return best_path
+
+    def neg_log_likelihood(self, sentences, tags):
+        feats = self._get_lstm_features(sentences)
+        forward_score = self._forward_alg(feats[0])
+        gold_score = self._score_sentence(feats[0], tags[0])
+        return forward_score - gold_score
+
+    def forward(self, sentences):
+        feats = self._get_lstm_features(sentences)
+        return self._viterbi_decode(feats[0])
+
+class CRFSentimentDataset(Dataset):
+    def __init__(self, input_ids, labels, max_len):
+        self.input_ids = input_ids
+        self.labels = labels
+        self.max_len = max_len
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, idx):
+        x = torch.tensor(self.input_ids[idx], dtype=torch.long)
+        tag_label = "POS" if self.labels[idx] == 1 else "NEG"
+        tag_id = tag_to_ix[tag_label]
+        y = torch.tensor([tag_id] * self.max_len, dtype=torch.long)
+        return x, y
+
+def tag_sequence_to_sentiment(tag_seq):
+    count_pos = tag_seq.count(tag_to_ix["POS"])
+    count_neg = tag_seq.count(tag_to_ix["NEG"])
+    return 1 if count_pos >= count_neg else 0
+
+def train_crf_feature_extractor(texts, labels, vocab_size=10000, max_length=100, embedding_dim=100, num_trials=5, epochs=30):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"🖥️ Using device: {device}")
+
+    tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
+    tokenizer.fit_on_texts(texts)
+    sequences = tokenizer.texts_to_sequences(texts)
+    X_data = pad_sequences(sequences, maxlen=max_length, padding="post")
+    y_data = np.array(labels)
+
+    X_temp, X_test, y_temp, y_test = train_test_split(X_data, y_data, test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.2, random_state=42)
+
+    def objective(trial):
+        hidden_dim = trial.suggest_int("hidden_dim", 64, 256, step=64)
+        lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
+
+        model = BiLSTM_CRF_FeatureExtractor(vocab_size, tag_to_ix, embedding_dim, hidden_dim).to(device)
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+
+        train_loader = DataLoader(CRFSentimentDataset(X_train, y_train, max_length), batch_size=32, shuffle=True)
+        val_loader = DataLoader(CRFSentimentDataset(X_val, y_val, max_length), batch_size=32)
+
+        model.train()
+        for _ in range(3):
+            for x, y in train_loader:
+                x, y = x.to(device), y.to(device)
+                model.zero_grad()
+                loss = model.neg_log_likelihood(x, y)
+                loss.backward()
+                optimizer.step()
+
+        model.eval()
+        y_pred, y_true = [], []
+        with torch.no_grad():
+            for x, y in val_loader:
+                x = x.to(device)
+                outputs = model(x)
+                
+                for i in range(x.size(0)):
+                    decoded = model(x[i].unsqueeze(0))
+                    y_pred.append(tag_sequence_to_sentiment(decoded))
+                    y_true.append(1 if y[i][0].item() == tag_to_ix["POS"] else 0)
+
+        return f1_score(y_true, y_pred)
+
+    print("🔍 Tuning hyperparameters...")
+    study = optuna.create_study(direction="maximize")
+    study.optimize(objective, n_trials=num_trials)
+    best_params = study.best_params
+
+    model = BiLSTM_CRF_FeatureExtractor(vocab_size, tag_to_ix, embedding_dim, best_params["hidden_dim"]).to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=best_params["lr"])
+    train_loader = DataLoader(CRFSentimentDataset(X_train, y_train, max_length), batch_size=32, shuffle=True)
+    val_loader = DataLoader(CRFSentimentDataset(X_val, y_val, max_length), batch_size=32)
+
+    history = {"train_loss": [], "val_loss": []}
+
+    for epoch in range(epochs):
+        model.train()
+        total_train_loss = 0.0
+        for x, y in train_loader:
+            x, y = x.to(device), y.to(device)
+            model.zero_grad()
+            loss = model.neg_log_likelihood(x, y)
+            loss.backward()
+            optimizer.step()
+            total_train_loss += loss.item()
+        avg_train_loss = total_train_loss / len(train_loader)
+
+        model.eval()
+        total_val_loss = 0.0
+        with torch.no_grad():
+            for x, y in val_loader:
+                x, y = x.to(device), y.to(device)
+                total_val_loss += model.neg_log_likelihood(x, y).item()
+        avg_val_loss = total_val_loss / len(val_loader)
+
+        history["train_loss"].append(avg_train_loss)
+        history["val_loss"].append(avg_val_loss)
+        print(f"Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
+
+    test_loader = DataLoader(CRFSentimentDataset(X_test, y_test, max_length), batch_size=32)
+    model.eval()
+    y_pred, y_true = [], []
+    with torch.no_grad():
+        for x, y in test_loader:
+            x = x.to(device)
+            outputs = model(x)
+            for i in range(x.size(0)):
+                decoded = model(x[i].unsqueeze(0))
+                y_pred.append(tag_sequence_to_sentiment(decoded))
+                y_true.append(1 if y[i][0].item() == tag_to_ix["POS"] else 0)
+
+
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(y_true, y_pred)
+    recall = recall_score(y_true, y_pred)
+    f1 = f1_score(y_true, y_pred)
+    roc_auc = roc_auc_score(y_true, y_pred)
+    report = classification_report(y_true, y_pred, target_names=["Negative", "Positive"])
+    print("\nClassification Report:\n", report)
+
+    results = {
+        "train_loss": history["train_loss"],
+        "val_loss": history["val_loss"],
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "roc_auc": roc_auc
+    }
+
+    print(f"\n✅ Test - Accuracy: {accuracy:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}, AUC: {roc_auc:.4f}")
+
+    os.makedirs("crf_feature_model", exist_ok=True)
+    torch.save(model.state_dict(), "best_crf_model.pt")
+    with open("best_crf_model_config.json", "w") as f:
+        json.dump(best_params, f, indent=4)
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(history["train_loss"], label="Train Loss")
+    plt.plot(history["val_loss"], label="Validation Loss")
+    plt.title("📉 Train vs Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("crf_loss_curve.png")
+    plt.close()
+
+    return model, results
+
+
+# --------------------------------------------------
+
 def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods, model_dict, param_dict, X_train_features_dict, X_test_features_dict, y_train, y_test):
     """
     Trains general models using specified feature extraction methods and model algorithms.
@@ -1286,6 +1548,9 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
         try:
             if model_name == "cnn" or model_name == "lstm":
                 train_cnn_lstm(doc_lst, label_lst)
+                
+            elif model_name == "CRF":
+                train_crf_feature_extractor(doc_lst, label_lst)
                 
             elif model_name == "bilstm":
                 train_bilstm_model(doc_lst, label_lst)
@@ -1349,30 +1614,26 @@ def predict_general_model(model_names, feature_methods, X_test_features_dict, y_
     Returns:
         None
     """
-    # Predict for each model
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"⚙️  Using device: {device}")
+
     for model_name in model_names:
-        if model_name in ["GA", "hmm", "bayesnet", "lstm"]:
+        if model_name in ["GA", "hmm", "bayesnet", "lstm", "CRF"]:
             print(f"Already trained and tested model: {model_name}")
             continue
+
         for method in feature_methods:
             print(f"🔎 Predicting with Model: {model_name}, Method: {method}...")
-            
+
             try:
-                if model_name in ["cnn"]:
-                    # Load the saved deep learning model
+                if model_name == "cnn":
                     model_filename = os.path.join(output_dir, f"best_{model_name}.keras")
                     model = tf.keras.models.load_model(model_filename)
 
-                    # Retrieve and reshape features for CNN/LSTM
                     X_test_features = np.array(X_test_features_dict[method])
-                    if model_name == "lstm":
-                        input_shape = (1, X_test_features.shape[1])
-                        X_test_features = X_test_features.reshape(X_test_features.shape[0], *input_shape)
-                    else:
-                        input_shape = (X_test_features.shape[1], 1)
-                        X_test_features = X_test_features.reshape(-1, X_test_features.shape[1], 1)
+                    input_shape = (X_test_features.shape[1], 1)
+                    X_test_features = X_test_features.reshape(-1, X_test_features.shape[1], 1)
 
-                    # Make predictions
                     y_prob = model.predict(X_test_features).flatten()
                     y_pred = (y_prob > 0.5).astype(int)
 
