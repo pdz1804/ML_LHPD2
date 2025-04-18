@@ -1,0 +1,112 @@
+#####################################
+Logistic Regression 
+#####################################
+🚀 Training logistic_regression models...
+--------------------------------------
+"logistic_regression": {
+    "penalty": ["l1", "l2", "elasticnet", None],
+    "C": [0.1, 1.0, 10.0],
+    "max_iter": [1000, 2000]
+}
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING AND TESTING 
+--------------------------------------
+2025-02-23 19:58:58,766 - INFO - 🔎 Training with Method: count...
+2025-02-23 19:58:58,767 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-23 20:18:33,937 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-23 20:18:33,938 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 20:19:10,700 - INFO - 📊 Average Accuracy: 74%
+2025-02-23 20:19:10,701 - INFO - 📊 Average ROC AUC: 74%
+2025-02-23 20:19:10,702 - INFO - 📊 Average F1 Score: 76%
+2025-02-23 20:19:10,704 - INFO - 📊 Average Precision: 73%
+2025-02-23 20:19:10,704 - INFO - 📊 Average Recall: 79%
+
+TESTING 
+2025-02-23 20:40:23,942 - INFO - Accuracy: 0.7557
+2025-02-23 20:40:23,943 - INFO - Precision: 0.7403
+2025-02-23 20:40:23,944 - INFO - Recall: 0.8078
+2025-02-23 20:40:23,944 - INFO - F1 Score: 0.7726
+2025-02-23 20:40:23,945 - INFO - ROC AUC: 0.8297240739847278
+
+--------------------------------------
+2025-02-23 20:19:19,055 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 20:19:19,057 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-23 20:39:15,185 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-23 20:39:15,186 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 20:39:59,355 - INFO - 📊 Average Accuracy: 74%
+2025-02-23 20:39:59,356 - INFO - 📊 Average ROC AUC: 73%
+2025-02-23 20:39:59,357 - INFO - 📊 Average F1 Score: 75%
+2025-02-23 20:39:59,358 - INFO - 📊 Average Precision: 73%
+2025-02-23 20:39:59,360 - INFO - 📊 Average Recall: 78%
+
+TESTING 
+2025-02-23 20:40:24,117 - INFO - Accuracy: 0.7527
+2025-02-23 20:40:24,119 - INFO - Precision: 0.7413
+2025-02-23 20:40:24,120 - INFO - Recall: 0.7968
+2025-02-23 20:40:24,121 - INFO - F1 Score: 0.7681
+2025-02-23 20:40:24,121 - INFO - ROC AUC: 0.8299441128183245
+
+--------------------------------------
+2025-02-24 01:48:51,363 - INFO - 🔎 Training with Method: word2vec...
+2025-02-24 01:48:51,363 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-24 01:50:30,076 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-24 01:50:30,077 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:50:35,758 - INFO - 📊 Average Accuracy: 72%
+2025-02-24 01:50:35,759 - INFO - 📊 Average ROC AUC: 72%
+2025-02-24 01:50:35,760 - INFO - 📊 Average F1 Score: 73%
+2025-02-24 01:50:35,761 - INFO - 📊 Average Precision: 71%
+2025-02-24 01:50:35,762 - INFO - 📊 Average Recall: 75%
+
+TESTING 
+2025-02-24 01:51:32,363 - INFO - Accuracy: 0.7271
+2025-02-24 01:51:32,363 - INFO - Precision: 0.7230
+2025-02-24 01:51:32,364 - INFO - Recall: 0.7602
+2025-02-24 01:51:32,365 - INFO - F1 Score: 0.7411
+2025-02-24 01:51:32,366 - INFO - ROC AUC: 0.8013266399175423
+
+--------------------------------------
+2025-02-24 01:50:37,351 - INFO - 🔎 Training with Method: glove...
+2025-02-24 01:50:37,352 - INFO - 🚀 Training new model: LogisticRegression...
+2025-02-24 01:51:06,472 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
+2025-02-24 01:51:06,473 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:51:08,838 - INFO - 📊 Average Accuracy: 69%
+2025-02-24 01:51:08,839 - INFO - 📊 Average ROC AUC: 69%
+2025-02-24 01:51:08,840 - INFO - 📊 Average F1 Score: 70%
+2025-02-24 01:51:08,841 - INFO - 📊 Average Precision: 69%
+2025-02-24 01:51:08,842 - INFO - 📊 Average Recall: 71%
+
+2025-02-24 01:51:32,425 - INFO - Accuracy: 0.6926
+2025-02-24 01:51:32,426 - INFO - Precision: 0.6931
+2025-02-24 01:51:32,427 - INFO - Recall: 0.7213
+2025-02-24 01:51:32,428 - INFO - F1 Score: 0.7069
+2025-02-24 01:51:32,429 - INFO - ROC AUC: 0.7618732477242464
+
+--------------------------------------
+BEST MODEL 
+- based on testing performance 
+- priority: based on Accuracy > F1 > Roc AUC
+--------------------------------------
+{
+    "method": "count",
+    "model": "logistic_regression",
+    "hyperparameters": {
+        "C": 0.1,
+        "max_iter": 1000,
+        "penalty": "l2"
+    },
+    "performance": {
+        "accuracy": 0.7557,
+        "precision": 0.7403,
+        "recall": 0.8078,
+        "f1": 0.7726,
+        "roc_auc": 0.8297240739847278
+    }
+}

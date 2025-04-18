@@ -1,0 +1,358 @@
+2025-03-29 03:00:05,360 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-03-29 03:00:05,361 - INFO - 
+🚀 Training decision_tree models...
+
+2025-03-29 03:00:05,362 - INFO - 🔎 Training with Method: count...
+2025-03-29 03:00:05,363 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-29 03:02:30,299 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 20, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 10}
+2025-03-29 03:02:30,300 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:02:31,607 - INFO - 📊 Average Accuracy: 58%
+2025-03-29 03:02:31,607 - INFO - 📊 Average ROC AUC: 58%
+2025-03-29 03:02:31,609 - INFO - 📊 Average F1 Score: 55%
+2025-03-29 03:02:31,610 - INFO - 📊 Average Precision: 61%
+2025-03-29 03:02:31,611 - INFO - 📊 Average Recall: 50%
+2025-03-29 03:02:31,872 - INFO - 💾 Model saved to best_decision_tree_count.pkl
+2025-03-29 03:02:32,100 - INFO - 📈 Plot saved to best_decision_tree_count.png
+2025-03-29 03:02:32,251 - INFO - 📉 Loss plot saved to best_decision_tree_count_loss.png
+2025-03-29 03:02:32,251 - INFO - 🔎 Training with Method: tfidf...
+2025-03-29 03:02:32,252 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-29 03:10:53,842 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 20, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5}
+2025-03-29 03:10:53,844 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:10:57,936 - INFO - 📊 Average Accuracy: 55%
+2025-03-29 03:10:57,937 - INFO - 📊 Average ROC AUC: 55%
+2025-03-29 03:10:57,938 - INFO - 📊 Average F1 Score: 58%
+2025-03-29 03:10:57,938 - INFO - 📊 Average Precision: 56%
+2025-03-29 03:10:57,940 - INFO - 📊 Average Recall: 60%
+2025-03-29 03:10:58,916 - INFO - 💾 Model saved to best_decision_tree_tfidf.pkl
+2025-03-29 03:10:59,071 - INFO - 📈 Plot saved to best_decision_tree_tfidf.png
+2025-03-29 03:10:59,223 - INFO - 📉 Loss plot saved to best_decision_tree_tfidf_loss.png
+2025-03-29 03:10:59,224 - INFO - 
+🚀 Training random_forest models...
+
+2025-03-29 03:10:59,224 - INFO - 🔎 Training with Method: count...
+2025-03-29 03:10:59,226 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-29 03:15:22,047 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
+2025-03-29 03:15:22,048 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:15:52,897 - INFO - 📊 Average Accuracy: 60%
+2025-03-29 03:15:52,898 - INFO - 📊 Average ROC AUC: 60%
+2025-03-29 03:15:52,899 - INFO - 📊 Average F1 Score: 62%
+2025-03-29 03:15:52,900 - INFO - 📊 Average Precision: 61%
+2025-03-29 03:15:52,901 - INFO - 📊 Average Recall: 63%
+2025-03-29 03:15:59,848 - INFO - 💾 Model saved to best_random_forest_count.pkl
+2025-03-29 03:16:00,004 - INFO - 📈 Plot saved to best_random_forest_count.png
+2025-03-29 03:16:00,134 - INFO - 📉 Loss plot saved to best_random_forest_count_loss.png
+2025-03-29 03:16:00,135 - INFO - 🔎 Training with Method: tfidf...
+2025-03-29 03:16:00,136 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-29 03:29:32,998 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+2025-03-29 03:29:32,999 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:30:59,660 - INFO - 📊 Average Accuracy: 57%
+2025-03-29 03:30:59,661 - INFO - 📊 Average ROC AUC: 57%
+2025-03-29 03:30:59,662 - INFO - 📊 Average F1 Score: 62%
+2025-03-29 03:30:59,663 - INFO - 📊 Average Precision: 57%
+2025-03-29 03:30:59,664 - INFO - 📊 Average Recall: 68%
+2025-03-29 03:31:20,716 - INFO - 💾 Model saved to best_random_forest_tfidf.pkl
+2025-03-29 03:31:20,875 - INFO - 📈 Plot saved to best_random_forest_tfidf.png
+2025-03-29 03:31:21,042 - INFO - 📉 Loss plot saved to best_random_forest_tfidf_loss.png
+2025-03-29 03:31:21,043 - INFO - 
+🚀 Training xgboost models...
+
+2025-03-29 03:31:21,044 - INFO - 🔎 Training with Method: count...
+2025-03-29 03:31:21,047 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-29 03:36:22,387 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 100}
+2025-03-29 03:36:22,388 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:36:32,299 - INFO - 📊 Average Accuracy: 61%
+2025-03-29 03:36:32,300 - INFO - 📊 Average ROC AUC: 61%
+2025-03-29 03:36:32,301 - INFO - 📊 Average F1 Score: 62%
+2025-03-29 03:36:32,303 - INFO - 📊 Average Precision: 62%
+2025-03-29 03:36:32,303 - INFO - 📊 Average Recall: 62%
+2025-03-29 03:36:34,280 - INFO - 💾 Model saved to best_xgboost_count.pkl
+2025-03-29 03:36:34,452 - INFO - 📈 Plot saved to best_xgboost_count.png
+2025-03-29 03:36:34,595 - INFO - 📉 Loss plot saved to best_xgboost_count_loss.png
+2025-03-29 03:36:34,596 - INFO - 🔎 Training with Method: tfidf...
+2025-03-29 03:36:34,597 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-29 03:45:30,893 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 100}
+2025-03-29 03:45:30,894 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:45:47,781 - INFO - 📊 Average Accuracy: 57%
+2025-03-29 03:45:47,782 - INFO - 📊 Average ROC AUC: 57%
+2025-03-29 03:45:47,783 - INFO - 📊 Average F1 Score: 60%
+2025-03-29 03:45:47,785 - INFO - 📊 Average Precision: 58%
+2025-03-29 03:45:47,785 - INFO - 📊 Average Recall: 63%
+2025-03-29 03:45:51,118 - INFO - 💾 Model saved to best_xgboost_tfidf.pkl
+2025-03-29 03:45:51,270 - INFO - 📈 Plot saved to best_xgboost_tfidf.png
+2025-03-29 03:45:51,417 - INFO - 📉 Loss plot saved to best_xgboost_tfidf_loss.png
+2025-03-29 03:45:51,418 - INFO - 
+🚀 Training bayesian models...
+
+2025-03-29 03:45:51,419 - INFO - 🔎 Training with Method: count...
+2025-03-29 03:45:51,420 - INFO - 🚀 Training new model: GaussianNB...
+2025-03-29 03:45:58,023 - INFO - Best hyperparameters: {'priors': [0.3, 0.7], 'var_smoothing': 1e-09}
+2025-03-29 03:45:58,025 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:45:58,629 - INFO - 📊 Average Accuracy: 60%
+2025-03-29 03:45:58,631 - INFO - 📊 Average ROC AUC: 60%
+2025-03-29 03:45:58,631 - INFO - 📊 Average F1 Score: 61%
+2025-03-29 03:45:58,632 - INFO - 📊 Average Precision: 61%
+2025-03-29 03:45:58,633 - INFO - 📊 Average Recall: 60%
+2025-03-29 03:45:58,691 - INFO - 💾 Model saved to best_bayesian_count.pkl
+2025-03-29 03:45:58,852 - INFO - 📈 Plot saved to best_bayesian_count.png
+2025-03-29 03:45:59,012 - INFO - 📉 Loss plot saved to best_bayesian_count_loss.png
+2025-03-29 03:45:59,013 - INFO - 🔎 Training with Method: tfidf...
+2025-03-29 03:45:59,014 - INFO - 🚀 Training new model: GaussianNB...
+2025-03-29 03:46:05,604 - INFO - Best hyperparameters: {'priors': [0.5, 0.5], 'var_smoothing': 1e-09}
+2025-03-29 03:46:05,605 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:46:06,227 - INFO - 📊 Average Accuracy: 57%
+2025-03-29 03:46:06,228 - INFO - 📊 Average ROC AUC: 57%
+2025-03-29 03:46:06,229 - INFO - 📊 Average F1 Score: 58%
+2025-03-29 03:46:06,230 - INFO - 📊 Average Precision: 58%
+2025-03-29 03:46:06,231 - INFO - 📊 Average Recall: 59%
+2025-03-29 03:46:06,286 - INFO - 💾 Model saved to best_bayesian_tfidf.pkl
+2025-03-29 03:46:06,447 - INFO - 📈 Plot saved to best_bayesian_tfidf.png
+2025-03-29 03:46:06,606 - INFO - 📉 Loss plot saved to best_bayesian_tfidf_loss.png
+2025-03-29 03:46:06,607 - INFO - 
+🚀 Training logistic_regression models...
+
+2025-03-29 03:46:06,608 - INFO - 🔎 Training with Method: count...
+2025-03-29 03:46:06,610 - INFO - 🚀 Training new model: LogisticRegression...
+2025-03-29 03:46:15,138 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
+2025-03-29 03:46:15,140 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:46:16,013 - INFO - 📊 Average Accuracy: 61%
+2025-03-29 03:46:16,014 - INFO - 📊 Average ROC AUC: 61%
+2025-03-29 03:46:16,015 - INFO - 📊 Average F1 Score: 62%
+2025-03-29 03:46:16,016 - INFO - 📊 Average Precision: 62%
+2025-03-29 03:46:16,017 - INFO - 📊 Average Recall: 61%
+2025-03-29 03:46:16,222 - INFO - 💾 Model saved to best_logistic_regression_count.pkl
+2025-03-29 03:46:16,390 - INFO - 📈 Plot saved to best_logistic_regression_count.png
+2025-03-29 03:46:16,548 - INFO - 📉 Loss plot saved to best_logistic_regression_count_loss.png
+2025-03-29 03:46:16,549 - INFO - 🔎 Training with Method: tfidf...
+2025-03-29 03:46:16,550 - INFO - 🚀 Training new model: LogisticRegression...
+2025-03-29 03:46:23,906 - INFO - Best hyperparameters: {'C': 0.1, 'max_iter': 1000, 'penalty': 'l2'}
+2025-03-29 03:46:23,908 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-29 03:46:24,629 - INFO - 📊 Average Accuracy: 57%
+2025-03-29 03:46:24,629 - INFO - 📊 Average ROC AUC: 57%
+2025-03-29 03:46:24,631 - INFO - 📊 Average F1 Score: 60%
+2025-03-29 03:46:24,631 - INFO - 📊 Average Precision: 57%
+2025-03-29 03:46:24,632 - INFO - 📊 Average Recall: 64%
+2025-03-29 03:46:24,802 - INFO - 💾 Model saved to best_logistic_regression_tfidf.pkl
+2025-03-29 03:46:24,957 - INFO - 📈 Plot saved to best_logistic_regression_tfidf.png
+2025-03-29 03:46:25,104 - INFO - 📉 Loss plot saved to best_logistic_regression_tfidf_loss.png
+2025-03-29 03:46:25,193 - INFO - 🔎 Predicting with Model: decision_tree, Method: count...
+2025-03-29 03:46:25,237 - INFO - Model: decision_tree
+2025-03-29 03:46:25,238 - INFO - Method: count
+2025-03-29 03:46:25,238 - INFO - --------------------------------------------------
+2025-03-29 03:46:25,239 - INFO - Accuracy: 0.5604
+2025-03-29 03:46:25,240 - INFO - Precision: 0.5851
+2025-03-29 03:46:25,241 - INFO - Recall: 0.4965
+2025-03-29 03:46:25,242 - INFO - F1 Score: 0.5372
+2025-03-29 03:46:25,243 - INFO - ROC AUC: 0.5803454632705127
+2025-03-29 03:46:25,244 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:25,276 - INFO -               precision    recall  f1-score   support
+
+    negative       0.54      0.63      0.58      9723
+    positive       0.59      0.50      0.54     10277
+
+    accuracy                           0.56     20000
+   macro avg       0.56      0.56      0.56     20000
+weighted avg       0.56      0.56      0.56     20000
+
+2025-03-29 03:46:25,276 - INFO - 🔎 Predicting with Model: decision_tree, Method: tfidf...
+2025-03-29 03:46:25,319 - INFO - Model: decision_tree
+2025-03-29 03:46:25,320 - INFO - Method: tfidf
+2025-03-29 03:46:25,321 - INFO - --------------------------------------------------
+2025-03-29 03:46:25,322 - INFO - Accuracy: 0.5331
+2025-03-29 03:46:25,323 - INFO - Precision: 0.5410
+2025-03-29 03:46:25,323 - INFO - Recall: 0.6025
+2025-03-29 03:46:25,325 - INFO - F1 Score: 0.5701
+2025-03-29 03:46:25,325 - INFO - ROC AUC: 0.5461540785629406
+2025-03-29 03:46:25,326 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:25,358 - INFO -               precision    recall  f1-score   support
+
+    negative       0.52      0.46      0.49      9723
+    positive       0.54      0.60      0.57     10277
+
+    accuracy                           0.53     20000
+   macro avg       0.53      0.53      0.53     20000
+weighted avg       0.53      0.53      0.53     20000
+
+2025-03-29 03:46:25,359 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:25,359 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:25,361 - INFO - 🔎 Predicting with Model: random_forest, Method: count...
+2025-03-29 03:46:25,760 - INFO - Model: random_forest
+2025-03-29 03:46:25,761 - INFO - Method: count
+2025-03-29 03:46:25,762 - INFO - --------------------------------------------------
+2025-03-29 03:46:25,762 - INFO - Accuracy: 0.5760
+2025-03-29 03:46:25,763 - INFO - Precision: 0.5792
+2025-03-29 03:46:25,764 - INFO - Recall: 0.6396
+2025-03-29 03:46:25,765 - INFO - F1 Score: 0.6079
+2025-03-29 03:46:25,767 - INFO - ROC AUC: 0.6090717496627989
+2025-03-29 03:46:25,768 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:25,801 - INFO -               precision    recall  f1-score   support
+
+    negative       0.57      0.51      0.54      9723
+    positive       0.58      0.64      0.61     10277
+
+    accuracy                           0.58     20000
+   macro avg       0.58      0.57      0.57     20000
+weighted avg       0.58      0.58      0.57     20000
+
+2025-03-29 03:46:25,802 - INFO - 🔎 Predicting with Model: random_forest, Method: tfidf...
+2025-03-29 03:46:26,187 - INFO - Model: random_forest
+2025-03-29 03:46:26,188 - INFO - Method: tfidf
+2025-03-29 03:46:26,189 - INFO - --------------------------------------------------
+2025-03-29 03:46:26,189 - INFO - Accuracy: 0.5429
+2025-03-29 03:46:26,190 - INFO - Precision: 0.5458
+2025-03-29 03:46:26,191 - INFO - Recall: 0.6582
+2025-03-29 03:46:26,192 - INFO - F1 Score: 0.5967
+2025-03-29 03:46:26,193 - INFO - ROC AUC: 0.5645847452291668
+2025-03-29 03:46:26,194 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:26,226 - INFO -               precision    recall  f1-score   support
+
+    negative       0.54      0.42      0.47      9723
+    positive       0.55      0.66      0.60     10277
+
+    accuracy                           0.54     20000
+   macro avg       0.54      0.54      0.53     20000
+weighted avg       0.54      0.54      0.54     20000
+
+2025-03-29 03:46:26,227 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:26,228 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:26,228 - INFO - 🔎 Predicting with Model: xgboost, Method: count...
+2025-03-29 03:46:26,359 - INFO - Model: xgboost
+2025-03-29 03:46:26,360 - INFO - Method: count
+2025-03-29 03:46:26,360 - INFO - --------------------------------------------------
+2025-03-29 03:46:26,361 - INFO - Accuracy: 0.5718
+2025-03-29 03:46:26,362 - INFO - Precision: 0.5819
+2025-03-29 03:46:26,363 - INFO - Recall: 0.5926
+2025-03-29 03:46:26,364 - INFO - F1 Score: 0.5872
+2025-03-29 03:46:26,365 - INFO - ROC AUC: 0.5967049857685304
+2025-03-29 03:46:26,365 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:26,396 - INFO -               precision    recall  f1-score   support
+
+    negative       0.56      0.55      0.56      9723
+    positive       0.58      0.59      0.59     10277
+
+    accuracy                           0.57     20000
+   macro avg       0.57      0.57      0.57     20000
+weighted avg       0.57      0.57      0.57     20000
+
+2025-03-29 03:46:26,397 - INFO - 🔎 Predicting with Model: xgboost, Method: tfidf...
+2025-03-29 03:46:26,540 - INFO - Model: xgboost
+2025-03-29 03:46:26,541 - INFO - Method: tfidf
+2025-03-29 03:46:26,542 - INFO - --------------------------------------------------
+2025-03-29 03:46:26,543 - INFO - Accuracy: 0.5398
+2025-03-29 03:46:26,544 - INFO - Precision: 0.5490
+2025-03-29 03:46:26,545 - INFO - Recall: 0.5853
+2025-03-29 03:46:26,546 - INFO - F1 Score: 0.5665
+2025-03-29 03:46:26,546 - INFO - ROC AUC: 0.5576769499469247
+2025-03-29 03:46:26,547 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:26,579 - INFO -               precision    recall  f1-score   support
+
+    negative       0.53      0.49      0.51      9723
+    positive       0.55      0.59      0.57     10277
+
+    accuracy                           0.54     20000
+   macro avg       0.54      0.54      0.54     20000
+weighted avg       0.54      0.54      0.54     20000
+
+2025-03-29 03:46:26,580 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:26,580 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:26,581 - INFO - 🔎 Predicting with Model: bayesian, Method: count...
+2025-03-29 03:46:26,641 - INFO - Model: bayesian
+2025-03-29 03:46:26,642 - INFO - Method: count
+2025-03-29 03:46:26,643 - INFO - --------------------------------------------------
+2025-03-29 03:46:26,643 - INFO - Accuracy: 0.5565
+2025-03-29 03:46:26,644 - INFO - Precision: 0.5680
+2025-03-29 03:46:26,645 - INFO - Recall: 0.5720
+2025-03-29 03:46:26,646 - INFO - F1 Score: 0.5700
+2025-03-29 03:46:26,648 - INFO - ROC AUC: 0.5725839229182159
+2025-03-29 03:46:26,649 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:26,683 - INFO -               precision    recall  f1-score   support
+
+    negative       0.54      0.54      0.54      9723
+    positive       0.57      0.57      0.57     10277
+
+    accuracy                           0.56     20000
+   macro avg       0.56      0.56      0.56     20000
+weighted avg       0.56      0.56      0.56     20000
+
+2025-03-29 03:46:26,684 - INFO - 🔎 Predicting with Model: bayesian, Method: tfidf...
+2025-03-29 03:46:26,745 - INFO - Model: bayesian
+2025-03-29 03:46:26,746 - INFO - Method: tfidf
+2025-03-29 03:46:26,746 - INFO - --------------------------------------------------
+2025-03-29 03:46:26,747 - INFO - Accuracy: 0.5378
+2025-03-29 03:46:26,748 - INFO - Precision: 0.5481
+2025-03-29 03:46:26,749 - INFO - Recall: 0.5730
+2025-03-29 03:46:26,751 - INFO - F1 Score: 0.5603
+2025-03-29 03:46:26,751 - INFO - ROC AUC: 0.5498542977040854
+2025-03-29 03:46:26,752 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:26,785 - INFO -               precision    recall  f1-score   support
+
+    negative       0.53      0.50      0.51      9723
+    positive       0.55      0.57      0.56     10277
+
+    accuracy                           0.54     20000
+   macro avg       0.54      0.54      0.54     20000
+weighted avg       0.54      0.54      0.54     20000
+
+2025-03-29 03:46:26,785 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:26,786 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:26,787 - INFO - 🔎 Predicting with Model: logistic_regression, Method: count...
+2025-03-29 03:46:26,831 - INFO - Model: logistic_regression
+2025-03-29 03:46:26,832 - INFO - Method: count
+2025-03-29 03:46:26,832 - INFO - --------------------------------------------------
+2025-03-29 03:46:26,833 - INFO - Accuracy: 0.5693
+2025-03-29 03:46:26,833 - INFO - Precision: 0.5796
+2025-03-29 03:46:26,834 - INFO - Recall: 0.5889
+2025-03-29 03:46:26,835 - INFO - F1 Score: 0.5842
+2025-03-29 03:46:26,836 - INFO - ROC AUC: 0.5953416647059122
+2025-03-29 03:46:26,837 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:26,870 - INFO -               precision    recall  f1-score   support
+
+    negative       0.56      0.55      0.55      9723
+    positive       0.58      0.59      0.58     10277
+
+    accuracy                           0.57     20000
+   macro avg       0.57      0.57      0.57     20000
+weighted avg       0.57      0.57      0.57     20000
+
+2025-03-29 03:46:26,870 - INFO - 🔎 Predicting with Model: logistic_regression, Method: tfidf...
+2025-03-29 03:46:26,909 - INFO - Model: logistic_regression
+2025-03-29 03:46:26,910 - INFO - Method: tfidf
+2025-03-29 03:46:26,911 - INFO - --------------------------------------------------
+2025-03-29 03:46:26,911 - INFO - Accuracy: 0.5383
+2025-03-29 03:46:26,912 - INFO - Precision: 0.5456
+2025-03-29 03:46:26,912 - INFO - Recall: 0.6076
+2025-03-29 03:46:26,913 - INFO - F1 Score: 0.5749
+2025-03-29 03:46:26,914 - INFO - ROC AUC: 0.5515135658439364
+2025-03-29 03:46:26,914 - INFO - 
+🔬 Classification Report:
+2025-03-29 03:46:26,948 - INFO -               precision    recall  f1-score   support
+
+    negative       0.53      0.47      0.49      9723
+    positive       0.55      0.61      0.57     10277
+
+    accuracy                           0.54     20000
+   macro avg       0.54      0.54      0.53     20000
+weighted avg       0.54      0.54      0.54     20000
+
+2025-03-29 03:46:26,949 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-29 03:46:26,950 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
