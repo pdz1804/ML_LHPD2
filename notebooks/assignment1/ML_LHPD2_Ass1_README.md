@@ -24,7 +24,7 @@ Our repository is at this link: [https://github.com/pdz1804/ML_LHPD2](https://gi
 
 This README that we submitted to you is stored in the repository at [ML_LHPD2/notebooks/assignment1/ML_LHPD2_Ass1_README.md](https://github.com/pdz1804/ML_LHPD2/blob/main/notebooks/assignment1/ML_LHPD2_Ass1_README.md).
 
-Also, our team's report for this Assignment 1 is stored in the repository at [ML_LHPD2/reports/final_project/](https://github.com/pdz1804/ML_LHPD2/tree/main/reports/final_project/).
+Also, our team's report which contains detailed information (data analysis, data preprocessing, normalization, models training process and evaluation of those trained models) for this Assignment 1 is stored in the repository at [ML_LHPD2/reports/final_project/](https://github.com/pdz1804/ML_LHPD2/tree/main/reports/final_project/).
 
 
 | Name | Student ID |
@@ -191,7 +191,7 @@ For any questions or contributions, please contact:
 <h2 align="center">✨💟 Contributors 💟✨</h2>
 
 <p align="center">
-  <strong>We fairly contribute to this repository with dedication and teamwork!</strong> 💖
+  💖 <strong>We fairly contribute to this repository with dedication and teamwork!</strong> 💖
 </p>
 
 <div align="center">

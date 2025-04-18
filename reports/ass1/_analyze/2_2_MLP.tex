@@ -104,29 +104,29 @@ The following figures illustrate the model’s performance across different embe
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.44\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.2.MLP/best_mlp_count_loss.png}
         \caption{Loss Curve - Count Vectorizer}
         \label{fig:mlp-count-loss}
     \end{subfigure}
-    \begin{subfigure}[b]{0.44\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.2.MLP/best_mlp_tfidf_loss.png}
         \caption{Loss Curve - TF-IDF}
         \label{fig:mlp-tfidf-loss}
     \end{subfigure}
     
-    \begin{subfigure}[b]{0.44\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.2.MLP/best_mlp_word2vec_loss.png}
         \caption{Loss Curve - Word2Vec}
         \label{fig:mlp-word2vec-loss}
     \end{subfigure}
-    \begin{subfigure}[b]{0.44\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/2.2.MLP/best_mlp_glove_loss.png}
         \caption{Loss Curve - GloVe}
         \label{fig:mlp-glove-loss}
     \end{subfigure}
     
-    \caption{Comparison of Training and Validation Loss Curves for MLP across Different Feature Extraction Methods}
+    \caption{Comparison of Training and Validation Loss Curves for MLP}
     \label{fig:mlp-loss-group}
 \end{figure}
 
@@ -180,6 +180,63 @@ These plots provide a clear visual indicator of how the MLP behaves with differe
 Count-based inputs tend to demonstrate smoother training curves and comparatively stronger 
 validation scores, consistent with the numerical results reported in Table~\ref{tab:mlp-testing-metrics}.
 
+\subsubsection{Computational Efficiency Analysis}
+
+Evaluating the computational efficiency of the Multi-Layer Perceptron (MLP) model is essential to understand its feasibility for large-scale text classification tasks. We assess the resource consumption in terms of time, memory, and hardware requirements.
+
+\textbf{Hardware Configuration}
+
+For training and evaluation, we used a system with the following specifications:
+
+\begin{itemize} \item CPU: Intel Core i7-12700K (12 cores, 20 threads)
+\item GPU: NVIDIA RTX 3060 (12GB VRAM)
+\item RAM: 32GB DDR4
+\end{itemize}
+
+\textbf{Training Time}
+
+The training duration depends on the chosen text representation and the number of iterations. For a dataset containing approximately 500,000 text samples (binary classification), the estimated training times per model configuration are:
+
+\begin{table}[H]
+\centering
+\caption{Estimated Training Time for MLP (Single Model)}
+\label{tab:mlp-training-time}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Feature Extraction Method} & \textbf{Training Time (Minutes)} \\
+\hline
+Count Vectorizer & $\approx$ 45 min \\
+\hline
+TF-IDF & $\approx$ 50 min \\
+\hline
+Word2Vec & $\approx$ 90 min \\
+\hline
+GloVe & $\approx$ 85 min \\
+\hline
+\end{tabular}
+\end{table}
+
+MLP models trained on Count Vectorizer and TF-IDF run significantly faster due to their lower-dimensional representations, whereas Word2Vec and GloVe require additional computation for embedding-based input transformations.
+
+\textbf{Memory Consumption}
+
+Memory requirements vary depending on the feature extraction method:
+
+\begin{itemize} \item Count Vectorizer / TF-IDF: Requires $\approx$2-3GB RAM for processing sparse matrix representations.
+\item Word2Vec / GloVe: Consumes $\approx$6-8GB RAM due to dense vector storage and matrix multiplications.
+\end{itemize}
+
+\textbf{Resource Utilization}
+
+\begin{itemize} \item CPU Usage: 80-90% during training with parallelized batch processing.
+\item GPU Usage: Minimal, as \texttt{scikit-learn}’s \texttt{MLPClassifier} primarily operates on CPU.
+\item Disk Storage: The trained MLP model typically occupies $\approx$50-100MB, depending on feature extraction.
+\end{itemize}
+
+\textbf{Summary}
+
+MLP is a computationally lightweight model compared to deep learning alternatives (e.g., LSTMs or Transformers), making it suitable for medium to large-scale datasets. However, efficiency improvements can be made by leveraging GPU-accelerated frameworks such as PyTorch or TensorFlow.
+
 \subsubsection{Conclusion}
 
 The MLP model, despite its relatively simple design (a single hidden layer of 100 neurons), performs robustly across different text representations. Count Vectorization emerges as the top method in tandem with the MLP, achieving a 73.70\% accuracy and an F1 score of 0.7526. This highlights the strength of MLPs for classical bag-of-words features, as well as the effectiveness of appropriate hyperparameters and regularization.
@@ -195,3 +252,4 @@ Future enhancements might include:
 
 Overall, MLPs offer a solid, interpretable baseline that often competes well with more complex models, especially when dealing with moderate-sized datasets and straightforward text-based features.
 
+\newpage

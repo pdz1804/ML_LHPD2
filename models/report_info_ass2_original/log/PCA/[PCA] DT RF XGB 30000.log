@@ -1,0 +1,455 @@
+2025-03-22 10:51:00,812 - INFO - 
+🔎 Running feature extraction...
+
+2025-03-22 10:51:00,816 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-03-22 10:51:01,534 - INFO - ✅ count - Train shape: (24000, 2000), Test shape: (6000, 2000)
+2025-03-22 10:51:01,536 - INFO - 
+🔍 Processing feature extraction using: tfidf...
+2025-03-22 10:51:02,493 - INFO - ✅ tfidf - Train shape: (24000, 2000), Test shape: (6000, 2000)
+2025-03-22 10:51:02,495 - INFO - 
+🔍 Processing feature extraction using: word2vec...
+2025-03-22 10:51:02,496 - INFO - Creating /root/gensim-data
+2025-03-22 10:54:18,920 - INFO - word2vec-google-news-300 downloaded
+2025-03-22 10:54:18,923 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-03-22 10:55:06,696 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-03-22T10:55:06.696048', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-03-22 10:55:07,794 - INFO - ✅ word2vec - Train shape: (24000, 300), Test shape: (6000, 300)
+2025-03-22 10:55:07,795 - INFO - 
+🔍 Processing feature extraction using: glove...
+2025-03-22 10:55:51,955 - INFO - glove-wiki-gigaword-300 downloaded
+2025-03-22 10:55:51,957 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-300/glove-wiki-gigaword-300.gz
+2025-03-22 10:57:04,483 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 300) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-300/glove-wiki-gigaword-300.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-03-22T10:57:04.483887', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-03-22 10:57:05,979 - INFO - ✅ glove - Train shape: (24000, 300), Test shape: (6000, 300)
+2025-03-22 10:57:31,587 - INFO - 
+🔎 Running feature extraction...
+
+2025-03-22 10:57:31,589 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-03-22 10:57:36,457 - INFO - ✅ count - Train shape: (24000, 100), Test shape: (6000, 100)
+2025-03-22 10:57:36,459 - INFO - 
+🔍 Processing feature extraction using: tfidf...
+2025-03-22 10:57:41,393 - INFO - ✅ tfidf - Train shape: (24000, 100), Test shape: (6000, 100)
+2025-03-22 10:57:41,395 - INFO - 
+🔍 Processing feature extraction using: word2vec...
+2025-03-22 10:57:41,427 - INFO - loading projection weights from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz
+2025-03-22 10:58:26,312 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (3000000, 300) matrix of type float32 from /root/gensim-data/word2vec-google-news-300/word2vec-google-news-300.gz', 'binary': True, 'encoding': 'utf8', 'datetime': '2025-03-22T10:58:26.312905', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-03-22 10:58:28,083 - INFO - ✅ word2vec - Train shape: (24000, 100), Test shape: (6000, 100)
+2025-03-22 10:58:28,085 - INFO - 
+🔍 Processing feature extraction using: glove...
+2025-03-22 10:58:28,117 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-300/glove-wiki-gigaword-300.gz
+2025-03-22 10:59:37,048 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 300) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-300/glove-wiki-gigaword-300.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-03-22T10:59:37.048109', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-03-22 10:59:39,788 - INFO - ✅ glove - Train shape: (24000, 100), Test shape: (6000, 100)
+2025-03-22 11:01:58,531 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-03-22 11:01:58,532 - INFO - 
+🚀 Training decision_tree models...
+
+2025-03-22 11:01:58,533 - INFO - 🔎 Training with Method: count...
+2025-03-22 11:01:58,533 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-22 11:05:27,290 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 2}
+2025-03-22 11:05:27,292 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:05:28,936 - INFO - 📊 Average Accuracy: 60%
+2025-03-22 11:05:28,937 - INFO - 📊 Average ROC AUC: 60%
+2025-03-22 11:05:28,939 - INFO - 📊 Average F1 Score: 63%
+2025-03-22 11:05:28,939 - INFO - 📊 Average Precision: 60%
+2025-03-22 11:05:28,940 - INFO - 📊 Average Recall: 66%
+2025-03-22 11:05:29,318 - INFO - 💾 Model saved to best_decision_tree_count.pkl
+2025-03-22 11:05:29,525 - INFO - 📈 Plot saved to best_decision_tree_count.png
+2025-03-22 11:05:29,687 - INFO - 📉 Loss plot saved to best_decision_tree_count_loss.png
+2025-03-22 11:05:29,688 - INFO - 🔎 Training with Method: tfidf...
+2025-03-22 11:05:29,689 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-22 11:09:05,013 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 10}
+2025-03-22 11:09:05,014 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:09:06,603 - INFO - 📊 Average Accuracy: 60%
+2025-03-22 11:09:06,604 - INFO - 📊 Average ROC AUC: 60%
+2025-03-22 11:09:06,605 - INFO - 📊 Average F1 Score: 64%
+2025-03-22 11:09:06,606 - INFO - 📊 Average Precision: 60%
+2025-03-22 11:09:06,607 - INFO - 📊 Average Recall: 69%
+2025-03-22 11:09:06,969 - INFO - 💾 Model saved to best_decision_tree_tfidf.pkl
+2025-03-22 11:09:07,128 - INFO - 📈 Plot saved to best_decision_tree_tfidf.png
+2025-03-22 11:09:07,271 - INFO - 📉 Loss plot saved to best_decision_tree_tfidf_loss.png
+2025-03-22 11:09:07,273 - INFO - 🔎 Training with Method: word2vec...
+2025-03-22 11:09:07,274 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-22 11:12:30,193 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 10}
+2025-03-22 11:12:30,194 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:12:31,801 - INFO - 📊 Average Accuracy: 61%
+2025-03-22 11:12:31,801 - INFO - 📊 Average ROC AUC: 61%
+2025-03-22 11:12:31,802 - INFO - 📊 Average F1 Score: 61%
+2025-03-22 11:12:31,803 - INFO - 📊 Average Precision: 62%
+2025-03-22 11:12:31,804 - INFO - 📊 Average Recall: 61%
+2025-03-22 11:12:32,172 - INFO - 💾 Model saved to best_decision_tree_word2vec.pkl
+2025-03-22 11:12:32,328 - INFO - 📈 Plot saved to best_decision_tree_word2vec.png
+2025-03-22 11:12:32,470 - INFO - 📉 Loss plot saved to best_decision_tree_word2vec_loss.png
+2025-03-22 11:12:32,471 - INFO - 🔎 Training with Method: glove...
+2025-03-22 11:12:32,472 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-22 11:15:55,250 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2}
+2025-03-22 11:15:55,251 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:15:56,848 - INFO - 📊 Average Accuracy: 59%
+2025-03-22 11:15:56,850 - INFO - 📊 Average ROC AUC: 59%
+2025-03-22 11:15:56,850 - INFO - 📊 Average F1 Score: 59%
+2025-03-22 11:15:56,851 - INFO - 📊 Average Precision: 61%
+2025-03-22 11:15:56,852 - INFO - 📊 Average Recall: 57%
+2025-03-22 11:15:57,228 - INFO - 💾 Model saved to best_decision_tree_glove.pkl
+2025-03-22 11:15:57,379 - INFO - 📈 Plot saved to best_decision_tree_glove.png
+2025-03-22 11:15:57,531 - INFO - 📉 Loss plot saved to best_decision_tree_glove_loss.png
+2025-03-22 11:15:57,532 - INFO - 
+🚀 Training random_forest models...
+
+2025-03-22 11:15:57,533 - INFO - 🔎 Training with Method: count...
+2025-03-22 11:15:57,534 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-22 11:23:48,271 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+2025-03-22 11:23:48,273 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:25:00,028 - INFO - 📊 Average Accuracy: 67%
+2025-03-22 11:25:00,029 - INFO - 📊 Average ROC AUC: 67%
+2025-03-22 11:25:00,030 - INFO - 📊 Average F1 Score: 69%
+2025-03-22 11:25:00,031 - INFO - 📊 Average Precision: 66%
+2025-03-22 11:25:00,033 - INFO - 📊 Average Recall: 72%
+2025-03-22 11:25:17,955 - INFO - 💾 Model saved to best_random_forest_count.pkl
+2025-03-22 11:25:18,115 - INFO - 📈 Plot saved to best_random_forest_count.png
+2025-03-22 11:25:18,269 - INFO - 📉 Loss plot saved to best_random_forest_count_loss.png
+2025-03-22 11:25:18,270 - INFO - 🔎 Training with Method: tfidf...
+2025-03-22 11:25:18,271 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-22 11:33:06,580 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-03-22 11:33:06,582 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:34:18,999 - INFO - 📊 Average Accuracy: 68%
+2025-03-22 11:34:19,000 - INFO - 📊 Average ROC AUC: 68%
+2025-03-22 11:34:19,001 - INFO - 📊 Average F1 Score: 70%
+2025-03-22 11:34:19,002 - INFO - 📊 Average Precision: 67%
+2025-03-22 11:34:19,003 - INFO - 📊 Average Recall: 72%
+2025-03-22 11:34:36,937 - INFO - 💾 Model saved to best_random_forest_tfidf.pkl
+2025-03-22 11:34:37,097 - INFO - 📈 Plot saved to best_random_forest_tfidf.png
+2025-03-22 11:34:37,250 - INFO - 📉 Loss plot saved to best_random_forest_tfidf_loss.png
+2025-03-22 11:34:37,251 - INFO - 🔎 Training with Method: word2vec...
+2025-03-22 11:34:37,252 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-22 11:42:24,508 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-03-22 11:42:24,510 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:43:09,932 - INFO - 📊 Average Accuracy: 69%
+2025-03-22 11:43:09,934 - INFO - 📊 Average ROC AUC: 69%
+2025-03-22 11:43:09,934 - INFO - 📊 Average F1 Score: 70%
+2025-03-22 11:43:09,935 - INFO - 📊 Average Precision: 69%
+2025-03-22 11:43:09,937 - INFO - 📊 Average Recall: 72%
+2025-03-22 11:43:20,797 - INFO - 💾 Model saved to best_random_forest_word2vec.pkl
+2025-03-22 11:43:20,952 - INFO - 📈 Plot saved to best_random_forest_word2vec.png
+2025-03-22 11:43:21,100 - INFO - 📉 Loss plot saved to best_random_forest_word2vec_loss.png
+2025-03-22 11:43:21,102 - INFO - 🔎 Training with Method: glove...
+2025-03-22 11:43:21,103 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-22 11:51:06,731 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'log2', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+2025-03-22 11:51:06,732 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:51:52,436 - INFO - 📊 Average Accuracy: 68%
+2025-03-22 11:51:52,438 - INFO - 📊 Average ROC AUC: 68%
+2025-03-22 11:51:52,439 - INFO - 📊 Average F1 Score: 70%
+2025-03-22 11:51:52,440 - INFO - 📊 Average Precision: 68%
+2025-03-22 11:51:52,441 - INFO - 📊 Average Recall: 72%
+2025-03-22 11:52:03,523 - INFO - 💾 Model saved to best_random_forest_glove.pkl
+2025-03-22 11:52:03,676 - INFO - 📈 Plot saved to best_random_forest_glove.png
+2025-03-22 11:52:03,828 - INFO - 📉 Loss plot saved to best_random_forest_glove_loss.png
+2025-03-22 11:52:03,830 - INFO - 
+🚀 Training xgboost models...
+
+2025-03-22 11:52:03,830 - INFO - 🔎 Training with Method: count...
+2025-03-22 11:52:03,832 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-22 12:19:42,337 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 150}
+2025-03-22 12:19:42,338 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 12:20:53,846 - INFO - 📊 Average Accuracy: 67%
+2025-03-22 12:20:53,847 - INFO - 📊 Average ROC AUC: 67%
+2025-03-22 12:20:53,848 - INFO - 📊 Average F1 Score: 69%
+2025-03-22 12:20:53,849 - INFO - 📊 Average Precision: 67%
+2025-03-22 12:20:53,850 - INFO - 📊 Average Recall: 70%
+2025-03-22 12:21:08,669 - INFO - 💾 Model saved to best_xgboost_count.pkl
+2025-03-22 12:21:08,809 - INFO - 📈 Plot saved to best_xgboost_count.png
+2025-03-22 12:21:08,951 - INFO - 📉 Loss plot saved to best_xgboost_count_loss.png
+2025-03-22 12:21:08,953 - INFO - 🔎 Training with Method: tfidf...
+2025-03-22 12:21:08,954 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-22 12:47:48,744 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-03-22 12:47:48,745 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 12:50:08,333 - INFO - 📊 Average Accuracy: 68%
+2025-03-22 12:50:08,334 - INFO - 📊 Average ROC AUC: 67%
+2025-03-22 12:50:08,334 - INFO - 📊 Average F1 Score: 69%
+2025-03-22 12:50:08,335 - INFO - 📊 Average Precision: 68%
+2025-03-22 12:50:08,336 - INFO - 📊 Average Recall: 70%
+2025-03-22 12:50:45,654 - INFO - 💾 Model saved to best_xgboost_tfidf.pkl
+2025-03-22 12:50:45,805 - INFO - 📈 Plot saved to best_xgboost_tfidf.png
+2025-03-22 12:50:45,951 - INFO - 📉 Loss plot saved to best_xgboost_tfidf_loss.png
+2025-03-22 12:50:45,952 - INFO - 🔎 Training with Method: word2vec...
+2025-03-22 12:50:45,954 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-22 13:24:09,386 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-03-22 13:24:09,388 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 13:26:35,814 - INFO - 📊 Average Accuracy: 70%
+2025-03-22 13:26:35,815 - INFO - 📊 Average ROC AUC: 70%
+2025-03-22 13:26:35,816 - INFO - 📊 Average F1 Score: 71%
+2025-03-22 13:26:35,817 - INFO - 📊 Average Precision: 70%
+2025-03-22 13:26:35,817 - INFO - 📊 Average Recall: 72%
+2025-03-22 13:27:15,469 - INFO - 💾 Model saved to best_xgboost_word2vec.pkl
+2025-03-22 13:27:15,639 - INFO - 📈 Plot saved to best_xgboost_word2vec.png
+2025-03-22 13:27:15,805 - INFO - 📉 Loss plot saved to best_xgboost_word2vec_loss.png
+2025-03-22 13:27:15,806 - INFO - 🔎 Training with Method: glove...
+2025-03-22 13:27:15,807 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-22 14:00:43,593 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-03-22 14:00:43,595 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 14:03:12,784 - INFO - 📊 Average Accuracy: 69%
+2025-03-22 14:03:12,785 - INFO - 📊 Average ROC AUC: 69%
+2025-03-22 14:03:12,786 - INFO - 📊 Average F1 Score: 70%
+2025-03-22 14:03:12,787 - INFO - 📊 Average Precision: 69%
+2025-03-22 14:03:12,787 - INFO - 📊 Average Recall: 71%
+2025-03-22 14:03:54,164 - INFO - 💾 Model saved to best_xgboost_glove.pkl
+2025-03-22 14:03:54,316 - INFO - 📈 Plot saved to best_xgboost_glove.png
+2025-03-22 14:03:54,466 - INFO - 📉 Loss plot saved to best_xgboost_glove_loss.png
+2025-03-22 14:04:20,206 - INFO - 🔎 Predicting with Model: decision_tree, Method: count...
+2025-03-22 14:04:20,227 - INFO - Model: decision_tree
+2025-03-22 14:04:20,228 - INFO - Method: count
+2025-03-22 14:04:20,229 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,230 - INFO - Accuracy: 0.5135
+2025-03-22 14:04:20,231 - INFO - Precision: 0.5323
+2025-03-22 14:04:20,232 - INFO - Recall: 0.4200
+2025-03-22 14:04:20,233 - INFO - F1 Score: 0.4696
+2025-03-22 14:04:20,234 - INFO - ROC AUC: 0.5147877126475835
+2025-03-22 14:04:20,235 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:20,246 - INFO -               precision    recall  f1-score   support
+
+    negative       0.50      0.61      0.55      2924
+    positive       0.53      0.42      0.47      3076
+
+    accuracy                           0.51      6000
+   macro avg       0.52      0.52      0.51      6000
+weighted avg       0.52      0.51      0.51      6000
+
+2025-03-22 14:04:20,246 - INFO - 🔎 Predicting with Model: decision_tree, Method: tfidf...
+2025-03-22 14:04:20,266 - INFO - Model: decision_tree
+2025-03-22 14:04:20,267 - INFO - Method: tfidf
+2025-03-22 14:04:20,267 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,268 - INFO - Accuracy: 0.5323
+2025-03-22 14:04:20,269 - INFO - Precision: 0.5358
+2025-03-22 14:04:20,269 - INFO - Recall: 0.6577
+2025-03-22 14:04:20,270 - INFO - F1 Score: 0.5905
+2025-03-22 14:04:20,271 - INFO - ROC AUC: 0.5305571108747125
+2025-03-22 14:04:20,272 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:20,283 - INFO -               precision    recall  f1-score   support
+
+    negative       0.53      0.40      0.45      2924
+    positive       0.54      0.66      0.59      3076
+
+    accuracy                           0.53      6000
+   macro avg       0.53      0.53      0.52      6000
+weighted avg       0.53      0.53      0.52      6000
+
+2025-03-22 14:04:20,284 - INFO - 🔎 Predicting with Model: decision_tree, Method: word2vec...
+2025-03-22 14:04:20,306 - INFO - Model: decision_tree
+2025-03-22 14:04:20,307 - INFO - Method: word2vec
+2025-03-22 14:04:20,307 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,308 - INFO - Accuracy: 0.5605
+2025-03-22 14:04:20,309 - INFO - Precision: 0.5714
+2025-03-22 14:04:20,309 - INFO - Recall: 0.5709
+2025-03-22 14:04:20,310 - INFO - F1 Score: 0.5711
+2025-03-22 14:04:20,311 - INFO - ROC AUC: 0.5875066598296862
+2025-03-22 14:04:20,311 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:20,323 - INFO -               precision    recall  f1-score   support
+
+    negative       0.55      0.55      0.55      2924
+    positive       0.57      0.57      0.57      3076
+
+    accuracy                           0.56      6000
+   macro avg       0.56      0.56      0.56      6000
+weighted avg       0.56      0.56      0.56      6000
+
+2025-03-22 14:04:20,324 - INFO - 🔎 Predicting with Model: decision_tree, Method: glove...
+2025-03-22 14:04:20,343 - INFO - Model: decision_tree
+2025-03-22 14:04:20,344 - INFO - Method: glove
+2025-03-22 14:04:20,345 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,346 - INFO - Accuracy: 0.5475
+2025-03-22 14:04:20,346 - INFO - Precision: 0.5589
+2025-03-22 14:04:20,347 - INFO - Recall: 0.5572
+2025-03-22 14:04:20,348 - INFO - F1 Score: 0.5580
+2025-03-22 14:04:20,348 - INFO - ROC AUC: 0.5507052637337029
+2025-03-22 14:04:20,349 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:20,360 - INFO -               precision    recall  f1-score   support
+
+    negative       0.54      0.54      0.54      2924
+    positive       0.56      0.56      0.56      3076
+
+    accuracy                           0.55      6000
+   macro avg       0.55      0.55      0.55      6000
+weighted avg       0.55      0.55      0.55      6000
+
+2025-03-22 14:04:20,361 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-22 14:04:20,361 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-22 14:04:20,362 - INFO - 🔎 Predicting with Model: random_forest, Method: count...
+2025-03-22 14:04:20,562 - INFO - Model: random_forest
+2025-03-22 14:04:20,563 - INFO - Method: count
+2025-03-22 14:04:20,564 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,565 - INFO - Accuracy: 0.5408
+2025-03-22 14:04:20,565 - INFO - Precision: 0.5438
+2025-03-22 14:04:20,566 - INFO - Recall: 0.6473
+2025-03-22 14:04:20,567 - INFO - F1 Score: 0.5911
+2025-03-22 14:04:20,567 - INFO - ROC AUC: 0.5497885643052697
+2025-03-22 14:04:20,568 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:20,579 - INFO -               precision    recall  f1-score   support
+
+    negative       0.54      0.43      0.48      2924
+    positive       0.54      0.65      0.59      3076
+
+    accuracy                           0.54      6000
+   macro avg       0.54      0.54      0.53      6000
+weighted avg       0.54      0.54      0.54      6000
+
+2025-03-22 14:04:20,580 - INFO - 🔎 Predicting with Model: random_forest, Method: tfidf...
+2025-03-22 14:04:20,772 - INFO - Model: random_forest
+2025-03-22 14:04:20,773 - INFO - Method: tfidf
+2025-03-22 14:04:20,774 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,774 - INFO - Accuracy: 0.5435
+2025-03-22 14:04:20,776 - INFO - Precision: 0.5394
+2025-03-22 14:04:20,777 - INFO - Recall: 0.7507
+2025-03-22 14:04:20,778 - INFO - F1 Score: 0.6277
+2025-03-22 14:04:20,778 - INFO - ROC AUC: 0.5698120816203821
+2025-03-22 14:04:20,779 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:20,789 - INFO -               precision    recall  f1-score   support
+
+    negative       0.55      0.33      0.41      2924
+    positive       0.54      0.75      0.63      3076
+
+    accuracy                           0.54      6000
+   macro avg       0.55      0.54      0.52      6000
+weighted avg       0.55      0.54      0.52      6000
+
+2025-03-22 14:04:20,790 - INFO - 🔎 Predicting with Model: random_forest, Method: word2vec...
+2025-03-22 14:04:20,996 - INFO - Model: random_forest
+2025-03-22 14:04:20,997 - INFO - Method: word2vec
+2025-03-22 14:04:20,997 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,998 - INFO - Accuracy: 0.6053
+2025-03-22 14:04:21,000 - INFO - Precision: 0.6054
+2025-03-22 14:04:21,001 - INFO - Recall: 0.6609
+2025-03-22 14:04:21,001 - INFO - F1 Score: 0.6320
+2025-03-22 14:04:21,002 - INFO - ROC AUC: 0.6555301491268173
+2025-03-22 14:04:21,004 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:21,014 - INFO -               precision    recall  f1-score   support
+
+    negative       0.61      0.55      0.57      2924
+    positive       0.61      0.66      0.63      3076
+
+    accuracy                           0.61      6000
+   macro avg       0.61      0.60      0.60      6000
+weighted avg       0.61      0.61      0.60      6000
+
+2025-03-22 14:04:21,014 - INFO - 🔎 Predicting with Model: random_forest, Method: glove...
+2025-03-22 14:04:21,221 - INFO - Model: random_forest
+2025-03-22 14:04:21,222 - INFO - Method: glove
+2025-03-22 14:04:21,222 - INFO - --------------------------------------------------
+2025-03-22 14:04:21,223 - INFO - Accuracy: 0.5502
+2025-03-22 14:04:21,223 - INFO - Precision: 0.5554
+2025-03-22 14:04:21,224 - INFO - Recall: 0.6141
+2025-03-22 14:04:21,225 - INFO - F1 Score: 0.5833
+2025-03-22 14:04:21,225 - INFO - ROC AUC: 0.5658246336760125
+2025-03-22 14:04:21,226 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:21,238 - INFO -               precision    recall  f1-score   support
+
+    negative       0.54      0.48      0.51      2924
+    positive       0.56      0.61      0.58      3076
+
+    accuracy                           0.55      6000
+   macro avg       0.55      0.55      0.55      6000
+weighted avg       0.55      0.55      0.55      6000
+
+2025-03-22 14:04:21,239 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-22 14:04:21,240 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-22 14:04:21,242 - INFO - 🔎 Predicting with Model: xgboost, Method: count...
+2025-03-22 14:04:21,333 - INFO - Model: xgboost
+2025-03-22 14:04:21,334 - INFO - Method: count
+2025-03-22 14:04:21,335 - INFO - --------------------------------------------------
+2025-03-22 14:04:21,336 - INFO - Accuracy: 0.5248
+2025-03-22 14:04:21,337 - INFO - Precision: 0.5339
+2025-03-22 14:04:21,338 - INFO - Recall: 0.5754
+2025-03-22 14:04:21,339 - INFO - F1 Score: 0.5539
+2025-03-22 14:04:21,340 - INFO - ROC AUC: 0.536427878602979
+2025-03-22 14:04:21,341 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:21,350 - INFO -               precision    recall  f1-score   support
+
+    negative       0.51      0.47      0.49      2924
+    positive       0.53      0.58      0.55      3076
+
+    accuracy                           0.52      6000
+   macro avg       0.52      0.52      0.52      6000
+weighted avg       0.52      0.52      0.52      6000
+
+2025-03-22 14:04:21,351 - INFO - 🔎 Predicting with Model: xgboost, Method: tfidf...
+2025-03-22 14:04:21,500 - INFO - Model: xgboost
+2025-03-22 14:04:21,501 - INFO - Method: tfidf
+2025-03-22 14:04:21,502 - INFO - --------------------------------------------------
+2025-03-22 14:04:21,502 - INFO - Accuracy: 0.5622
+2025-03-22 14:04:21,503 - INFO - Precision: 0.5564
+2025-03-22 14:04:21,503 - INFO - Recall: 0.7194
+2025-03-22 14:04:21,504 - INFO - F1 Score: 0.6275
+2025-03-22 14:04:21,505 - INFO - ROC AUC: 0.5781255837079442
+2025-03-22 14:04:21,506 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:21,516 - INFO -               precision    recall  f1-score   support
+
+    negative       0.57      0.40      0.47      2924
+    positive       0.56      0.72      0.63      3076
+
+    accuracy                           0.56      6000
+   macro avg       0.56      0.56      0.55      6000
+weighted avg       0.56      0.56      0.55      6000
+
+2025-03-22 14:04:21,517 - INFO - 🔎 Predicting with Model: xgboost, Method: word2vec...
+2025-03-22 14:04:21,671 - INFO - Model: xgboost
+2025-03-22 14:04:21,672 - INFO - Method: word2vec
+2025-03-22 14:04:21,673 - INFO - --------------------------------------------------
+2025-03-22 14:04:21,673 - INFO - Accuracy: 0.6162
+2025-03-22 14:04:21,674 - INFO - Precision: 0.6196
+2025-03-22 14:04:21,675 - INFO - Recall: 0.6508
+2025-03-22 14:04:21,676 - INFO - F1 Score: 0.6349
+2025-03-22 14:04:21,678 - INFO - ROC AUC: 0.6597660342904513
+2025-03-22 14:04:21,679 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:21,688 - INFO -               precision    recall  f1-score   support
+
+    negative       0.61      0.58      0.60      2924
+    positive       0.62      0.65      0.63      3076
+
+    accuracy                           0.62      6000
+   macro avg       0.62      0.62      0.62      6000
+weighted avg       0.62      0.62      0.62      6000
+
+2025-03-22 14:04:21,689 - INFO - 🔎 Predicting with Model: xgboost, Method: glove...
+2025-03-22 14:04:21,843 - INFO - Model: xgboost
+2025-03-22 14:04:21,844 - INFO - Method: glove
+2025-03-22 14:04:21,845 - INFO - --------------------------------------------------
+2025-03-22 14:04:21,846 - INFO - Accuracy: 0.5402
+2025-03-22 14:04:21,846 - INFO - Precision: 0.5485
+2025-03-22 14:04:21,847 - INFO - Recall: 0.5822
+2025-03-22 14:04:21,848 - INFO - F1 Score: 0.5649
+2025-03-22 14:04:21,849 - INFO - ROC AUC: 0.5576889123508598
+2025-03-22 14:04:21,850 - INFO - 
+🔬 Classification Report:
+2025-03-22 14:04:21,862 - INFO -               precision    recall  f1-score   support
+
+    negative       0.53      0.50      0.51      2924
+    positive       0.55      0.58      0.56      3076
+
+    accuracy                           0.54      6000
+   macro avg       0.54      0.54      0.54      6000
+weighted avg       0.54      0.54      0.54      6000
+
+2025-03-22 14:04:21,863 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-03-22 14:04:21,863 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

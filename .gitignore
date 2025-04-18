@@ -46,4 +46,5 @@ store.txt
 *.keras
 *.h5
 models/Ver02_25_02_25/trained/tuner_results/*
+models/Ver03_25_04_13/trained/tuner_results/*
 other/*

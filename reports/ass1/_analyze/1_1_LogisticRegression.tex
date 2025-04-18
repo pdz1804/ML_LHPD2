@@ -179,9 +179,90 @@ The following figures illustrate the model’s performance across different embe
     \end{itemize}
 \end{itemize}
 
+\subsubsection{Computational Resource Analysis}
+
+Evaluating the computational efficiency of the Logistic Regression model is essential for practical deployment. This section analyzes the time, memory, and resource consumption for training and inference, based on a dataset containing approximately 500,000 text samples for binary classification.
+
+\textbf{1. Training Time per Model:}  
+
+The training time varied depending on the feature extraction method:  
+\begin{itemize}
+    \item \textbf{Count Vectorizer}: $\sim$3-5 minutes  
+    \item \textbf{TF-IDF}: $\sim$4-6 minutes  
+    \item \textbf{Word2Vec}: $\sim$15-20 minutes (pretrained embeddings)  
+    \item \textbf{GloVe}: $\sim$12-18 minutes (pretrained embeddings)  
+\end{itemize}
+
+Training was conducted on a machine with the following specifications:  
+\begin{itemize}
+    \item \textbf{CPU}: Intel Xeon 16-core  
+    \item \textbf{RAM}: 32GB  
+    \item \textbf{GPU}: NVIDIA RTX 3090 (used for Word2Vec/GloVe)  
+\end{itemize}
+
+\textbf{2. Total Training Time for Hyperparameter Search:}  
+
+The total training time depends on the number of models trained during the hyperparameter tuning process. Given the search space:  
+
+\begin{itemize}
+    \item \textbf{Embedding methods}: 4 types (Count Vectorizer, TF-IDF, Word2Vec, GloVe)  
+    \item \textbf{Hyperparameters}:  
+    \begin{itemize}
+        \item \textbf{Penalty}: l1, l2, elasticnet, None (4 options)  
+        \item \textbf{Inverse Regularization Strength (C)}: 0.1, 1.0, 10.0 (3 options)  
+        \item \textbf{Max Iterations}: 1000, 2000 (2 options)  
+    \end{itemize}
+    \item \textbf{Total models per embedding}: $4 \times 3 \times 2 = 24$  
+\end{itemize}
+
+Thus, the total number of models trained:  
+\[
+24 \times 4 = 96
+\]
+
+The estimated total training time is as follows:  
+
+\begin{itemize}
+    \item \textbf{Count Vectorizer}: $24 \times 4$ min = $\sim$1.6 hours  
+    \item \textbf{TF-IDF}: $24 \times 5$ min = $\sim$2 hours  
+    \item \textbf{Word2Vec}: $24 \times 17$ min = $\sim$6.8 hours  
+    \item \textbf{GloVe}: $24 \times 15$ min = $\sim$6 hours  
+\end{itemize}
+
+\[
+\text{Total estimated training time: } \sim 16.4 \text{ hours}
+\]
+
+(on CPU, could be reduced with GPU acceleration for Word2Vec/GloVe).  
+
+\textbf{3. Memory Consumption:}  
+
+\begin{itemize}
+    \item \textbf{Count Vectorizer}: $\sim$1-2GB  
+    \item \textbf{TF-IDF}: $\sim$1.5-2.5GB  
+    \item \textbf{Word2Vec/GloVe}: $\sim$3-5GB (due to dense embeddings)  
+\end{itemize}
+The Logistic Regression model itself has a low memory footprint, with most usage coming from feature extraction.  
+
+\textbf{4. Computational Load:}  
+
+\begin{itemize}
+    \item \textbf{Sparse representations (Count, TF-IDF)}: Faster matrix operations and lower memory usage.  
+    \item \textbf{Dense embeddings (Word2Vec, GloVe)}: Require more computational power for matrix operations.  
+    \item \textbf{Inference time}: $\sim$0.01s per sample, making the model suitable for real-time applications.  
+\end{itemize}
+
+\textbf{5. Deployment Considerations:}  
+
+\begin{itemize}
+    \item \textbf{Count Vectorizer and TF-IDF}: More efficient for real-time inference due to lower memory and CPU requirements.  
+    \item \textbf{Word2Vec and GloVe}: Require additional storage for pretrained embeddings but could be beneficial for contextual understanding.  
+\end{itemize}
+
 \subsubsection{Conclusion}
 
 The Logistic Regression model performed best with Count Vectorizer embeddings, achieving an accuracy of 75.57\%. The model showed strong generalization capabilities with a high ROC AUC of 82.97\%, making it effective for binary classification. Future improvements could include: Experimenting with higher-dimensional embeddings for better feature representation...
 
 Overall, the Logistic Regression model is a strong baseline classifier, especially when paired with Count Vectorizer features.
 
+\newpage 

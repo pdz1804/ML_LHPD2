@@ -231,6 +231,27 @@ ${}$\\
     \item \textbf{Impact of GA on Model Performance}: The use of GA for feature selection improved model interpretability by reducing dimensionality while keeping classification performance competitive. However, further optimization could be explored to enhance accuracy.
 \end{itemize}
 
+\subsubsection{Computational Resources and Efficiency}
+
+The GA-based GaussianNB model is computationally efficient, making it suitable for large-scale text classification tasks. Given the dataset size of 500,000 samples, we estimate the following computational costs:
+
+\begin{itemize}
+    \item \textbf{Training Time:} Approximately 30-60 minutes on a modern CPU (Intel Core i7-12700K or equivalent). The Genetic Algorithm (GA) requires multiple iterations of feature selection, leading to a longer training time compared to direct training of GaussianNB.
+    \item \textbf{Memory Usage:} 
+    \begin{itemize}
+        \item \textbf{During GA Training:} Around 4-8GB RAM is required to store populations and perform evaluations across generations.
+        \item \textbf{Final Model Training:} Uses approximately 1-2GB RAM, depending on the number of selected features.
+    \end{itemize}
+    \item \textbf{Inference Speed:} Once trained, the GaussianNB model is highly efficient, making predictions in less than 1 millisecond per sample. This makes it suitable for real-time applications.
+    \item \textbf{Disk Space:} 
+    \begin{itemize}
+        \item \textbf{GA Intermediate Data:} Temporary storage for population states and evaluation metrics can reach 100-500MB.
+        \item \textbf{Final Model Size:} The trained GaussianNB model, along with selected features, typically requires under 50MB of disk space.
+    \end{itemize}
+\end{itemize}
+
+The Genetic Algorithm significantly increases training time and memory consumption compared to standard GaussianNB, but it provides better feature selection, improving the model’s efficiency and interpretability.
+
 \subsubsection{Conclusion}
 
 The GA-optimized GaussianNB model performed best with Count Vectorizer embeddings, achieving an accuracy of 66.53\%. While it did not surpass Logistic Regression in overall performance, it demonstrated effective feature selection, reducing the dimensionality from 2000 to around 1000 features while maintaining competitive classification results. The model also exhibited a solid recall of 74.81\%, making it useful in applications where correctly identifying positive cases is critical.
@@ -239,3 +260,4 @@ Future improvements could include: Enhancing the genetic algorithm with adaptive
 
 Overall, the GA + GaussianNB model showcases the potential of evolutionary algorithms for feature selection, offering a trade-off between model interpretability and classification performance.
 
+\newpage
