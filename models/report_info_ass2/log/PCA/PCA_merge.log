@@ -1,0 +1,686 @@
+#####################################
+PCA 
+#####################################
+
+class FeatureBuilder:
+    def __init__(self, method="tfidf", save_dir="data/processed", feature_selection=None, reduce_dim=None, n_components=100):
+        self.method = method
+        self.save_dir = save_dir
+        self.feature_selection = feature_selection  # e.g., "variance", "chi2", "topic_modeling", or None
+        self.reduce_dim = reduce_dim
+        self.n_components = n_components
+        self.reducer = None
+        
+        os.makedirs(save_dir, exist_ok=True)
+        
+        # Define models for vectorization
+        if method == "tfidf":
+            self.vectorizer = TfidfVectorizer(max_features=2000, stop_words="english")
+        elif method == "count":
+            self.vectorizer = CountVectorizer(max_features=2000)
+        elif method == "binary_count":
+            self.vectorizer = CountVectorizer(binary=True, max_features=2000)
+        elif method == "word2vec":
+            self.word2vec_model = api.load("word2vec-google-news-300")  # Pretrained Google News Word2Vec
+        elif method == "glove":
+            # self.glove_model = api.load("glove-wiki-gigaword-100")      # Pretrained GloVe embeddings
+            self.glove_model = api.load("glove-wiki-gigaword-300")      # Pretrained GloVe embeddings
+        elif method == "bert":
+            self.tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
+            self.bert_model = AutoModel.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
+    
+        # Initialize dimensionality reduction if required
+        if self.reduce_dim == "pca":
+            self.reducer = PCA(n_components=self.n_components)
+        elif self.reduce_dim == "lda":
+            self.reducer = LDA(n_components=self.n_components)
+    
+    def _apply_reducer(self, features, labels=None):
+        """Applies dimensionality reduction if enabled."""
+        if self.reducer is not None:
+            if isinstance(self.reducer, LDA):
+                assert labels is not None, "LDA requires class labels during transform."
+                features = self.reducer.fit_transform(features, labels)
+            else:
+                features = self.reducer.fit_transform(features)
+        return features
+    
+    def transform(self, texts, labels=None):
+        if self.method in ["tfidf", "count", "binary_count"]:
+            # Transform the new data using the fitted vectorizer
+            features = self.vectorizer.transform(texts).toarray()
+            # return self._apply_reducer(features, labels)
+
+        elif self.method == "word2vec":
+            # Use the pre-trained Word2Vec model to generate embeddings
+            word2vec_embeddings = []
+            for doc in tqdm(texts, desc="Processing Word2Vec", unit="document"):
+                word2vec_embeddings.append(self._get_word2vec_vector(doc))
+            features = np.array(word2vec_embeddings)
+            # return features
+
+        elif self.method == "glove":
+            # Similar process for GloVe embeddings
+            glove_embeddings = []
+            for doc in tqdm(texts, desc="Processing GloVe", unit="document"):
+                glove_embeddings.append(self._get_glove_vector(doc))
+            features = np.array(glove_embeddings)
+            # return features
+
+        elif self.method == "bert":
+            # Use the pre-trained BERT model to generate embeddings
+            bert_embeddings = []
+            for doc in tqdm(texts, desc="Processing BERT", unit="document"):
+                bert_embeddings.append(self._get_bert_embedding(doc))
+            features = np.array(bert_embeddings)
+            # return features
+            
+        # Optional feature selection
+        features = self._apply_feature_selection(features, labels)
+
+        # Apply dimensionality reduction if applicable
+        # return self._apply_reducer(features, labels)
+        if self.reduce_dim == "lda":
+            assert labels is not None, "LDA requires class labels (y)."
+            # features = self.vectorizer.transform(texts).toarray()
+            self.reducer.fit(features, labels)
+            return self.reducer.transform(features)
+        elif self.reduce_dim == "pca":
+            # features = self.vectorizer.transform(texts).toarray()
+            self.reducer.fit(features)
+            return self.reducer.transform(features)
+        else:
+            return features
+
+
+Mô tả là mình vẫn perform thằng này như bình thường 
+- đầu tiên mình sẽ build feature bằng Count sau đó call method bên trên 
+- sau do apply PCA de lam giam so chieu (default 50)
+- mình sẽ dùng các feature này để train model
+
+cách mình train 1 model vẫn như cũ nên bây xem lại:
+- hyperparameters
+- cross-validation
+- loss plot
+- save model
+
+Ví dụ tụi m mô tả hết khúc bên trên xong, xong tụi m nói là sau khi làm như thế, mình sẽ chạy thử nghiệm
+với các model và các cách tạo feature sau: 
+
+===> MLP, Perceptron, SVM, Logistic Regression, XGBoost, Random Forest, Decision Tree, Bayesian <====
+
+=> mỗi model có 2 cách tạo feature là count, tfidf
+nên tụi m ghi là DT-count, DT-TFIDF, ...
+
+Sau cùng, tụi m kẻ cho t một cái bảng (tuừng hàng là từng model)
+-> mỗi dòng sẽ có các cột là các thông số như sau: Accuracy, Precision, Recall, F1 Score, ROC AUC
+
+==> ứng từng cột, thằng nào là giá trị cao nhất của cột tụi m \textbf \underline dùm t 
+
+==> sau do tui m back lai BTL 1, dua cai bang thong so cua nhung thang duoc neu ben tren
+xong so sanh (rieng thang SVM thi doi co data moi trong 1.6.SVM thi add vao bang sau)
+- khong dung PCA thi performance the nao so voi dung PCA 
+- ve thoi gian train thi tui m bao la se nhanh hon kha nhieu lan, vi bay gio dimension la 50, luc trc la 300/2000, 
+nen tui m bao la thoi gian train se nhanh hon kha nhieu lan (6 lan)
+
+#####################################################################
+BAYESIAN  
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+
+2025-03-22 11:03:23,529 - INFO - 
+🚀 Training bayesian models...
+
+2025-03-22 11:03:23,529 - INFO - 🔎 Training with Method: count...
+2025-03-22 11:03:23,530 - INFO - 🚀 Training new model: GaussianNB...
+2025-03-22 11:03:27,472 - INFO - Best hyperparameters: {'priors': None, 'var_smoothing': 1e-09}
+2025-03-22 11:03:27,473 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:03:27,852 - INFO - 📊 Average Accuracy: 62%
+2025-03-22 11:03:27,853 - INFO - 📊 Average ROC AUC: 62%
+2025-03-22 11:03:27,854 - INFO - 📊 Average F1 Score: 65%
+2025-03-22 11:03:27,855 - INFO - 📊 Average Precision: 61%
+2025-03-22 11:03:27,856 - INFO - 📊 Average Recall: 69%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 11:26:47,540 - INFO - 🔎 Predicting with Model: bayesian, Method: count...
+2025-03-22 11:26:47,571 - INFO - Model: bayesian
+2025-03-22 11:26:47,572 - INFO - Method: count
+2025-03-22 11:26:47,572 - INFO - --------------------------------------------------
+2025-03-22 11:26:47,574 - INFO - Accuracy: 0.5022
+2025-03-22 11:26:47,574 - INFO - Precision: 0.5122
+2025-03-22 11:26:47,576 - INFO - Recall: 0.6063
+2025-03-22 11:26:47,577 - INFO - F1 Score: 0.5553
+2025-03-22 11:26:47,578 - INFO - ROC AUC: 0.5028462155267648
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-22 11:03:28,243 - INFO - 🔎 Training with Method: tfidf...
+2025-03-22 11:03:28,243 - INFO - 🚀 Training new model: GaussianNB...
+2025-03-22 11:03:32,548 - INFO - Best hyperparameters: {'priors': [0.5, 0.5], 'var_smoothing': 1e-09}
+2025-03-22 11:03:32,549 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:03:32,932 - INFO - 📊 Average Accuracy: 62%
+2025-03-22 11:03:32,933 - INFO - 📊 Average ROC AUC: 62%
+2025-03-22 11:03:32,933 - INFO - 📊 Average F1 Score: 64%
+2025-03-22 11:03:32,934 - INFO - 📊 Average Precision: 62%
+2025-03-22 11:03:32,935 - INFO - 📊 Average Recall: 67%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 11:26:47,589 - INFO - 🔎 Predicting with Model: bayesian, Method: tfidf...
+2025-03-22 11:26:47,617 - INFO - Model: bayesian
+2025-03-22 11:26:47,618 - INFO - Method: tfidf
+2025-03-22 11:26:47,619 - INFO - --------------------------------------------------
+2025-03-22 11:26:47,619 - INFO - Accuracy: 0.5388
+2025-03-22 11:26:47,621 - INFO - Precision: 0.5456
+2025-03-22 11:26:47,621 - INFO - Recall: 0.6008
+2025-03-22 11:26:47,622 - INFO - F1 Score: 0.5719
+2025-03-22 11:26:47,623 - INFO - ROC AUC: 0.5593917829931743
+
+#####################################################################
+DECISION TREE
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training decision_tree models...
+
+2025-03-22 11:01:58,533 - INFO - 🔎 Training with Method: count...
+2025-03-22 11:01:58,533 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-22 11:05:27,290 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 2}
+2025-03-22 11:05:27,292 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:05:28,936 - INFO - 📊 Average Accuracy: 60%
+2025-03-22 11:05:28,937 - INFO - 📊 Average ROC AUC: 60%
+2025-03-22 11:05:28,939 - INFO - 📊 Average F1 Score: 63%
+2025-03-22 11:05:28,939 - INFO - 📊 Average Precision: 60%
+2025-03-22 11:05:28,940 - INFO - 📊 Average Recall: 66%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 14:04:20,206 - INFO - 🔎 Predicting with Model: decision_tree, Method: count...
+2025-03-22 14:04:20,227 - INFO - Model: decision_tree
+2025-03-22 14:04:20,228 - INFO - Method: count
+2025-03-22 14:04:20,229 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,230 - INFO - Accuracy: 0.5135
+2025-03-22 14:04:20,231 - INFO - Precision: 0.5323
+2025-03-22 14:04:20,232 - INFO - Recall: 0.4200
+2025-03-22 14:04:20,233 - INFO - F1 Score: 0.4696
+2025-03-22 14:04:20,234 - INFO - ROC AUC: 0.5147877126475835
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-22 11:05:29,688 - INFO - 🔎 Training with Method: tfidf...
+2025-03-22 11:05:29,689 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-03-22 11:09:05,013 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 10}
+2025-03-22 11:09:05,014 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:09:06,603 - INFO - 📊 Average Accuracy: 60%
+2025-03-22 11:09:06,604 - INFO - 📊 Average ROC AUC: 60%
+2025-03-22 11:09:06,605 - INFO - 📊 Average F1 Score: 64%
+2025-03-22 11:09:06,606 - INFO - 📊 Average Precision: 60%
+2025-03-22 11:09:06,607 - INFO - 📊 Average Recall: 69%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 14:04:20,246 - INFO - 🔎 Predicting with Model: decision_tree, Method: tfidf...
+2025-03-22 14:04:20,266 - INFO - Model: decision_tree
+2025-03-22 14:04:20,267 - INFO - Method: tfidf
+2025-03-22 14:04:20,267 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,268 - INFO - Accuracy: 0.5323
+2025-03-22 14:04:20,269 - INFO - Precision: 0.5358
+2025-03-22 14:04:20,269 - INFO - Recall: 0.6577
+2025-03-22 14:04:20,270 - INFO - F1 Score: 0.5905
+2025-03-22 14:04:20,271 - INFO - ROC AUC: 0.5305571108747125
+
+#####################################################################
+RANDOM FOREST
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training random_forest models...
+
+2025-03-22 11:15:57,533 - INFO - 🔎 Training with Method: count...
+2025-03-22 11:15:57,534 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-22 11:23:48,271 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+2025-03-22 11:23:48,273 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:25:00,028 - INFO - 📊 Average Accuracy: 67%
+2025-03-22 11:25:00,029 - INFO - 📊 Average ROC AUC: 67%
+2025-03-22 11:25:00,030 - INFO - 📊 Average F1 Score: 69%
+2025-03-22 11:25:00,031 - INFO - 📊 Average Precision: 66%
+2025-03-22 11:25:00,033 - INFO - 📊 Average Recall: 72%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 14:04:20,362 - INFO - 🔎 Predicting with Model: random_forest, Method: count...
+2025-03-22 14:04:20,562 - INFO - Model: random_forest
+2025-03-22 14:04:20,563 - INFO - Method: count
+2025-03-22 14:04:20,564 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,565 - INFO - Accuracy: 0.5408
+2025-03-22 14:04:20,565 - INFO - Precision: 0.5438
+2025-03-22 14:04:20,566 - INFO - Recall: 0.6473
+2025-03-22 14:04:20,567 - INFO - F1 Score: 0.5911
+2025-03-22 14:04:20,567 - INFO - ROC AUC: 0.5497885643052697
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-22 11:25:18,270 - INFO - 🔎 Training with Method: tfidf...
+2025-03-22 11:25:18,271 - INFO - 🚀 Training new model: RandomForestClassifier...
+2025-03-22 11:33:06,580 - INFO - Best hyperparameters: {'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 100}
+2025-03-22 11:33:06,582 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 11:34:18,999 - INFO - 📊 Average Accuracy: 68%
+2025-03-22 11:34:19,000 - INFO - 📊 Average ROC AUC: 68%
+2025-03-22 11:34:19,001 - INFO - 📊 Average F1 Score: 70%
+2025-03-22 11:34:19,002 - INFO - 📊 Average Precision: 67%
+2025-03-22 11:34:19,003 - INFO - 📊 Average Recall: 72%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 14:04:20,580 - INFO - 🔎 Predicting with Model: random_forest, Method: tfidf...
+2025-03-22 14:04:20,772 - INFO - Model: random_forest
+2025-03-22 14:04:20,773 - INFO - Method: tfidf
+2025-03-22 14:04:20,774 - INFO - --------------------------------------------------
+2025-03-22 14:04:20,774 - INFO - Accuracy: 0.5435
+2025-03-22 14:04:20,776 - INFO - Precision: 0.5394
+2025-03-22 14:04:20,777 - INFO - Recall: 0.7507
+2025-03-22 14:04:20,778 - INFO - F1 Score: 0.6277
+2025-03-22 14:04:20,778 - INFO - ROC AUC: 0.5698120816203821
+
+#####################################################################
+XGBOOST
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training xgboost models...
+
+2025-03-22 11:52:03,830 - INFO - 🔎 Training with Method: count...
+2025-03-22 11:52:03,832 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-22 12:19:42,337 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 10, 'n_estimators': 150}
+2025-03-22 12:19:42,338 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 12:20:53,846 - INFO - 📊 Average Accuracy: 67%
+2025-03-22 12:20:53,847 - INFO - 📊 Average ROC AUC: 67%
+2025-03-22 12:20:53,848 - INFO - 📊 Average F1 Score: 69%
+2025-03-22 12:20:53,849 - INFO - 📊 Average Precision: 67%
+2025-03-22 12:20:53,850 - INFO - 📊 Average Recall: 70%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 14:04:21,242 - INFO - 🔎 Predicting with Model: xgboost, Method: count...
+2025-03-22 14:04:21,333 - INFO - Model: xgboost
+2025-03-22 14:04:21,334 - INFO - Method: count
+2025-03-22 14:04:21,335 - INFO - --------------------------------------------------
+2025-03-22 14:04:21,336 - INFO - Accuracy: 0.5248
+2025-03-22 14:04:21,337 - INFO - Precision: 0.5339
+2025-03-22 14:04:21,338 - INFO - Recall: 0.5754
+2025-03-22 14:04:21,339 - INFO - F1 Score: 0.5539
+2025-03-22 14:04:21,340 - INFO - ROC AUC: 0.536427878602979
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-22 12:21:08,953 - INFO - 🔎 Training with Method: tfidf...
+2025-03-22 12:21:08,954 - INFO - 🚀 Training new model: XGBClassifier...
+2025-03-22 12:47:48,744 - INFO - Best hyperparameters: {'learning_rate': 0.1, 'max_depth': 15, 'n_estimators': 150}
+2025-03-22 12:47:48,745 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-22 12:50:08,333 - INFO - 📊 Average Accuracy: 68%
+2025-03-22 12:50:08,334 - INFO - 📊 Average ROC AUC: 67%
+2025-03-22 12:50:08,334 - INFO - 📊 Average F1 Score: 69%
+2025-03-22 12:50:08,335 - INFO - 📊 Average Precision: 68%
+2025-03-22 12:50:08,336 - INFO - 📊 Average Recall: 70%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-22 14:04:21,351 - INFO - 🔎 Predicting with Model: xgboost, Method: tfidf...
+2025-03-22 14:04:21,500 - INFO - Model: xgboost
+2025-03-22 14:04:21,501 - INFO - Method: tfidf
+2025-03-22 14:04:21,502 - INFO - --------------------------------------------------
+2025-03-22 14:04:21,502 - INFO - Accuracy: 0.5622
+2025-03-22 14:04:21,503 - INFO - Precision: 0.5564
+2025-03-22 14:04:21,503 - INFO - Recall: 0.7194
+2025-03-22 14:04:21,504 - INFO - F1 Score: 0.6275
+2025-03-22 14:04:21,505 - INFO - ROC AUC: 0.5781255837079442
+
+#####################################################################
+LOGISTIC REGRESSION
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training logistic_regression models...
+
+2025-03-24 06:59:53,371 - INFO - 🔎 Training with Method: count...
+2025-03-24 06:59:53,372 - INFO - 🚀 Training new model: LogisticRegression...
+2025-03-24 06:59:58,232 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
+2025-03-24 06:59:58,233 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-24 06:59:58,670 - INFO - 📊 Average Accuracy: 67%
+2025-03-24 06:59:58,671 - INFO - 📊 Average ROC AUC: 67%
+2025-03-24 06:59:58,672 - INFO - 📊 Average F1 Score: 70%
+2025-03-24 06:59:58,673 - INFO - 📊 Average Precision: 66%
+2025-03-24 06:59:58,674 - INFO - 📊 Average Recall: 75%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-24 08:02:14,073 - INFO - 🔎 Predicting with Model: logistic_regression, Method: count...
+2025-03-24 08:02:14,093 - INFO - Model: logistic_regression
+2025-03-24 08:02:14,094 - INFO - Method: count
+2025-03-24 08:02:14,095 - INFO - --------------------------------------------------
+2025-03-24 08:02:14,096 - INFO - Accuracy: 0.5035
+2025-03-24 08:02:14,096 - INFO - Precision: 0.5140
+2025-03-24 08:02:14,097 - INFO - Recall: 0.5780
+2025-03-24 08:02:14,098 - INFO - F1 Score: 0.5441
+2025-03-24 08:02:14,099 - INFO - ROC AUC: 0.5022007457230329
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-24 06:59:59,097 - INFO - 🔎 Training with Method: tfidf...
+2025-03-24 06:59:59,098 - INFO - 🚀 Training new model: LogisticRegression...
+2025-03-24 07:00:05,228 - INFO - Best hyperparameters: {'C': 1.0, 'max_iter': 1000, 'penalty': 'l2'}
+2025-03-24 07:00:05,230 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-24 07:00:05,716 - INFO - 📊 Average Accuracy: 68%
+2025-03-24 07:00:05,717 - INFO - 📊 Average ROC AUC: 68%
+2025-03-24 07:00:05,719 - INFO - 📊 Average F1 Score: 70%
+2025-03-24 07:00:05,720 - INFO - 📊 Average Precision: 67%
+2025-03-24 07:00:05,721 - INFO - 📊 Average Recall: 73%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-24 08:02:14,112 - INFO - 🔎 Predicting with Model: logistic_regression, Method: tfidf...
+2025-03-24 08:02:14,134 - INFO - Model: logistic_regression
+2025-03-24 08:02:14,135 - INFO - Method: tfidf
+2025-03-24 08:02:14,137 - INFO - --------------------------------------------------
+2025-03-24 08:02:14,138 - INFO - Accuracy: 0.5200
+2025-03-24 08:02:14,139 - INFO - Precision: 0.5295
+2025-03-24 08:02:14,139 - INFO - Recall: 0.5722
+2025-03-24 08:02:14,140 - INFO - F1 Score: 0.5500
+2025-03-24 08:02:14,141 - INFO - ROC AUC: 0.5257374065844924
+
+#####################################################################
+SVM
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training svm models...
+
+2025-03-24 07:00:19,247 - INFO - 🔎 Training with Method: count...
+2025-03-24 07:00:19,248 - INFO - 🚀 Training new model: SVC...
+2025-03-24 07:09:40,319 - INFO - Best hyperparameters: {'C': 1, 'gamma': 'scale', 'kernel': 'linear'}
+2025-03-24 07:09:40,320 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-24 07:13:28,287 - INFO - 📊 Average Accuracy: 66%
+2025-03-24 07:13:28,288 - INFO - 📊 Average ROC AUC: 66%
+2025-03-24 07:13:28,289 - INFO - 📊 Average F1 Score: 70%
+2025-03-24 07:13:28,290 - INFO - 📊 Average Precision: 63%
+2025-03-24 07:13:28,290 - INFO - 📊 Average Recall: 80%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-24 08:02:14,247 - INFO - 🔎 Predicting with Model: svm, Method: count...
+2025-03-24 08:02:24,343 - INFO - Model: svm
+2025-03-24 08:02:24,344 - INFO - Method: count
+2025-03-24 08:02:24,345 - INFO - --------------------------------------------------
+2025-03-24 08:02:24,346 - INFO - Accuracy: 0.5072
+2025-03-24 08:02:24,347 - INFO - Precision: 0.5159
+2025-03-24 08:02:24,348 - INFO - Recall: 0.6265
+2025-03-24 08:02:24,349 - INFO - F1 Score: 0.5658
+2025-03-24 08:02:24,350 - INFO - ROC AUC: 0.5072825626757794
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-24 07:14:10,805 - INFO - 🔎 Training with Method: tfidf...
+2025-03-24 07:14:10,806 - INFO - 🚀 Training new model: SVC...
+2025-03-24 07:23:00,541 - INFO - Best hyperparameters: {'C': 1, 'gamma': 'scale', 'kernel': 'linear'}
+2025-03-24 07:23:00,542 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-24 07:26:22,711 - INFO - 📊 Average Accuracy: 67%
+2025-03-24 07:26:22,713 - INFO - 📊 Average ROC AUC: 67%
+2025-03-24 07:26:22,714 - INFO - 📊 Average F1 Score: 70%
+2025-03-24 07:26:22,715 - INFO - 📊 Average Precision: 65%
+2025-03-24 07:26:22,716 - INFO - 📊 Average Recall: 76%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-24 08:02:24,369 - INFO - 🔎 Predicting with Model: svm, Method: tfidf...
+2025-03-24 08:02:34,342 - INFO - Model: svm
+2025-03-24 08:02:34,343 - INFO - Method: tfidf
+2025-03-24 08:02:34,344 - INFO - --------------------------------------------------
+2025-03-24 08:02:34,345 - INFO - Accuracy: 0.5220
+2025-03-24 08:02:34,346 - INFO - Precision: 0.5304
+2025-03-24 08:02:34,347 - INFO - Recall: 0.5897
+2025-03-24 08:02:34,348 - INFO - F1 Score: 0.5585
+2025-03-24 08:02:34,348 - INFO - ROC AUC: 0.5326858659513038
+
+#####################################################################
+LDA
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training lda models...
+
+2025-03-24 08:01:13,648 - INFO - 🔎 Training with Method: count...
+2025-03-24 08:01:13,650 - INFO - 🚀 Training new model: LinearDiscriminantAnalysis...
+2025-03-24 08:01:21,964 - INFO - Best hyperparameters: {'shrinkage': None, 'solver': 'lsqr', 'tol': 0.0001}
+2025-03-24 08:01:21,966 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-24 08:01:22,419 - INFO - 📊 Average Accuracy: 67%
+2025-03-24 08:01:22,421 - INFO - 📊 Average ROC AUC: 67%
+2025-03-24 08:01:22,422 - INFO - 📊 Average F1 Score: 70%
+2025-03-24 08:01:22,422 - INFO - 📊 Average Precision: 65%
+2025-03-24 08:01:22,423 - INFO - 📊 Average Recall: 76%
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-24 08:02:52,396 - INFO - 🔎 Predicting with Model: lda, Method: count...
+2025-03-24 08:02:52,416 - INFO - Model: lda
+2025-03-24 08:02:52,417 - INFO - Method: count
+2025-03-24 08:02:52,418 - INFO - --------------------------------------------------
+2025-03-24 08:02:52,420 - INFO - Accuracy: 0.5058
+2025-03-24 08:02:52,420 - INFO - Precision: 0.5157
+2025-03-24 08:02:52,421 - INFO - Recall: 0.5917
+2025-03-24 08:02:52,422 - INFO - F1 Score: 0.5511
+2025-03-24 08:02:52,424 - INFO - ROC AUC: 0.5034737293623107
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-24 08:01:22,849 - INFO - 🔎 Training with Method: tfidf...
+2025-03-24 08:01:22,850 - INFO - 🚀 Training new model: LinearDiscriminantAnalysis...
+2025-03-24 08:01:30,223 - INFO - Best hyperparameters: {'shrinkage': None, 'solver': 'lsqr', 'tol': 0.0001}
+2025-03-24 08:01:30,224 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-24 08:01:30,668 - INFO - 📊 Average Accuracy: 68%
+2025-03-24 08:01:30,669 - INFO - 📊 Average ROC AUC: 68%
+2025-03-24 08:01:30,669 - INFO - 📊 Average F1 Score: 70%
+2025-03-24 08:01:30,670 - INFO - 📊 Average Precision: 67%
+2025-03-24 08:01:30,671 - INFO - 📊 Average Recall: 73%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-24 08:02:52,437 - INFO - 🔎 Predicting with Model: lda, Method: tfidf...
+2025-03-24 08:02:52,458 - INFO - Model: lda
+2025-03-24 08:02:52,459 - INFO - Method: tfidf
+2025-03-24 08:02:52,459 - INFO - --------------------------------------------------
+2025-03-24 08:02:52,460 - INFO - Accuracy: 0.5215
+2025-03-24 08:02:52,461 - INFO - Precision: 0.5305
+2025-03-24 08:02:52,461 - INFO - Recall: 0.5796
+2025-03-24 08:02:52,463 - INFO - F1 Score: 0.5540
+2025-03-24 08:02:52,464 - INFO - ROC AUC: 0.5305967474236799
+
+#####################################################################
+PERCEPTRON 
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training perceptron models...
+
+2025-03-25 02:49:45,103 - INFO - 🔎 Training with Method: count...
+2025-03-25 02:49:45,105 - INFO - 🚀 Training new model: Perceptron...
+2025-03-25 02:50:21,129 - INFO - Best hyperparameters: {'alpha': 0.0001, 'eta0': 0.1, 'max_iter': 1000, 'penalty': 'l2', 'tol': 0.0001}
+2025-03-25 02:50:21,130 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-25 02:50:21,528 - INFO - 📊 Average Accuracy: 59%
+2025-03-25 02:50:21,529 - INFO - 📊 Average ROC AUC: 59%
+2025-03-25 02:50:21,530 - INFO - 📊 Average F1 Score: 58%
+2025-03-25 02:50:21,531 - INFO - 📊 Average Precision: 63%
+2025-03-25 02:50:21,532 - INFO - 📊 Average Recall: 58%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-25 05:00:06,906 - INFO - 🔎 Predicting with Model: perceptron, Method: count...
+2025-03-25 05:00:06,928 - INFO - Model: perceptron
+2025-03-25 05:00:06,929 - INFO - Method: count
+2025-03-25 05:00:06,929 - INFO - --------------------------------------------------
+2025-03-25 05:00:06,930 - INFO - Accuracy: 0.4780
+2025-03-25 05:00:06,931 - INFO - Precision: 0.4835
+2025-03-25 05:00:06,931 - INFO - Recall: 0.2659
+2025-03-25 05:00:06,932 - INFO - F1 Score: 0.3431
+2025-03-25 05:00:06,933 - INFO - ROC AUC: 0.4989081881883306
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+2025-03-25 02:50:21,921 - INFO - 🔎 Training with Method: tfidf...
+2025-03-25 02:50:21,922 - INFO - 🚀 Training new model: Perceptron...
+2025-03-25 02:50:56,343 - INFO - Best hyperparameters: {'alpha': 0.0001, 'eta0': 0.1, 'max_iter': 1000, 'penalty': 'l1', 'tol': 0.0001}
+2025-03-25 02:50:56,344 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-25 02:50:57,234 - INFO - 📊 Average Accuracy: 62%
+2025-03-25 02:50:57,236 - INFO - 📊 Average ROC AUC: 62%
+2025-03-25 02:50:57,237 - INFO - 📊 Average F1 Score: 66%
+2025-03-25 02:50:57,237 - INFO - 📊 Average Precision: 63%
+2025-03-25 02:50:57,238 - INFO - 📊 Average Recall: 72%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-25 05:00:06,949 - INFO - 🔎 Predicting with Model: perceptron, Method: tfidf...
+2025-03-25 05:00:06,968 - INFO - Model: perceptron
+2025-03-25 05:00:06,969 - INFO - Method: tfidf
+2025-03-25 05:00:06,969 - INFO - --------------------------------------------------
+2025-03-25 05:00:06,971 - INFO - Accuracy: 0.5243
+2025-03-25 05:00:06,972 - INFO - Precision: 0.5193
+2025-03-25 05:00:06,972 - INFO - Recall: 0.9724
+2025-03-25 05:00:06,974 - INFO - F1 Score: 0.6770
+2025-03-25 05:00:06,974 - INFO - ROC AUC: 0.5265582667276243
+
+#####################################################################
+MLP
+#####################################################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training mlp models...
+
+2025-03-25 02:52:11,543 - INFO - 🔎 Training with Method: count...
+2025-03-25 02:52:11,544 - INFO - 🚀 Training new model: MLPClassifier...
+2025-03-25 03:01:46,490 - INFO - Best hyperparameters: {'activation': 'tanh', 'alpha': 0.001, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-03-25 03:01:46,491 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-25 03:02:54,128 - INFO - 📊 Average Accuracy: 67%
+2025-03-25 03:02:54,129 - INFO - 📊 Average ROC AUC: 67%
+2025-03-25 03:02:54,130 - INFO - 📊 Average F1 Score: 70%
+2025-03-25 03:02:54,131 - INFO - 📊 Average Precision: 66%
+2025-03-25 03:02:54,132 - INFO - 📊 Average Recall: 74%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-25 05:00:07,065 - INFO - 🔎 Predicting with Model: mlp, Method: count...
+2025-03-25 05:00:07,092 - INFO - Model: mlp
+2025-03-25 05:00:07,092 - INFO - Method: count
+2025-03-25 05:00:07,093 - INFO - --------------------------------------------------
+2025-03-25 05:00:07,094 - INFO - Accuracy: 0.5068
+2025-03-25 05:00:07,095 - INFO - Precision: 0.5169
+2025-03-25 05:00:07,096 - INFO - Recall: 0.5803
+2025-03-25 05:00:07,097 - INFO - F1 Score: 0.5468
+2025-03-25 05:00:07,097 - INFO - ROC AUC: 0.5085505986953405
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+
+2025-03-25 03:03:09,481 - INFO - 🔎 Training with Method: tfidf...
+2025-03-25 03:03:09,482 - INFO - 🚀 Training new model: MLPClassifier...
+2025-03-25 03:21:16,953 - INFO - Best hyperparameters: {'activation': 'tanh', 'alpha': 0.01, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-03-25 03:21:16,954 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-25 03:24:48,371 - INFO - 📊 Average Accuracy: 68%
+2025-03-25 03:24:48,372 - INFO - 📊 Average ROC AUC: 68%
+2025-03-25 03:24:48,373 - INFO - 📊 Average F1 Score: 68%
+2025-03-25 03:24:48,374 - INFO - 📊 Average Precision: 69%
+2025-03-25 03:24:48,375 - INFO - 📊 Average Recall: 68%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-03-25 05:00:07,109 - INFO - 🔎 Predicting with Model: mlp, Method: tfidf...
+2025-03-25 05:00:07,140 - INFO - Model: mlp
+2025-03-25 05:00:07,140 - INFO - Method: tfidf
+2025-03-25 05:00:07,141 - INFO - --------------------------------------------------
+2025-03-25 05:00:07,142 - INFO - Accuracy: 0.5217
+2025-03-25 05:00:07,143 - INFO - Precision: 0.5304
+2025-03-25 05:00:07,143 - INFO - Recall: 0.5839
+2025-03-25 05:00:07,144 - INFO - F1 Score: 0.5559
+2025-03-25 05:00:07,146 - INFO - ROC AUC: 0.5287617920122959
+
+----------------------------------------------------------------------
+
+

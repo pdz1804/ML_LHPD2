@@ -1,0 +1,64 @@
+2025-04-12 14:28:45,878 - INFO - 
+🔎 Running feature extraction...
+
+2025-04-12 14:28:45,881 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-04-12 14:28:48,055 - INFO - ✅ count - Train shape: (80000, 2000), Test shape: (20000, 2000)
+2025-04-12 14:28:48,172 - INFO - 
+🔎 Running feature extraction...
+
+2025-04-12 14:28:48,174 - INFO - 
+🔍 Processing feature extraction using: count...
+2025-04-12 14:29:04,042 - INFO - ✅ count - Train shape: (80000, 100), Test shape: (20000, 100)
+2025-04-12 14:29:04,358 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-04-12 14:29:04,359 - INFO - 
+🚀 Training CRF models...
+
+2025-04-12 14:29:04,416 - INFO - 🖥️ Using device: cuda
+2025-04-12 14:29:06,537 - INFO - 🔍 Tuning hyperparameters...
+2025-04-12 17:14:23,982 - INFO - Epoch 1/30 - Train Loss: 55.1468, Val Loss: 49.4907
+2025-04-12 17:22:17,114 - INFO - Epoch 2/30 - Train Loss: 46.0350, Val Loss: 41.9925
+2025-04-12 17:30:12,283 - INFO - Epoch 3/30 - Train Loss: 39.2792, Val Loss: 36.2561
+2025-04-12 17:38:06,597 - INFO - Epoch 4/30 - Train Loss: 33.7417, Val Loss: 31.1233
+2025-04-12 17:46:06,021 - INFO - Epoch 5/30 - Train Loss: 29.0980, Val Loss: 27.5128
+2025-04-12 17:54:00,835 - INFO - Epoch 6/30 - Train Loss: 25.0558, Val Loss: 23.7769
+2025-04-12 18:01:54,258 - INFO - Epoch 7/30 - Train Loss: 21.7321, Val Loss: 20.6747
+2025-04-12 18:09:44,229 - INFO - Epoch 8/30 - Train Loss: 18.6988, Val Loss: 17.2495
+2025-04-12 18:17:33,191 - INFO - Epoch 9/30 - Train Loss: 16.2388, Val Loss: 15.1371
+2025-04-12 18:25:21,956 - INFO - Epoch 10/30 - Train Loss: 14.1035, Val Loss: 13.1294
+2025-04-12 18:33:10,546 - INFO - Epoch 11/30 - Train Loss: 12.3232, Val Loss: 11.3623
+2025-04-12 18:41:00,050 - INFO - Epoch 12/30 - Train Loss: 10.8357, Val Loss: 10.2185
+2025-04-12 18:48:53,467 - INFO - Epoch 13/30 - Train Loss: 9.4335, Val Loss: 8.7506
+2025-04-12 18:56:47,512 - INFO - Epoch 14/30 - Train Loss: 8.2808, Val Loss: 7.6211
+2025-04-12 19:04:43,060 - INFO - Epoch 15/30 - Train Loss: 7.2335, Val Loss: 6.7328
+2025-04-12 19:12:38,836 - INFO - Epoch 16/30 - Train Loss: 6.4273, Val Loss: 5.9624
+2025-04-12 19:20:33,060 - INFO - Epoch 17/30 - Train Loss: 5.6786, Val Loss: 5.2166
+2025-04-12 19:28:29,483 - INFO - Epoch 18/30 - Train Loss: 5.0382, Val Loss: 5.0937
+2025-04-12 19:36:26,135 - INFO - Epoch 19/30 - Train Loss: 4.4593, Val Loss: 4.1136
+2025-04-12 19:44:24,058 - INFO - Epoch 20/30 - Train Loss: 3.9528, Val Loss: 3.8230
+2025-04-12 19:52:17,925 - INFO - Epoch 21/30 - Train Loss: 3.5569, Val Loss: 3.2679
+2025-04-12 20:00:12,997 - INFO - Epoch 22/30 - Train Loss: 3.1448, Val Loss: 2.9323
+2025-04-12 20:08:08,427 - INFO - Epoch 23/30 - Train Loss: 2.8179, Val Loss: 2.6562
+2025-04-12 20:16:05,230 - INFO - Epoch 24/30 - Train Loss: 2.5281, Val Loss: 2.4102
+2025-04-12 20:24:00,504 - INFO - Epoch 25/30 - Train Loss: 2.2526, Val Loss: 2.5036
+2025-04-12 20:31:57,855 - INFO - Epoch 26/30 - Train Loss: 2.0512, Val Loss: 1.9347
+2025-04-12 20:40:09,824 - INFO - Epoch 27/30 - Train Loss: 1.8980, Val Loss: 2.9204
+2025-04-12 20:48:17,706 - INFO - Epoch 28/30 - Train Loss: 1.7217, Val Loss: 1.6232
+2025-04-12 20:56:14,425 - INFO - Epoch 29/30 - Train Loss: 1.5736, Val Loss: 1.5823
+2025-04-12 21:04:29,660 - INFO - Epoch 30/30 - Train Loss: 1.4432, Val Loss: 1.7885
+2025-04-12 21:15:07,035 - INFO - 
+Classification Report:
+               precision    recall  f1-score   support
+
+    Negative       0.82      0.25      0.39      9685
+    Positive       0.57      0.95      0.72     10315
+
+    accuracy                           0.61     20000
+   macro avg       0.70      0.60      0.55     20000
+weighted avg       0.70      0.61      0.56     20000
+
+2025-04-12 21:15:07,036 - INFO - 
+✅ Test - Accuracy: 0.6118, Precision: 0.5749, Recall: 0.9496, F1: 0.7162, AUC: 0.6008
+2025-04-12 21:15:07,364 - INFO - Already trained and tested model: CRF

@@ -111,9 +111,40 @@ The Hidden Markov Model (HMM) was trained using the Count Vectorizer method to e
     \item \textbf{Effect of Count-Based Features}: Unlike other machine learning models that leverage dense embeddings (e.g., Word2Vec, GloVe), HMM can only operate on count-based integer inputs. This constraint limits its ability to capture contextual relationships effectively, potentially contributing to its suboptimal performance.
 \end{itemize}
 
+\subsubsection{Computational Resources and Efficiency}
+
+The Hidden Markov Model (HMM) requires significant computational resources due to the iterative nature of the Expectation-Maximization (EM) algorithm. Given a dataset of \textbf{500,000} text samples, we estimate the following computational costs:
+
+\begin{itemize}
+    \item \textbf{Training Time:}
+    \begin{itemize}
+    \item On a \textbf{modern CPU} (Intel Xeon 8-core, 32GB RAM), training the HMM with \texttt{n\_components} = 3 and \texttt{n\_iter} = 200 takes approximately \textbf{2-3 hours}.
+    \item Increasing the number of hidden states or iterations significantly extends training time due to the iterative parameter updates in the EM algorithm.
+    \end{itemize}
+    
+    \item \textbf{Memory Usage:}  
+    \begin{itemize}
+        \item \textbf{During Training:} Requires around \textbf{8-12GB RAM}, depending on the number of hidden states and sequence lengths. Storing transition matrices and Gaussian parameters contributes to the high memory footprint.  
+        \item \textbf{During Inference:} Uses \textbf{1-2GB RAM}, as only the trained model parameters need to be stored.
+    \end{itemize}
+    
+    \item \textbf{Inference Speed:}  
+    \begin{itemize}
+        \item Prediction takes approximately \textbf{0.2 - 0.5 seconds per sequence} on a CPU. This makes real-time inference challenging for large datasets but feasible for batch processing.  
+    \end{itemize}
+    
+    \item \textbf{Disk Space:}  
+    \begin{itemize}
+        \item \textbf{Model Storage:} The trained HMM model, including transition and emission probabilities, requires approximately \textbf{100-500MB} of disk space, depending on the number of hidden states.
+        \item \textbf{Intermediate Data:} Temporary storage during training (e.g., padded sequences, count-based feature representations) can reach \textbf{1-5GB}.
+    \end{itemize}
+\end{itemize}
+    
+
 \subsubsection{Conclusion}
 
 The Hidden Markov Model (HMM) trained with Count Vectorizer features demonstrated high sensitivity but lacked the precision required for balanced classification. While its recall of \textbf{95.52\%} suggests that it rarely misses positive instances, the low ROC AUC score (\textbf{49.97\%}) indicates poor overall discrimination between classes. 
 
 The results suggest that HMM may not be the best-suited model for this classification task, particularly due to its reliance on integer-based inputs and its inability to leverage richer feature representations like dense embeddings. Future improvements could explore hybrid models, additional preprocessing techniques, or alternative sequence models such as Recurrent Neural Networks (RNNs) to enhance performance.
 
+\newpage

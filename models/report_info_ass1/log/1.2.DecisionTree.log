@@ -1,0 +1,116 @@
+#####################################
+DECISION TREE 
+#####################################
+🚀 Training decision_tree models...
+--------------------------------------
+"decision_tree": {
+    "criterion": ["gini", "entropy"],
+    "max_depth": [10, 20, 30, 40],
+    "min_samples_split": [2, 5, 10],
+    "min_samples_leaf": [1, 2, 4],
+    "max_features": ["sqrt", "log2"]
+}
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING AND TESTING 
+--------------------------------------
+2025-02-23 09:46:53,568 - INFO - 🔎 Training with Method: count...
+2025-02-23 09:46:53,569 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-23 10:01:52,289 - INFO - Best hyperparameters: {'criterion': 'gini', 'max_depth': 40, 'max_features': 'sqrt', 'min_samples_leaf': 2, 'min_samples_split': 5}
+2025-02-23 10:01:52,290 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:02:04,503 - INFO - 📊 Average Accuracy: 60%
+2025-02-23 10:02:04,504 - INFO - 📊 Average ROC AUC: 59%
+2025-02-23 10:02:04,505 - INFO - 📊 Average F1 Score: 69%
+2025-02-23 10:02:04,506 - INFO - 📊 Average Precision: 57%
+2025-02-23 10:02:04,507 - INFO - 📊 Average Recall: 85%
+
+TESTING 
+2025-02-23 20:40:21,111 - INFO - Accuracy: 0.6062
+2025-02-23 20:40:21,112 - INFO - Precision: 0.5745
+2025-02-23 20:40:21,114 - INFO - Recall: 0.9008
+2025-02-23 20:40:21,114 - INFO - F1 Score: 0.7016
+2025-02-23 20:40:21,115 - INFO - ROC AUC: 0.6621702766315567
+
+--------------------------------------
+2025-02-23 10:02:06,793 - INFO - 🔎 Training with Method: tfidf...
+2025-02-23 10:02:06,794 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-23 10:16:48,660 - INFO - Best hyperparameters: {'criterion': 'gini', 'max_depth': 40, 'max_features': 'sqrt', 'min_samples_leaf': 4, 'min_samples_split': 10}
+2025-02-23 10:16:48,661 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-23 10:17:00,322 - INFO - 📊 Average Accuracy: 59%
+2025-02-23 10:17:00,324 - INFO - 📊 Average ROC AUC: 58%
+2025-02-23 10:17:00,325 - INFO - 📊 Average F1 Score: 69%
+2025-02-23 10:17:00,325 - INFO - 📊 Average Precision: 56%
+2025-02-23 10:17:00,326 - INFO - 📊 Average Recall: 89%
+
+TESTING 
+2025-02-23 20:40:21,361 - INFO - Accuracy: 0.6300
+2025-02-23 20:40:21,362 - INFO - Precision: 0.5928
+2025-02-23 20:40:21,363 - INFO - Recall: 0.8940
+2025-02-23 20:40:21,365 - INFO - F1 Score: 0.7129
+2025-02-23 20:40:21,365 - INFO - ROC AUC: 0.6693930886229694
+
+--------------------------------------
+2025-02-24 01:15:39,271 - INFO - 🔎 Training with Method: word2vec...
+2025-02-24 01:15:39,271 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-24 01:34:57,851 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2}
+2025-02-24 01:34:57,852 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:35:07,385 - INFO - 📊 Average Accuracy: 61%
+2025-02-24 01:35:07,387 - INFO - 📊 Average ROC AUC: 61%
+2025-02-24 01:35:07,387 - INFO - 📊 Average F1 Score: 61%
+2025-02-24 01:35:07,388 - INFO - 📊 Average Precision: 62%
+2025-02-24 01:35:07,389 - INFO - 📊 Average Recall: 60%
+
+TESTING 
+2025-02-24 01:51:31,935 - INFO - Accuracy: 0.6112
+2025-02-24 01:51:31,936 - INFO - Precision: 0.6291
+2025-02-24 01:51:31,936 - INFO - Recall: 0.5932
+2025-02-24 01:51:31,937 - INFO - F1 Score: 0.6106
+2025-02-24 01:51:31,939 - INFO - ROC AUC: 0.6561046825618829
+
+--------------------------------------
+2025-02-24 01:35:09,917 - INFO - 🔎 Training with Method: glove...
+2025-02-24 01:35:09,918 - INFO - 🚀 Training new model: DecisionTreeClassifier...
+2025-02-24 01:47:40,351 - INFO - Best hyperparameters: {'criterion': 'entropy', 'max_depth': 10, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2}
+2025-02-24 01:47:40,352 - INFO - 
+
+🎯 Running K-Fold Cross-Validation...
+2025-02-24 01:47:46,096 - INFO - 📊 Average Accuracy: 60%
+2025-02-24 01:47:46,097 - INFO - 📊 Average ROC AUC: 60%
+2025-02-24 01:47:46,098 - INFO - 📊 Average F1 Score: 61%
+2025-02-24 01:47:46,099 - INFO - 📊 Average Precision: 61%
+2025-02-24 01:47:46,101 - INFO - 📊 Average Recall: 60%
+
+2025-02-24 01:51:31,990 - INFO - Accuracy: 0.6075
+2025-02-24 01:51:31,990 - INFO - Precision: 0.6146
+2025-02-24 01:51:31,991 - INFO - Recall: 0.6331
+2025-02-24 01:51:31,993 - INFO - F1 Score: 0.6237
+2025-02-24 01:51:31,994 - INFO - ROC AUC: 0.6474088403290962
+
+--------------------------------------
+BEST MODEL 
+- based on testing performance 
+- priority: based on Accuracy > F1 > Roc AUC
+--------------------------------------
+{
+    "method": "tfidf",
+    "model": "DecisionTreeClassifier",
+    "hyperparameters": {
+        "criterion": "gini",
+        "max_depth": 40,
+        "max_features": "sqrt",
+        "min_samples_leaf": 4,
+        "min_samples_split": 10
+    },
+    "performance": {
+        "accuracy": 0.6300,
+        "precision": 0.5928,
+        "recall": 0.8940,
+        "f1": 0.7129,
+        "roc_auc": 0.6693930886229694
+    }
+}
