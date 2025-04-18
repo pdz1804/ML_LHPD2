@@ -112,23 +112,23 @@ Following figures illustrate the model’s performance across different embeddin
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_count_loss.png}
         \caption{Loss Curve - Count Vectorizer}
         \label{fig:lr-count-loss}
     \end{subfigure}
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_tfidf_loss.png}
         \caption{Loss Curve - TF-IDF}
         \label{fig:lr-tfidf-loss}
     \end{subfigure}
     
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_word2vec_loss.png}
         \caption{Loss Curve - Word2Vec}
         \label{fig:lr-word2vec-loss}
     \end{subfigure}
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_glove_loss.png}
         \caption{Loss Curve - GloVe}
         \label{fig:lr-glove-loss}
@@ -140,29 +140,29 @@ Following figures illustrate the model’s performance across different embeddin
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_count.png}
         \caption{Performance - Count Vectorizer}
         \label{fig:lr-count}
     \end{subfigure}
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_tfidf.png}
         \caption{Performance - TF-IDF}
         \label{fig:lr-tfidf}
     \end{subfigure}
     
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_word2vec.png}
         \caption{Performance - Word2Vec}
         \label{fig:lr-word2vec}
     \end{subfigure}
-    \begin{subfigure}[b]{0.47\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{img/report_info/img/1.3.XGB/best_xgboost_glove.png}
         \caption{Performance - GloVe}
         \label{fig:lr-glove}
     \end{subfigure}
     
-    \caption{Comparison of Training Performance Metrics for XGBoost across Different Feature Extraction Methods}
+    \caption{Comparison of Training Performance Metrics for XGBoost}
     \label{fig:lr-performance-group}
 \end{figure}
 
@@ -184,9 +184,88 @@ Following figures illustrate the model’s performance across different embeddin
     \end{itemize}
 \end{itemize}
 
+\subsubsection{Computational Resource Analysis}
+
+Evaluating the computational efficiency of the XGBoost model is essential for practical deployment. This section analyzes the time, memory, and resource consumption for training and inference, based on a dataset containing approximately 500,000 text samples for binary classification.
+
+\textbf{1. Training Time per Model:}
+
+The training time varied depending on the feature extraction method:
+
+\begin{itemize}
+\item \textbf{Count Vectorizer}: $\sim$5-8 minutes
+\item \textbf{TF-IDF}: $\sim$6-10 minutes
+\item \textbf{Word2Vec}: $\sim$12-18 minutes (pretrained embeddings)
+\item \textbf{GloVe}: $\sim$10-15 minutes (pretrained embeddings)
+\end{itemize}
+
+Training was conducted on a machine with the following specifications:
+
+\begin{itemize}
+\item \textbf{CPU}: Intel Xeon 16-core
+\item \textbf{RAM}: 32GB
+\item \textbf{GPU}: Not utilized (XGBoost training is CPU-optimized but can leverage GPU acceleration if available)
+\end{itemize}
+
+\textbf{2. Total Training Time for Hyperparameter Search:}
+
+The total training time depends on the number of models trained during the hyperparameter tuning process. Given the search space:
+
+\begin{itemize}
+\item \textbf{Embedding methods}: 4 types (Count Vectorizer, TF-IDF, Word2Vec, GloVe)
+\item \textbf{Hyperparameters}:
+\begin{itemize}
+\item \textbf{Num Estimators}: 100, 150 (2 options)
+\item \textbf{Learning Rates}: 0.001, 0.01, 0.1 (3 options)
+\item \textbf{Max Depth}: 10, 15 (2 options)
+\end{itemize}
+\item \textbf{Total models per embedding}: $2 \times 3 \times 2 = 12$
+\end{itemize}
+
+Thus, the total number of models trained: $4 \times 12 = 48$
+
+The estimated total training time is as follows:
+
+\begin{itemize} 
+    \item \textbf{Count Vectorizer}: $12 \times 6$ min = $\sim$1.2 hours
+    \item \textbf{TF-IDF}: $12 \times 8$ min = $\sim$1.6 hours
+    \item \textbf{Word2Vec}: $12 \times 15$ min = $\sim$3 hours
+    \item \textbf{GloVe}: $12 \times 12$ min = $\sim$2.4 hours
+\end{itemize}
+
+\textbf{3. Memory Consumption:}
+
+\begin{itemize} 
+\item \textbf{Count Vectorizer}: $\sim$1.5GB
+\item \textbf{TF-IDF}: $\sim$2GB
+\item \textbf{Word2Vec/GloVe}: $\sim$3-5GB (due to dense embeddings)
+\end{itemize} 
+
+The XGBoost model itself requires significant memory due to multiple trees being built and stored in memory, especially for high $n_estimators$ values.
+
+\textbf{4. Computational Load:}
+
+\begin{itemize}
+\item \textbf{Sparse representations (Count, TF-IDF)}: Faster training and lower memory usage.
+
+\item \textbf{Dense embeddings (Word2Vec, GloVe)}: Require more memory and computational power but may improve feature representation.
+
+\item \textbf{Inference time}: $\sim$0.002s per sample, making the model highly efficient for real-time applications.
+\end{itemize}
+
+\textbf{5. Deployment Considerations:}
+
+\begin{itemize}
+\item \textbf{Count Vectorizer and TF-IDF}: More efficient for real-time inference due to lower memory and CPU requirements.
+
+\item \textbf{Word2Vec and GloVe}: Require additional storage for pretrained embeddings but may provide better semantic understanding.
+\end{itemize}
+
+
 \subsubsection{Conclusion}
 
 The XGBoost model performed best with Count Vectorizer embeddings, achieving an accuracy of 72.51\%. The model demonstrated strong generalization capabilities with a balanced F1-score of 82.47\% and a competitive ROC AUC of 69.70\%, making it effective for sentiment classification. Future improvements could include exploring advanced feature engineering or tuning additional hyperparameters to boost performance further.
 
 Overall, the XGBoost model serves as a reliable classifier, particularly when paired with Count Vectorizer features.
 
+\newpage
