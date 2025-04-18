@@ -75,6 +75,15 @@ from statistics import mean
 # added
 from transformers import BertTokenizer, TFBertForSequenceClassification
 
+import torch
+import torch.nn as nn
+import torch.optim as optim
+# from keras.preprocessing.text import Tokenizer
+# from keras.utils import pad_sequences
+import optuna
+from torch.utils.data import Dataset, DataLoader
+import json
+
 # --------------------------------------------------
 # Loc defined
 class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
@@ -1257,19 +1266,6 @@ def train_bert_model(texts, labels, model_name='bert-base-uncased', epochs=4, ba
     return model, results
 
 # --------------------------------------------------
-
-from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
-import matplotlib.pyplot as plt
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import numpy as np
-import os
-# from keras.preprocessing.text import Tokenizer
-# from keras.utils import pad_sequences
-import optuna
-from torch.utils.data import Dataset, DataLoader
-import json
 
 START_TAG = "<START>"
 STOP_TAG = "<STOP>"

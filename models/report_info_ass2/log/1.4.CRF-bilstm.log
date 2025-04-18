@@ -1,48 +1,275 @@
-2025-04-12 07:58:19,640 - INFO - 
-🔎 Running feature extraction...
-
-2025-04-12 07:58:19,643 - INFO - 
-🔍 Processing feature extraction using: count...
-2025-04-12 07:58:20,747 - INFO - ✅ count - Train shape: (40000, 2000), Test shape: (10000, 2000)
-2025-04-12 07:58:21,008 - INFO - 
-🔎 Running feature extraction and model training loop...
-
-2025-04-12 07:58:21,009 - INFO - 
+#####################################
+BiLSTM with CRF  
+#####################################
 🚀 Training CRF models...
 
-2025-04-12 07:58:21,074 - INFO - 🖥️ Using device: cuda
-2025-04-12 07:58:22,123 - INFO - 🔍 Tuning hyperparameters...
-2025-04-12 09:20:00,429 - INFO - Epoch 1/30 - Train Loss: 31.5033, Val Loss: 22.9443
-2025-04-12 09:24:04,095 - INFO - Epoch 2/30 - Train Loss: 19.6206, Val Loss: 15.6875
-2025-04-12 09:28:09,432 - INFO - Epoch 3/30 - Train Loss: 13.9764, Val Loss: 11.2414
-2025-04-12 09:32:15,866 - INFO - Epoch 4/30 - Train Loss: 10.2886, Val Loss: 8.3397
-2025-04-12 09:36:19,747 - INFO - Epoch 5/30 - Train Loss: 7.6434, Val Loss: 9.8381
-2025-04-12 09:40:24,157 - INFO - Epoch 6/30 - Train Loss: 6.0190, Val Loss: 5.3944
-2025-04-12 09:44:30,332 - INFO - Epoch 7/30 - Train Loss: 4.7090, Val Loss: 4.5040
-2025-04-12 09:48:37,359 - INFO - Epoch 8/30 - Train Loss: 3.7351, Val Loss: 3.0254
-2025-04-12 09:52:44,397 - INFO - Epoch 9/30 - Train Loss: 2.9656, Val Loss: 3.5472
-2025-04-12 09:56:48,697 - INFO - Epoch 10/30 - Train Loss: 2.4597, Val Loss: 1.9993
-2025-04-12 10:00:52,561 - INFO - Epoch 11/30 - Train Loss: 1.9515, Val Loss: 1.8313
-2025-04-12 10:04:57,225 - INFO - Epoch 12/30 - Train Loss: 1.8162, Val Loss: 2.1344
-2025-04-12 10:09:00,780 - INFO - Epoch 13/30 - Train Loss: 1.5355, Val Loss: 1.2886
-2025-04-12 10:13:06,300 - INFO - Epoch 14/30 - Train Loss: 1.3587, Val Loss: 2.5574
-2025-04-12 10:17:09,023 - INFO - Epoch 15/30 - Train Loss: 1.2085, Val Loss: 1.0541
-2025-04-12 10:21:12,424 - INFO - Epoch 16/30 - Train Loss: 1.1334, Val Loss: 2.4410
-2025-04-12 10:25:15,779 - INFO - Epoch 17/30 - Train Loss: 1.0926, Val Loss: 1.5023
-2025-04-12 10:29:20,915 - INFO - Epoch 18/30 - Train Loss: 1.0707, Val Loss: 0.8444
-2025-04-12 10:33:24,848 - INFO - Epoch 19/30 - Train Loss: 0.9937, Val Loss: 0.7167
-2025-04-12 10:37:28,916 - INFO - Epoch 20/30 - Train Loss: 0.8769, Val Loss: 0.8685
-2025-04-12 10:41:32,350 - INFO - Epoch 21/30 - Train Loss: 0.8967, Val Loss: 1.2462
-2025-04-12 10:45:35,645 - INFO - Epoch 22/30 - Train Loss: 0.8008, Val Loss: 0.7969
-2025-04-12 10:49:39,220 - INFO - Epoch 23/30 - Train Loss: 0.8630, Val Loss: 1.5197
-2025-04-12 10:53:43,675 - INFO - Epoch 24/30 - Train Loss: 0.8669, Val Loss: 1.3192
-2025-04-12 10:57:47,689 - INFO - Epoch 25/30 - Train Loss: 0.8225, Val Loss: 1.1293
-2025-04-12 11:01:50,958 - INFO - Epoch 26/30 - Train Loss: 0.7361, Val Loss: 0.9094
-2025-04-12 11:05:54,208 - INFO - Epoch 27/30 - Train Loss: 0.7826, Val Loss: 0.7185
-2025-04-12 11:09:59,674 - INFO - Epoch 28/30 - Train Loss: 0.8895, Val Loss: 0.7441
-2025-04-12 11:14:06,425 - INFO - Epoch 29/30 - Train Loss: 0.8154, Val Loss: 0.6409
-2025-04-12 11:18:12,344 - INFO - Epoch 30/30 - Train Loss: 0.8238, Val Loss: 0.6267
-2025-04-12 11:23:24,121 - INFO - 
+Cầm cái code sau đây để đi kiểu phân tích, mô tả cho t một số nôi dung:
+- ta dùng CRF để làm giống như 1 layer classifier của BiLSTM model 
+- nói theo kiểu ta vận dụng sự phức tạp / tốt / ok / SOTA của BiLSTM model 
+- config cua model la {
+      "hidden_dim": 128,
+      "lr": 0.000430368798375161
+   }
+
+START_TAG = "<START>"
+STOP_TAG = "<STOP>"
+tag_to_ix = {START_TAG: 0, STOP_TAG: 1, "NEG": 2, "POS": 3}
+ix_to_tag = {v: k for k, v in tag_to_ix.items()}
+
+def argmax(vec):
+    return torch.argmax(vec)
+
+def log_sum_exp(vec):
+    max_score = vec.max()
+    max_score_broadcast = max_score.view(1, -1).expand(1, vec.size()[1])
+    return max_score + torch.log(torch.sum(torch.exp(vec - max_score_broadcast)))
+
+class BiLSTM_CRF_FeatureExtractor(nn.Module):
+    def __init__(self, vocab_size, tag_to_ix, embedding_dim, hidden_dim):
+        super(BiLSTM_CRF_FeatureExtractor, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.lstm = nn.LSTM(embedding_dim, hidden_dim // 2,
+                            num_layers=1, bidirectional=True, batch_first=True)
+        self.hidden2tag = nn.Linear(hidden_dim, len(tag_to_ix))
+        self.transitions = nn.Parameter(torch.randn(len(tag_to_ix), len(tag_to_ix)))
+        self.tag_to_ix = tag_to_ix
+
+        self.transitions.data[tag_to_ix[START_TAG], :] = -10000.
+        self.transitions.data[:, tag_to_ix[STOP_TAG]] = -10000.
+
+    def _get_lstm_features(self, sentence):
+        embeds = self.embedding(sentence)
+        lstm_out, _ = self.lstm(embeds)
+        return self.hidden2tag(lstm_out)
+
+    def _forward_alg(self, feats):
+        init_alphas = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
+        init_alphas[0][self.tag_to_ix[START_TAG]] = 0.
+        forward_var = init_alphas
+        for feat in feats:
+            alphas_t = []
+            for next_tag in range(len(self.tag_to_ix)):
+                emit_score = feat[next_tag].view(1, -1).expand(1, len(self.tag_to_ix))
+                trans_score = self.transitions[next_tag].view(1, -1)
+                next_tag_var = forward_var + trans_score + emit_score
+                alphas_t.append(log_sum_exp(next_tag_var).view(1))
+            forward_var = torch.cat(alphas_t).view(1, -1)
+        terminal_var = forward_var + self.transitions[self.tag_to_ix[STOP_TAG]]
+        return log_sum_exp(terminal_var)
+
+    def _score_sentence(self, feats, tags):
+        score = torch.zeros(1, device=feats.device)
+        tags = torch.cat([torch.tensor([self.tag_to_ix[START_TAG]], device=feats.device), tags])
+        for i, feat in enumerate(feats):
+            score += self.transitions[tags[i + 1], tags[i]] + feat[tags[i + 1]]
+        score += self.transitions[self.tag_to_ix[STOP_TAG], tags[-1]]
+        return score
+
+    def _viterbi_decode(self, feats):
+        backpointers = []
+        init_vvars = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
+        init_vvars[0][self.tag_to_ix[START_TAG]] = 0
+        forward_var = init_vvars
+
+        for feat in feats:
+            bptrs_t = []
+            viterbivars_t = []
+            for next_tag in range(len(self.tag_to_ix)):
+                next_tag_var = forward_var + self.transitions[next_tag]
+                best_tag_id = argmax(next_tag_var)
+                bptrs_t.append(best_tag_id.item())
+                viterbivars_t.append(next_tag_var[0][best_tag_id].view(1))
+            forward_var = (torch.cat(viterbivars_t) + feat).view(1, -1)
+            backpointers.append(bptrs_t)
+
+        terminal_var = forward_var + self.transitions[self.tag_to_ix[STOP_TAG]]
+        best_tag_id = argmax(terminal_var)
+        best_path = [best_tag_id.item()]
+        for bptrs_t in reversed(backpointers):
+            best_tag_id = bptrs_t[best_tag_id]
+            best_path.append(best_tag_id)
+        start = best_path.pop()
+        best_path.reverse()
+        return best_path
+
+    def neg_log_likelihood(self, sentences, tags):
+        feats = self._get_lstm_features(sentences)
+        forward_score = self._forward_alg(feats[0])
+        gold_score = self._score_sentence(feats[0], tags[0])
+        return forward_score - gold_score
+
+    def forward(self, sentences):
+        feats = self._get_lstm_features(sentences)
+        return self._viterbi_decode(feats[0])
+
+class CRFSentimentDataset(Dataset):
+    def __init__(self, input_ids, labels, max_len):
+        self.input_ids = input_ids
+        self.labels = labels
+        self.max_len = max_len
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, idx):
+        x = torch.tensor(self.input_ids[idx], dtype=torch.long)
+        tag_label = "POS" if self.labels[idx] == 1 else "NEG"
+        tag_id = tag_to_ix[tag_label]
+        y = torch.tensor([tag_id] * self.max_len, dtype=torch.long)
+        return x, y
+
+def tag_sequence_to_sentiment(tag_seq):
+    count_pos = tag_seq.count(tag_to_ix["POS"])
+    count_neg = tag_seq.count(tag_to_ix["NEG"])
+    return 1 if count_pos >= count_neg else 0
+
+def train_crf_feature_extractor(texts, labels, vocab_size=10000, max_length=100, embedding_dim=100, num_trials=5, epochs=30):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"🖥️ Using device: {device}")
+
+    tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
+    tokenizer.fit_on_texts(texts)
+    sequences = tokenizer.texts_to_sequences(texts)
+    X_data = pad_sequences(sequences, maxlen=max_length, padding="post")
+    y_data = np.array(labels)
+
+    X_temp, X_test, y_temp, y_test = train_test_split(X_data, y_data, test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.2, random_state=42)
+
+    def objective(trial):
+        hidden_dim = trial.suggest_int("hidden_dim", 64, 256, step=64)
+        lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
+
+        model = BiLSTM_CRF_FeatureExtractor(vocab_size, tag_to_ix, embedding_dim, hidden_dim).to(device)
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+
+        train_loader = DataLoader(CRFSentimentDataset(X_train, y_train, max_length), batch_size=32, shuffle=True)
+        val_loader = DataLoader(CRFSentimentDataset(X_val, y_val, max_length), batch_size=32)
+
+        model.train()
+        for _ in range(3):
+            for x, y in train_loader:
+                x, y = x.to(device), y.to(device)
+                model.zero_grad()
+                loss = model.neg_log_likelihood(x, y)
+                loss.backward()
+                optimizer.step()
+
+        model.eval()
+        y_pred, y_true = [], []
+        with torch.no_grad():
+            for x, y in val_loader:
+                x = x.to(device)
+                outputs = model(x)
+                
+                for i in range(x.size(0)):
+                    decoded = model(x[i].unsqueeze(0))
+                    y_pred.append(tag_sequence_to_sentiment(decoded))
+                    y_true.append(1 if y[i][0].item() == tag_to_ix["POS"] else 0)
+
+        return f1_score(y_true, y_pred)
+
+    print("🔍 Tuning hyperparameters...")
+    study = optuna.create_study(direction="maximize")
+    study.optimize(objective, n_trials=num_trials)
+    best_params = study.best_params
+
+    model = BiLSTM_CRF_FeatureExtractor(vocab_size, tag_to_ix, embedding_dim, best_params["hidden_dim"]).to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=best_params["lr"])
+    train_loader = DataLoader(CRFSentimentDataset(X_train, y_train, max_length), batch_size=32, shuffle=True)
+    val_loader = DataLoader(CRFSentimentDataset(X_val, y_val, max_length), batch_size=32)
+
+    history = {"train_loss": [], "val_loss": []}
+
+    for epoch in range(epochs):
+        model.train()
+        total_train_loss = 0.0
+        for x, y in train_loader:
+            x, y = x.to(device), y.to(device)
+            model.zero_grad()
+            loss = model.neg_log_likelihood(x, y)
+            loss.backward()
+            optimizer.step()
+            total_train_loss += loss.item()
+        avg_train_loss = total_train_loss / len(train_loader)
+
+        model.eval()
+        total_val_loss = 0.0
+        with torch.no_grad():
+            for x, y in val_loader:
+                x, y = x.to(device), y.to(device)
+                total_val_loss += model.neg_log_likelihood(x, y).item()
+        avg_val_loss = total_val_loss / len(val_loader)
+
+        history["train_loss"].append(avg_train_loss)
+        history["val_loss"].append(avg_val_loss)
+        print(f"Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
+
+    test_loader = DataLoader(CRFSentimentDataset(X_test, y_test, max_length), batch_size=32)
+    model.eval()
+    y_pred, y_true = [], []
+    with torch.no_grad():
+        for x, y in test_loader:
+            x = x.to(device)
+            outputs = model(x)
+            for i in range(x.size(0)):
+                decoded = model(x[i].unsqueeze(0))
+                y_pred.append(tag_sequence_to_sentiment(decoded))
+                y_true.append(1 if y[i][0].item() == tag_to_ix["POS"] else 0)
+
+
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(y_true, y_pred)
+    recall = recall_score(y_true, y_pred)
+    f1 = f1_score(y_true, y_pred)
+    roc_auc = roc_auc_score(y_true, y_pred)
+    report = classification_report(y_true, y_pred, target_names=["Negative", "Positive"])
+    print("\nClassification Report:\n", report)
+
+    results = {
+        "train_loss": history["train_loss"],
+        "val_loss": history["val_loss"],
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "roc_auc": roc_auc
+    }
+
+    print(f"\n✅ Test - Accuracy: {accuracy:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}, AUC: {roc_auc:.4f}")
+
+    os.makedirs("crf_feature_model", exist_ok=True)
+    torch.save(model.state_dict(), "best_crf_model.pt")
+    with open("best_crf_model_config.json", "w") as f:
+        json.dump(best_params, f, indent=4)
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(history["train_loss"], label="Train Loss")
+    plt.plot(history["val_loss"], label="Validation Loss")
+    plt.title("📉 Train vs Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("crf_loss_curve.png")
+    plt.close()
+
+    return model, results
+
+
+
+
+
+
+
+
+
+--------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+--------------------------------------
+
 Classification Report:
                precision    recall  f1-score   support
 

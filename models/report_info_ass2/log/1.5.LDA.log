@@ -1,15 +1,25 @@
-2025-04-13 07:32:03,239 - INFO - 
-🔎 Running feature extraction...
+#####################################
+BiLSTM with CRF  
 
-2025-04-13 07:32:03,242 - INFO - 
-🔍 Processing feature extraction using: count...
-2025-04-13 07:32:05,475 - INFO - ✅ count - Train shape: (80000, 2000), Test shape: (20000, 2000)
-2025-04-13 07:32:05,729 - INFO - 
-🔎 Running feature extraction and model training loop...
+Khi viết report về cái này nhớ nói dùm t một số ý sau (ghi dài giải thích ra)
+- lí do tại sao kh dùng LDA để giảm chiều như PCA --> do thằng LDA sẽ làm giảm số chiều xuống số lớp của nhãn (nếu có 2 lớp thì chỉ còn 1 chiều thôi)
+- LDA là supervised learning, trong khi PCA là unsupervised learning
+- LDA sẽ tìm ra các vector mà có thể phân loại tốt nhất giữa các lớp, trong khi PCA chỉ tìm ra các vector chính để giảm chiều mà không quan tâm đến nhãn
 
-2025-04-13 07:32:05,730 - INFO - 
+==> kết luận chính vì những lí do như vậy nên nhóm đã chọn thằng LDA làm một classifier để phân loại như các model khác
+như DT Naive Bayes...
+
+#####################################
 🚀 Training lda models...
-
+--------------------------------------
+"lda": {
+    "solver": ["lsqr", "eigen"],
+    "shrinkage": [None, "auto"],  # Only used with 'lsqr' or 'eigen'
+    "tol": [1e-4, 1e-3, 1e-2]     # Tolerance for convergence
+},
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+--------------------------------------
 2025-04-13 07:32:05,731 - INFO - 🔎 Training with Method: count...
 2025-04-13 07:32:05,732 - INFO - 🚀 Training new model: LinearDiscriminantAnalysis...
 2025-04-13 07:52:13,543 - INFO - Best hyperparameters: {'shrinkage': None, 'solver': 'lsqr', 'tol': 0.0001}
@@ -20,13 +30,16 @@
 2025-04-13 07:52:54,059 - INFO - 📊 Average F1 Score: 76%
 2025-04-13 07:52:54,060 - INFO - 📊 Average Precision: 73%
 2025-04-13 07:52:54,061 - INFO - 📊 Average Recall: 80%
+
 2025-04-13 07:53:02,373 - INFO - 💾 Model saved to best_lda_count.pkl
 2025-04-13 07:53:02,555 - INFO - 📈 Plot saved to best_lda_count.png
 2025-04-13 07:53:02,683 - INFO - 📉 Loss plot saved to best_lda_count_loss.png
 2025-04-13 07:53:02,757 - INFO - 🔎 Predicting with Model: lda, Method: count...
 2025-04-13 07:53:03,101 - INFO - Model: lda
-2025-04-13 07:53:03,102 - INFO - Method: count
-2025-04-13 07:53:03,103 - INFO - --------------------------------------------------
+--------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+--------------------------------------
 2025-04-13 07:53:03,104 - INFO - Accuracy: 0.7539
 2025-04-13 07:53:03,105 - INFO - Precision: 0.7358
 2025-04-13 07:53:03,105 - INFO - Recall: 0.8129

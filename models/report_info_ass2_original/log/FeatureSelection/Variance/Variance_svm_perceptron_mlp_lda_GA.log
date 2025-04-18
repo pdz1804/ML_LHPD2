@@ -1,0 +1,175 @@
+2025-04-01 01:27:24,621 - INFO - Creating /root/gensim-data
+2025-04-01 01:28:13,883 - INFO - glove-wiki-gigaword-300 downloaded
+2025-04-01 01:28:13,886 - INFO - loading projection weights from /root/gensim-data/glove-wiki-gigaword-300/glove-wiki-gigaword-300.gz
+2025-04-01 01:29:23,722 - INFO - KeyedVectors lifecycle event {'msg': 'loaded (400000, 300) matrix of type float32 from /root/gensim-data/glove-wiki-gigaword-300/glove-wiki-gigaword-300.gz', 'binary': False, 'encoding': 'utf8', 'datetime': '2025-04-01T01:29:23.722702', 'gensim': '4.3.3', 'python': '3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]', 'platform': 'Linux-6.6.56+-x86_64-with-glibc2.35', 'event': 'load_word2vec_format'}
+2025-04-01 01:29:58,705 - INFO - 
+🔎 Running feature extraction and model training loop...
+
+2025-04-01 01:29:58,706 - INFO - 
+🚀 Training perceptron models...
+
+2025-04-01 01:29:58,707 - INFO - 🔎 Training with Method: glove...
+2025-04-01 01:29:58,708 - INFO - 🚀 Training new model: Perceptron...
+2025-04-01 01:30:40,789 - INFO - Best hyperparameters: {'alpha': 0.0001, 'eta0': 0.01, 'max_iter': 1000, 'penalty': None, 'tol': 0.0001}
+2025-04-01 01:30:40,790 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-01 01:30:41,141 - INFO - 📊 Average Accuracy: 62%
+2025-04-01 01:30:41,142 - INFO - 📊 Average ROC AUC: 62%
+2025-04-01 01:30:41,143 - INFO - 📊 Average F1 Score: 62%
+2025-04-01 01:30:41,144 - INFO - 📊 Average Precision: 65%
+2025-04-01 01:30:41,145 - INFO - 📊 Average Recall: 64%
+2025-04-01 01:30:41,189 - INFO - 💾 Model saved to best_perceptron_glove.pkl
+2025-04-01 01:30:41,404 - INFO - 📈 Plot saved to best_perceptron_glove.png
+2025-04-01 01:30:41,562 - INFO - 📉 Loss plot saved to best_perceptron_glove_loss.png
+2025-04-01 01:30:41,563 - INFO - 
+🚀 Training mlp models...
+
+2025-04-01 01:30:41,564 - INFO - 🔎 Training with Method: glove...
+2025-04-01 01:30:41,566 - INFO - 🚀 Training new model: MLPClassifier...
+2025-04-01 01:45:38,170 - INFO - Best hyperparameters: {'activation': 'logistic', 'alpha': 0.01, 'batch_size': 32, 'hidden_layer_sizes': (100,), 'max_iter': 1000, 'solver': 'sgd'}
+2025-04-01 01:45:38,171 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-01 01:48:11,542 - INFO - 📊 Average Accuracy: 70%
+2025-04-01 01:48:11,543 - INFO - 📊 Average ROC AUC: 70%
+2025-04-01 01:48:11,546 - INFO - 📊 Average F1 Score: 71%
+2025-04-01 01:48:11,547 - INFO - 📊 Average Precision: 69%
+2025-04-01 01:48:11,548 - INFO - 📊 Average Recall: 73%
+2025-04-01 01:48:44,368 - INFO - 💾 Model saved to best_mlp_glove.pkl
+2025-04-01 01:48:45,216 - INFO - 📈 Plot saved to best_mlp_glove.png
+2025-04-01 01:48:45,451 - INFO - 📉 Loss plot saved to best_mlp_glove_loss.png
+2025-04-01 01:48:45,452 - INFO - 
+🚀 Training GA models...
+
+2025-04-01 01:48:45,454 - INFO - 🔎 Training with Method: glove...
+2025-04-01 01:51:34,854 - INFO - Selected 158 features out of 300
+2025-04-01 01:51:34,882 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-01 01:51:35,111 - INFO - 📊 Average Accuracy: 59%
+2025-04-01 01:51:35,112 - INFO - 📊 Average ROC AUC: 65%
+2025-04-01 01:51:35,113 - INFO - 📊 Average F1 Score: 53%
+2025-04-01 01:51:35,114 - INFO - 📊 Average Precision: 64%
+2025-04-01 01:51:35,115 - INFO - 📊 Average Recall: 45%
+2025-04-01 01:51:35,132 - INFO - 💾 Model saved to best_GA_glove.pkl
+2025-04-01 01:51:35,281 - INFO - 📈 Plot saved to best_GA_glove.png
+2025-04-01 01:51:35,433 - INFO - 📉 Loss plot saved to best_GA_glove_loss.png
+2025-04-01 01:51:35,434 - INFO - 
+🚀 Training svm models...
+
+2025-04-01 01:51:35,435 - INFO - 🔎 Training with Method: glove...
+2025-04-01 01:51:35,437 - INFO - 🚀 Training new model: SVC...
+2025-04-01 01:52:50,718 - INFO - Best hyperparameters: {'C': 0.1, 'gamma': 'scale', 'kernel': 'linear'}
+2025-04-01 01:52:50,720 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-01 01:53:18,914 - INFO - 📊 Average Accuracy: 70%
+2025-04-01 01:53:18,915 - INFO - 📊 Average ROC AUC: 70%
+2025-04-01 01:53:18,915 - INFO - 📊 Average F1 Score: 71%
+2025-04-01 01:53:18,916 - INFO - 📊 Average Precision: 70%
+2025-04-01 01:53:18,917 - INFO - 📊 Average Recall: 73%
+2025-04-01 01:53:23,154 - INFO - 💾 Model saved to best_svm_glove.pkl
+2025-04-01 01:53:23,313 - INFO - 📈 Plot saved to best_svm_glove.png
+2025-04-01 01:53:23,459 - INFO - 📉 Loss plot saved to best_svm_glove_loss.png
+2025-04-01 01:53:23,460 - INFO - 
+🚀 Training lda models...
+
+2025-04-01 01:53:23,461 - INFO - 🔎 Training with Method: glove...
+2025-04-01 01:53:23,462 - INFO - 🚀 Training new model: LinearDiscriminantAnalysis...
+2025-04-01 01:53:31,683 - INFO - Best hyperparameters: {'shrinkage': 'auto', 'solver': 'lsqr', 'tol': 0.0001}
+2025-04-01 01:53:31,684 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-01 01:53:32,504 - INFO - 📊 Average Accuracy: 69%
+2025-04-01 01:53:32,505 - INFO - 📊 Average ROC AUC: 69%
+2025-04-01 01:53:32,506 - INFO - 📊 Average F1 Score: 71%
+2025-04-01 01:53:32,506 - INFO - 📊 Average Precision: 70%
+2025-04-01 01:53:32,507 - INFO - 📊 Average Recall: 72%
+2025-04-01 01:53:32,642 - INFO - 💾 Model saved to best_lda_glove.pkl
+2025-04-01 01:53:32,788 - INFO - 📈 Plot saved to best_lda_glove.png
+2025-04-01 01:53:32,934 - INFO - 📉 Loss plot saved to best_lda_glove_loss.png
+2025-04-01 01:53:37,529 - INFO - 🔎 Predicting with Model: perceptron, Method: glove...
+2025-04-01 01:53:37,550 - INFO - Model: perceptron
+2025-04-01 01:53:37,550 - INFO - Method: glove
+2025-04-01 01:53:37,551 - INFO - --------------------------------------------------
+2025-04-01 01:53:37,552 - INFO - Accuracy: 0.6450
+2025-04-01 01:53:37,554 - INFO - Precision: 0.6615
+2025-04-01 01:53:37,554 - INFO - Recall: 0.6259
+2025-04-01 01:53:37,555 - INFO - F1 Score: 0.6432
+2025-04-01 01:53:37,556 - INFO - ROC AUC: 0.7023344630719301
+2025-04-01 01:53:37,557 - INFO - 
+🔬 Classification Report:
+2025-04-01 01:53:37,565 - INFO -               precision    recall  f1-score   support
+
+    negative       0.63      0.66      0.65       782
+    positive       0.66      0.63      0.64       818
+
+    accuracy                           0.65      1600
+   macro avg       0.65      0.65      0.64      1600
+weighted avg       0.65      0.65      0.64      1600
+
+2025-04-01 01:53:37,565 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-01 01:53:37,566 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-01 01:53:37,566 - INFO - 🔎 Predicting with Model: mlp, Method: glove...
+2025-04-01 01:53:37,596 - INFO - Model: mlp
+2025-04-01 01:53:37,596 - INFO - Method: glove
+2025-04-01 01:53:37,597 - INFO - --------------------------------------------------
+2025-04-01 01:53:37,598 - INFO - Accuracy: 0.6975
+2025-04-01 01:53:37,599 - INFO - Precision: 0.7047
+2025-04-01 01:53:37,600 - INFO - Recall: 0.7029
+2025-04-01 01:53:37,601 - INFO - F1 Score: 0.7038
+2025-04-01 01:53:37,602 - INFO - ROC AUC: 0.7657587591218055
+2025-04-01 01:53:37,603 - INFO - 
+🔬 Classification Report:
+2025-04-01 01:53:37,611 - INFO -               precision    recall  f1-score   support
+
+    negative       0.69      0.69      0.69       782
+    positive       0.70      0.70      0.70       818
+
+    accuracy                           0.70      1600
+   macro avg       0.70      0.70      0.70      1600
+weighted avg       0.70      0.70      0.70      1600
+
+2025-04-01 01:53:37,612 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-01 01:53:37,612 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-01 01:53:37,613 - INFO - Already trained and tested model: GA
+2025-04-01 01:53:37,613 - INFO - 🔎 Predicting with Model: svm, Method: glove...
+2025-04-01 01:53:39,109 - INFO - Model: svm
+2025-04-01 01:53:39,110 - INFO - Method: glove
+2025-04-01 01:53:39,111 - INFO - --------------------------------------------------
+2025-04-01 01:53:39,112 - INFO - Accuracy: 0.6919
+2025-04-01 01:53:39,114 - INFO - Precision: 0.6946
+2025-04-01 01:53:39,115 - INFO - Recall: 0.7090
+2025-04-01 01:53:39,115 - INFO - F1 Score: 0.7018
+2025-04-01 01:53:39,116 - INFO - ROC AUC: 0.7595649985305062
+2025-04-01 01:53:39,117 - INFO - 
+🔬 Classification Report:
+2025-04-01 01:53:39,125 - INFO -               precision    recall  f1-score   support
+
+    negative       0.69      0.67      0.68       782
+    positive       0.69      0.71      0.70       818
+
+    accuracy                           0.69      1600
+   macro avg       0.69      0.69      0.69      1600
+weighted avg       0.69      0.69      0.69      1600
+
+2025-04-01 01:53:39,126 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-01 01:53:39,126 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-01 01:53:39,127 - INFO - 🔎 Predicting with Model: lda, Method: glove...
+2025-04-01 01:53:39,148 - INFO - Model: lda
+2025-04-01 01:53:39,148 - INFO - Method: glove
+2025-04-01 01:53:39,150 - INFO - --------------------------------------------------
+2025-04-01 01:53:39,150 - INFO - Accuracy: 0.6881
+2025-04-01 01:53:39,151 - INFO - Precision: 0.6888
+2025-04-01 01:53:39,151 - INFO - Recall: 0.7115
+2025-04-01 01:53:39,152 - INFO - F1 Score: 0.6999
+2025-04-01 01:53:39,153 - INFO - ROC AUC: 0.7591319668081966
+2025-04-01 01:53:39,153 - INFO - 
+🔬 Classification Report:
+2025-04-01 01:53:39,162 - INFO -               precision    recall  f1-score   support
+
+    negative       0.69      0.66      0.68       782
+    positive       0.69      0.71      0.70       818
+
+    accuracy                           0.69      1600
+   macro avg       0.69      0.69      0.69      1600
+weighted avg       0.69      0.69      0.69      1600
+
+2025-04-01 01:53:39,163 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-01 01:53:39,164 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
