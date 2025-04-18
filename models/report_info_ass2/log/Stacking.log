@@ -1,0 +1,174 @@
+#####################################
+STACKING 
+Nhớ mô tả cách làm stacking thông qua hàm train_stacking_classifier trong file models_utils
+-> nói ngắn gọn thôi không cần dài dòng, kiểu bây nói dùm t như cách hàm này hoạt động, cách train / predict của hàm này 
+
+Hiện mình đang làm là có 2 model stacking 
+- model 1: stacking_model_multiple_lr 
+==> Model này nhóm chọn stacking nhìu thằng LOGISTIC regression khác nhau bởi vì ở BTL 1
+khi nhóm test từng model thì model này là model cho kết quả ổn nhất nên nhóm muốn test xem nếu 
+stacking nhìu thằng "tốt" như vậy thì có cho kết quả tốt hơn không
+- model 2: stacking_model_selected_models
+==> Model này nhóm chọn stacking nhìu thằng model mà nhóm đã test ở BTL 1 và cho kết quả tốt nhất
+
+#####################################
+MODEL 1: STACKING MULTIPLE LOGISTIC REGRESSION 
+#####################################
+Function definition & Calls for this: 
+
+# Define multiple Logistic Regression models (as classes, not instances)
+multiple_lr_models = {
+    f"logistic_regression_{i}": LogisticRegression  # Note: Passing the class, not instance
+    for i in range(5)
+}
+
+# Provide parameters for each logistic regression model
+lr_params = {
+    f"logistic_regression_{i}": {"penalty": "l2", "C": 0.1, "max_iter": 3000, "random_state": i}
+    for i in range(5)
+}
+
+# Train Stacking Classifier
+stacking_clf = train_stacking_classifier(
+    model_dict=multiple_lr_models,
+    param_dict=lr_params,
+    feature_method=feature_use,
+    X=X_train_features_dict[feature_use],
+    y=y_train,
+    final_estimator=LogisticRegression(),
+    model_save_path="stacking_model_multiple_lr.pkl",
+    img_save_path="stacking_model_multiple_lr_performance.png", 
+    img_loss_path="stacking_model_multiple_lr_loss.png"
+)
+
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+--------------------------------------
+🚀 Training Stacking Classifier with feature method: count
+
+2025-03-31 11:10:51,959 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-31 11:16:21,870 - INFO - 📊 Avg Accuracy: 0.7429
+2025-03-31 11:16:21,871 - INFO - 📊 Avg ROC AUC: 0.7417
+2025-03-31 11:16:21,872 - INFO - 📊 Avg F1 Score: 0.7585
+2025-03-31 11:16:21,873 - INFO - 📊 Avg Precision: 0.7347
+2025-03-31 11:16:21,874 - INFO - 📊 Avg Recall: 0.7840
+2025-03-31 11:17:46,231 - INFO - 💾 Model saved to stacking_model_multiple_lr.pkl
+2025-03-31 11:17:46,365 - INFO - 📈 Performance plot saved to stacking_model_multiple_lr_performance.png
+2025-03-31 11:17:46,494 - INFO - 📉 Loss plot saved to stacking_model_multiple_lr_loss.png
+
+--------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+--------------------------------------
+2025-03-31 11:17:46,899 - INFO - Accuracy: 0.7363
+2025-03-31 11:17:46,903 - INFO - ROC AUC: 0.7348
+2025-03-31 11:17:46,907 - INFO - F1 Score: 0.7539
+2025-03-31 11:17:46,911 - INFO - Precision: 0.7258
+2025-03-31 11:17:46,915 - INFO - Recall: 0.7843
+2025-03-31 11:17:46,916 - INFO - 
+📄 Classification Report:
+
+2025-03-31 11:17:46,927 - INFO -               precision    recall  f1-score   support
+
+         0.0       0.75      0.69      0.72      4850
+         1.0       0.73      0.78      0.75      5150
+
+    accuracy                           0.74     10000
+   macro avg       0.74      0.73      0.73     10000
+weighted avg       0.74      0.74      0.74     10000
+
+#####################################
+MODEL 2: STACKING MULTIPLE MODELS THAT WORKS OK ON BTL1 
+#####################################
+Function definition & Calls for this:
+
+SELECTED_MODEL_DICT = {
+    "logistic_regression": LogisticRegression,
+    "xgboost": xgb.XGBClassifier,
+    "mlp": MLPClassifier,
+    "bayesian": GaussianNB,
+}
+
+BEST_MODEL_PARAMS = {
+    "mlp": {
+        "hidden_layer_sizes": (100,),
+        "activation": "logistic",
+        "solver": "sgd",
+        "alpha": 0.01,
+        "batch_size": 32,
+        "max_iter": 2000,
+    },
+    
+    "xgboost": {
+        "n_estimators": 150,
+        "learning_rate": 0.1,
+        "max_depth": 15
+    },
+    
+    "logistic_regression": {
+        "penalty": "l2",
+        "C": 0.1,
+        "max_iter": 1000
+    },
+    
+    "bayesian": {
+        "priors": [0.3, 0.7],
+        "var_smoothing": 1e-9
+    }
+}
+
+stacking_clf = train_stacking_classifier(
+    model_dict=SELECTED_MODEL_DICT,
+    param_dict=BEST_MODEL_PARAMS,
+    feature_method=feature_use,
+    X=X_train_features_dict[feature_use],
+    y=y_train,
+    final_estimator=LogisticRegression(),
+    model_save_path="stacking_model_selected_models.pkl",
+    img_save_path="stacking_model_selected_models_performance.png", 
+    img_loss_path="stacking_model_selected_models_loss.png"
+)
+
+# Test the trained model on the test set
+y_pred = stacking_clf.predict(X_test_features_dict[feature_use])
+
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+--------------------------------------
+2025-03-31 11:17:47,250 - INFO - 
+🚀 Training Stacking Classifier with feature method: count
+
+2025-03-31 11:17:47,251 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-31 16:20:32,004 - INFO - 📊 Avg Accuracy: 0.7467
+2025-03-31 16:20:32,005 - INFO - 📊 Avg ROC AUC: 0.7455
+2025-03-31 16:20:32,006 - INFO - 📊 Avg F1 Score: 0.7619
+2025-03-31 16:20:32,007 - INFO - 📊 Avg Precision: 0.7384
+2025-03-31 16:20:32,008 - INFO - 📊 Avg Recall: 0.7871
+
+2025-03-31 17:25:16,199 - INFO - 💾 Model saved to stacking_model_selected_models.pkl
+2025-03-31 17:25:16,361 - INFO - 📈 Performance plot saved to stacking_model_selected_models_performance.png
+2025-03-31 17:25:16,500 - INFO - 📉 Loss plot saved to stacking_model_selected_models_loss.png
+
+--------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+--------------------------------------
+2025-03-31 17:25:17,310 - INFO - Accuracy: 0.7451
+2025-03-31 17:25:17,315 - INFO - ROC AUC: 0.7431
+2025-03-31 17:25:17,320 - INFO - F1 Score: 0.7657
+2025-03-31 17:25:17,325 - INFO - Precision: 0.7270
+2025-03-31 17:25:17,329 - INFO - Recall: 0.8087
+2025-03-31 17:25:17,330 - INFO - 
+📄 Classification Report:
+
+2025-03-31 17:25:17,342 - INFO -               precision    recall  f1-score   support
+
+         0.0       0.77      0.68      0.72      4850
+         1.0       0.73      0.81      0.77      5150
+
+    accuracy                           0.75     10000
+   macro avg       0.75      0.74      0.74     10000
+weighted avg       0.75      0.75      0.74     10000
+

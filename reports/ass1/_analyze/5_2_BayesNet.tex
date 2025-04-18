@@ -107,6 +107,35 @@ Key observations from the evaluation metrics:
 
 Overall, while Bayesian Networks provide an interpretable probabilistic framework, their performance could potentially be enhanced with improved feature engineering, hyperparameter tuning, and refinement of the network structure.
 
+\subsubsection{Computational Resources and Efficiency}
+
+The Bayesian Network model requires moderate computational resources due to its probabilistic inference and feature discretization steps. Given a dataset of \textbf{500,000} text samples, we estimate the following computational costs:
+
+\begin{itemize} \item \textbf{Training Time:}
+\begin{itemize} \item On a \textbf{modern CPU} (Intel Core i7-12700K or equivalent), training the Bayesian Network with structure learning and parameter estimation takes approximately \textbf{1-2 hours}. \item The training time depends on the complexity of the learned network structure and the number of discrete feature values. \end{itemize}
+
+\item \textbf{Memory Usage:}  
+\begin{itemize}
+    \item \textbf{During Training:} Requires approximately \textbf{6-10GB RAM}, mainly due to storing conditional probability tables (CPTs) and performing probabilistic inference.
+    \item \textbf{During Inference:} Uses around \textbf{2GB RAM}, depending on the number of variables and the inference method used.
+\end{itemize}
+
+\item \textbf{Inference Speed:}  
+\begin{itemize}
+    \item Predicting the label of a single sample takes around \textbf{10-50 milliseconds}, depending on the complexity of the network structure.
+    \item \textbf{Variable Elimination} is generally faster but requires more memory, whereas \textbf{Belief Propagation} is slower but can handle larger graphs more efficiently.
+\end{itemize}
+
+\item \textbf{Disk Space:}  
+\begin{itemize}
+    \item \textbf{Model Storage:} The trained Bayesian Network, including learned conditional probability tables, requires approximately \textbf{100-300MB} of disk space.
+    \item \textbf{Intermediate Data:} Temporary storage during training (e.g., discretized feature representations) can reach \textbf{1-3GB}.
+\end{itemize}
+
+\end{itemize}
+
+
+
 \subsubsection{Conclusion}
 
 The Bayesian Network model was trained and evaluated using a structured probabilistic approach, leveraging inference methods such as Belief Propagation and Variable Elimination. The model achieved an accuracy of \textbf{64.95\%} with reasonable recall and AUC scores, demonstrating its effectiveness in capturing underlying dependencies in the data.
@@ -120,3 +149,4 @@ The Bayesian Network model was trained and evaluated using a structured probabil
 
 Despite its limitations, the Bayesian Network provides a robust probabilistic framework that can be particularly useful in domains where interpretability and uncertainty modeling are critical.
 
+\newpage

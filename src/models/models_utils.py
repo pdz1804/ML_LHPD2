@@ -33,6 +33,7 @@ import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier, StackingClassifier
 from sklearn_crfsuite import CRF
 from sklearn.metrics import log_loss, hinge_loss
+from sklearn.metrics import classification_report
 
 from sklearn.base import BaseEstimator, ClassifierMixin
 
@@ -45,8 +46,6 @@ from src.features.build_features_utils import *
 
 import keras
 from keras import layers
-import tensorflow as tf
-import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
@@ -72,6 +71,18 @@ import keras_nlp
 from tensorflow.keras.optimizers import Adam
 
 from statistics import mean
+
+# added
+from transformers import BertTokenizer, TFBertForSequenceClassification
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+# from keras.preprocessing.text import Tokenizer
+# from keras.utils import pad_sequences
+import optuna
+from torch.utils.data import Dataset, DataLoader
+import json
 
 # --------------------------------------------------
 # Loc defined
@@ -345,7 +356,7 @@ def mutate(individual, mutation_rate=0.1):
             individual[i] = 1 - individual[i]
     return individual
 
-def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, population_size=20, num_generations=100, mutation_rate=0.1, crossover_rate=0.7):
+def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, img_save_path=None, img_loss_path=None, population_size=20, num_generations=100, mutation_rate=0.1, crossover_rate=0.7):
     """
     Runs a genetic algorithm to optimize feature selection for Naive Bayes.
 
@@ -413,43 +424,85 @@ def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, po
 
     # Train Naive Bayes with selected features
     nb_model = GaussianNB()
-    nb_model.fit(X_train_selected, y_train)
-    y_pred = nb_model.predict(X_test_selected)
     
-    # Compute metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, average='binary')
-    recall = recall_score(y_test, y_pred, average='binary')
-    f1 = f1_score(y_test, y_pred, average='binary')
-    
-    # ROC AUC can be computed if the model outputs probabilities
-    # Handle models that do not support `predict_proba`
-    if hasattr(nb_model, "predict_proba"):
-        print("Has predict_proba")
-        y_prob = nb_model.predict_proba(X_test_selected)[:, 1]
-        roc_auc = roc_auc_score(y_test, y_prob)
-    elif hasattr(nb_model, "decision_function"):
-        print("Has decision_function")
-        y_prob = nb_model.decision_function(X_test_selected)
-        roc_auc = roc_auc_score(y_test, y_prob)
-    else:
-        print("Does not have predict_proba or decision_function")
-        roc_auc = "N/A"  # Not applicable for models like Perceptron
+    # Set up K-Fold Cross-Validation
+    print("\n🎯 Running K-Fold Cross-Validation...")
+    k_fold = KFold(n_splits=5, shuffle=True, random_state=42)
 
-    # Print metrics
-    print(f"Accuracy: {accuracy:.4f}")
-    print(f"Precision: {precision:.4f}")
-    print(f"Recall: {recall:.4f}")
-    print(f"F1 Score: {f1:.4f}")
-    if hasattr(nb_model, "predict_proba") or hasattr(nb_model, "decision_function"):
-        print(f"ROC AUC: {roc_auc:.4f}")
-    else:
-        print("ROC AUC: N/A")
-    
-    # Save the trained model
+    # Prepare containers for metrics
+    accuracy_scores = []
+    roc_auc_scores = []
+    f1_scores = []
+    precision_scores = []
+    recall_scores = []
+    training_losses = []
+    validation_losses = []
+
+    # Perform CV loop
+    for train_index, val_index in tqdm(k_fold.split(X_train_selected), total=k_fold.get_n_splits(), desc="K-Fold Progress"):
+        X_train_cv, X_val_cv = X_train_selected[train_index], X_train_selected[val_index]
+        y_train_cv, y_val_cv = y_train[train_index], y_train[val_index]
+        
+        model_cv = GaussianNB()
+        model_cv.fit(X_train_cv, y_train_cv)
+
+        # Loss
+        train_loss = get_training_loss(model_cv, X_train_cv, y_train_cv)
+        val_loss = get_training_loss(model_cv, X_val_cv, y_val_cv)
+        training_losses.append(train_loss)
+        validation_losses.append(val_loss)
+
+        # Predictions
+        val_preds = model_cv.predict(X_val_cv)
+        val_probs = model_cv.predict_proba(X_val_cv)[:, 1]
+
+        # Metrics
+        accuracy_scores.append(accuracy_score(y_val_cv, val_preds))
+        roc_auc_scores.append(roc_auc_score(y_val_cv, val_probs))
+        f1_scores.append(f1_score(y_val_cv, val_preds))
+        precision_scores.append(precision_score(y_val_cv, val_preds))
+        recall_scores.append(recall_score(y_val_cv, val_preds))
+
+    # Print average scores
+    print(f'📊 Average Accuracy: {int(mean(accuracy_scores) * 100)}%')
+    print(f'📊 Average ROC AUC: {int(mean(roc_auc_scores) * 100)}%')
+    print(f'📊 Average F1 Score: {int(mean(f1_scores) * 100)}%')
+    print(f'📊 Average Precision: {int(mean(precision_scores) * 100)}%')
+    print(f'📊 Average Recall: {int(mean(recall_scores) * 100)}%')
+
+    # Retrain final model on full training set
+    nb_model.fit(X_train_selected, y_train)
+
+    # Save model
     if model_save_path:
         joblib.dump(nb_model, model_save_path)
         print(f'💾 Model saved to {model_save_path}')
+
+    # Plot accuracy & ROC AUC per fold
+    if img_save_path:
+        plt.figure(figsize=(10, 6))
+        plt.plot(range(1, len(accuracy_scores) + 1), accuracy_scores, label="Accuracy", marker='o')
+        plt.plot(range(1, len(roc_auc_scores) + 1), roc_auc_scores, label="ROC AUC", marker='o')
+        plt.title("Validation Performance Across K-Folds")
+        plt.xlabel("Fold Number")
+        plt.ylabel("Score")
+        plt.legend()
+        plt.savefig(img_save_path)
+        plt.close()
+        print(f"📈 Plot saved to {img_save_path}")
+
+    # Plot loss curves
+    if img_loss_path:
+        plt.figure(figsize=(10, 6))
+        plt.plot(range(1, len(training_losses) + 1), training_losses, label="Training Loss", marker='o')
+        plt.plot(range(1, len(validation_losses) + 1), validation_losses, label="Validation Loss", marker='o')
+        plt.title("Training & Validation Loss Across K-Folds")
+        plt.xlabel("Fold Number")
+        plt.ylabel("Loss")
+        plt.legend()
+        plt.savefig(img_loss_path)
+        plt.close()
+        print(f"📉 Loss plot saved to {img_loss_path}")
 
 # --------------------------------------------------
 
@@ -590,32 +643,6 @@ def generate_binary_classification_model(X, y, model_algorithm, hyperparameters,
         plt.savefig(img_loss_path)
         plt.close()
         print(f"📉 Loss plot saved to {img_loss_path}")
-    
-    # ---- Additional Decision Tree Analysis ---- #
-    # if isinstance(model_algorithm, DecisionTreeClassifier):
-    #     print("\n🌳 Performing Decision Tree Analysis...")
-
-    #     # Plot the decision tree
-    #     plt.figure(figsize=(20, 10))
-    #     plot_tree(model_algorithm, filled=True, class_names=[str(label) for label in model_algorithm.classes_], rounded=True)
-    #     plt.title("Decision Tree Visualization")
-    #     plt.show()
-
-    #     # Print decision path for a sample
-    #     sample_id = 0  # Change for other samples if needed
-    #     node_indicator = model_algorithm.decision_path(X)
-    #     leaf_id = model_algorithm.apply(X)
-
-    #     # print(f"\n📝 Rules used to predict sample {sample_id}: {X_train[sample_id]}")
-    #     print(f"\n📝 Rules used to predict sample {sample_id}:")
-    #     node_index = node_indicator.indices[node_indicator.indptr[sample_id]: node_indicator.indptr[sample_id + 1]]
-
-    #     for node_id in node_index:
-    #         continue
-
-    #     threshold_sign = "<=" if X.iloc[sample_id, model_algorithm.tree_.feature[node_id]] <= model_algorithm.tree_.threshold[node_id] else ">"
-    #     print(f"🔹 Decision node {node_id}: (X[{sample_id}, {model_algorithm.tree_.feature[node_id]}] = "
-    #             f"{X.iloc[sample_id, model_algorithm.tree_.feature[node_id]]}) {threshold_sign} {model_algorithm.tree_.threshold[node_id]}")
 
     return model_algorithm
 
@@ -888,7 +915,7 @@ def train_graphical_model(df, model_name, model_save_path):
 
 # --------------------------------------------------
 
-def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, num_trials=5, epochs=10):
+def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, num_trials=5, epochs=30):
     """
     Trains a CNN-LSTM sentiment analysis model on given text data.
 
@@ -1029,7 +1056,463 @@ def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_di
 
     print("\n✅ Model Training and Save Complete!")
     
+    # === Plot Training & Validation Loss ===
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["loss"], label="Training Loss")
+    plt.plot(history.history["val_loss"], label="Validation Loss")
+    plt.title("📉 Training and Validation Loss over Epochs")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("cnn_lstm_loss.png")
+    plt.close()
+
+    # === Plot Training & Validation Accuracy ===
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["accuracy"], label="Training Accuracy")
+    plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
+    plt.title("📈 Training and Validation Accuracy over Epochs")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("cnn_lstm_accuracy.png")
+    plt.close()
+
+    print("📊 Training curves saved: cnn_lstm_loss.png, cnn_lstm_accuracy.png")
+    
     return best_model, results
+
+def train_bilstm_model(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, epochs=30):
+    tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
+    tokenizer.fit_on_texts(texts)
+    sequences = tokenizer.texts_to_sequences(texts)
+    X_data = pad_sequences(sequences, maxlen=max_length)
+    y_data = np.array(labels)
+
+    X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.2, random_state=42)
+
+    model = keras.Sequential([
+        layers.Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=max_length),
+        layers.Bidirectional(layers.LSTM(128, return_sequences=False)),
+        layers.Dense(128, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(1, activation="sigmoid")
+    ])
+
+    model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+
+    print("\n🚀 Training Bi-LSTM model...")
+    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=32, epochs=epochs, verbose=1)
+
+    y_pred_prob = model.predict(X_test)
+    y_pred = (y_pred_prob > 0.5).astype(int)
+
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    roc_auc = roc_auc_score(y_test, y_pred_prob)
+
+    results = {
+        "loss": history.history["loss"],
+        "val_loss": history.history["val_loss"],
+        "accuracy": history.history["accuracy"],
+        "val_accuracy": history.history["val_accuracy"],
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "roc_auc": roc_auc
+    }
+
+    print(f'🔹 loss: {history.history["loss"][-1]}')
+    print(f'🔹 val_loss: {history.history["val_loss"][-1]}')
+    print(f'🔹 accuracy: {history.history["accuracy"][-1]}')
+    print(f'🔹 val_accuracy: {history.history["val_accuracy"][-1]}')
+    print(f'🔹 precision: {precision}')
+    print(f'🔹 recall: {recall}')
+    print(f'🔹 f1_score: {f1}')
+    print(f'🔹 roc_auc: {roc_auc}')
+
+    model.save("best_bilstm_model.keras")
+
+    # Plot Loss
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["loss"], label="Training Loss")
+    plt.plot(history.history["val_loss"], label="Validation Loss")
+    plt.title("📉 Bi-LSTM Training and Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bilstm_loss.png")
+    plt.close()
+
+    # Plot Accuracy
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["accuracy"], label="Training Accuracy")
+    plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
+    plt.title("📈 Bi-LSTM Training and Validation Accuracy")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bilstm_accuracy.png")
+    plt.close()
+
+    print("📊 Training curves saved: bilstm_loss.png, bilstm_accuracy.png")
+
+    return model, results
+
+def train_bert_model(texts, labels, model_name='bert-base-uncased', epochs=4, batch_size=32, max_length=128):
+    # Step 1: Tokenization
+    tokenizer = BertTokenizer.from_pretrained(model_name)
+
+    def encode_texts(texts, labels):
+        return tokenizer(
+            texts,
+            padding=True,
+            truncation=True,
+            max_length=max_length,
+            return_tensors='tf'
+        ), tf.convert_to_tensor(labels)
+
+    X_encoded, y_encoded = encode_texts(texts, labels)
+
+    # Step 2: Split dataset
+    X_train, X_test, y_train, y_test = train_test_split(X_encoded['input_ids'], y_encoded, test_size=0.2, random_state=42)
+
+    # Step 3: Model definition
+    model = TFBertForSequenceClassification.from_pretrained(model_name, num_labels=2)
+
+    optimizer = keras.optimizers.Adam(learning_rate=2e-5)
+    loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+    metrics = ['accuracy']
+
+    model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
+
+    # Step 4: Train the model
+    print("\n🚀 Training BERT model...")
+    history = model.fit(
+        X_train, y_train,
+        validation_data=(X_test, y_test),
+        batch_size=batch_size,
+        epochs=epochs,
+        verbose=1
+    )
+
+    # Step 5: Inference
+    y_pred_logits = model.predict(X_test).logits
+    y_pred = np.argmax(y_pred_logits, axis=1)
+
+    # Step 6: Metrics
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    roc_auc = roc_auc_score(y_test, tf.nn.softmax(y_pred_logits)[:, 1])
+
+    results = {
+        "loss": history.history["loss"],
+        "val_loss": history.history["val_loss"],
+        "accuracy": history.history["accuracy"],
+        "val_accuracy": history.history["val_accuracy"],
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "roc_auc": roc_auc
+    }
+
+    # Step 7: Save
+    model.save_pretrained("best_bert_model")
+
+    print("\n📊 Metrics:")
+    print(f'🔹 Precision: {precision}')
+    print(f'🔹 Recall: {recall}')
+    print(f'🔹 F1-Score: {f1}')
+    print(f'🔹 ROC AUC: {roc_auc}')
+
+    # Plot Loss
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["loss"], label="Training Loss")
+    plt.plot(history.history["val_loss"], label="Validation Loss")
+    plt.title("📉 BERT Training and Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bert_loss.png")
+    plt.close()
+
+    # Plot Accuracy
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history["accuracy"], label="Training Accuracy")
+    plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
+    plt.title("📈 BERT Training and Validation Accuracy")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig("bert_accuracy.png")
+    plt.close()
+
+    print("✅ Model saved. Training curves saved as bert_loss.png and bert_accuracy.png")
+
+    return model, results
+
+# --------------------------------------------------
+
+START_TAG = "<START>"
+STOP_TAG = "<STOP>"
+tag_to_ix = {START_TAG: 0, STOP_TAG: 1, "NEG": 2, "POS": 3}
+ix_to_tag = {v: k for k, v in tag_to_ix.items()}
+
+def argmax(vec):
+    return torch.argmax(vec)
+
+def log_sum_exp(vec):
+    max_score = vec.max()
+    max_score_broadcast = max_score.view(1, -1).expand(1, vec.size()[1])
+    return max_score + torch.log(torch.sum(torch.exp(vec - max_score_broadcast)))
+
+class BiLSTM_CRF_FeatureExtractor(nn.Module):
+    def __init__(self, vocab_size, tag_to_ix, embedding_dim, hidden_dim):
+        super(BiLSTM_CRF_FeatureExtractor, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        self.lstm = nn.LSTM(embedding_dim, hidden_dim // 2,
+                            num_layers=1, bidirectional=True, batch_first=True)
+        self.hidden2tag = nn.Linear(hidden_dim, len(tag_to_ix))
+        self.transitions = nn.Parameter(torch.randn(len(tag_to_ix), len(tag_to_ix)))
+        self.tag_to_ix = tag_to_ix
+
+        self.transitions.data[tag_to_ix[START_TAG], :] = -10000.
+        self.transitions.data[:, tag_to_ix[STOP_TAG]] = -10000.
+
+    def _get_lstm_features(self, sentence):
+        embeds = self.embedding(sentence)
+        lstm_out, _ = self.lstm(embeds)
+        return self.hidden2tag(lstm_out)
+
+    def _forward_alg(self, feats):
+        init_alphas = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
+        init_alphas[0][self.tag_to_ix[START_TAG]] = 0.
+        forward_var = init_alphas
+        for feat in feats:
+            alphas_t = []
+            for next_tag in range(len(self.tag_to_ix)):
+                emit_score = feat[next_tag].view(1, -1).expand(1, len(self.tag_to_ix))
+                trans_score = self.transitions[next_tag].view(1, -1)
+                next_tag_var = forward_var + trans_score + emit_score
+                alphas_t.append(log_sum_exp(next_tag_var).view(1))
+            forward_var = torch.cat(alphas_t).view(1, -1)
+        terminal_var = forward_var + self.transitions[self.tag_to_ix[STOP_TAG]]
+        return log_sum_exp(terminal_var)
+
+    def _score_sentence(self, feats, tags):
+        score = torch.zeros(1, device=feats.device)
+        tags = torch.cat([torch.tensor([self.tag_to_ix[START_TAG]], device=feats.device), tags])
+        for i, feat in enumerate(feats):
+            score += self.transitions[tags[i + 1], tags[i]] + feat[tags[i + 1]]
+        score += self.transitions[self.tag_to_ix[STOP_TAG], tags[-1]]
+        return score
+
+    def _viterbi_decode(self, feats):
+        backpointers = []
+        init_vvars = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
+        init_vvars[0][self.tag_to_ix[START_TAG]] = 0
+        forward_var = init_vvars
+
+        for feat in feats:
+            bptrs_t = []
+            viterbivars_t = []
+            for next_tag in range(len(self.tag_to_ix)):
+                next_tag_var = forward_var + self.transitions[next_tag]
+                best_tag_id = argmax(next_tag_var)
+                bptrs_t.append(best_tag_id.item())
+                viterbivars_t.append(next_tag_var[0][best_tag_id].view(1))
+            forward_var = (torch.cat(viterbivars_t) + feat).view(1, -1)
+            backpointers.append(bptrs_t)
+
+        terminal_var = forward_var + self.transitions[self.tag_to_ix[STOP_TAG]]
+        best_tag_id = argmax(terminal_var)
+        best_path = [best_tag_id.item()]
+        for bptrs_t in reversed(backpointers):
+            best_tag_id = bptrs_t[best_tag_id]
+            best_path.append(best_tag_id)
+        start = best_path.pop()
+        best_path.reverse()
+        return best_path
+
+    def neg_log_likelihood(self, sentences, tags):
+        feats = self._get_lstm_features(sentences)
+        forward_score = self._forward_alg(feats[0])
+        gold_score = self._score_sentence(feats[0], tags[0])
+        return forward_score - gold_score
+
+    def forward(self, sentences):
+        feats = self._get_lstm_features(sentences)
+        return self._viterbi_decode(feats[0])
+
+class CRFSentimentDataset(Dataset):
+    def __init__(self, input_ids, labels, max_len):
+        self.input_ids = input_ids
+        self.labels = labels
+        self.max_len = max_len
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, idx):
+        x = torch.tensor(self.input_ids[idx], dtype=torch.long)
+        tag_label = "POS" if self.labels[idx] == 1 else "NEG"
+        tag_id = tag_to_ix[tag_label]
+        y = torch.tensor([tag_id] * self.max_len, dtype=torch.long)
+        return x, y
+
+def tag_sequence_to_sentiment(tag_seq):
+    count_pos = tag_seq.count(tag_to_ix["POS"])
+    count_neg = tag_seq.count(tag_to_ix["NEG"])
+    return 1 if count_pos >= count_neg else 0
+
+def train_crf_feature_extractor(texts, labels, vocab_size=10000, max_length=100, embedding_dim=100, num_trials=5, epochs=30):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"🖥️ Using device: {device}")
+
+    tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
+    tokenizer.fit_on_texts(texts)
+    sequences = tokenizer.texts_to_sequences(texts)
+    X_data = pad_sequences(sequences, maxlen=max_length, padding="post")
+    y_data = np.array(labels)
+
+    X_temp, X_test, y_temp, y_test = train_test_split(X_data, y_data, test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.2, random_state=42)
+
+    def objective(trial):
+        hidden_dim = trial.suggest_int("hidden_dim", 64, 256, step=64)
+        lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
+
+        model = BiLSTM_CRF_FeatureExtractor(vocab_size, tag_to_ix, embedding_dim, hidden_dim).to(device)
+        optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+
+        train_loader = DataLoader(CRFSentimentDataset(X_train, y_train, max_length), batch_size=32, shuffle=True)
+        val_loader = DataLoader(CRFSentimentDataset(X_val, y_val, max_length), batch_size=32)
+
+        model.train()
+        for _ in range(3):
+            for x, y in train_loader:
+                x, y = x.to(device), y.to(device)
+                model.zero_grad()
+                loss = model.neg_log_likelihood(x, y)
+                loss.backward()
+                optimizer.step()
+
+        model.eval()
+        y_pred, y_true = [], []
+        with torch.no_grad():
+            for x, y in val_loader:
+                x = x.to(device)
+                outputs = model(x)
+                
+                for i in range(x.size(0)):
+                    decoded = model(x[i].unsqueeze(0))
+                    y_pred.append(tag_sequence_to_sentiment(decoded))
+                    y_true.append(1 if y[i][0].item() == tag_to_ix["POS"] else 0)
+
+        return f1_score(y_true, y_pred)
+
+    print("🔍 Tuning hyperparameters...")
+    study = optuna.create_study(direction="maximize")
+    study.optimize(objective, n_trials=num_trials)
+    best_params = study.best_params
+
+    model = BiLSTM_CRF_FeatureExtractor(vocab_size, tag_to_ix, embedding_dim, best_params["hidden_dim"]).to(device)
+    optimizer = torch.optim.Adam(model.parameters(), lr=best_params["lr"])
+    train_loader = DataLoader(CRFSentimentDataset(X_train, y_train, max_length), batch_size=32, shuffle=True)
+    val_loader = DataLoader(CRFSentimentDataset(X_val, y_val, max_length), batch_size=32)
+
+    history = {"train_loss": [], "val_loss": []}
+
+    for epoch in range(epochs):
+        model.train()
+        total_train_loss = 0.0
+        for x, y in train_loader:
+            x, y = x.to(device), y.to(device)
+            model.zero_grad()
+            loss = model.neg_log_likelihood(x, y)
+            loss.backward()
+            optimizer.step()
+            total_train_loss += loss.item()
+        avg_train_loss = total_train_loss / len(train_loader)
+
+        model.eval()
+        total_val_loss = 0.0
+        with torch.no_grad():
+            for x, y in val_loader:
+                x, y = x.to(device), y.to(device)
+                total_val_loss += model.neg_log_likelihood(x, y).item()
+        avg_val_loss = total_val_loss / len(val_loader)
+
+        history["train_loss"].append(avg_train_loss)
+        history["val_loss"].append(avg_val_loss)
+        print(f"Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
+
+    test_loader = DataLoader(CRFSentimentDataset(X_test, y_test, max_length), batch_size=32)
+    model.eval()
+    y_pred, y_true = [], []
+    with torch.no_grad():
+        for x, y in test_loader:
+            x = x.to(device)
+            outputs = model(x)
+            for i in range(x.size(0)):
+                decoded = model(x[i].unsqueeze(0))
+                y_pred.append(tag_sequence_to_sentiment(decoded))
+                y_true.append(1 if y[i][0].item() == tag_to_ix["POS"] else 0)
+
+
+    accuracy = accuracy_score(y_true, y_pred)
+    precision = precision_score(y_true, y_pred)
+    recall = recall_score(y_true, y_pred)
+    f1 = f1_score(y_true, y_pred)
+    roc_auc = roc_auc_score(y_true, y_pred)
+    report = classification_report(y_true, y_pred, target_names=["Negative", "Positive"])
+    print("\nClassification Report:\n", report)
+
+    results = {
+        "train_loss": history["train_loss"],
+        "val_loss": history["val_loss"],
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "roc_auc": roc_auc
+    }
+
+    print(f"\n✅ Test - Accuracy: {accuracy:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}, AUC: {roc_auc:.4f}")
+
+    os.makedirs("crf_feature_model", exist_ok=True)
+    torch.save(model.state_dict(), "best_crf_model.pt")
+    with open("best_crf_model_config.json", "w") as f:
+        json.dump(best_params, f, indent=4)
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(history["train_loss"], label="Train Loss")
+    plt.plot(history["val_loss"], label="Validation Loss")
+    plt.title("📉 Train vs Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("crf_loss_curve.png")
+    plt.close()
+
+    return model, results
+
 
 # --------------------------------------------------
 
@@ -1062,8 +1545,14 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
             if model_name == "cnn" or model_name == "lstm":
                 train_cnn_lstm(doc_lst, label_lst)
                 
-            elif model_name == "distilbert":
-                train_distilbert_sentiment(doc_lst, label_lst, model_file_path=f"best_{model_name}")
+            elif model_name == "CRF":
+                train_crf_feature_extractor(doc_lst, label_lst)
+                
+            elif model_name == "bilstm":
+                train_bilstm_model(doc_lst, label_lst)
+                
+            elif model_name == "bert":
+                train_bert_model(doc_lst, label_lst)
                 
             elif model_name == "hmm" or model_name == "bayesnet":
                 train_graphical_model(
@@ -1082,7 +1571,9 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
                             y_train, 
                             X_test_features_dict[method], 
                             y_test, 
-                            model_save_path=f"best_{model_name}_{method}.pkl"
+                            model_save_path=f"best_{model_name}_{method}.pkl",
+                            img_save_path=f"best_{model_name}_{method}.png",
+                            img_loss_path=f"best_{model_name}_{method}_loss.png"
                         )
                     
                     else:
@@ -1119,30 +1610,26 @@ def predict_general_model(model_names, feature_methods, X_test_features_dict, y_
     Returns:
         None
     """
-    # Predict for each model
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"⚙️  Using device: {device}")
+
     for model_name in model_names:
-        if model_name in ["GA", "hmm", "bayesnet", "lstm"]:
+        if model_name in ["GA", "hmm", "bayesnet", "lstm", "CRF"]:
             print(f"Already trained and tested model: {model_name}")
             continue
+
         for method in feature_methods:
             print(f"🔎 Predicting with Model: {model_name}, Method: {method}...")
-            
+
             try:
-                if model_name in ["cnn"]:
-                    # Load the saved deep learning model
+                if model_name == "cnn":
                     model_filename = os.path.join(output_dir, f"best_{model_name}.keras")
                     model = tf.keras.models.load_model(model_filename)
 
-                    # Retrieve and reshape features for CNN/LSTM
                     X_test_features = np.array(X_test_features_dict[method])
-                    if model_name == "lstm":
-                        input_shape = (1, X_test_features.shape[1])
-                        X_test_features = X_test_features.reshape(X_test_features.shape[0], *input_shape)
-                    else:
-                        input_shape = (X_test_features.shape[1], 1)
-                        X_test_features = X_test_features.reshape(-1, X_test_features.shape[1], 1)
+                    input_shape = (X_test_features.shape[1], 1)
+                    X_test_features = X_test_features.reshape(-1, X_test_features.shape[1], 1)
 
-                    # Make predictions
                     y_prob = model.predict(X_test_features).flatten()
                     y_pred = (y_prob > 0.5).astype(int)
 
@@ -1179,6 +1666,10 @@ def predict_general_model(model_names, feature_methods, X_test_features_dict, y_
                 print(f"Recall: {recall:.4f}")
                 print(f"F1 Score: {f1:.4f}")
                 print(f"ROC AUC: {roc_auc if roc_auc != 'N/A' else 'N/A'}")
+                # Print classification report for binary classification (0 = negative, 1 = positive)
+                print("\n🔬 Classification Report:")
+                print(classification_report(y_test, y_pred, labels=[0, 1], target_names=["negative", "positive"]))
+
                     
             except Exception as e:
                 print(f"❌ Error while predicting for {model_name} with {method}: {e}")
@@ -1208,8 +1699,7 @@ def plot_results(accuracy, roc_auc, train_loss, val_loss, img_save_path, img_los
         plt.savefig(img_loss_path)
         print(f"📉 Loss plot saved to {img_loss_path}")
 
-
-# Voting
+# Voting - test ok
 def train_voting_classifier(model_dict, param_dict, feature_method, X, y, voting_type='soft', model_save_path="voting_model.pkl", img_save_path=None, img_loss_path=None):
     """
     Trains a Voting Classifier using selected models with cross-validation.
@@ -1296,7 +1786,7 @@ def train_voting_classifier(model_dict, param_dict, feature_method, X, y, voting
 
     return voting_clf
 
-# Stacking 
+# Stacking - test ok
 def train_stacking_classifier(model_dict, param_dict, feature_method, X, y, final_estimator=LogisticRegression(), model_save_path="stacking_model.pkl", img_save_path=None, img_loss_path=None):
     """
     Trains a Stacking Classifier using selected models with cross-validation.

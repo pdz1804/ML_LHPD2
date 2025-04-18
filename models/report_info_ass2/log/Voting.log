@@ -1,0 +1,174 @@
+#####################################
+VOTING 
+Nhớ mô tả cách làm voting thông qua hàm train_voting_classifier trong file models_utils
+-> nói ngắn gọn thôi không cần dài dòng, kiểu bây nói dùm t như cách hàm này hoạt động, cách train / predict của hàm này 
+
+Hiện mình đang làm là có 2 model stacking 
+- model 1: voting_model_multiple_lr 
+==> Model này nhóm chọn stacking nhìu thằng LOGISTIC regression khác nhau bởi vì ở BTL 1
+khi nhóm test từng model thì model này là model cho kết quả ổn nhất nên nhóm muốn test xem nếu 
+stacking nhìu thằng "tốt" như vậy thì có cho kết quả tốt hơn không
+- model 2: voting_model_all_models
+==> Model này nhóm chọn stacking nhìu thằng model mà nhóm đã test ở BTL 1 và cho kết quả tốt nhất
+
+#####################################
+MODEL 1: VOTING MULTIPLE LOGISTIC REGRESSION 
+#####################################
+🚀 Training Voting Classifier (soft) with feature method: count
+
+Function definition & Calls for this:
+
+# Correct way to create multiple Logistic Regression models (passing classes, not objects)
+feature_use = "count"
+
+multiple_lr_models = {
+    f"logistic_regression_{i}": LogisticRegression  # Only pass the class, not the instance
+    for i in range(10)
+}
+
+# Provide a parameter dictionary
+lr_params = {
+    f"logistic_regression_{i}": {"penalty": "l2", "C": 0.1, "max_iter": 3000, "random_state": i}
+    for i in range(10)
+}
+
+# Call the function with multiple logistic regression models
+voting_clf = train_voting_classifier(
+    model_dict=multiple_lr_models, 
+    param_dict=lr_params,  # Now we provide the parameter dictionary
+    feature_method=feature_use, 
+    X=X_train_features_dict[feature_use], 
+    y=y_train, 
+    voting_type='soft', 
+    model_save_path="voting_model_multiple_lr.pkl",
+    img_save_path="voting_model_multiple_lr_performance.png", 
+    img_loss_path="voting_model_multiple_lr_loss.png"
+)
+
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+--------------------------------------
+2025-03-31 10:13:15,977 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-31 10:15:36,454 - INFO - 📊 Avg Accuracy: 0.7440
+2025-03-31 10:15:36,456 - INFO - 📊 Avg ROC AUC: 0.7424
+2025-03-31 10:15:36,456 - INFO - 📊 Avg F1 Score: 0.7615
+2025-03-31 10:15:36,457 - INFO - 📊 Avg Precision: 0.7318
+2025-03-31 10:15:36,458 - INFO - 📊 Avg Recall: 0.7939
+2025-03-31 10:16:09,847 - INFO - 💾 Model saved to voting_model_multiple_lr.pkl
+2025-03-31 10:16:10,083 - INFO - 📈 Performance plot saved to voting_model_multiple_lr_performance.png
+2025-03-31 10:16:10,213 - INFO - 📉 Loss plot saved to voting_model_multiple_lr_loss.png
+
+--------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+--------------------------------------
+2025-03-31 10:16:11,025 - INFO - Accuracy: 0.7373
+2025-03-31 10:16:11,029 - INFO - ROC AUC: 0.7356
+2025-03-31 10:16:11,034 - INFO - F1 Score: 0.7568
+2025-03-31 10:16:11,038 - INFO - Precision: 0.7232
+2025-03-31 10:16:11,042 - INFO - Recall: 0.7938
+2025-03-31 10:16:11,042 - INFO - 
+📄 Classification Report:
+
+2025-03-31 10:16:11,053 - INFO -               precision    recall  f1-score   support
+
+         0.0       0.76      0.68      0.71      4850
+         1.0       0.72      0.79      0.76      5150
+
+    accuracy                           0.74     10000
+   macro avg       0.74      0.74      0.74     10000
+weighted avg       0.74      0.74      0.74     10000
+
+#####################################
+MODEL 2: VOTING MULTIPLE MODELS THAT WORKS OK ON BTL1 
+#####################################
+
+SELECTED_MODEL_DICT = {
+    "logistic_regression": LogisticRegression,
+    "xgboost": xgb.XGBClassifier,
+    "mlp": MLPClassifier,
+    "bayesian": GaussianNB,
+}
+
+BEST_MODEL_PARAMS = {
+    "mlp": {
+        "hidden_layer_sizes": (100,),
+        "activation": "logistic",
+        "solver": "sgd",
+        "alpha": 0.01,
+        "batch_size": 32,
+        "max_iter": 2000,
+    },
+    
+    "xgboost": {
+        "n_estimators": 150,
+        "learning_rate": 0.1,
+        "max_depth": 15
+    },
+    
+    "logistic_regression": {
+        "penalty": "l2",
+        "C": 0.1,
+        "max_iter": 1000
+    },
+    
+    "bayesian": {
+        "priors": [0.3, 0.7],
+        "var_smoothing": 1e-9
+    }
+}
+
+voting_clf = train_voting_classifier(
+    model_dict=SELECTED_MODEL_DICT, 
+    param_dict=BEST_MODEL_PARAMS, 
+    feature_method=feature_use, 
+    X=X_train_features_dict[feature_use], 
+    y=y_train, 
+    voting_type='soft', 
+    model_save_path="voting_model_all_models.pkl",
+    img_save_path="voting_model_all_models_performance.png", 
+    img_loss_path="voting_model_all_models_loss.png"
+)
+
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+--------------------------------------
+2025-03-31 10:16:11,367 - INFO - 
+🚀 Training Voting Classifier (soft) with feature method: count
+
+2025-03-31 10:16:11,368 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-03-31 11:01:16,769 - INFO - 📊 Avg Accuracy: 0.7284
+2025-03-31 11:01:16,770 - INFO - 📊 Avg ROC AUC: 0.7276
+2025-03-31 11:01:16,772 - INFO - 📊 Avg F1 Score: 0.7408
+2025-03-31 11:01:16,773 - INFO - 📊 Avg Precision: 0.7286
+2025-03-31 11:01:16,773 - INFO - 📊 Avg Recall: 0.7539
+2025-03-31 11:10:50,528 - INFO - 💾 Model saved to voting_model_all_models.pkl
+2025-03-31 11:10:50,658 - INFO - 📈 Performance plot saved to voting_model_all_models_performance.png
+2025-03-31 11:10:50,777 - INFO - 📉 Loss plot saved to voting_model_all_models_loss.png
+
+--------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+--------------------------------------
+2025-03-31 11:10:50,792 - INFO - ✅ Model loaded successfully from 'voting_model_all_models.pkl'
+2025-03-31 11:10:51,861 - INFO - Accuracy: 0.7273
+2025-03-31 11:10:51,865 - INFO - ROC AUC: 0.7263
+2025-03-31 11:10:51,869 - INFO - F1 Score: 0.7415
+2025-03-31 11:10:51,873 - INFO - Precision: 0.7244
+2025-03-31 11:10:51,877 - INFO - Recall: 0.7594
+2025-03-31 11:10:51,878 - INFO - 
+📄 Classification Report:
+
+2025-03-31 11:10:51,889 - INFO -               precision    recall  f1-score   support
+
+         0.0       0.73      0.69      0.71      4850
+         1.0       0.72      0.76      0.74      5150
+
+    accuracy                           0.73     10000
+   macro avg       0.73      0.73      0.73     10000
+weighted avg       0.73      0.73      0.73     10000
+
+
+

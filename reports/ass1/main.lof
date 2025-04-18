@@ -2,29 +2,30 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Github Repository Structure}}{13}{figure.caption.8}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Github Repository Structure}}{14}{figure.caption.8}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Distribution of Target Variable}}{22}{figure.caption.9}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Overall Text Cleaned Length Distribution}}{23}{figure.caption.10}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Distribution of Raw Text Lengths}}{23}{figure.caption.11}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Pairwise Relationships}}{25}{figure.caption.12}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Top 20 of entire dataset}}{26}{figure.caption.13}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Top 20 of class Positive}}{26}{figure.caption.14}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Top 20 of class Negative}}{27}{figure.caption.15}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Word Frequency by Sentiment}}{29}{figure.caption.18}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Comparision of Word Frequency}}{30}{figure.caption.19}%
-\contentsline {figure}{\numberline {4.12}{\ignorespaces Comparison of Loss Curves for Logistic Regression across Different Feature Extraction Methods}}{39}{figure.caption.22}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Comparison of Training Performance Metrics for Logistic Regression across Different Feature Extraction Methods}}{40}{figure.caption.23}%
-\contentsline {figure}{\numberline {4.14}{\ignorespaces Loss Curves for Decision Tree across Different Feature Extraction Methods}}{44}{figure.caption.26}%
-\contentsline {figure}{\numberline {4.15}{\ignorespaces Performances for Decision Tree across Different Feature Extraction Methods}}{44}{figure.caption.27}%
-\contentsline {figure}{\numberline {4.16}{\ignorespaces Loss Curves for XGBoost across Different Feature Extraction Methods}}{48}{figure.caption.30}%
-\contentsline {figure}{\numberline {4.17}{\ignorespaces Comparison of Training Performance Metrics for XGBoost across Different Feature Extraction Methods}}{49}{figure.caption.31}%
-\contentsline {figure}{\numberline {4.18}{\ignorespaces Comparison of Loss Curves for Random Forest across Different Feature Extraction Methods}}{52}{figure.caption.34}%
-\contentsline {figure}{\numberline {4.19}{\ignorespaces Comparison of Training Performance Metrics for Random Forest across Different Feature Extraction Methods}}{53}{figure.caption.35}%
-\contentsline {figure}{\numberline {4.20}{\ignorespaces Comparison of Loss Curves for Perceptron across Different Feature Extraction Methods}}{56}{figure.caption.38}%
-\contentsline {figure}{\numberline {4.21}{\ignorespaces Comparison of Training Performance Metrics for Perceptron across Different Feature Extraction Methods}}{57}{figure.caption.39}%
-\contentsline {figure}{\numberline {4.22}{\ignorespaces Comparison of Training and Validation Loss Curves for MLP across Different Feature Extraction Methods}}{61}{figure.caption.42}%
-\contentsline {figure}{\numberline {4.23}{\ignorespaces Comparison of Training Performance Metrics for MLP across Different Feature Extraction Methods}}{62}{figure.caption.43}%
-\contentsline {figure}{\numberline {4.24}{\ignorespaces Comparison of Loss Curves for Naïve Bayes across Different Feature Extraction Methods}}{68}{figure.caption.47}%
-\contentsline {figure}{\numberline {4.25}{\ignorespaces Comparison of Training Performance Metrics for Naïve Bayes across Different Feature Extraction Methods}}{69}{figure.caption.48}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Distribution of Target Variable}}{23}{figure.caption.9}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Overall Text Cleaned Length Distribution}}{24}{figure.caption.10}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Distribution of Raw Text Lengths}}{24}{figure.caption.11}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Pairwise Relationships}}{26}{figure.caption.12}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Top 20 of entire dataset}}{27}{figure.caption.13}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Top 20 of class Positive}}{27}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Top 20 of class Negative}}{28}{figure.caption.15}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Word Frequency by Sentiment}}{30}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Comparision of Word Frequency}}{31}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Comparison of Loss Curves for Logistic Regression across Different Feature Extraction Methods}}{40}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Comparison of Training Performance Metrics for Logistic Regression across Different Feature Extraction Methods}}{41}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Loss Curves for Decision Tree across Different Feature Extraction Methods}}{46}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Performances for Decision Tree across Different Feature Extraction Methods}}{47}{figure.caption.27}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Loss Curves for XGBoost across Different Feature Extraction Methods}}{53}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Comparison of Training Performance Metrics for XGBoost}}{54}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.18}{\ignorespaces Comparison of Loss Curves for Random Forest}}{59}{figure.caption.34}%
+\contentsline {figure}{\numberline {4.19}{\ignorespaces Comparison of Training Performance Metrics for Random Forest}}{60}{figure.caption.35}%
+\contentsline {figure}{\numberline {4.20}{\ignorespaces Comparison of Loss Curves for Perceptron across Different Feature Extraction Methods}}{65}{figure.caption.39}%
+\contentsline {figure}{\numberline {4.21}{\ignorespaces Comparison of Training Performance Metrics for Perceptron across Different Feature Extraction Methods}}{66}{figure.caption.40}%
+\contentsline {figure}{\numberline {4.22}{\ignorespaces Comparison of Training and Validation Loss Curves for MLP}}{70}{figure.caption.43}%
+\contentsline {figure}{\numberline {4.23}{\ignorespaces Comparison of Training Performance Metrics for MLP across Different Feature Extraction Methods}}{71}{figure.caption.44}%
+\contentsline {figure}{\numberline {4.24}{\ignorespaces Comparison of Loss Curves for Naïve Bayes across Different Feature Extraction Methods}}{80}{figure.caption.50}%
+\contentsline {figure}{\numberline {4.25}{\ignorespaces Comparison of Training Performance Metrics for Naïve Bayes across Different Feature Extraction Methods}}{81}{figure.caption.51}%
+\addvspace {10\p@ }
 \addvspace {10\p@ }
