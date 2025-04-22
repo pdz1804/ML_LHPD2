@@ -26,6 +26,7 @@ from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.linear_model import Perceptron, LogisticRegression
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
+from sklearn.feature_extraction.text import CountVectorizer # Added for train_bayes_net
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 import hmmlearn.hmm
@@ -42,7 +43,8 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import keras_tuner as kt
 
-from src.features.build_features_utils import *
+# Assuming src.features.build_features_utils exists and is relevant
+# from src.features.build_features_utils import *
 
 import keras
 from keras import layers
@@ -61,11 +63,17 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from collections import defaultdict, Counter
 from hmmlearn import hmm
-
 from pgmpy.readwrite import BIFReader
 
-nltk.download('punkt')
-nltk.download('stopwords')
+# Ensure NLTK data is available
+try:
+    nltk.data.find('tokenizers/punkt')
+except nltk.downloader.DownloadError:
+    nltk.download('punkt')
+try:
+    nltk.data.find('corpora/stopwords')
+except nltk.downloader.DownloadError:
+    nltk.download('stopwords')
 
 import keras_nlp
 from tensorflow.keras.optimizers import Adam
@@ -78,8 +86,8 @@ from transformers import BertTokenizer, TFBertForSequenceClassification
 import torch
 import torch.nn as nn
 import torch.optim as optim
-# from keras.preprocessing.text import Tokenizer
-# from keras.utils import pad_sequences
+# from keras.preprocessing.text import Tokenizer # Duplicate import
+# from keras.utils import pad_sequences # Keras has pad_sequences, tf.keras also
 import optuna
 from torch.utils.data import Dataset, DataLoader
 import json
@@ -88,30 +96,46 @@ import json
 # Loc defined
 class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
     """
-    BayesianNetworkClassifier
+    Custom Bayesian Network classifier compatible with scikit-learn.
 
-    This module provides a custom Bayesian Network classifier implementing scikit-learn's BaseEstimator and ClassifierMixin.
-    The classifier supports feature selection, discretization, dimensionality reduction, and inference using Bayesian Networks.
+    This classifier implements feature filtering, optional PCA, discretization,
+    and Bayesian Network training and inference. It adheres to the scikit-learn
+    BaseEstimator and ClassifierMixin interfaces.
 
-    Key functionalities:
-    - Feature filtering based on unique values
-    - Principal Component Analysis (PCA) for dimensionality reduction
-    - Discretization of continuous features
-    - Training a Bayesian Network using Maximum Likelihood Estimation
-    - Inference using Belief Propagation or Variable Elimination
-    - Compatibility with scikit-learn's API for easy integration
+    Attributes:
+        structure (list, optional): Predefined structure for the Bayesian Network.
+            If None, a simple structure ('feature' -> 'label') is assumed.
+        n_bins (int): Number of bins for feature discretization.
+        strategy (str): Strategy used for discretization ('uniform', 'quantile', 'kmeans').
+        min_unique_values (int): Minimum number of unique values a feature must have
+            to be kept.
+        max_features (int): Maximum number of features to keep after PCA. If the
+            number of features exceeds this after filtering, PCA is applied.
+        model (pgmpy.models.BayesianNetwork): The trained Bayesian Network model.
+        inference (pgmpy.inference.Inference): Inference engine instance.
+        feature_names (list): List of feature names used in the model after potential
+            filtering and PCA.
+        discretizer (sklearn.preprocessing.KBinsDiscretizer): Fitted discretizer instance.
+        pca (sklearn.decomposition.PCA): Fitted PCA instance.
+        filtered_columns (list): List of column names remaining after the initial
+            uniqueness filtering step.
     """
     
     def __init__(self, structure=None, n_bins=2, strategy='kmeans', min_unique_values=2, max_features=20):
         """
-        Initializes the BayesianNetworkClassifier with user-defined parameters.
+        Initializes the BayesianNetworkClassifier.
 
         Args:
-            structure (list, optional): A predefined structure for the Bayesian Network.
-            n_bins (int, optional): Number of bins for discretization (default is 2).
-            strategy (str, optional): Discretization strategy (default is 'kmeans').
-            min_unique_values (int, optional): Minimum unique values required per feature (default is 2).
-            max_features (int, optional): Maximum features allowed after PCA (default is 20).
+            structure (list, optional): A list of tuples defining the edges of the
+                Bayesian Network, e.g., [('feature1', 'label'), ('feature2', 'label')].
+                Defaults to None, which creates edges from all features to 'label'.
+            n_bins (int, optional): Number of bins for discretization. Defaults to 2.
+            strategy (str, optional): Strategy for KBinsDiscretizer ('uniform',
+                'quantile', 'kmeans'). Defaults to 'kmeans'.
+            min_unique_values (int, optional): Minimum unique values required for a
+                feature to be included. Defaults to 2.
+            max_features (int, optional): Maximum number of features after optional PCA.
+                Defaults to 20.
         """
         self.structure = structure
         self.n_bins = n_bins
@@ -129,20 +153,21 @@ class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
         """
         Fits the Bayesian Network classifier to the training data.
 
-        Steps:
-        1. Converts `X` into a DataFrame if necessary.
-        2. Filters out low-variance features with fewer than `min_unique_values` unique values.
-        3. Applies PCA if the number of features exceeds `max_features`.
-        4. Discretizes the features based on the selected strategy.
-        5. Trains the Bayesian Network using Maximum Likelihood Estimation.
-        6. Initializes the inference engine for predictions.
+        Performs feature filtering, optional PCA, discretization, and trains the
+        Bayesian Network model using Maximum Likelihood Estimation. Initializes
+        the inference engine.
 
         Args:
-            X (array-like or pd.DataFrame): Feature matrix.
-            y (array-like): Target labels.
+            X (array-like or pd.DataFrame): Training input samples, shape (n_samples, n_features).
+            y (array-like): Target values, shape (n_samples,).
 
         Returns:
-            self: Trained model instance.
+            BayesianNetworkClassifier: The fitted classifier instance.
+
+        Raises:
+            ValueError: If no features remain after filtering based on unique values,
+                or if some features have fewer than 2 unique values after processing,
+                or if the target `y` has fewer than 2 unique classes.
         """
         if isinstance(X, np.ndarray):
             X = pd.DataFrame(X, columns=[f"col_{i}" for i in range(X.shape[1])])
@@ -205,18 +230,17 @@ class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
     
     def predict(self, X):
         """
-        Predicts class labels for the given test data.
+        Predicts class labels for the input samples X.
 
-        Steps:
-        1. Converts `X` into a DataFrame if necessary.
-        2. Applies the same filtering and transformations as in `fit()`.
-        3. Performs inference using the Bayesian Network.
-        
+        Applies the same filtering, PCA (if used), and discretization steps
+        as during fitting, then uses the trained Bayesian Network for inference.
+
         Args:
-            X (array-like or pd.DataFrame): Test feature matrix.
+            X (array-like or pd.DataFrame): Input samples, shape (n_samples, n_features).
+                Must have the same original features as the training data.
 
         Returns:
-            np.array: Predicted class labels.
+            np.array: Predicted class labels, shape (n_samples,).
         """
         if isinstance(X, np.ndarray):
             X = pd.DataFrame(X, columns=[f"col_{i}" for i in range(X.shape[1])])
@@ -244,40 +268,41 @@ class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
     
     def score(self, X, y):
         """
-        Computes the accuracy of the classifier.
+        Returns the mean accuracy on the given test data and labels.
 
         Args:
-            X (array-like or pd.DataFrame): Test feature matrix.
-            y (array-like): True labels.
+            X (array-like or pd.DataFrame): Test samples.
+            y (array-like): True labels for X.
 
         Returns:
-            float: Accuracy score.
+            float: Mean accuracy of self.predict(X) wrt. y.
         """
         y_pred = self.predict(X)
         return accuracy_score(y, y_pred)
     
     def get_params(self, deep=True):
         """
-        Returns model parameters in a dictionary format.
+        Gets parameters for this estimator.
 
         Args:
-            deep (bool, optional): Whether to return parameters for sub-objects (default is True).
+            deep (bool, optional): If True, will return the parameters for this
+                estimator and contained subobjects that are estimators. Defaults to True.
 
         Returns:
-            dict: Model parameters.
+            dict: Parameter names mapped to their values.
         """
         return {"structure": self.structure, "n_bins": self.n_bins, "strategy": self.strategy, 
                 "min_unique_values": self.min_unique_values, "max_features": self.max_features}
     
     def set_params(self, **params):
         """
-        Sets model parameters dynamically.
+        Sets the parameters of this estimator.
 
         Args:
-            **params: Keyword arguments containing parameter names and values.
+            **params: Estimator parameters.
 
         Returns:
-            self: Model instance with updated parameters.
+            BayesianNetworkClassifier: Estimator instance.
         """
         for param, value in params.items():
             setattr(self, param, value)
@@ -287,28 +312,39 @@ class BayesianNetworkClassifier(BaseEstimator, ClassifierMixin):
 # Hung defined
 def create_population(num_features, population_size):
     """
-    Creates an initial population of binary feature selectors.
+    Generates an initial population for a genetic algorithm.
+
+    Each individual in the population is a binary vector representing a
+    subset of features.
 
     Args:
-        num_features (int): Number of features.
-        population_size (int): Size of the population.
+        num_features (int): The total number of features available.
+        population_size (int): The number of individuals (feature subsets)
+                               in the population.
 
     Returns:
-        np.ndarray: Initial population of binary feature selectors.
+        np.ndarray: A 2D NumPy array of shape (population_size, num_features)
+                    containing the initial population, where each row is an
+                    individual represented by a binary vector (0 or 1).
     """
     return np.random.randint(2, size=(population_size, num_features))
 
 def fitness_function(features, X_train, y_train):
     """
-    Evaluates the fitness of a feature selection candidate.
+    Calculates the fitness of an individual (feature subset) using cross-validation.
+
+    The fitness is defined as the mean accuracy of a Gaussian Naive Bayes model
+    trained using the selected features, evaluated using 5-fold cross-validation.
 
     Args:
-        features (np.ndarray): Binary feature selector.
-        X_train (np.ndarray): Training feature matrix.
-        y_train (np.ndarray): Training labels.
+        features (np.ndarray): A binary vector representing the feature subset
+                               (1 for selected, 0 for not selected).
+        X_train (np.ndarray): The training feature matrix (all features).
+        y_train (np.ndarray): The training target labels.
 
     Returns:
-        float: Fitness score (cross-validation accuracy).
+        float: The mean cross-validation accuracy score. Returns 0 if no
+               features are selected or if cross-validation encounters an error.
     """
     selected_features = [i for i, f in enumerate(features) if f == 1]
     if not selected_features:  # Avoid empty feature sets
@@ -326,14 +362,18 @@ def fitness_function(features, X_train, y_train):
 
 def crossover(parent1, parent2):
     """
-    Performs single-point crossover.
+    Performs single-point crossover between two parent individuals.
+
+    Selects a random crossover point (excluding the ends) and swaps the segments
+    after the point between the two parents to create two offspring.
 
     Args:
-        parent1 (np.ndarray): First parent.
-        parent2 (np.ndarray): Second parent.
+        parent1 (np.ndarray): The first parent individual (binary vector).
+        parent2 (np.ndarray): The second parent individual (binary vector).
 
     Returns:
-        tuple: Two offspring resulting from the crossover.
+        `tuple[np.ndarray, np.ndarray]`: A tuple containing the two generated
+                                       offspring individuals.
     """
     point = np.random.randint(1, len(parent1) - 1)
     offspring1 = np.concatenate((parent1[:point], parent2[point:]))
@@ -342,14 +382,18 @@ def crossover(parent1, parent2):
 
 def mutate(individual, mutation_rate=0.1):
     """
-    Mutates an individual with a given probability.
+    Applies mutation to an individual by flipping bits.
+
+    Each bit (feature selection status) in the individual's binary vector
+    has a `mutation_rate` probability of being flipped (0 to 1 or 1 to 0).
 
     Args:
-        individual (np.ndarray): Individual to mutate.
-        mutation_rate (float): Probability of mutation.
+        individual (np.ndarray): The individual (binary vector) to mutate.
+        mutation_rate (float, optional): The probability of flipping each bit.
+                                         Defaults to 0.1.
 
     Returns:
-        np.ndarray: Mutated individual.
+        np.ndarray: The mutated individual.
     """
     for i in range(len(individual)):
         if np.random.rand() < mutation_rate:
@@ -358,21 +402,40 @@ def mutate(individual, mutation_rate=0.1):
 
 def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, img_save_path=None, img_loss_path=None, population_size=20, num_generations=100, mutation_rate=0.1, crossover_rate=0.7):
     """
-    Runs a genetic algorithm to optimize feature selection for Naive Bayes.
+    Performs feature selection using a genetic algorithm for a GaussianNB classifier.
+
+    Optimizes the feature subset to maximize the cross-validation accuracy of a
+    Gaussian Naive Bayes model. Trains the final model on the selected features
+    and evaluates it using K-Fold cross-validation on the training data. Optionally
+    saves the trained model and performance plots.
 
     Args:
-        X_train (pd.DataFrame): Training feature matrix.
-        y_train (pd.Series): Training labels.
-        X_test (pd.DataFrame): Testing feature matrix.
-        y_test (pd.Series): Testing labels.
-        model_save_path (str, optional): Path to save the trained model. Defaults to None.
-        population_size (int): Size of the population. Defaults to 20.
-        num_generations (int): Number of generations. Defaults to 100.
-        mutation_rate (float): Probability of mutation. Defaults to 0.1.
-        crossover_rate (float): Probability of crossover. Defaults to 0.7.
+        X_train (pd.DataFrame or np.ndarray): Training feature data.
+        y_train (pd.Series or np.ndarray): Training target labels.
+        X_test (pd.DataFrame or np.ndarray): Testing feature data (used for final scaling).
+        y_test (pd.Series or np.ndarray): Testing target labels (not used in GA optimization,
+                                         only potentially for final eval if needed elsewhere).
+        model_save_path (str, optional): Path to save the final trained GaussianNB model
+                                         and associated data (scaler, feature indices).
+                                         If None, model is not saved. Defaults to None.
+        img_save_path (str, optional): Path to save the plot of validation accuracy/ROC AUC
+                                       across K-Folds. If None, plot is not saved. Defaults to None.
+        img_loss_path (str, optional): Path to save the plot of training/validation loss
+                                       across K-Folds. If None, plot is not saved. Defaults to None.
+        population_size (int, optional): Number of individuals in the GA population.
+                                         Defaults to 20.
+        num_generations (int, optional): Number of generations for the GA to run.
+                                         Defaults to 100.
+        mutation_rate (float, optional): Probability of mutation for each gene.
+                                         Defaults to 0.1.
+        crossover_rate (float, optional): Probability of crossover between parents.
+                                          Defaults to 0.7.
 
     Returns:
-        GaussianNB: Trained Naive Bayes model.
+        GaussianNB: The final Gaussian Naive Bayes model trained on the best
+                    feature subset found by the genetic algorithm. Returns the loaded
+                    model if `model_save_path` points to a valid saved dictionary
+                    containing the model.
     """
     # Check if the model already exists
     if os.path.exists(model_save_path):
@@ -508,20 +571,32 @@ def genetic_algorithm(X_train, y_train, X_test, y_test, model_save_path=None, im
 
 def generate_binary_classification_model(X, y, model_algorithm, hyperparameters, needs_scaled = False, model_save_path="best_model.pkl", img_save_path=None, img_loss_path=None):
     """
-    Generates everything required for training and validation of a binary classification model.
+    Trains, validates, and saves a binary classification model with hyperparameter tuning.
+
+    Performs GridSearchCV to find the best hyperparameters, then evaluates the best
+    model using K-Fold cross-validation. Optionally scales the data, saves the
+    final model (and scaler if used), and generates performance plots.
 
     Args:
-        X (pd.DataFrame): Training features.
-        y (pd.Series): Target values.
-        model_algorithm (object): Model algorithm to train.
-        hyperparameters (dict): Hyperparameters for tuning.
-        needs_scaled (bool): Whether to scale the dataset. Defaults to False.
-        model_save_path (str): Path to save the best model. Defaults to "best_model.pkl".
-        img_save_path (str, optional): Path to save validation performance plot. Defaults to None.
-        img_loss_path (str, optional): Path to save training loss plot. Defaults to None.
+        X (pd.DataFrame or np.ndarray): Training feature data.
+        y (pd.Series or np.ndarray): Training target labels.
+        model_algorithm (object): An unfitted scikit-learn compatible classifier instance.
+        hyperparameters (dict): A dictionary defining the hyperparameter grid for
+                                GridSearchCV. Example: {'C': [0.1, 1, 10]}.
+        needs_scaled (bool, optional): If True, applies StandardScaler to the
+                                      feature data `X`. Defaults to False.
+        model_save_path (str, optional): Path to save the final trained model and
+                                         optionally the scaler. If the path exists,
+                                         the existing model/data is loaded and returned.
+                                         Defaults to "best_model.pkl".
+        img_save_path (str, optional): Path to save the plot of validation accuracy/ROC AUC
+                                       across K-Folds. If None, plot is not saved. Defaults to None.
+        img_loss_path (str, optional): Path to save the plot of training/validation loss
+                                       across K-Folds. If None, plot is not saved. Defaults to None.
 
     Returns:
-        object: Trained model.
+        object: The final trained scikit-learn compatible model instance (either newly
+                trained or loaded from `model_save_path`).
     """
     # Check if the model already exists
     if os.path.exists(model_save_path):
@@ -648,15 +723,24 @@ def generate_binary_classification_model(X, y, model_algorithm, hyperparameters,
 
 def get_training_loss(model, X_train, y_train):
     """
-    Compute training loss based on model type.
+    Attempts to compute a suitable training loss metric for a given model.
+
+    Supports various scikit-learn models by checking for specific attributes
+    or using standard loss functions like log loss or hinge loss based on
+    the model type.
 
     Args:
-        model (object): Trained model.
-        X_train (pd.DataFrame): Training feature matrix.
-        y_train (pd.Series): Training labels.
+        model (object): A fitted scikit-learn compatible model instance.
+        X_train (pd.DataFrame or np.ndarray): Training feature data used to
+                                              fit the model.
+        y_train (pd.Series or np.ndarray): Training target labels used to
+                                           fit the model.
 
     Returns:
-        float: Training loss.
+        float or None: The calculated training loss. Returns None if a suitable
+                       loss calculation method cannot be determined for the model.
+                       Lower values generally indicate better fit. Note that the
+                       scale and interpretation depend on the loss type.
     """
     # Models that expose their loss during training
     if hasattr(model, "best_score_"):  # XGBoost
@@ -690,14 +774,27 @@ def get_training_loss(model, X_train, y_train):
 # Hung defined
 def train_bayes_net(df, model_save_path):
     """
-    Trains a Bayesian Network on the given DataFrame.
+    Trains a simple Bayesian Network for text classification (sentiment analysis).
+
+    Vectorizes the text using CountVectorizer, splits the data, builds a naive
+    Bayes-like structure (target -> word features), trains the network using MLE,
+    and evaluates it on a test set.
+
+    Note: This function currently does not save the trained pgmpy model due to
+          potential serialization issues or format choices (like BIF). Saving is commented out.
+          It prints evaluation metrics instead. Also, the structure assumed is very simple.
+          Loading logic is basic and just checks for file existence.
 
     Args:
-        df (pd.DataFrame): Input DataFrame containing text data and target labels.
-        model_save_path (str): Path to save the trained model.
+        df (pd.DataFrame): Input DataFrame containing at least two columns:
+                           'text_clean' (preprocessed text data) and
+                           'target' (binary sentiment labels, e.g., 0 or 1).
+        model_save_path (str): Path where the model *would* be saved (currently unused
+                               for saving the pgmpy model itself). Checks if this path
+                               exists to potentially skip training (logic currently incomplete).
 
     Returns:
-        None
+        None: This function primarily prints evaluation metrics.
     """
     if os.path.exists(model_save_path):
         print("✅ Model found! Loading...")
@@ -799,28 +896,39 @@ def train_bayes_net(df, model_save_path):
 
 def extract_features(text, word_features):
     """
-    Extracts features from text based on a given vocabulary.
+    Converts text into a sequence of numerical indices based on word features.
+
+    Splits the text into words and maps each word found in the
+    `word_features_map` to its corresponding index. Words not in the map
+    are ignored.
 
     Args:
-        text (str): Input text.
-        word_features (list): List of word features.
+        text (str): The input text string.
+        word_features_map (dict): A dictionary mapping words (str) to their
+                                  numerical indices (int).
 
     Returns:
-        np.ndarray: Array of feature indices.
+        list[int]: A list of integer indices representing the words from the
+                   text that are present in the `word_features_map`.
     """
     words = text.split()  # Chuyển văn bản thành danh sách từ
     return np.array([word_features.index(word) for word in words if word in word_features])
 
 def pad_sequence(seq, max_len):
     """
-    Pads a sequence to a fixed length.
+    Pads or truncates a numerical sequence to a specified maximum length.
+
+    If the sequence is longer than `max_len`, it is truncated from the end.
+    If it is shorter, it is padded with `pad_value` at the end.
 
     Args:
-        seq (np.ndarray): Input sequence.
-        max_len (int): Maximum length for padding.
+        seq (list[int] or np.ndarray): The input numerical sequence.
+        max_len (int): The desired fixed length of the sequence.
+        pad_value (int, optional): The value used for padding. Defaults to 0.
 
     Returns:
-        np.ndarray: Padded sequence.
+        np.ndarray: The padded or truncated sequence as a NumPy array of
+                    length `max_len`.
     """
     if len(seq) >= max_len:
         return seq[:max_len]
@@ -828,14 +936,27 @@ def pad_sequence(seq, max_len):
 
 def train_hmm(df, model_save_path):
     """
-    Trains a Hidden Markov Model (HMM) on the given DataFrame.
+    Trains a Gaussian Hidden Markov Model (HMM) for text classification.
+
+    Builds a vocabulary, converts text to sequences of indices, pads sequences,
+    trains a single GaussianHMM (implicitly assuming states correspond to classes,
+    which might be a simplification), saves the model, and evaluates it.
+
+    Note: Using a single GaussianHMM with n_components=2 might not directly map
+    components to the positive/negative classes in a supervised way typical for
+    classification. A more standard approach might involve training separate HMMs
+    per class or using the HMM differently. This implementation follows the
+    original code's structure and evaluation compares predicted states directly
+    to labels, which may be a simplification.
 
     Args:
-        df (pd.DataFrame): Input DataFrame containing text data and target labels.
-        model_save_path (str): Path to save the trained model.
+        df (pd.DataFrame): Input DataFrame with 'text_clean' and 'target' columns.
+        model_save_path (str): Path to save the trained HMM model using joblib.
+                               If the file exists, it skips training and loads it.
 
     Returns:
-        None
+        hmmlearn.hmm.GaussianHMM or None: The trained or loaded HMM model, or None if
+                                           an error occurs during setup or training.
     """
     df_sampled = df
     
@@ -898,15 +1019,21 @@ def train_hmm(df, model_save_path):
     
 def train_graphical_model(df, model_name, model_save_path):
     """
-    Trains a graphical model (HMM or Bayesian Network) on the given DataFrame.
+    Facade function to train either an HMM or a Bayesian Network model.
+
+    Calls the appropriate training function (`train_hmm` or `train_bayes_net`)
+    based on the `model_name`.
 
     Args:
-        df (pd.DataFrame): Input DataFrame containing text data and target labels.
-        model_name (str): Name of the model to train ("hmm" or "bayesnet").
-        model_save_path (str): Path to save the trained model.
+        df (pd.DataFrame): Input DataFrame containing 'text_clean' and 'target'.
+        model_name (str): The type of graphical model to train.
+                          Should be either "hmm" or "bayesnet".
+        model_save_path (str): Path where the trained model should be saved
+                               (passed to the respective training function).
 
     Returns:
-        None
+        None: The called function handles training, saving, and evaluation printing.
+              Returns implicitly if `model_name` is invalid.
     """
     if model_name == "hmm":
         train_hmm(df, model_save_path)
@@ -917,20 +1044,43 @@ def train_graphical_model(df, model_name, model_save_path):
 
 def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, num_trials=5, epochs=30):
     """
-    Trains a CNN-LSTM sentiment analysis model on given text data.
+    Trains a CNN-LSTM model for binary text classification with hyperparameter tuning.
+
+    Performs text tokenization, padding, builds a CNN-LSTM architecture, uses
+    Keras Tuner (RandomSearch) to find optimal hyperparameters (filters, kernel sizes,
+    LSTM units, dense units, dropout, learning rate), trains the best model,
+    evaluates it, saves the model, and saves training/validation plots.
 
     Args:
-        texts (list): List of sentences (raw text).
-        labels (list): List of binary sentiment labels (0 for negative, 1 for positive).
-        vocab_size (int): Size of vocabulary for tokenization. Defaults to 10000.
-        max_length (int): Maximum sequence length for padding. Defaults to 500.
-        embedding_dim (int): Dimension of the word embedding layer. Defaults to 100.
-        num_trials (int): Number of hyperparameter tuning trials. Defaults to 5.
-        epochs (int): Number of training epochs. Defaults to 10.
+        texts (list[str]): List of input text documents.
+        labels (list[int] or np.ndarray): List or array of binary labels (0 or 1).
+        vocab_size (int, optional): Maximum vocabulary size for tokenization.
+                                    Defaults to 10000.
+        max_length (int, optional): Maximum sequence length after padding/truncation.
+                                    Defaults to 500.
+        embedding_dim (int, optional): Dimension for the word embedding layer.
+                                       Defaults to 100.
+        num_trials (int, optional): Number of hyperparameter combinations to try
+                                    in Keras Tuner RandomSearch. Defaults to 5.
+        epochs (int, optional): Number of epochs to train the final best model.
+                                Defaults to 30.
+        tuner_dir (str, optional): Directory to store Keras Tuner results.
+                                   Defaults to "tuner_results".
+        project_name (str, optional): Project name for Keras Tuner trial separation.
+                                      Defaults to "cnn_lstm_tuning".
+        model_save_path (str, optional): Path to save the final trained Keras model.
+                                         Defaults to "best_cnn_lstm.keras".
+        plot_save_prefix (str, optional): Prefix for saving loss and accuracy plots.
+                                          Plots will be saved as f"{prefix}_loss.png"
+                                          and f"{prefix}_accuracy.png". Defaults to "cnn_lstm".
 
     Returns:
-        keras.Sequential: Trained Keras model with the best hyperparameters.
-        dict: Dictionary containing training and validation metrics.
+        tuple: A tuple containing:
+            - keras.Model: The trained Keras CNN-LSTM model with the best hyperparameters.
+            - dict: A dictionary containing training history and final evaluation metrics
+                    ('loss', 'val_loss', 'accuracy', 'val_accuracy', 'precision',
+                     'recall', 'f1_score', 'roc_auc').
+               Returns (None, None) if an error occurs during setup or training.
     """
     # **Step 1: Text Preprocessing**
     tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
@@ -1087,6 +1237,37 @@ def train_cnn_lstm(texts, labels, vocab_size=10000, max_length=500, embedding_di
     return best_model, results
 
 def train_bilstm_model(texts, labels, vocab_size=10000, max_length=500, embedding_dim=100, epochs=30):
+    """
+    Trains a Bidirectional LSTM (BiLSTM) model for binary text classification.
+
+    Performs text tokenization, padding, builds a BiLSTM architecture,
+    trains the model, evaluates it, saves the model, and saves
+    training/validation plots. This version does not include hyperparameter tuning.
+
+    Args:
+        texts (list[str]): List of input text documents.
+        labels (list[int] or np.ndarray): List or array of binary labels (0 or 1).
+        vocab_size (int, optional): Maximum vocabulary size for tokenization.
+                                    Defaults to 10000.
+        max_length (int, optional): Maximum sequence length after padding/truncation.
+                                    Defaults to 500.
+        embedding_dim (int, optional): Dimension for the word embedding layer.
+                                       Defaults to 100.
+        epochs (int, optional): Number of training epochs. Defaults to 30.
+        model_save_path (str, optional): Path to save the final trained Keras model.
+                                         Defaults to "best_bilstm_model.keras".
+        plot_save_prefix (str, optional): Prefix for saving loss and accuracy plots.
+                                          Plots will be saved as f"{prefix}_loss.png"
+                                          and f"{prefix}_accuracy.png". Defaults to "bilstm".
+
+    Returns:
+        tuple: A tuple containing:
+            - keras.Model: The trained Keras BiLSTM model.
+            - dict: A dictionary containing training history and final evaluation metrics
+                    ('loss', 'val_loss', 'accuracy', 'val_accuracy', 'precision',
+                     'recall', 'f1_score', 'roc_auc').
+               Returns (None, None) if an error occurs during setup or training.
+    """
     tokenizer = Tokenizer(num_words=vocab_size, oov_token="<OOV>")
     tokenizer.fit_on_texts(texts)
     sequences = tokenizer.texts_to_sequences(texts)
@@ -1168,103 +1349,6 @@ def train_bilstm_model(texts, labels, vocab_size=10000, max_length=500, embeddin
 
     return model, results
 
-def train_bert_model(texts, labels, model_name='bert-base-uncased', epochs=4, batch_size=32, max_length=128):
-    # Step 1: Tokenization
-    tokenizer = BertTokenizer.from_pretrained(model_name)
-
-    def encode_texts(texts, labels):
-        return tokenizer(
-            texts,
-            padding=True,
-            truncation=True,
-            max_length=max_length,
-            return_tensors='tf'
-        ), tf.convert_to_tensor(labels)
-
-    X_encoded, y_encoded = encode_texts(texts, labels)
-
-    # Step 2: Split dataset
-    X_train, X_test, y_train, y_test = train_test_split(X_encoded['input_ids'], y_encoded, test_size=0.2, random_state=42)
-
-    # Step 3: Model definition
-    model = TFBertForSequenceClassification.from_pretrained(model_name, num_labels=2)
-
-    optimizer = keras.optimizers.Adam(learning_rate=2e-5)
-    loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
-    metrics = ['accuracy']
-
-    model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
-
-    # Step 4: Train the model
-    print("\n🚀 Training BERT model...")
-    history = model.fit(
-        X_train, y_train,
-        validation_data=(X_test, y_test),
-        batch_size=batch_size,
-        epochs=epochs,
-        verbose=1
-    )
-
-    # Step 5: Inference
-    y_pred_logits = model.predict(X_test).logits
-    y_pred = np.argmax(y_pred_logits, axis=1)
-
-    # Step 6: Metrics
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
-    roc_auc = roc_auc_score(y_test, tf.nn.softmax(y_pred_logits)[:, 1])
-
-    results = {
-        "loss": history.history["loss"],
-        "val_loss": history.history["val_loss"],
-        "accuracy": history.history["accuracy"],
-        "val_accuracy": history.history["val_accuracy"],
-        "precision": precision,
-        "recall": recall,
-        "f1_score": f1,
-        "roc_auc": roc_auc
-    }
-
-    # Step 7: Save
-    model.save_pretrained("best_bert_model")
-
-    print("\n📊 Metrics:")
-    print(f'🔹 Precision: {precision}')
-    print(f'🔹 Recall: {recall}')
-    print(f'🔹 F1-Score: {f1}')
-    print(f'🔹 ROC AUC: {roc_auc}')
-
-    # Plot Loss
-    plt.figure(figsize=(10, 5))
-    plt.plot(history.history["loss"], label="Training Loss")
-    plt.plot(history.history["val_loss"], label="Validation Loss")
-    plt.title("📉 BERT Training and Validation Loss")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.legend()
-    plt.tight_layout()
-    plt.grid(True)
-    plt.savefig("bert_loss.png")
-    plt.close()
-
-    # Plot Accuracy
-    plt.figure(figsize=(10, 5))
-    plt.plot(history.history["accuracy"], label="Training Accuracy")
-    plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
-    plt.title("📈 BERT Training and Validation Accuracy")
-    plt.xlabel("Epoch")
-    plt.ylabel("Accuracy")
-    plt.legend()
-    plt.tight_layout()
-    plt.grid(True)
-    plt.savefig("bert_accuracy.png")
-    plt.close()
-
-    print("✅ Model saved. Training curves saved as bert_loss.png and bert_accuracy.png")
-
-    return model, results
-
 # --------------------------------------------------
 
 START_TAG = "<START>"
@@ -1273,15 +1357,55 @@ tag_to_ix = {START_TAG: 0, STOP_TAG: 1, "NEG": 2, "POS": 3}
 ix_to_tag = {v: k for k, v in tag_to_ix.items()}
 
 def argmax(vec):
+    """Returns the index of the max value in a vector."""
     return torch.argmax(vec)
 
 def log_sum_exp(vec):
+    """
+    Computes log-sum-exp in a numerically stable way.
+
+    Args:
+        vec (torch.Tensor): Input tensor, typically scores for tags.
+                           Shape expected: (1, num_tags).
+
+    Returns:
+        torch.Tensor: log-sum-exp result, shape (1,).
+    """
     max_score = vec.max()
     max_score_broadcast = max_score.view(1, -1).expand(1, vec.size()[1])
     return max_score + torch.log(torch.sum(torch.exp(vec - max_score_broadcast)))
 
 class BiLSTM_CRF_FeatureExtractor(nn.Module):
+    """
+    BiLSTM-CRF model for sequence tagging (adapted for sentiment feature extraction).
+
+    This model uses a BiLSTM to extract features from word embeddings and a CRF
+    layer to predict a sequence of tags (here, potentially POS/NEG sentiment tags
+    for each token, although the training setup seems to simplify this).
+
+    Attributes:
+        embedding (nn.Embedding): Word embedding layer.
+        lstm (nn.LSTM): Bidirectional LSTM layer.
+        hidden2tag (nn.Linear): Linear layer mapping LSTM output to tag space scores.
+        transitions (nn.Parameter): CRF transition parameters (tag_i -> tag_j score).
+        tag_to_ix (dict): Mapping from tag names to indices.
+        embedding_dim (int): Dimension of the word embeddings.
+        hidden_dim (int): Dimension of the LSTM hidden state.
+        vocab_size (int): Size of the vocabulary.
+        tagset_size (int): Number of unique tags.
+    """
     def __init__(self, vocab_size, tag_to_ix, embedding_dim, hidden_dim):
+        """
+        Initializes the BiLSTM_CRF_FeatureExtractor model.
+
+        Args:
+            vocab_size (int): Size of the vocabulary (including padding/OOV).
+            tag_to_ix (dict): Dictionary mapping tag names (str) to indices (int).
+                              Must include START_TAG and STOP_TAG.
+            embedding_dim (int): Dimension of the word embeddings.
+            hidden_dim (int): Dimension of the hidden state of the LSTM (must be even
+                              as it's split between forward/backward).
+        """
         super(BiLSTM_CRF_FeatureExtractor, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
         self.lstm = nn.LSTM(embedding_dim, hidden_dim // 2,
@@ -1294,11 +1418,32 @@ class BiLSTM_CRF_FeatureExtractor(nn.Module):
         self.transitions.data[:, tag_to_ix[STOP_TAG]] = -10000.
 
     def _get_lstm_features(self, sentence):
+        """
+        Passes sentences through embedding and BiLSTM layers to get emission scores.
+
+        Args:
+            sentences (torch.Tensor): Batch of input sentences (indices).
+                                      Shape: (batch_size, seq_length).
+
+        Returns:
+            torch.Tensor: Emission scores for each token in each sentence.
+                          Shape: (batch_size, seq_length, tagset_size).
+        """
         embeds = self.embedding(sentence)
         lstm_out, _ = self.lstm(embeds)
         return self.hidden2tag(lstm_out)
 
     def _forward_alg(self, feats):
+        """
+        Computes the partition function (total score of all possible paths) using the forward algorithm.
+
+        Args:
+            feats (torch.Tensor): Emission scores from the BiLSTM for a single sentence.
+                                  Shape: (seq_length, tagset_size).
+
+        Returns:
+            torch.Tensor: The log partition function (log total score), shape (1,).
+        """
         init_alphas = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
         init_alphas[0][self.tag_to_ix[START_TAG]] = 0.
         forward_var = init_alphas
@@ -1314,6 +1459,18 @@ class BiLSTM_CRF_FeatureExtractor(nn.Module):
         return log_sum_exp(terminal_var)
 
     def _score_sentence(self, feats, tags):
+        """
+        Computes the score of a given tag sequence for a given sentence.
+
+        Args:
+            feats (torch.Tensor): Emission scores for the sentence.
+                                  Shape: (seq_length, tagset_size).
+            tags (torch.Tensor): The true tag sequence (indices).
+                                 Shape: (seq_length,).
+
+        Returns:
+            torch.Tensor: The score of the tag sequence, shape (1,).
+        """
         score = torch.zeros(1, device=feats.device)
         tags = torch.cat([torch.tensor([self.tag_to_ix[START_TAG]], device=feats.device), tags])
         for i, feat in enumerate(feats):
@@ -1322,6 +1479,18 @@ class BiLSTM_CRF_FeatureExtractor(nn.Module):
         return score
 
     def _viterbi_decode(self, feats):
+        """
+        Finds the best scoring tag sequence using the Viterbi algorithm.
+
+        Args:
+            feats (torch.Tensor): Emission scores for the sentence.
+                                  Shape: (seq_length, tagset_size).
+
+        Returns:
+            tuple: A tuple containing:
+                - list[int]: The highest scoring tag sequence (indices).
+                - torch.Tensor: The score of the best path.
+        """
         backpointers = []
         init_vvars = torch.full((1, len(self.tag_to_ix)), -10000., device=feats.device)
         init_vvars[0][self.tag_to_ix[START_TAG]] = 0
@@ -1349,25 +1518,86 @@ class BiLSTM_CRF_FeatureExtractor(nn.Module):
         return best_path
 
     def neg_log_likelihood(self, sentences, tags):
+        """
+        Computes the negative log likelihood loss for a batch of sentences and tags.
+
+        Loss = - (score of true path - log_sum_exp(scores of all paths))
+             = log_sum_exp(scores of all paths) - score of true path
+
+        Args:
+            sentences (torch.Tensor): Batch of input sentences (indices).
+                                      Shape: (batch_size, seq_length).
+            tags (torch.Tensor): Batch of true tag sequences (indices).
+                                 Shape: (batch_size, seq_length).
+
+        Returns:
+            torch.Tensor: The mean negative log likelihood loss for the batch.
+        """
         feats = self._get_lstm_features(sentences)
         forward_score = self._forward_alg(feats[0])
         gold_score = self._score_sentence(feats[0], tags[0])
         return forward_score - gold_score
 
     def forward(self, sentences):
+        """
+        Performs inference: predicts the best tag sequence for given sentences.
+
+        Uses the Viterbi algorithm to find the most likely tag sequence.
+
+        Args:
+            sentences (torch.Tensor): Batch of input sentences (indices).
+                                      Shape: (batch_size, seq_length).
+
+        Returns:
+            list[list[int]]: A list where each element is the predicted tag sequence
+                             (list of indices) for the corresponding sentence in the batch.
+        """
         feats = self._get_lstm_features(sentences)
         return self._viterbi_decode(feats[0])
 
 class CRFSentimentDataset(Dataset):
+    """
+    PyTorch Dataset for sentiment analysis using the BiLSTM-CRF model.
+
+    Takes padded sequences (input_ids) and single sentiment labels, but prepares
+    the labels as sequences of tags matching the input length, where all tags
+    in the sequence correspond to the single overall sentiment label. This is
+    an adaptation to use a sequence tagging model for sentence classification.
+    """
     def __init__(self, input_ids, labels, max_len):
+        """
+        Initializes the dataset.
+
+        Args:
+            input_ids (list[list[int]] or np.ndarray): List or array of padded input sequences (indices).
+            labels (list[int] or np.ndarray): List or array of single binary sentiment labels (0 or 1)
+                                              for each sequence.
+            max_len (int): The maximum sequence length to which input_ids are padded. Used to
+                           create the target tag sequences of the same length.
+        """
         self.input_ids = input_ids
         self.labels = labels
         self.max_len = max_len
 
     def __len__(self):
+        """Returns the number of samples in the dataset."""
         return len(self.labels)
 
     def __getitem__(self, idx):
+        """
+        Retrieves a single sample from the dataset.
+
+        Args:
+            idx (int): The index of the sample to retrieve.
+
+        Returns:
+            tuple: A tuple containing:
+                - torch.Tensor: Input sequence tensor (shape: max_len).
+                - torch.Tensor: Target tag sequence tensor (shape: max_len). All tags
+                                in this sequence will be the index corresponding to the
+                                single sentiment label for this sample (e.g., all 'POS'
+                                or all 'NEG').
+        """
         x = torch.tensor(self.input_ids[idx], dtype=torch.long)
         tag_label = "POS" if self.labels[idx] == 1 else "NEG"
         tag_id = tag_to_ix[tag_label]
@@ -1375,11 +1605,59 @@ class CRFSentimentDataset(Dataset):
         return x, y
 
 def tag_sequence_to_sentiment(tag_seq):
+    """
+    Converts a sequence of predicted tags (POS/NEG indices) to a single sentiment label.
+
+    Determines the overall sentiment based on the majority tag in the sequence.
+    If counts are equal, defaults to negative (0).
+
+    Args:
+        tag_seq (list[int]): A sequence of predicted tag indices (e.g., from Viterbi).
+                             Assumes indices correspond to tag_to_ix mapping.
+
+    Returns:
+        int: The predicted binary sentiment label (1 for Positive, 0 for Negative).
+    """
     count_pos = tag_seq.count(tag_to_ix["POS"])
     count_neg = tag_seq.count(tag_to_ix["NEG"])
     return 1 if count_pos >= count_neg else 0
 
 def train_crf_feature_extractor(texts, labels, vocab_size=10000, max_length=100, embedding_dim=100, num_trials=5, epochs=30):
+    """
+    Trains a BiLSTM-CRF model adapted for sentiment classification using PyTorch and Optuna.
+
+    Tokenizes text, pads sequences, uses Optuna for hyperparameter tuning (hidden dim, LR),
+    trains the BiLSTM-CRF model using negative log likelihood loss, evaluates based on
+    majority tag voting from the predicted sequence, saves the model state dict and best
+    hyperparameters, and plots loss curves.
+
+    Note: This applies a sequence tagging model (BiLSTM-CRF) to a sentence-level
+    classification task by assigning the same target tag (POS/NEG) to all tokens in a
+    sentence and using majority voting on the predicted tags for evaluation.
+
+    Args:
+        texts (list[str]): List of input text documents.
+        labels (list[int] or np.ndarray): List or array of binary labels (0 or 1).
+        vocab_size (int, optional): Max vocabulary size. Defaults to 10000.
+        max_length (int, optional): Max sequence length. Defaults to 100.
+        embedding_dim (int, optional): Embedding dimension. Defaults to 100.
+        num_trials (int, optional): Number of Optuna trials for HPO. Defaults to 5.
+        epochs (int, optional): Number of epochs for final training. Defaults to 30.
+        model_save_path (str, optional): Path to save the model's state_dict.
+                                         Defaults to "best_crf_model.pt".
+        config_save_path (str, optional): Path to save the best hyperparameters (JSON).
+                                          Defaults to "best_crf_model_config.json".
+        plot_save_prefix (str, optional): Prefix for saving the loss plot.
+                                          Defaults to "crf".
+
+    Returns:
+        tuple: A tuple containing:
+            - BiLSTM_CRF_FeatureExtractor: The trained PyTorch model instance.
+            - dict: Dictionary containing training history ('train_loss', 'val_loss')
+                    and final evaluation metrics ('accuracy', 'precision', 'recall',
+                    'f1_score', 'roc_auc').
+               Returns (None, None) if an error occurs.
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"🖥️ Using device: {device}")
 
@@ -1513,28 +1791,51 @@ def train_crf_feature_extractor(texts, labels, vocab_size=10000, max_length=100,
 
     return model, results
 
-
 # --------------------------------------------------
 
 def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods, model_dict, param_dict, X_train_features_dict, X_test_features_dict, y_train, y_test):
     """
-    Trains general models using specified feature extraction methods and model algorithms.
+    Orchestrates the training of various specified models using different feature sets.
+
+    Iterates through a list of model names and, for each model, calls the
+    appropriate training function. Handles different model types including
+    standard classifiers (via `generate_binary_classification_model`),
+    genetic algorithm feature selection (`genetic_algorithm`), graphical models
+    (`train_graphical_model`), and various deep learning models (CNN, LSTM, BiLSTM, BERT, CRF).
 
     Args:
-        df (pd.DataFrame): Input DataFrame containing text data and target labels.
-        doc_lst (list): List of documents (text data).
-        label_lst (list): List of labels corresponding to the documents.
-        model_name_lst (list): List of model names to train.
-        feature_methods (list): List of feature extraction methods to use.
-        model_dict (dict): Dictionary mapping model names to model classes.
-        param_dict (dict): Dictionary mapping model names to hyperparameter grids.
-        X_train_features_dict (dict): Dictionary of training feature matrices for each method.
-        X_test_features_dict (dict): Dictionary of testing feature matrices for each method.
-        y_train (pd.Series): Training labels.
-        y_test (pd.Series): Testing labels.
+        df (pd.DataFrame): The original DataFrame, potentially used by graphical models.
+                           Should contain 'text_clean' and 'target' if HMM/BayesNet used.
+        doc_lst (list[str]): List of documents (raw text), used by DL models.
+        label_lst (list[int]): List of corresponding binary labels, used by DL models.
+        model_name_lst (list[str]): List of strings specifying the models to train
+                                    (e.g., "LogisticRegression", "GA", "cnn", "bert").
+                                    Names should match keys in `model_dict`/`param_dict`
+                                    or specific hardcoded model types ("cnn", "lstm",
+                                    "crf", "bilstm", "bert", "hmm", "bayesnet", "GA").
+        feature_methods (list[str]): List of strings specifying the feature extraction
+                                     methods used (e.g., "tfidf", "bow"). These should
+                                     correspond to the keys in `X_train_features_dict`
+                                     and `X_test_features_dict`. Used for non-DL models.
+        model_dict (dict): Dictionary mapping standard classifier names (str) to their
+                           uninitialized scikit-learn class objects (e.g.,
+                           {"LogisticRegression": LogisticRegression}).
+        param_dict (dict): Dictionary mapping standard classifier names (str) to their
+                           hyperparameter grids for GridSearchCV (e.g.,
+                           {"LogisticRegression": {'C': [0.1, 1]}}).
+        X_train_features_dict (dict): Dictionary where keys are feature method names (str)
+                                      and values are the corresponding training feature matrices
+                                      (pd.DataFrame or np.ndarray).
+        X_test_features_dict (dict): Dictionary similar to `X_train_features_dict` but containing
+                                     the testing feature matrices.
+        y_train (pd.Series or np.ndarray): Training target labels for standard classifiers.
+        y_test (pd.Series or np.ndarray): Testing target labels (used by GA function).
+        output_dir (str, optional): Directory where trained models and plots should be saved.
+                                    Defaults to the current directory ".".
 
     Returns:
-        None
+        None: This function orchestrates training and saving; it doesn't return models directly.
+              Individual training functions handle saving.
     """
     print("\n🔎 Running feature extraction and model training loop...\n")
     
@@ -1550,9 +1851,6 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
                 
             elif model_name == "bilstm":
                 train_bilstm_model(doc_lst, label_lst)
-                
-            elif model_name == "bert":
-                train_bert_model(doc_lst, label_lst)
                 
             elif model_name == "hmm" or model_name == "bayesnet":
                 train_graphical_model(
@@ -1598,17 +1896,27 @@ def train_general_model(df, doc_lst, label_lst, model_name_lst, feature_methods,
 
 def predict_general_model(model_names, feature_methods, X_test_features_dict, y_test, output_dir):
     """
-    Predicts using trained models and evaluates their performance.
+    Predicts using previously trained models and evaluates their performance on the test set.
+
+    Loads saved models based on `model_names` and `feature_methods` (for standard ML models),
+    makes predictions on the corresponding test features from `X_test_features_dict`,
+    and prints evaluation metrics (Accuracy, Precision, Recall, F1, ROC AUC, Classification Report).
+    Skips models like GA, HMM, BayesNet, LSTM, CRF which are assumed to have been evaluated
+    during their respective training functions. Handles loading Keras and joblib models.
 
     Args:
-        model_names (list): List of model names to use for prediction.
-        feature_methods (list): List of feature extraction methods to use.
-        X_test_features_dict (dict): Dictionary of testing feature matrices for each method.
-        y_test (pd.Series): Testing labels.
-        output_dir (str): Directory to save the prediction results.
+        model_names (list): List of model names to use for prediction. Expected to match
+                            names used during training (e.g., "LogisticRegression", "cnn").
+        feature_methods (list): List of feature extraction method names (e.g., "tfidf").
+                                Used to load the correct model file for standard ML models.
+        X_test_features_dict (dict): Dictionary where keys are feature method names (str)
+                                     and values are the corresponding testing feature matrices
+                                     (pd.DataFrame or np.ndarray).
+        y_test (pd.Series or np.ndarray): True testing labels.
+        output_dir (str): Directory where the trained models were saved.
 
     Returns:
-        None
+        None: This function primarily prints evaluation results.
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"⚙️  Using device: {device}")
@@ -1681,6 +1989,22 @@ def predict_general_model(model_names, feature_methods, X_test_features_dict, y_
 # --------------------------------------------------
 # helper plot func
 def plot_results(accuracy, roc_auc, train_loss, val_loss, img_save_path, img_loss_path):
+    """
+    Generates and saves plots for validation performance and loss curves.
+
+    Args:
+        accuracy (list): List of accuracy scores per fold/epoch.
+        roc_auc (list): List of ROC AUC scores per fold/epoch.
+        train_loss (list): List of training loss values per fold/epoch.
+        val_loss (list): List of validation loss values per fold/epoch.
+        img_save_path (str or None): Path to save the validation performance plot
+                                     (accuracy and ROC AUC). If None, plot is not saved.
+        img_loss_path (str or None): Path to save the loss curves plot (training and
+                                     validation loss). If None, plot is not saved.
+
+    Returns:
+        None
+    """
     if img_save_path:
         plt.figure()
         plt.plot(accuracy, label="Accuracy", marker='o')
@@ -1702,23 +2026,34 @@ def plot_results(accuracy, roc_auc, train_loss, val_loss, img_save_path, img_los
 # Voting - test ok
 def train_voting_classifier(model_dict, param_dict, feature_method, X, y, voting_type='soft', model_save_path="voting_model.pkl", img_save_path=None, img_loss_path=None):
     """
-    Trains a Voting Classifier using selected models with cross-validation.
-    
+    Trains a Voting Classifier ensemble using pre-defined base models and hyperparameters.
+
+    Instantiates base models using provided parameters, creates a VotingClassifier,
+    evaluates it using K-Fold cross-validation on the given features `X` and labels `y`,
+    trains the final ensemble on the full dataset, saves the model, and plots results.
+
     Args:
-        model_dict (dict): Dictionary of models.
-        param_dict (dict): Dictionary of best hyperparameters.
-        feature_method (str): Name of feature extraction method used.
-        X (array-like): Feature matrix.
-        y (array-like): Labels.
-        voting_type (str): 'hard' for majority vote, 'soft' for probability-based averaging.
-        model_save_path (str): Path to save the trained model.
-        img_save_path (str, optional): Path to save validation performance plot.
-        img_loss_path (str, optional): Path to save training loss plot.
+        model_dict (dict): Dictionary mapping model names (str) to their uninitialized
+                           scikit-learn class objects.
+        param_dict (dict): Dictionary mapping model names (str) to their best hyperparameters.
+        feature_method (str): Name of the feature extraction method associated with `X`.
+                              Used for logging and potentially file naming (implicitly).
+        X (pd.DataFrame or np.ndarray): Feature matrix for training and validation.
+        y (pd.Series or np.ndarray): Target labels.
+        voting_type (str, optional): The type of voting ('hard' or 'soft').
+                                     Defaults to 'soft'.
+        model_save_path (str, optional): Path to save the trained VotingClassifier model.
+                                         Defaults to "voting_model.pkl".
+        img_save_path (str, optional): Path to save the validation performance plot.
+                                       Defaults to None.
+        img_loss_path (str, optional): Path to save the training/validation loss plot.
+                                       Defaults to None.
 
     Returns:
-        VotingClassifier model.
+        VotingClassifier or None: The trained VotingClassifier instance, or None if
+                                  fewer than two base models are available or if loading fails.
+                                  Returns the loaded model if `model_save_path` exists.
     """
-
     # Load existing model if available
     if os.path.exists(model_save_path):
         print(f"🔄 Loading existing model from {model_save_path}...")
@@ -1789,23 +2124,35 @@ def train_voting_classifier(model_dict, param_dict, feature_method, X, y, voting
 # Stacking - test ok
 def train_stacking_classifier(model_dict, param_dict, feature_method, X, y, final_estimator=LogisticRegression(), model_save_path="stacking_model.pkl", img_save_path=None, img_loss_path=None):
     """
-    Trains a Stacking Classifier using selected models with cross-validation.
-    
+    Trains a Stacking Classifier ensemble using pre-defined base models and a meta-learner.
+
+    Instantiates base models using provided parameters, creates a StackingClassifier
+    with a specified final estimator (meta-learner), evaluates it using K-Fold
+    cross-validation on the given features `X` and labels `y`, trains the final
+    ensemble on the full dataset, saves the model, and plots results.
+
     Args:
-        model_dict (dict): Dictionary of models.
-        param_dict (dict): Dictionary of best hyperparameters.
-        feature_method (str): Name of feature extraction method used.
-        X (array-like): Feature matrix.
-        y (array-like): Labels.
-        final_estimator (sklearn model): Meta-model for final prediction (default: LogisticRegression).
-        model_save_path (str): Path to save the trained model.
-        img_save_path (str, optional): Path to save validation performance plot.
-        img_loss_path (str, optional): Path to save training loss plot.
+        model_dict (dict): Dictionary mapping model names (str) to their uninitialized
+                           scikit-learn class objects (base learners).
+        param_dict (dict): Dictionary mapping model names (str) to their best hyperparameters.
+        feature_method (str): Name of the feature extraction method associated with `X`.
+                              Used for logging and potentially file naming (implicitly).
+        X (pd.DataFrame or np.ndarray): Feature matrix for training and validation.
+        y (pd.Series or np.ndarray): Target labels.
+        final_estimator (object, optional): A scikit-learn compatible classifier to use
+                                            as the meta-learner. Defaults to LogisticRegression().
+        model_save_path (str, optional): Path to save the trained StackingClassifier model.
+                                         Defaults to "stacking_model.pkl".
+        img_save_path (str, optional): Path to save the validation performance plot.
+                                       Defaults to None.
+        img_loss_path (str, optional): Path to save the training/validation loss plot.
+                                       Defaults to None.
 
     Returns:
-        StackingClassifier model.
+        StackingClassifier or None: The trained StackingClassifier instance, or None if
+                                    fewer than two base models are available or if loading fails.
+                                    Returns the loaded model if `model_save_path` exists.
     """
-
     if os.path.exists(model_save_path):
         print(f"🔄 Loading existing model from {model_save_path}...")
         return joblib.load(model_save_path)

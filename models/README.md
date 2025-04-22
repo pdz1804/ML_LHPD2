@@ -8,6 +8,14 @@ This directory serves as the central repository for all trained machine learning
 
 ```
 📂 models/              # Contains all model versions, training data and logs
+│── 📂 report_info_ass1/ 
+│ │── 📂 img/           # Stores images related to training/validation
+│ │── 📂 log/           # Logs generated during the training process
+│
+│── 📂 report_info_ass2/ 
+│ │── 📂 img/           # Stores images related to training/validation
+│ │── 📂 log/           # Logs generated during the training process
+│
 │── 📂 Ver01_25_02_23/  # Version 1 of the models (February 25, 2023)
 │ │── 📂 img/           # Stores images related to training/validation
 │ │── 📂 trained/       # Stores fully trained models for later use
@@ -39,11 +47,15 @@ This directory helps organize and version control your trained models, making it
 
 ## Key Components
 
-*   **Versioned Subdirectories (e.g., `Ver01_25_02_23`, `Ver02_25_02_25`):**  Each subdirectory represents a specific version of the trained models. The directory name typically includes a date or version number.
-*   **`img/` (Within Versioned Subdirectories):** Contains images visualizing the model's performance during training (e.g., loss curves, accuracy plots, k-fold validation results).
-*   **`trained/` (Within Versioned Subdirectories):** Contains the serialized, fully trained model files that can be loaded and used for prediction.  The specific file format depends on the training framework used (e.g., `.pkl` for scikit-learn, `.h5` for Keras).
-*   **`training_log/` (Within Versioned Subdirectories):** Contains log files capturing the details of the training process, including hyperparameters, epoch-level metrics, and any errors or warnings.
-*   **`README.md` (Within Each Directory):** Provides documentation specific to that directory, explaining its contents and how to use the trained models.
+*   **Report Subdirectories (`report_info_ass1/`, `report_info_ass2/`:** Store visual artifacts and logs related to reporting, validation, or interpretability for each assignment.
+*   **`img/` (Inside Reports and Model Versions):** Contains visualizations such as loss/accuracy curves, heatmaps, or attention maps.
+*   **`log/` (Inside Reports):** Includes any runtime or inference logs useful for interpreting results or reproducing report data.
+*   **Versioned Subdirectories (e.g., `Ver01_25_02_23`, `Ver02_25_02_25`, `Ver03_25_04_13`):** Each contains one iteration of trained models and relevant artifacts.
+*   **`trained/` (Within Versioned Subdirectories):** Serialized model files.
+*   **`training_log/` (Within Versioned Subdirectories):** Captures hyperparameters, training metrics, and any error output.
+*   **`other/` (Optional in some versions):** Supporting files like preprocessing scripts, dataset splits, or evaluation notebooks.
+*   **`README.md` (Within Each Directory):** Explains that version’s purpose, structure, and usage instructions.
+
 
 ---
 

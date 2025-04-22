@@ -24,7 +24,8 @@ The `src/` directory contains all the source code required for data processing, 
 │ │── 📜 init.py                    # Initializes the models module
 │ │── 📜 models_utils.py            # Utility functions for model training and evaluation
 │ │── 📒 train_test_model_v0.ipynb  # Initial model training and testing notebook
-│ │── 📒 train_test_model_v1.ipynb  # Refined model training and testing notebook
+│ │── 📒 train_test_model_v1.ipynb  # Model training and testing notebook; Assignment 1;
+│ │── 📒 train_test_model_v2.ipynb  # Model training and testing notebook; Assignment 2;
 │ │
 │── 📂 visualization/               # Scripts for generating plots and visual analysis
 │ │── 📜 init.py                    # Initializes the visualization module
@@ -49,7 +50,7 @@ The `src/` directory contains all the source code required for data processing, 
 - **`models/`**: Houses scripts for training, testing, and deploying machine learning models.
     - `__init__.py`:  An empty file that indicates that the `models` directory should be treated as a Python package.
     - `models_utils.py`: This script contains utility functions for model training, evaluation, and saving/loading models.
-    - `train_test_model_v0.ipynb` and `train_test_model_v1.ipynb`: Jupyter Notebooks that implement the model training and testing pipeline.  The different versions likely represent improvements or variations in the modeling approach.
+    - `train_test_model_v0.ipynb`, `train_test_model_v1.ipynb` and `train_test_model_v2.ipynb`: Jupyter Notebooks that implement the model training and testing pipeline.  The different versions likely represent improvements or variations in the modeling approach.
 - **`visualization/`**: Provides tools for visualizing data distributions, model performance, and results.
     - `__init__.py`:  An empty file that indicates that the `visualization` directory should be treated as a Python package.
     - `visualize_v0.ipynb` and `visualize_v1.ipynb`: Jupyter Notebooks used for creating visualizations of the data and model results. The versions indicate iterations or different approaches to visualization.

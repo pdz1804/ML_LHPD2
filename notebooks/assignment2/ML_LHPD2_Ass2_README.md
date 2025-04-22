@@ -17,7 +17,15 @@
 
 ---
 
-## 👥 **Team Members**
+
+## 👥 **Team Members, Team Repository Link and Team Report**
+
+Our repository is at this link: [https://github.com/pdz1804/ML_LHPD2](https://github.com/pdz1804/ML_LHPD2).
+
+This README that we submitted to you is stored in the repository at [ML_LHPD2/notebooks/assignment2/ML_LHPD2_Ass2_README.md](https://github.com/pdz1804/ML_LHPD2/blob/main/notebooks/assignment2/ML_LHPD2_Ass2_README.md).
+
+Also, our team's report which contains detailed information (data analysis, data preprocessing, normalization, models training process and evaluation of those trained models) for this Assignment 1 is stored in the repository at [ML_LHPD2/reports/final_project/](https://github.com/pdz1804/ML_LHPD2/tree/main/reports/final_project/).
+
 
 | Name | Student ID |
 |-------------------------|------------|
@@ -45,8 +53,8 @@
 
 ### **2️⃣ GitHub Repository Structure**
 We are implementing **ALL machine learning models from the syllabus** using:
-- **ONE unified dataset** before the midterm (Chapters 2-6) (which we have done in Assignment 1).
-- **ANOTHER dataset** for the second stage after midterm (Chapters 6-10) (which we do in this Assignment 2).
+- **ONE unified dataset** with one use-case before the midterm (Chapters 2-6) (which we do in this Assignment - Assignment 1).
+- **THAT dataset** for that same use-case for the second stage after midterm (Chapters 6-10) (which we will do in our Assignment 2).
 
 ✅ **Repository Setup**:
 - The **main repository** is created by the team lead.
@@ -106,14 +114,37 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 - Applied **data cleaning & preprocessing** 🧹
 - Uploaded the final dataset to **Kaggle** 📤
 
-
-### **2️⃣ Models that we have done in Assignment 2**
+### **2️⃣ Models that we have done in Assignment 1**
 - **Train and Evaluate Models** 🚀
-  - Some models
-  - Some models
-  - Some models
-  - Some models
-  - Some models
+  - Decision Tree 
+  - Random Forest 
+  - XGBoost
+  - Logistic Regression 
+  - Naive Bayes
+  - GA, HMM, Bayesian Network
+  - MLPClassifier and simple Perceptron (ANN)
+  - CNN / LSTM for deep learning 
+
+- **Compare Model Performance** 🏆
+- **Create Visualizations for Analysis** 📊
+- **Write Final Report & Documentation** 📝
+
+### **3️⃣ Models that we have done in Assignment 2**
+- **Train and Evaluate Models** 🚀
+  - Graphical Models (Bayesian Networks, HMM)
+  - Support Vector Machines (kernel and regularization)
+  - PCA for Dimension Reduction 
+    - Feature Selection Strategies 
+    - Topic Modeling, Variance, Chi-squared
+  - LDA as linear classifier 
+  - Ensemble Models / Methods
+    - Random Forest 
+    - XGBoost
+    - Stacking: Stack multiple Logistic Regressions; Stack multiple "good" models from Assignment 1
+    - Voting: Use multiple Logistic Regressions and Use multiple "good" models from Assignment 1 for evaluating
+  - Discriminative Models:
+    - Logistic Regression 
+    - CRF: specifically we use BiLSTM-CRF to make use of the superior performance of BiLSTM model.
 
 - **Compare Model Performance** 🏆
 - **Create Visualizations for Analysis** 📊
@@ -121,19 +152,31 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 
 ---
 
-## 💡 **III. Contributions and Task Distribution**
+## 💡 **IV. Contributions and Task Distribution**
+
+### Task Distribution for Assignment 1
 
 | **Team Member**  | **Task** |
 |------------------|----------|
 | **Nguyen Quang Phu** | Team leader; Repository management; Participate and Ensure everything stays on schedule and verify all work done by other members. 📂 |
-| **Pham Huynh Bao Dai** | Data preparation; Data preprocessing; feature engineering; Document Data Collecting; Preprocessing and Merging. ⚙️|
-| **Nguyen Thanh Dat** | Consistent model training and evaluating; Model implementation (Some models); Document Model Implementation. 🌳 |
-| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (Some models); Document Model Implementation. 📈 |
+| **Pham Huynh Bao Dai** | Data preparation; Data preprocessing; feature engineering; Visualization; Document Data Collecting; Preprocessing and Merging. ⚙️|
+| **Nguyen Thanh Dat** | Consistent model training and evaluating; Model implementation (Decision Tree, Random Forest, XGBoost, Perceptron - ANN, MLP); Document Model Implementation. 🌳 |
+| **Nguyen Tien Hung** | Consistent model training and evaluating; Model implementation (GA, HMM Bayesian Network, Logistic Regression, LSTM); Document Model Implementation. 📈 |
 | **Nguyen Thien Loc** | Model evaluation, hyperparameter tuning, Model Comparison, Document Performance analysis. 🔍 |
+
+### Task Distribution for Assignment 2
+
+| **Team Member** | **Task** |
+|------------------|----------|
+| **Nguyen Quang Phu** | Team leader; Manage repository and schedule; Stacking & Voting with Logistic Regressions; Final integration & verification. 📂|
+| **Pham Huynh Bao Dai** | Implement PCA, SVM; Visualizations; Document his Models' workflow ⚙️|
+| **Nguyen Thanh Dat** | Implement LDA, Random Forest, XGBoost; Document Ensemble Methods and Classifiers. 🌳|
+| **Nguyen Tien Hung** | Build Bayesian Networks, HMMs, Logistic Regression; Stacking with good models from Assignment 1; Document Graphical Models. 📈|
+| **Nguyen Thien Loc** | Implement BiLSTM-CRF; Evaluate models; Voting with good models; Performance Analysis and Comparison. 🔍|
 
 ---
 
-## 📌 **IV. How to Run This Project**
+## 📌 **V. How to Run This Project**
 
 ### 1️⃣ **Clone the Repository**
 ```sh
@@ -141,7 +184,16 @@ git clone https://github.com/pdz1804/ML_LHPD2
 cd ML_LHPD2
 ```
 
-### 2️⃣ **Explore the Project**
+### 2️⃣ Setting Up the Environment
+
+If you want to train the model in local (on your computer, in VSC...), to install the necessary dependencies, refer to the environment file (```environment.yml```) provided in the repository. Ensure you have Conda installed to create and activate the required environment.
+
+```bash
+conda env create -f environment.yml
+conda activate ml_env  # Replace ml_env with your environment name
+```
+
+### 3️⃣ **Explore the Project**
 
 - First, you should revisit the Project structure above to see what is the use of those folders and subfolders in this project.
 - In details:
@@ -156,24 +208,24 @@ cd ML_LHPD2
 
 ---
 
-## 📄 **V. License**
+## 📄 **VI. License**
 This project is licensed under the **MIT License**.
 
 ---
 
-## 📧 **VI. Contact**
+## 📧 **VII. Contact**
 For any questions or contributions, please contact:
 
 📩 Email: phu.nguyenquang2004@hcmut.edu.vn
 
 🔗 GitHub: https://github.com/pdz1804/
 
---- 
+---
 
 <h2 align="center">✨💟 Contributors 💟✨</h2>
 
 <p align="center">
-  <strong>We fairly contribute to this repository with dedication and teamwork!</strong> 💖
+  💖 <strong>We fairly contribute to this repository with dedication and teamwork!</strong> 💖
 </p>
 
 <div align="center">
@@ -185,3 +237,4 @@ For any questions or contributions, please contact:
 </div>
 
 ---
+

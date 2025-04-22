@@ -27,30 +27,53 @@ from sklearn.decomposition import LatentDirichletAllocation
 
 class FeatureBuilder:
     """
-    A class for feature extraction and transformation using various methods.
+    Manages feature extraction and transformation pipelines for text data.
+
+    This class supports various vectorization methods (TF-IDF, Count, Word2Vec,
+    GloVe, BERT), optional feature selection (Variance Threshold, Chi-squared,
+    Topic Modeling), and optional dimensionality reduction (PCA, LDA). It allows
+    fitting on training data and transforming both training and new data.
+    Fitted components like vectorizers and reducers can be saved and loaded.
 
     Attributes:
-        method (str): The feature extraction method ('tfidf', 'count', 'word2vec', 'bert', etc.).
-        save_dir (str): Directory to save processed features.
-        reduce_dim (str): Dimensionality reduction method ('pca', 'lda', or None).
-        n_components (int): Number of components for dimensionality reduction.
-        vectorizer (object): Vectorizer object for 'tfidf', 'count', or 'binary_count' methods.
-        word2vec_model (object): Pretrained Word2Vec model.
-        glove_model (object): Pretrained GloVe model.
-        tokenizer (object): Tokenizer for BERT model.
-        bert_model (object): BERT model for embedding extraction.
-        reducer (object): Dimensionality reduction object (PCA or LDA).
+        method (str): The primary feature extraction method to use (e.g., 'tfidf', 'bert').
+        save_dir (str): Directory path to save/load fitted components (vectorizers, reducers).
+        feature_selection (str or None): The feature selection technique to apply
+            (e.g., 'variance', 'chi2', 'topic_modeling') or None to disable.
+        reduce_dim (str or None): The dimensionality reduction technique ('pca', 'lda')
+            or None to disable.
+        n_components (int): Target number of dimensions/components for feature
+            selection (like chi2, topic_modeling) or dimensionality reduction.
+        vectorizer (object or None): Scikit-learn compatible vectorizer instance if
+            `method` is 'tfidf', 'count', or 'binary_count'.
+        word2vec_model (object or None): Loaded Gensim Word2Vec model if `method` is 'word2vec'.
+        glove_model (object or None): Loaded Gensim GloVe model if `method` is 'glove'.
+        tokenizer (object or None): Hugging Face tokenizer instance if `method` is 'bert'.
+        bert_model (object or None): Hugging Face BERT model instance if `method` is 'bert'.
+        reducer (object or None): Scikit-learn compatible dimensionality reducer instance
+            (PCA or LDA) if `reduce_dim` is specified.
     """
 
     def __init__(self, method="tfidf", save_dir="data/processed", feature_selection=None, reduce_dim=None, n_components=100):
         """
-        Initializes the FeatureBuilder with a specified feature engineering method.
+        Initializes the FeatureBuilder with specified configurations.
+
+        Sets up the chosen vectorization, feature selection, and dimensionality
+        reduction methods based on the provided parameters. Loads pre-trained
+        models (Word2Vec, GloVe, BERT) if required by the chosen method.
 
         Args:
-            method (str): Feature engineering method ('tfidf', 'count', 'word2vec', 'bert', etc.).
-            save_dir (str): Directory to save processed features.
-            reduce_dim (str): Dimensionality reduction method ('pca', 'lda', or None).
-            n_components (int): Number of components for dimensionality reduction.
+            method (str, optional): The feature engineering method. Supported values:
+                'tfidf', 'count', 'binary_count', 'word2vec', 'glove', 'bert'.
+                Defaults to "tfidf".
+            save_dir (str, optional): Directory path to save or load fitted components.
+                Defaults to "data/processed".
+            feature_selection (str or None, optional): Feature selection method.
+                Supported: 'variance', 'chi2', 'topic_modeling', None. Defaults to None.
+            reduce_dim (str or None, optional): Dimensionality reduction method.
+                Supported: 'pca', 'lda', None. Defaults to None.
+            n_components (int, optional): Target number of features/components for
+                feature selection or dimensionality reduction. Defaults to 100.
         """
         self.method = method
         self.save_dir = save_dir
@@ -84,6 +107,24 @@ class FeatureBuilder:
             self.reducer = LDA(n_components=self.n_components)
 
     def _apply_feature_selection(self, features, labels=None):
+        """
+        Applies the configured feature selection method to the feature matrix.
+
+        Uses VarianceThreshold, SelectKBest (chi2), or LatentDirichletAllocation
+        based on the `self.feature_selection` attribute.
+
+        Args:
+            features (np.ndarray or sparse matrix): The input feature matrix.
+            labels (array-like, optional): The target labels, required only if
+                `self.feature_selection` is 'chi2'. Defaults to None.
+
+        Returns:
+            np.ndarray or sparse matrix: The feature matrix after selection. Returns
+                the original matrix if `self.feature_selection` is None.
+
+        Raises:
+            AssertionError: If 'chi2' selection is chosen but `labels` are not provided.
+        """
         if self.feature_selection == "variance":
             selector = VarianceThreshold(threshold=0.01)
             return selector.fit_transform(features)
@@ -98,7 +139,23 @@ class FeatureBuilder:
             return features
 
     def _apply_reducer(self, features, labels=None):
-        """Applies dimensionality reduction if enabled."""
+        """
+        Applies the configured dimensionality reduction method to the feature matrix.
+
+        Uses PCA or LDA based on the `self.reducer` attribute, fitting it first.
+
+        Args:
+            features (np.ndarray or sparse matrix): The input feature matrix.
+            labels (array-like, optional): The target labels, required only if
+                `self.reducer` is LDA. Defaults to None.
+
+        Returns:
+            np.ndarray: The dimensionally reduced feature matrix. Returns the
+                original matrix if `self.reducer` is None.
+
+        Raises:
+            AssertionError: If LDA reduction is chosen but `labels` are not provided.
+        """
         if self.reducer is not None:
             if isinstance(self.reducer, LDA):
                 assert labels is not None, "LDA requires class labels during transform."
@@ -109,13 +166,18 @@ class FeatureBuilder:
     
     def _get_word2vec_vector(self, doc):
         """
-        Extracts the average Word2Vec embedding for a document.
+        Computes the average Word2Vec vector for a single document.
+
+        Looks up each token in the pre-loaded Word2Vec model and averages the
+        vectors of the tokens found. Returns a zero vector if no tokens are found
+        in the model's vocabulary.
 
         Args:
-            doc (str): The document text.
+            doc (str): The input document text.
 
         Returns:
-            np.array: The averaged Word2Vec embedding.
+            np.ndarray: A 1D NumPy array representing the average Word2Vec embedding
+                for the document. The array size matches the Word2Vec model's vector size.
         """
         tokens = doc.split()
         word_vectors = []
@@ -129,13 +191,18 @@ class FeatureBuilder:
 
     def _get_glove_vector(self, doc):
         """
-        Extracts the average GloVe embedding for a document.
+        Computes the average GloVe vector for a single document.
+
+        Looks up each token in the pre-loaded GloVe model and averages the
+        vectors of the tokens found. Returns a zero vector if no tokens are found
+        in the model's vocabulary.
 
         Args:
-            doc (str): The document text.
+            doc (str): The input document text.
 
         Returns:
-            np.array: The averaged GloVe embedding.
+            np.ndarray: A 1D NumPy array representing the average GloVe embedding
+                for the document. The array size matches the GloVe model's vector size.
         """
         tokens = doc.split()
         word_vectors = []
@@ -149,13 +216,17 @@ class FeatureBuilder:
 
     def _get_bert_embedding(self, doc):
         """
-        Extracts the BERT embedding for a document.
+        Computes the BERT sentence embedding (pooler output) for a single document.
+
+        Uses the pre-loaded BERT tokenizer and model to obtain the embedding
+        corresponding to the [CLS] token's representation after passing through
+        the model layers.
 
         Args:
-            doc (str): The document text.
+            doc (str): The input document text.
 
         Returns:
-            np.array: The BERT embedding.
+            np.ndarray: A 1D NumPy array representing the BERT embedding for the document.
         """
         inputs = self.tokenizer(doc, return_tensors="pt", padding=True, truncation=True, max_length=512)
         with torch.no_grad():
@@ -164,11 +235,16 @@ class FeatureBuilder:
     
     def fit(self, texts):
         """
-        Fits the model to the text data by computing necessary statistics (e.g., vocabulary, embeddings).
+        Fits the vectorizer component to the training text data.
+
+        For 'tfidf', 'count', and 'binary_count' methods, this involves learning the
+        vocabulary and IDF weights (for TF-IDF). For embedding-based methods
+        ('word2vec', 'glove', 'bert'), this method currently does nothing as
+        pre-trained models are used. Fitting of dimensionality reducers or
+        feature selectors happens during the `transform` or `fit_transform` step.
 
         Args:
-            texts (list): Raw text data.
-            labels (list, optional): Class labels for LDA. Defaults to None.
+            texts (list[str]): A list of raw text documents from the training set.
         """
         if self.method in ["tfidf", "count", "binary_count"]:
             self.vectorizer.fit(texts)
@@ -178,14 +254,25 @@ class FeatureBuilder:
             
     def transform(self, texts, labels=None):
         """
-        Transforms new data based on the fitted model.
+        Transforms the input text data into feature vectors using the fitted components.
+
+        Applies the chosen vectorization method (`self.method`), followed by optional
+        feature selection (`self.feature_selection`), and finally optional
+        dimensionality reduction (`self.reduce_dim`). Dimensionality reduction models
+        (PCA, LDA) are fitted within this step if not already fitted.
 
         Args:
-            texts (list): Raw text data.
-            labels (list, optional): Class labels for LDA. Defaults to None.
+            texts (list[str]): A list of raw text documents to transform.
+            labels (list or np.ndarray, optional): Class labels corresponding to the `texts`.
+                Required if using 'chi2' feature selection or 'lda' dimensionality reduction.
+                Defaults to None.
 
         Returns:
-            np.array: Transformed feature matrix.
+            np.ndarray: The final transformed feature matrix.
+
+        Raises:
+            AssertionError: If 'lda' reduction or 'chi2' selection is requested but
+                `labels` are not provided.
         """
         if self.method in ["tfidf", "count", "binary_count"]:
             # Transform the new data using the fitted vectorizer
@@ -235,20 +322,34 @@ class FeatureBuilder:
 
     def fit_transform(self, texts, labels=None):
         """
-        Fits and transforms the text data by first fitting the model and then transforming it.
+        Fits the necessary components and transforms the text data in one step.
+
+        Calls `fit()` to learn parameters (like vocabulary) from the texts,
+        then calls `transform()` to generate the feature matrix, applying
+        feature selection and dimensionality reduction as configured.
 
         Args:
-            texts (list): Raw text data.
+            texts (list[str]): A list of raw text documents (typically the training set).
+            labels (list or np.ndarray, optional): Class labels corresponding to the `texts`.
+                Required if using 'chi2' feature selection or 'lda' dimensionality reduction.
+                Defaults to None.
 
         Returns:
-            np.array: Transformed feature matrix.
+            np.ndarray: The final transformed feature matrix for the input texts.
         """
         self.fit(texts)  # First fit the model (compute parameters)
         return self.transform(texts, labels if self.reduce_dim == "lda" else None)  # Then transform the data using the fitted model
     
     def _save_model(self):
         """
-        Saves the fitted vectorizer/scaler for later use.
+        Saves the fitted components (vectorizer, reducer) to disk using pickle.
+
+        Saves the relevant objects (Vectorizer for TF-IDF/Count methods,
+        PCA/LDA reducer if used) to the directory specified by `self.save_dir`.
+        File names are based on the method and reduction type.
+        Note: For Word2Vec, GloVe, and BERT, it saves the potentially large models
+        loaded in __init__, which might not be efficient if only the fitted
+        vectorizer/reducer is needed later. Consider saving only fitted components.
         """
         # Ensure the directory exists
         save_dir = self.save_dir if self.save_dir else "data/processed"
@@ -282,7 +383,17 @@ class FeatureBuilder:
     
     def _load_model(self):
         """
-        Loads the previously saved vectorizer/scaler.
+        Loads previously saved components (vectorizer, reducer) from disk.
+
+        Loads the pickled objects (Vectorizer, Reducer) from the `self.save_dir`
+        based on the configured `self.method` and `self.reduce_dim`.
+        Populates `self.vectorizer` and `self.reducer` attributes.
+        Note: Also attempts to load saved Word2Vec/GloVe/BERT models, matching the
+        behavior of `_save_model`.
+
+        Raises:
+            FileNotFoundError: If the expected saved file for the configured method
+                or reducer does not exist in `self.save_dir`.
         """
         # Ensure the directory exists
         os.makedirs(self.save_dir, exist_ok=True)
@@ -318,21 +429,36 @@ class FeatureBuilder:
 
 def build_vector_for_text(df_sampled, feature_methods, project_root, reduce_dim=None, n_components=50, feature_selection=None):
     """
-    Builds feature vectors for text data using specified feature extraction methods.
+    Builds feature vectors for train and test sets using multiple feature methods.
+
+    Splits the input DataFrame into training and testing sets (stratified).
+    Then, for each method specified in `feature_methods`, it initializes a
+    `FeatureBuilder`, fits it on the training text, and transforms both the
+    training and testing text data. Applies configured feature selection and
+    dimensionality reduction.
 
     Args:
-        df_sampled (pd.DataFrame): The sampled DataFrame containing text data.
-        feature_methods (list): List of feature extraction methods to use.
-        project_root (str): Root directory of the project.
-        reduce_dim (str, optional): Dimensionality reduction method ('pca', 'lda', or None).
-        n_components (int): Number of components for dimensionality reduction.
-        feature_selection (str, optional): Feature selection method ('variance', 'chi2', 'topic_modeling', or None).
+        df_sampled (pd.DataFrame): DataFrame containing at least 'text_clean' (str)
+            and 'target' (int/categorical) columns.
+        feature_methods (list[str]): A list of feature extraction method names
+            (e.g., 'tfidf', 'bert') to apply. Must match methods supported by `FeatureBuilder`.
+        project_root (str): The root directory of the project, used to construct
+            the save path for processed data within the `FeatureBuilder`.
+        reduce_dim (str or None, optional): Dimensionality reduction method ('pca', 'lda', None)
+            to apply within `FeatureBuilder`. Defaults to None.
+        n_components (int, optional): Target number of dimensions for feature selection
+            or reduction. Defaults to 50. Adjusted for LDA based on number of classes.
+        feature_selection (str or None, optional): Feature selection method ('variance',
+            'chi2', 'topic_modeling', None) to apply within `FeatureBuilder`. Defaults to None.
 
     Returns:
-        dict: Dictionary of training feature matrices for each method.
-        dict: Dictionary of testing feature matrices for each method.
-        pd.Series: Training labels.
-        pd.Series: Testing labels.
+        tuple: A tuple containing:
+            - dict[str, pd.DataFrame]: Dictionary mapping each feature method name
+              to its corresponding training feature matrix (as a DataFrame).
+            - dict[str, pd.DataFrame]: Dictionary mapping each feature method name
+              to its corresponding testing feature matrix (as a DataFrame).
+            - pd.Series: The target labels for the training set.
+            - pd.Series: The target labels for the testing set.
     """
     X_train_features_dict = {}
     X_test_features_dict = {}
