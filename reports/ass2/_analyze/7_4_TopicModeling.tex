@@ -1,0 +1,107 @@
+\subsection{Topic Modeling - Feature Selection Method}
+
+\subsubsection{Feature Extraction and Selection}
+
+In this experiment, we first transform the raw text data into feature vectors using two different methods:
+\begin{itemize}
+    \item \textbf{CountVectorizer}: Represents each document by the frequency of each word in the vocabulary.
+    \item \textbf{TF-IDF Vectorizer}: Represents each document by the importance (term frequency-inverse document frequency) of each word.
+\end{itemize}
+
+After feature extraction, we apply \textbf{Topic Modeling Feature Selection}:
+\begin{itemize}
+    \item We use \textbf{Latent Dirichlet Allocation (LDA)} with a predefined number of components ($n\_components$) to model the topics.
+    \item The LDA model finds latent topics and represents documents as topic distributions.
+    \item The resulting topic distributions serve as reduced feature representations.
+\end{itemize}
+
+This process enables us to capture high-level semantic structures within documents while significantly reducing the feature dimensionality.
+
+\subsubsection{Model Training Procedure}
+
+For each classifier and feature type, the following steps are performed:
+\begin{itemize}
+    \item \textbf{Hyperparameter tuning}: We conduct grid search with cross-validation to find the best hyperparameters.
+    \item \textbf{Cross-validation}: K-fold cross-validation ensures robust estimation and prevents overfitting.
+    \item \textbf{Loss plotting}: Training and validation losses are plotted across epochs to monitor convergence.
+    \item \textbf{Model saving}: The best models are saved to disk for reproducibility and deployment.
+\end{itemize}
+
+\subsubsection{Experimental Setup}
+
+We experiment with the following classifiers:
+\begin{itemize}
+    \item Decision Tree (DT)
+    \item Linear Discriminant Analysis (LDA)
+    \item Logistic Regression (LogReg)
+    \item Multi-Layer Perceptron (MLP)
+    \item Perceptron
+    \item Random Forest (RF)
+    \item Support Vector Machine (SVM)
+    \item XGBoost (XGB)
+\end{itemize}
+
+Each model is trained and evaluated with two types of feature extraction:
+\begin{itemize}
+    \item CountVectorizer (-Count)
+    \item TF-IDF Vectorizer (-TFIDF)
+\end{itemize}
+
+Additionally, we include Gaussian Naive Bayes (GNB) as a baseline model.
+
+\subsubsection{Evaluation Metrics}
+
+For each experiment, we evaluate models based on:
+\begin{itemize}
+    \item Accuracy
+    \item Precision
+    \item Recall
+    \item F1 Score
+    \item ROC AUC
+\end{itemize}
+
+\textbf{The results are summarized in the following table:}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} & \textbf{ROC AUC} \\
+\hline
+DT-Count & 0.5604 & 0.5851 & 0.4965 & 0.5372 & 0.5803 \\
+DT-TFIDF & 0.5331 & 0.5410 & 0.6025 & 0.5701 & 0.5462 \\
+LDA-Count & 0.5669 & 0.5775 & 0.5858 & 0.5816 & 0.5936 \\
+LDA-TFIDF & 0.5382 & 0.5458 & 0.6030 & 0.5730 & 0.5515 \\
+LogReg-Count & \underline{\textbf{0.5693}} & 0.5796 & 0.5889 & 0.5842 & 0.5953 \\
+LogReg-TFIDF & 0.5383 & 0.5456 & 0.6076 & 0.5749 & 0.5515 \\
+MLP-Count & 0.5649 & 0.5716 & 0.6121 & \underline{\textbf{0.5912}} & 0.5943 \\
+MLP-TFIDF & 0.5388 & 0.5460 & 0.6080 & 0.5753 & 0.5516 \\
+Perceptron-Count & 0.5416 & 0.5591 & 0.5112 & 0.5341 & 0.5617 \\
+Perceptron-TFIDF & 0.5092 & 0.5235 & 0.4990 & 0.5110 & 0.5200 \\
+RF-Count & \underline{\textbf{0.5760}} & 0.5792 & \underline{\textbf{0.6396}} & \underline{\textbf{0.6079}} & \underline{\textbf{0.6091}} \\
+RF-TFIDF & 0.5429 & 0.5458 & 0.6582 & 0.5967 & 0.5646 \\
+SVM-Count & 0.5689 & \underline{\textbf{0.5856}} & 0.5510 & 0.5678 & 0.5946 \\
+SVM-TFIDF & 0.5332 & 0.5404 & 0.6119 & 0.5739 & 0.5445 \\
+XGB-Count & 0.5718 & 0.5819 & 0.5926 & 0.5872 & 0.5967 \\
+XGB-TFIDF & 0.5398 & 0.5490 & 0.5853 & 0.5665 & 0.5577 \\
+GNB-Count & 0.5565 & 0.5680 & 0.5720 & 0.5700 & 0.5726 \\
+GNB-TFIDF & 0.5378 & 0.5481 & 0.5730 & 0.5603 & 0.5499 \\
+\hline
+\end{tabular}
+\caption{Performance comparison across different models and feature extraction methods with Topic Modeling Feature Selection.}
+\label{tab:topic_modeling_results}
+\end{table}
+
+\subsubsection{Discussion}
+
+From Table~\ref{tab:topic_modeling_results}, we observe:
+\begin{itemize}
+    \item \textbf{Random Forest (RF-Count)} consistently outperforms other models across almost all metrics, achieving the best Accuracy, Recall, F1 Score, and ROC AUC.
+    \item \textbf{SVM-Count} achieves the highest Precision among all models.
+    \item Models using \textbf{CountVectorizer} generally perform slightly better than those using TF-IDF after topic modeling feature selection.
+    \item \textbf{XGBoost} also shows competitive performance, especially with the Count features.
+    \item Gaussian Naive Bayes (GNB) models, although simpler, achieve reasonable performance but generally lag behind tree-based methods.
+\end{itemize}
+
+Overall, combining topic modeling feature extraction with Random Forest classifiers yields the most robust and effective performance for this dataset.
+

@@ -40,122 +40,251 @@ To assess the performance of sentiment analysis models, we utilize five key eval
     \item Lastly, \textbf{ROC AUC} (Receiver Operating Characteristic - Area Under the Curve) evaluates the model's ability to distinguish between different sentiment classes, providing insight into its overall discriminative power. By considering these metrics, we can determine the best-performing model based on different application needs, balancing between false positives and false negatives.
 \end{itemize}
 
-\subsection{Model Performance}
+\subsection{Baseline Model Comparison (Best-performing Feature Methods)}
 
-\begin{table}[H]
-    \centering
-    \caption{Performance Comparison of Sentiment Analysis Models}
-    \label{tab:sentiment_model_comparison}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|c|c|c|c|c|}
-    \hline
-    \textbf{Method} & \textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC AUC} \\ \hline
-    
-    \textbf{count} & \textbf{Logistic Regression} & \underline{\textbf{0.7557}} & 0.7403 & 0.8078 & \underline{\textbf{0.7726}} & \underline{\textbf{0.8297}} \\ \hline
-    
-    \textbf{tfidf} & \textbf{Decision Tree} & 0.6300 & 0.5928 & 0.8940 & 0.7129 & 0.6694 \\ \hline
-    
-    \textbf{count} & \textbf{XGBoost} & 0.7251 & 0.6970 & 0.8247 & 0.7555 & 0.8040 \\ \hline
-    
-    \textbf{count} & \textbf{Random Forest} & 0.7251 & 0.6970 & 0.8247 & 0.7555 & 0.8040 \\ \hline
-    
-    \textbf{tfidf} & \textbf{Perceptron (ANN)} & 0.6927 & 0.7345 & 0.6296 & 0.6780 & 0.7737 \\ \hline
-
-    \textbf{count} & \textbf{MLP} & 0.7370 & 0.8126 & 0.7526 & 0.7269 & 0.7801 \\ \hline
-    
-    \textbf{count} & \textbf{GaussianNB} & 0.7134 & 0.7151 & 0.7350 & 0.7250 & 0.7463 \\ \hline
-    
-    \textbf{count} & \textbf{GaussianNB + GA} & 0.6520 & 0.6860 & 0.6762 & 0.6492 & 0.7056 \\  \hline
-    
-    \textbf{N/A} & \textbf{CNN-LSTM} & 0.7103 & 0.6740 & 0.8486 & 0.7513 & 0.7891 \\ \hline
-    
-    \textbf{N/A} & \textbf{HMM} & 0.5141 & 0.5156 & 0.9552 & 0.6697 & 0.4997 \\ \hline
-    
-    \textbf{N/A} & \textbf{Bayesian Network} & 0.6495 & 0.6364 & 0.7476 & 0.6875 & 0.7143 \\ \hline
-    
-    \end{tabular}
-    }
-\end{table}
-
-\subsubsection{Discussion}
-
-\begin{itemize}
-    \item \textbf{Embedding Methods:} The choice of embedding methods significantly impacts model performance. 
-    \textbf{CountVectorizer} and \textbf{TF-IDF} often yield better results for traditional models as they capture term frequency statistics effectively. 
-    In contrast, \textbf{Word2Vec} and \textbf{GloVe} provide dense representations that benefit deep learning models like \textbf{CNN-LSTM}. 
-    However, pre-trained embeddings may not always align well with domain-specific datasets, making TF-IDF and CountVectorizer preferable for structured, lexicon-heavy tasks like sentiment classification.
-
-    \item \textbf{Logistic Regression:} The logistic regression model serves as a strong baseline, achieving an accuracy of \textbf{75.57\%}, an F1-score of \textbf{77.26\%}, and the highest ROC AUC of \textbf{82.97\%} among traditional models. It provides balanced performance across all metrics, making it a reliable choice for sentiment classification.
-
-    \item \textbf{Decision Tree:} This model exhibits \textbf{high recall (89.40\%)}, meaning it is effective at capturing positive and negative sentiments. However, its low precision (\textbf{59.28\%}) indicates a high false-positive rate, leading to misclassifications.
-
-    \item \textbf{XGBoost and Random Forest:} Both models deliver \textbf{72.51\% accuracy, 80.40\% ROC AUC, and an F1-score of 75.55\%}. Their ensemble-based decision trees capture complex sentiment patterns better than individual models.
-
-    \item \textbf{Perceptron:} This linear classifier achieves \textbf{69.27\% accuracy}, but struggles with recall (\textbf{62.96\%}), leading to an imbalanced prediction performance.
-    
-    \item \textbf{MLP (Multi-Layer Perceptron):}  
-    The MLP model achieves an accuracy of \textbf{73.70\%}, which is competitive with other traditional models like Logistic Regression and Random Forest. Its precision (\textbf{81.26\%}) is the highest among all models, indicating that it is particularly effective at minimizing false positives. However, its recall (\textbf{75.26\%}) is slightly lower than some other models, suggesting it may miss some positive cases. The MLP's F1-score of \textbf{72.69\%} reflects a good balance between precision and recall, and its ROC AUC of \textbf{78.01\%} shows that it performs well in distinguishing between classes.
-
-    \item \textbf{Naïve Bayes and GA-Optimized Naïve Bayes:} The standard Gaussian Naïve Bayes model achieves \textbf{71.34\% accuracy}, and its GA-optimized variant does not significantly improve performance (\textbf{66.53\% accuracy}).
-
-    \item \textbf{CNN-LSTM:} The deep learning-based CNN-LSTM model achieves \textbf{71.03\% accuracy}, with \textbf{84.86\% recall}, making it useful for capturing contextual sentiment.
-
-    \item \textbf{HMM and Bayesian Network:} These probabilistic models underperform, with the HMM achieving only \textbf{51.41\% accuracy} and a ROC AUC of \textbf{49.97\%}, indicating near-random performance. The Bayesian Network slightly improves to \textbf{64.95\% accuracy} but remains behind tree-based models.
-
-\end{itemize}
-
-\subsubsection{Selecting the Best Model}
-
-\textbf{Our Criteria for Selection the best model:} 
-
-\begin{itemize}
-    \item \textbf{Accuracy}: Indicates the overall classification performance of the model.
-    \item \textbf{F1-score}: Provides a balance between precision and recall.
-    \item \textbf{ROC AUC}: Measures the model’s ability to distinguish between sentiment classes.
-\end{itemize}
+The performance of different models for sentiment analysis using the best feature extraction method per model is summarized in Table~\ref{tab:model_comparison}.
 
 \begin{table}[H]
 \centering
-\caption{Best Model Performance Across Key Metrics}
-\label{tab:best_model}
-\begin{tabular}{|l|l|l|}
+\caption{Model Comparison for Sentiment Analysis (Best-performing features applied)}
+\label{tab:model_comparison}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{||c|c|c|c|c|c||}
 \hline
-\textbf{Metric} & \textbf{Model} & \textbf{Value} \\ \hline
-\textbf{Accuracy} & Logistic Regression (Count) & 0.7557 \\ \hline
-\textbf{Precision} & MLP (Count) & 0.8126 \\ \hline
-\textbf{Recall} & CNN-LSTM & 0.8486 \\ \hline
-\textbf{F1-score} & Logistic Regression (Count) & 0.7726 \\ \hline
-\textbf{ROC AUC} & Logistic Regression (Count) & 0.8297 \\ \hline
+\textbf{Model} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\
+\hline
+HMM & 0.5141 & 0.4997 & 0.6697 & 0.5156 & 0.9552 \\
+Bayesian Network & 0.6495 & 0.7143 & 0.6875 & 0.6364 & 0.7476 \\
+LDA (Word2Vec) & 0.7160 & 0.7846 & 0.7290 & 0.7127 & 0.7461 \\
+Logistic Regression (TF-IDF) & \textbf{0.7527} & \textbf{0.8299} & \textbf{0.7681} & 0.7413 & 0.7968 \\
+XGB (Word2Vec) & 0.7168 & 0.7146 & 0.7495 & 0.7316 & 0.7942 \\
+Random Forest (CountVectorizer) & 0.7300 & 0.8000 & 0.7600 & 0.7000 & 0.8200 \\
+BiLSTM with CRF & 0.7092 & 0.7082 & 0.7326 & 0.6853 & 0.7868 \\
+Stacking (Selected Models) & 0.7451 & 0.7431 & 0.7657 & 0.7270 & 0.8087 \\
+Voting (Multiple Logistic Regressions) & 0.7373 & 0.7356 & 0.7268 & 0.7232 & 0.7938 \\
+\hline
 \end{tabular}
 \end{table}
 
-The best-performing model based on accuracy, F1-score, and ROC AUC is \textbf{Logistic Regression} (Count Vectorizer). However, \textbf{CNN-LSTM} achieves the highest recall, making it suitable for applications where recall is the priority. Tree-based models like \textbf{Random Forest} and \textbf{XGBoost} also show strong performance and could be considered when computational efficiency is a concern.
+\textbf{Discussion:} Logistic Regression with TF-IDF emerges as the best performer across metrics, closely followed by ensemble-based models like Random Forest and Stacking. HMM, while achieving high recall, shows poor ROC AUC and overall balance.
 
-\subsection{Type I and Type II Error Considerations}
+\subsection{Discussion on Feature Selection and Dimensionality Reduction Methods}
 
-Sentiment analysis models must balance two types of errors:
+\subsubsection{Chi-Squared Feature Selection}
+
+As shown in Table~\ref{tab:full_results}, Chi-Squared feature selection enhances the performance of models by selecting features that are most statistically correlated with the sentiment class labels. This univariate method is particularly beneficial for high-dimensional sparse data like TF-IDF or CountVectorizer outputs.
+
+${}$\\
+\textbf{Model Analysis:} 
+
+Tree-based models such as \textbf{Random Forest (Accuracy = 0.5986, F1 = 0.6718)} and \textbf{XGBoost (Accuracy = 0.6005, F1 = 0.6686)} exhibit excellent synergy with Chi-Squared features, demonstrating their robustness in handling structured, selected input. \textbf{Perceptron-TFIDF}, on the other hand, shows poor F1 score despite high precision (Precision = 0.6233, F1 = 0.3114), likely due to overfitting on low-frequency selected features.
+
+${}$\\
+\textbf{Comparison with Theory:} 
+
+Chi-Squared aligns with theoretical expectations—effective in eliminating irrelevant features and enhancing performance of linear and ensemble models that assume feature independence or separability.
+
+\textbf{Limitations:}
 
 \begin{itemize}
-    \item \textbf{Type I Error (False Positives):} Occurs when neutral or negative sentiments are misclassified as positive. This can mislead businesses, causing them to overestimate customer satisfaction. Models with high precision, such as \textbf{Random Forest} and \textbf{Logistic Regression}, help mitigate this issue.
-    
-    \item \textbf{Type II Error (False Negatives):} Occurs when positive sentiments are misclassified as negative. This can result in missed opportunities for companies to identify positive trends. \textbf{CNN-LSTM}, with its high recall, minimizes this risk by ensuring that positive sentiments are correctly identified.
-    
-    \item \textbf{Balancing the Errors:} The \textbf{Logistic Regression} model offers a strong trade-off between precision and recall, making it a balanced choice for sentiment classification. On the other hand, \textbf{CNN-LSTM} is more recall-focused, making it suitable for applications where detecting positive sentiment is more critical.
-    
-    \item \textbf{Impact on Real-World Applications:} Selecting the right model depends on the application's needs. For customer feedback analysis, a high-precision model prevents false alarms about negative sentiments. In contrast, for social media monitoring, a high-recall model ensures no positive trends are overlooked.
+    \item May discard semantically important but statistically rare features.
+    \item Ignores feature interaction effects, which can reduce contextual understanding in complex models.
 \end{itemize}
 
-\subsection{Conclusion}
+\textbf{Use-case Fit:}
 
-The results indicate that \textbf{Logistic Regression} (Count Vectorizer) is the most balanced model for sentiment classification, offering the best accuracy, F1-score, and ROC AUC. However, \textbf{CNN-LSTM} is the best choice for maximizing recall, making it useful for applications where missing positive sentiments is costly. 
-
-For real-world applications:
 \begin{itemize}
-    \item \textbf{Logistic Regression} is ideal for general-purpose sentiment analysis due to its balance of precision and recall.
-    \item \textbf{Random Forest} and \textbf{XGBoost} provide strong alternatives with high precision and efficiency.
-    \item \textbf{CNN-LSTM} is best suited for cases where identifying positive sentiment is critical.
+    \item Suitable for rapid prototyping or production pipelines using traditional models like Logistic Regression, SVM, or XGBoost.
+    \item Less effective in deep or contextual models requiring nuanced semantic relationships.
 \end{itemize}
 
-In summary, the trade-off between accuracy, recall, and computational efficiency must be considered when selecting the best model for sentiment analysis.
+\subsubsection{Topic Modeling Feature Selection}
+
+Table~\ref{tab:topic_modeling_results} shows the application of LDA-based topic modeling for feature selection. This approach attempts to reduce dimensionality while preserving semantic structure by selecting features tied to dominant latent topics.
+
+${}$\\
+\textbf{Model Analysis:} 
+
+\textbf{Random Forest (Accuracy = 0.5760, ROC AUC = 0.6091)} and \textbf{MLP (F1 = 0.5912)} show improved contextual robustness with topic-based features, suggesting they can capture topic distribution patterns well. However, linear models such as \textbf{Logistic Regression} and \textbf{SVM} offer moderate gains, while \textbf{Perceptron-TFIDF} lags behind due to underutilization of latent structures.
+
+${}$\\
+\textbf{Comparison with Theory:} 
+
+As expected, models capable of learning from dense, semantically-clustered data (e.g., MLP and Random Forest) align well with topic model output. Feature coherence across documents helps reinforce pattern learning.
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Quality of topic extraction heavily depends on preprocessing and corpus size.
+    \item Some features may be generic across classes, reducing discriminative power.
+\end{itemize}
+
+\textbf{Use-case Fit:}
+
+\begin{itemize}
+    \item Effective for thematic or long-document sentiment classification.
+    \item Less suitable for microtext or domain-specific applications with fine-grained labels.
+\end{itemize}
+
+\subsubsection{Variance Threshold Feature Selection}
+
+Also reflected in Table~\ref{tab:full_results}, variance thresholding removes features with minimal value change across documents, assuming that these are less informative.
+
+${}$\\
+\textbf{Model Analysis:} 
+
+\textbf{MLP} and \textbf{XGBoost} continue to benefit by focusing only on highly active features, as their architectures adapt well to compressed input spaces. \textbf{Naïve Bayes} shows less consistent performance since it relies on full feature distributions for probabilistic modeling.
+
+${}$\\
+\textbf{Comparison with Theory:} 
+
+This method supports the theoretical assumption that low-variance features do not contribute significantly to model decision boundaries. Models that thrive on dense signals (e.g., MLP, XGBoost) are favored.
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Eliminates features that may appear rarely but carry strong sentiment signals (e.g., "hate", "never").
+    \item Can degrade generative or probabilistic models that depend on count statistics.
+\end{itemize}
+
+\textbf{Use-case Fit:}
+
+\begin{itemize}
+    \item Ideal for real-time sentiment systems with limited memory or storage budgets.
+    \item Not recommended in legal or clinical sentiment tasks where low-frequency terms carry weight.
+\end{itemize}
+
+\subsubsection{PCA (Principal Component Analysis)}
+
+Table~\ref{tab:pca-testing} displays results using PCA as a dimensionality reduction technique. PCA transforms feature spaces into orthogonal components ranked by variance contribution.
+
+${}$\\
+\textbf{Model Analysis:} 
+
+\textbf{XGBoost-TFIDF (Accuracy = 0.5622, F1 = 0.6275, ROC AUC = 0.5781)} performs best among PCA-enabled models, benefiting from its ensemble structure's resilience to feature transformation. However, most models—especially \textbf{Perceptron (Count)} and \textbf{Logistic Regression}—see reduced F1 scores compared to non-PCA setups.
+
+${}$\\
+\textbf{Comparison with Theory:} 
+
+PCA’s decorrelation of features helps suppress noise and redundancy. Yet, transformation into latent components hurts interpretability and weakens model alignment with the original semantic structure of TF-IDF/Count features.
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Loss of direct feature meaning limits explainability.
+    \item Decreased performance in models relying on lexical-level granularity.
+\end{itemize}
+
+\textbf{Use-case Fit:}
+
+\begin{itemize}
+    \item Suitable for storage-constrained applications or embedding pipelines.
+    \item Not ideal where interpretability or word-level insights are critical (e.g., education, legal).
+\end{itemize}
+
+\subsubsection{Raw TF-IDF and CountVectorizer (Without PCA)}
+
+Table~\ref{tab:testing-count-tfidf} reveals the strongest results across all feature methods, using raw uncompressed TF-IDF and CountVectorizer representations.
+
+${}$\\
+\textbf{Model Analysis:} 
+
+\textbf{Logistic Regression (Count)} achieves state-of-the-art Accuracy = \textbf{0.7557} and F1 = \textbf{0.7726}, closely followed by \textbf{MLP} and \textbf{XGBoost}. These results reinforce the effectiveness of sparse high-dimensional features for linear and shallow neural models.
+
+${}$\\
+\textbf{Comparison with Theory:} 
+
+TF-IDF and CountVectorizer maintain lexical and frequency signals, directly feeding interpretable input into models. This favors methods like Logistic Regression, which capitalize on such token-level sparsity.
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item High dimensionality increases training time and risk of overfitting.
+    \item Less suitable for deployment on low-resource environments.
+\end{itemize}
+
+\textbf{Use-case Fit:}
+
+\begin{itemize}
+    \item Recommended for applications requiring transparency, accuracy, and speed.
+    \item Avoid in low-latency or mobile environments unless dimensionality is reduced.
+\end{itemize}
+
+\subsubsection{GloVe Embedding Features}
+
+In Table~\ref{tab:glove_results} (Table 5.17), models trained on GloVe pre-trained embeddings—dense vectors capturing global co-occurrence—show remarkable generalization.
+
+${}$\\
+\textbf{Model Analysis:} 
+
+\textbf{XGBoost (Accuracy = 0.7198, F1 = 0.7321, ROC AUC = 0.7939)} and \textbf{Logistic Regression (F1 = 0.7281)} lead in performance. These models benefit from GloVe’s contextual strength, yielding both syntactic and semantic cues.
+
+${}$\\
+\textbf{Comparison with Theory:} 
+
+GloVe aligns with modern embedding theory: mapping similar words close in space and preserving co-occurrence patterns. Its effectiveness in general-purpose sentiment tasks is reaffirmed here.
+
+\textbf{Limitations:}
+
+\begin{itemize}
+    \item Cannot adapt to domain-specific vocabulary (e.g., technical jargon).
+    \item Needs preprocessing alignment (tokenization, padding).
+\end{itemize}
+
+\textbf{Use-case Fit:}
+
+\begin{itemize}
+    \item Strong choice for multilingual, general-topic sentiment analysis with pretrained knowledge.
+    \item Not recommended where domain-specific embeddings (e.g., BioBERT, FinBERT) would yield better results.
+\end{itemize}
+
+\subsection{Comparison with Theory}
+
+\begin{itemize}
+    \item \textbf{Logistic Regression:} Strong performance with TF-IDF matches its theoretical efficiency on linearly separable data.
+    \item \textbf{Random Forest / XGBoost:} Their robustness to feature noise is confirmed under different feature methods.
+    \item \textbf{LDA:} Works well with topic-coherent inputs but is weaker than discriminative models.
+    \item \textbf{BiLSTM-CRF:} Expected to model sequence well, but limited data may hinder performance.
+    \item \textbf{HMM / Bayesian Networks:} These models underperform due to oversimplified assumptions and data sparsity.
+    \item \textbf{Ensemble Methods:} Theoretical stability is reflected in consistent, high-performing results.
+\end{itemize}
+
+\subsection{Limitation Discussion}
+
+\textbf{General:}
+
+\begin{itemize}
+    \item Dataset size and class imbalance impact complex models.
+    \item Feature methods vary in ability to capture contextual meaning.
+\end{itemize}
+
+\textbf{Model-specific:}
+
+\begin{itemize}
+    \item \textbf{HMM, Bayesian:} Struggle with sparse and high-dimensional data.
+    \item \textbf{LDA:} Assumes overly simplistic distributions.
+    \item \textbf{Logistic Regression:} Can fail on non-linear data.
+    \item \textbf{Random Forest / XGBoost:} Need hyperparameter tuning to avoid noise sensitivity.
+    \item \textbf{BiLSTM-CRF:} Requires large datasets to avoid overfitting.
+    \item \textbf{Stacking/Voting:} Performance depends on base learners; may add complexity.
+\end{itemize}
+
+\subsection{Use-case Fit Analysis}
+
+\textbf{Best suited for:}
+
+\begin{itemize}
+    \item \textbf{Logistic Regression (TF-IDF):} Fast, interpretable, production-ready.
+    \item \textbf{Random Forest / XGBoost:} Strong generalization for nonlinear tasks.
+    \item \textbf{Stacking / Voting:} High-stability applications.
+    \item \textbf{BiLSTM-CRF:} Context-sensitive tasks with ample data.
+\end{itemize}
+
+\textbf{Less suitable for:}
+
+\begin{itemize}
+    \item \textbf{HMM, Bayesian Networks:} Weak on modern, sparse textual features.
+    \item \textbf{LDA:} Poor for non-topic-focused classification.
+\end{itemize}
 
 \newpage

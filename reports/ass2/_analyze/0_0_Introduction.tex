@@ -1,8 +1,8 @@
 Before training machine learning models on a dataset and making predictions on a test set, a crucial step involves transforming the raw text data into a numerical representation that the models can effectively learn from. Specifically, we need to convert text into vectors of numbers. This section details the approach used for feature building.
 
-\subsection{Building Features}
+\section{Building Features}
 
-\subsubsection{Overview}
+\subsection{Overview}
 
 In this project, a dedicated class called \texttt{FeatureBuilder} has been designed to handle the feature extraction and transformation process. This class encapsulates various methods for converting text data into numerical features suitable for machine learning models.
 
@@ -84,7 +84,7 @@ class FeatureBuilder:
         return self.transform(texts)  
 \end{lstlisting}
 
-\subsubsection{Key Components and Functionalities}
+\subsection{Key Components and Functionalities}
 
 The \texttt{FeatureBuilder} class incorporates the following key components:
 
@@ -94,23 +94,33 @@ The \texttt{FeatureBuilder} class incorporates the following key components:
     \item \textbf{Model Persistence:} Provides functionalities to save and load fitted vectorizers, models, and dimensionality reduction objects for later use.
 \end{itemize}
 
-\subsubsection{Usage}
+\subsection{Usage}
 
 The \texttt{FeatureBuilder} class is initialized with a specified feature engineering method, save directory, dimensionality reduction method, and the number of components for dimensionality reduction. It then uses this configuration to fit and transform the text data into numerical feature matrices, which can be used as inputs for training machine learning models.
 
-\subsection{General Training Methods}
+\section{General Training Methods}
 
 In this section, we analyze the training process of various machine learning models used for sentiment analysis. The goal is to assess their performance, convergence behavior, and overall effectiveness in classifying sentiments accurately. By studying training logs, we gain insights into model behavior, parameter optimization, and potential improvements.
 
 The models under consideration include:
+
 \begin{itemize}
-    \item \textbf{MODELS} – Description
-    \item \textbf{MODELS} – Description
-    \item \textbf{MODELS} – Description
-    \item \textbf{MODELS} – Description
-    \item \textbf{MODELS} – Description
-    \item \textbf{MODELS} – Description
-    \item \textbf{MODELS} – Description
-    \item \textbf{MODELS} – Description
+    \item \textbf{Chi-squared + Topic Modeling (LDA) + Variance Thresholding} – This approach combines statistical feature selection methods such as Chi-squared test and variance thresholding with topic modeling via Latent Dirichlet Allocation (LDA). It is used to reduce dimensionality and extract interpretable features before feeding them into classifiers.
+    
+    \item \textbf{Principal Component Analysis (PCA)} – PCA is a linear dimensionality reduction technique that transforms original features into a smaller set of uncorrelated components, preserving most of the variance. It helps reduce overfitting and improve training efficiency.
+    
+    \item \textbf{Conditional Random Fields (CRF)} – CRF is a sequence modeling technique that considers contextual dependencies between labels. It is particularly useful in modeling structured output sequences and was used in this study to capture sequential sentiment patterns at the token level.
+    
+    \item \textbf{Latent Dirichlet Allocation (LDA)} – LDA is a generative probabilistic model for discovering latent topics in a corpus. In sentiment analysis, it is often applied to uncover abstract topics from text data, which can enhance interpretability and feature representation.
+    
+    \item \textbf{Support Vector Machine (SVM)} – SVM is a supervised learning model that aims to find the optimal hyperplane separating classes with maximum margin. It is widely used in text classification for its robustness in high-dimensional spaces.
+    
+    \item \textbf{Stacking and Voting Classifiers} – Ensemble methods like stacking and voting combine multiple base classifiers to improve generalization. Stacking learns a meta-model on top of base learners, while voting aggregates predictions through majority or weighted schemes.
+    
+    \item \textbf{Logistic Regression, XGBoost, and Random Forest} – These are powerful supervised classifiers. Logistic regression models the probability of classes, XGBoost is a gradient boosting framework known for its speed and accuracy, and Random Forest is an ensemble of decision trees that reduces variance and improves prediction reliability.
+    
+    \item \textbf{Hidden Markov Model (HMM) and Bayesian Networks} – HMM is a probabilistic model for sequential data, assuming hidden state transitions. Bayesian Networks model probabilistic relationships among variables and are useful for incorporating domain knowledge into the sentiment classification task.
 \end{itemize}
+
+
 

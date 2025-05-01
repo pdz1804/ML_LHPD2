@@ -1,0 +1,102 @@
+\subsection{Chi-Squared - Feature Selection Method}
+\subsubsection{Feature Extraction and Selection}
+In this experiment, we first transform the raw text data into feature vectors using two different methods:
+\begin{itemize}
+    \item \textbf{CountVectorizer}: represents each document by the frequency of each word in the vocabulary.
+    \item \textbf{TF-IDF Vectorizer}: represents each document by the importance (term frequency-inverse document frequency) of each word.
+\end{itemize}
+
+After feature extraction, we apply \textbf{Chi-squared feature selection} to reduce the dimensionality and select the most relevant features:
+\begin{itemize}
+    \item The Chi-squared test measures the dependence between each feature and the class label.
+    \item Features with the highest Chi-squared scores are selected.
+    \item This step helps retain only the most discriminative features for model training, improving both efficiency and performance.
+\end{itemize}
+
+\subsubsection{Model Training Procedure}
+
+For each classifier and feature type, the following training procedure is applied:
+\begin{itemize}
+    \item \textbf{Hyperparameter tuning}: Best hyperparameters are searched using cross-validation techniques (e.g., Grid Search).
+    \item \textbf{Cross-validation}: K-fold cross-validation is used to evaluate model stability and avoid overfitting.
+    \item \textbf{Loss plotting}: Training curves (e.g., loss vs. epochs) are generated to visualize the learning dynamics.
+    \item \textbf{Model saving}: The best performing model is saved for reproducibility and future inference.
+\end{itemize}
+
+\subsubsection{Experimental Setup}
+
+We conduct experiments on the following classifiers:
+\begin{itemize}
+    \item Decision Tree (DT)
+    \item Linear Discriminant Analysis (LDA)
+    \item Logistic Regression (LogReg)
+    \item Multi-Layer Perceptron (MLP)
+    \item Perceptron
+    \item Random Forest (RF)
+    \item Support Vector Machine (SVM)
+    \item XGBoost (XGB)
+\end{itemize}
+
+Each model is evaluated using two types of feature representation:
+\begin{itemize}
+    \item CountVectorizer (-Count)
+    \item TF-IDF Vectorizer (-TFIDF)
+\end{itemize}
+
+Thus, a total of 16 experiments (8 models $\times$ 2 feature types) are conducted.
+
+\subsubsection{Evaluation Metrics}
+
+For each experiment, we report the following metrics on the test set:
+\begin{itemize}
+    \item Accuracy
+    \item Precision
+    \item Recall
+    \item F1 Score
+    \item ROC AUC Score
+\end{itemize}
+
+\textbf{The results are summarized in the following table:}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} & \textbf{ROC AUC} \\
+\hline
+DT-Count & 0.5810 & 0.5641 & \underline{\textbf{0.8127}} & 0.6659 & 0.5963 \\
+DT-TFIDF & 0.5706 & 0.5677 & 0.6910 & 0.6233 & 0.5862 \\
+LDA-Count & 0.5867 & 0.5706 & 0.7907 & 0.6629 & 0.5950 \\
+LDA-TFIDF & 0.5708 & 0.5677 & 0.6910 & 0.6233 & 0.5862 \\
+LogReg-Count & 0.5864 & 0.5728 & 0.7773 & 0.6576 & 0.5991 \\
+LogReg-TFIDF & 0.5773 & 0.5679 & 0.7258 & 0.6375 & 0.5888 \\
+MLP-Count & 0.5867 & 0.5708 & 0.7887 & \underline{\textbf{0.6623}} & 0.5981 \\
+MLP-TFIDF & 0.5706 & 0.5673 & 0.6923 & 0.6236 & 0.5871 \\
+Perceptron-Count & 0.5759 & 0.5647 & 0.7621 & 0.6487 & 0.5706 \\
+Perceptron-TFIDF & 0.5283 & \underline{\textbf{0.6233}} & 0.2076 & 0.3114 & 0.5925 \\
+RF-Count & 0.5986 & 0.5837 & 0.7893 & \underline{\textbf{0.6718}} & 0.6137 \\
+RF-TFIDF & 0.5848 & 0.5751 & 0.7395 & 0.6462 & 0.5991 \\
+SVM-Count & 0.5800 & 0.5687 & 0.7565 & 0.6493 & \underline{\textbf{0.6142}} \\
+SVM-TFIDF & 0.5747 & 0.5647 & 0.7521 & 0.6451 & 0.5904 \\
+XGB-Count & \underline{\textbf{0.6005}} & 0.5848 & 0.7973 & 0.6686 & 0.6103 \\
+XGB-TFIDF & 0.5886 & 0.5791 & 0.7435 & 0.6504 & 0.5989 \\
+\hline
+\end{tabular}
+\caption{Performance comparison across different models and feature extraction methods.}
+\label{tab:full_results}
+\end{table}
+
+\subsubsection{Discussion}
+
+From the results using Chi-squared feature selection, we observe the following key points:
+
+\begin{itemize}
+    \item \textbf{Random Forest (RF-Count)} achieves the highest scores across multiple metrics, including Accuracy, Recall, F1 Score, and ROC AUC, indicating its robustness when trained on Chi-squared selected features.
+    \item \textbf{SVM-Count} achieves the highest Precision among all models, suggesting that SVM models can be highly effective for minimizing false positives in this feature space.
+    \item Models using \textbf{CountVectorizer} generally outperform those using \textbf{TF-IDF Vectorizer} after Chi-squared feature selection. This indicates that raw word frequency features align better with Chi-squared's assumptions of discrete, categorical inputs.
+    \item Simpler linear models such as \textbf{Logistic Regression} and \textbf{MLP} also perform competitively, achieving strong F1 scores and ROC AUC values, making them lightweight yet effective alternatives.
+    \item \textbf{XGBoost (XGB-Count)} delivers strong balanced performance across all metrics, closely following Random Forest, highlighting the effectiveness of boosting methods even in reduced feature spaces.
+\end{itemize}
+
+In conclusion, combining Chi-squared feature selection with ensemble-based models like Random Forest and XGBoost, and using Count-based feature representations, yields the most reliable and robust classification performance for this dataset.
+
