@@ -1,0 +1,182 @@
+\section{Model: Support Vector Machine (SVM)}
+
+\subsection{Introduction}
+This report analyzes the performance of the Support Vector Machine (SVM) model trained using various embedding methods. The model was implemented using the \texttt{SVC} class from \texttt{scikit-learn} with different kernel functions and hyperparameter configurations. The primary objective was to achieve high classification accuracy while maintaining robust generalization across different embedding techniques.
+
+\subsection{Training Configuration}
+The SVM model was trained with the following hyperparameter search space:
+\begin{itemize}
+    \item \textbf{Kernel}: \texttt{linear}, \texttt{rbf}, \texttt{poly}, \texttt{sigmoid}.
+    \item \textbf{Regularization Parameter} (\texttt{C}): 0.1, 1.0, 10.0.
+    \item \textbf{Gamma}: \texttt{scale}, \texttt{auto}.
+\end{itemize}
+
+The best hyperparameters selected based on model evaluation were:
+\begin{itemize}
+    \item \textbf{Kernel}: \texttt{linear}
+    \item \textbf{C}: 0.1 (for Count, Word2Vec, GloVe), 1.0 (for TF-IDF)
+    \item \textbf{Gamma}: \texttt{scale}
+\end{itemize}
+
+\subsection{Training and Evaluation Results}
+The model was trained and evaluated using K-Fold Cross-Validation across different feature extraction methods: Count Vectorizer, TF-IDF, Word2Vec, and GloVe. The best model was selected based on Accuracy, with secondary considerations for F1-score and ROC AUC.
+
+\textbf{Training Performance Metrics:}
+
+\begin{table}[H]
+    \centering
+    \caption{Training Performance Metrics for SVM}
+    \label{tab:svm-training-metrics}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
+        \hline
+        Count Vectorizer & 0.71 & 0.70 & 0.73 & 0.68 & 0.79 \\ 
+        \hline
+        TF-IDF & 0.70 & 0.70 & 0.71 & 0.69 & 0.74 \\ 
+        \hline
+        Word2Vec & 0.71 & 0.71 & 0.72 & 0.71 & 0.74 \\ 
+        \hline
+        GloVe & 0.71 & 0.71 & 0.71 & 0.71 & 0.72 \\ 
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Testing Performance Metrics:}
+
+\begin{table}[H]
+    \centering
+    \caption{Testing Performance Metrics for SVM}
+    \label{tab:svm-testing-metrics}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
+        \hline
+        Count Vectorizer & 0.7060 & 0.7770 & 0.7325 & 0.6857 & 0.7861 \\ 
+        \hline
+        TF-IDF & 0.6880 & 0.7663 & 0.7040 & 0.6845 & 0.7246 \\ 
+        \hline
+        Word2Vec & 0.7160 & 0.7846 & 0.7290 & 0.7127 & 0.7461 \\ 
+        \hline
+        GloVe & 0.6945 & 0.7693 & 0.7030 & 0.6999 & 0.7061 \\ 
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Best Model Selection Criteria:}
+
+\begin{itemize}
+    \item The best model is chosen based on testing performance rather than training performance.
+    \item The selection priority follows: Accuracy > F1 Score > ROC AUC.
+    \item Based on this criterion, the best model is:
+\end{itemize}
+
+\begin{verbatim}
+{
+    "method": "word2vec",
+    "model": "svm",
+    "hyperparameters": { "C": 0.1, "gamma": "scale", "kernel": "linear" },
+    "performance": {
+        "accuracy": 0.7160,
+        "precision": 0.7127,
+        "recall": 0.7461,
+        "f1": 0.7290,
+        "roc_auc": 0.7846
+    }
+}
+\end{verbatim}
+
+\textbf{Conclusion:} The SVM model trained with Word2Vec embeddings achieved the highest accuracy (0.7160) and the best overall balance across F1-score and ROC AUC, making it the optimal choice for sentiment classification in our experiment when it comes to SVM.
+
+\subsection{Performance Analysis}
+\begin{itemize}
+    \item \textbf{Accuracy Analysis}: The model trained on Word2Vec achieved the highest accuracy (71.60\%), outperforming Count Vectorizer, TF-IDF, and GloVe embeddings.
+    \item \textbf{Kernel Effectiveness}: The linear kernel consistently performed best across all embedding methods.
+    \item \textbf{ROC AUC}: The model exhibited strong class differentiation with ROC AUC scores ranging from 76.63\% to 78.46\%.
+    \item \textbf{Precision and Recall}: The Word2Vec model maintained a good balance with precision of 71.27\% and recall of 74.61\%.
+    \item \textbf{Embedding Comparison}: Word2Vec performed best, while GloVe showed the lowest performance among embedding methods.
+\end{itemize}
+
+\subsection{Visualization of Training Results}
+The following figures illustrate the model's performance across different embedding techniques:
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_count_loss.png}
+        \caption{Loss Curve - Count Vectorizer}
+        \label{fig:svm-count-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_tfidf_loss.png}
+        \caption{Loss Curve - TF-IDF}
+        \label{fig:svm-tfidf-loss}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_word2vec_loss.png}
+        \caption{Loss Curve - Word2Vec}
+        \label{fig:svm-word2vec-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_glove_loss.png}
+        \caption{Loss Curve - GloVe}
+        \label{fig:svm-glove-loss}
+    \end{subfigure}
+    
+    \caption{Comparison of Loss Curves for SVM across Different Feature Extraction Methods}
+    \label{fig:svm-loss-group}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_count.png}
+        \caption{Performance - Count Vectorizer}
+        \label{fig:svm-count}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_tfidf.png}
+        \caption{Performance - TF-IDF}
+        \label{fig:svm-tfidf}
+    \end{subfigure}
+    
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_word2vec.png}
+        \caption{Performance - Word2Vec}
+        \label{fig:svm-word2vec}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_3_SVM/best_svm_glove.png}
+        \caption{Performance - GloVe}
+        \label{fig:svm-glove}
+    \end{subfigure}
+    
+    \caption{Comparison of Training Performance Metrics for SVM across Different Feature Extraction Methods}
+    \label{fig:svm-performance-group}
+\end{figure}
+
+\textbf{Image Description:}
+
+\begin{itemize}
+    \item \textbf{Training and Validation Loss Analysis:}
+    \begin{itemize}
+        \item Word2Vec shows the most stable validation loss across folds.
+        \item Count Vectorizer exhibits higher variance in validation performance.
+        \item All methods show convergence in training loss.
+    \end{itemize}
+    
+    \item \textbf{Validation Performance Metrics:}
+    \begin{itemize}
+        \item Word2Vec achieves the highest and most consistent accuracy and ROC AUC.
+        \item Count Vectorizer shows higher recall but lower precision.
+        \item TF-IDF demonstrates moderate but stable performance.
+        \item GloVe has the lowest performance consistency across metrics.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Conclusion}
+
+The SVM model performed best with Word2Vec embeddings, achieving an accuracy of 71.60\%. The linear kernel proved most effective across all embedding methods. While the model showed good generalization (ROC AUC of 78.46\%), its overall performance was slightly lower than Logistic Regression. Future improvements could include: Experimenting with non-linear kernels and custom embedding dimensions...
+
+Overall, the SVM model with Word2Vec features provides a robust alternative for sentiment classification, particularly when interpretability of linear decision boundaries is desired.

@@ -2,15 +2,30 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Github Repository Structure}}{10}{figure.caption.8}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Github Repository Structure}}{15}{figure.caption.8}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Distribution of Target Variable}}{19}{figure.caption.9}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Overall Text Cleaned Length Distribution}}{20}{figure.caption.10}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Distribution of Raw Text Lengths}}{20}{figure.caption.11}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Pairwise Relationships}}{22}{figure.caption.12}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Top 20 of entire dataset}}{23}{figure.caption.13}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Top 20 of class Positive}}{23}{figure.caption.14}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Top 20 of class Negative}}{24}{figure.caption.15}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Word Frequency by Sentiment}}{26}{figure.caption.18}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Comparision of Word Frequency}}{27}{figure.caption.19}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Distribution of Target Variable}}{24}{figure.caption.9}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Overall Text Cleaned Length Distribution}}{25}{figure.caption.10}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Distribution of Raw Text Lengths}}{25}{figure.caption.11}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Pairwise Relationships}}{27}{figure.caption.12}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Top 20 of entire dataset}}{28}{figure.caption.13}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Top 20 of class Positive}}{28}{figure.caption.14}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Top 20 of class Negative}}{29}{figure.caption.15}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Word Frequency by Sentiment}}{31}{figure.caption.18}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Comparision of Word Frequency}}{32}{figure.caption.19}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Comparison of Loss Curves for SVM across Different Feature Extraction Methods}}{49}{figure.caption.24}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Comparison of Training Performance Metrics for SVM across Different Feature Extraction Methods}}{50}{figure.caption.25}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Loss Curve - LDA with Count Vectorizer}}{53}{figure.caption.28}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Performance Metrics - LDA with Count Vectorizer}}{54}{figure.caption.29}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Comparison of Loss Curves for Logistic Regression across Different Feature Extraction Methods}}{57}{figure.caption.32}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Comparison of Training Performance Metrics for Logistic Regression across Different Feature Extraction Methods}}{58}{figure.caption.33}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Loss Curves for XGBoost across Different Feature Extraction Methods}}{62}{figure.caption.36}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Comparison of Training Performance Metrics for XGBoost across Different Feature Extraction Methods}}{63}{figure.caption.37}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Comparison of Loss Curves for Random Forest across Different Feature Extraction Methods}}{66}{figure.caption.40}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Comparison of Training Performance Metrics for Random Forest across Different Feature Extraction Methods}}{67}{figure.caption.41}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Learning Curves for Classification Models (Part 1)}}{83}{figure.caption.51}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Learning Curves for Classification Models (Part 2)}}{84}{figure.caption.52}%
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Best Performance Metrics for Each Classification Model (Count Vectorizer and TF-IDF Methods)}}{85}{figure.caption.54}%
+\addvspace {10\p@ }
 \addvspace {10\p@ }

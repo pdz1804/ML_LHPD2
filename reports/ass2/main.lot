@@ -4,3 +4,35 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Testing Performance Metrics for Hidden Markov Model}}{42}{table.caption.20}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Testing Performance Metrics for Bayesian Network}}{45}{table.caption.21}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces Training Performance Metrics for SVM}}{47}{table.caption.22}%
+\contentsline {table}{\numberline {5.4}{\ignorespaces Testing Performance Metrics for SVM}}{47}{table.caption.23}%
+\contentsline {table}{\numberline {5.5}{\ignorespaces Training Performance Metrics for LDA}}{52}{table.caption.26}%
+\contentsline {table}{\numberline {5.6}{\ignorespaces Testing Performance Metrics for LDA}}{52}{table.caption.27}%
+\contentsline {table}{\numberline {5.7}{\ignorespaces Training Performance Metrics for Logistic Regression}}{55}{table.caption.30}%
+\contentsline {table}{\numberline {5.8}{\ignorespaces Testing Performance Metrics for Logistic Regression}}{56}{table.caption.31}%
+\contentsline {table}{\numberline {5.9}{\ignorespaces Training Performance Metrics for XGBoost}}{60}{table.caption.34}%
+\contentsline {table}{\numberline {5.10}{\ignorespaces Testing Performance Metrics for XGBoost}}{60}{table.caption.35}%
+\contentsline {table}{\numberline {5.11}{\ignorespaces Training Performance Metrics for Random Forest (Cross-Validation)}}{65}{table.caption.38}%
+\contentsline {table}{\numberline {5.12}{\ignorespaces Testing Performance Metrics for Random Forest}}{65}{table.caption.39}%
+\contentsline {table}{\numberline {5.13}{\ignorespaces Testing Performance Metrics for BiLSTM with CRF}}{69}{table.caption.42}%
+\contentsline {table}{\numberline {5.14}{\ignorespaces Testing Classification Report for BiLSTM with CRF}}{70}{table.caption.43}%
+\contentsline {table}{\numberline {5.15}{\ignorespaces Performance comparison across different models and feature extraction methods.}}{73}{table.caption.44}%
+\contentsline {table}{\numberline {5.16}{\ignorespaces Performance comparison across different models and feature extraction methods with Topic Modeling Feature Selection.}}{76}{table.caption.45}%
+\contentsline {table}{\numberline {5.17}{\ignorespaces Model performances using GloVe feature extraction and feature selection}}{79}{table.caption.46}%
+\contentsline {table}{\numberline {5.18}{\ignorespaces Training Performance Metrics (With PCA)}}{81}{table.caption.47}%
+\contentsline {table}{\numberline {5.19}{\ignorespaces Testing Performance Metrics (With PCA)}}{81}{table.caption.48}%
+\contentsline {table}{\numberline {5.20}{\ignorespaces Training Performance Metrics (Count \& TF-IDF without PCA)}}{82}{table.caption.49}%
+\contentsline {table}{\numberline {5.21}{\ignorespaces Testing Performance Metrics (Count \& TF-IDF without PCA)}}{82}{table.caption.50}%
+\contentsline {table}{\numberline {5.22}{\ignorespaces Training and Testing Performance of Stacking Multiple Logistic Regression}}{89}{table.caption.55}%
+\contentsline {table}{\numberline {5.23}{\ignorespaces Testing Classification Report for Stacking Multiple Logistic Regression}}{89}{table.caption.56}%
+\contentsline {table}{\numberline {5.24}{\ignorespaces Training and Testing Performance of Stacking Selected Models}}{91}{table.caption.57}%
+\contentsline {table}{\numberline {5.25}{\ignorespaces Testing Classification Report for Stacking Selected Models}}{91}{table.caption.58}%
+\contentsline {table}{\numberline {5.26}{\ignorespaces Training and Testing Performance of Voting Multiple Logistic Regression}}{94}{table.caption.59}%
+\contentsline {table}{\numberline {5.27}{\ignorespaces Testing Classification Report for Voting Multiple Logistic Regression}}{94}{table.caption.60}%
+\contentsline {table}{\numberline {5.28}{\ignorespaces Training and Testing Performance of Voting Selected Models}}{95}{table.caption.61}%
+\contentsline {table}{\numberline {5.29}{\ignorespaces Testing Classification Report for Voting Selected Models}}{96}{table.caption.62}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Model Comparison for Sentiment Analysis (Best-performing features applied)}}{107}{table.caption.63}%
+\addvspace {10\p@ }

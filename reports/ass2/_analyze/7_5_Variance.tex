@@ -1,0 +1,83 @@
+\subsection{Variance - Feature Selection Method}
+\subsubsection{Feature Extraction and Selection}
+
+In this experiment, we first transform the raw text data into dense feature vectors using the \textbf{GloVe} embedding method:
+\begin{itemize}
+    \item Each document is represented as a dense vector capturing semantic information from word embeddings.
+\end{itemize}
+
+After feature extraction, we apply Variance Threshold feature selection to reduce dimensionality and retain the most informative features:
+\begin{itemize}
+    \item The Variance Threshold method removes features with variance lower than a specified threshold (0.01 in this experiment).
+    \item Features with sufficient variability across samples are kept.
+    \item This step helps eliminate non-informative features and improve both computational efficiency and model performance.
+\end{itemize}
+
+\subsubsection{Model Training Procedure}
+
+For each classifier and feature type, the following training procedure is applied:
+\begin{itemize}
+    \item \textbf{Hyperparameter tuning:} Best hyperparameters are searched using cross-validation techniques (e.g., Grid Search).
+    \item \textbf{Cross-validation:} K-fold cross-validation is used to evaluate model stability and avoid overfitting.
+    \item \textbf{Loss plotting:} Training curves (e.g., loss vs. epochs) are generated to visualize the learning dynamics.
+    \item \textbf{Model saving:} The best performing model is saved for reproducibility and future inference.
+\end{itemize}
+
+\subsubsection{Experimental Setup}
+
+The models trained in this study include:
+\begin{itemize}
+    \item Decision Tree (DT)
+    \item Linear Discriminant Analysis (LDA)
+    \item Logistic Regression (LogReg)
+    \item Multi-Layer Perceptron (MLP)
+    \item Perceptron
+    \item Random Forest (RF)
+    \item Support Vector Machine (SVM)
+    \item XGBoost (XGB)
+    \item Gaussian Naive Bayes (GNB)
+\end{itemize}
+
+All models use features extracted by \textbf{GloVe}. We refer to models as \texttt{ModelName-glove}, e.g., \texttt{DT-glove}, \texttt{MLP-glove}, etc.
+
+
+\subsubsection{Evaluation Metrics}
+
+For each experiment, we evaluate models based on:
+\begin{itemize}
+    \item Accuracy
+    \item Precision
+    \item Recall
+    \item F1 Score
+    \item ROC AUC
+\end{itemize}
+
+\textbf{The results are summarized in the following table:}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1 Score} & \textbf{ROC AUC} \\
+\midrule
+DT-glove & 0.6124 & 0.6215 & 0.6286 & 0.6250 & 0.6528 \\
+LDA-glove & 0.6881 & 0.6888 & 0.7115 & 0.6999 & 0.7591 \\
+LogReg-glove & 0.7147 & 0.7134 & 0.7434 & 0.7281 & 0.\textbf{\underline{7876}} \\
+MLP-glove & 0.6975 & 0.7047 & 0.7029 & 0.7038 & 0.7658 \\
+Perceptron-glove & 0.6450 & 0.6615 & 0.6259 & 0.6432 & 0.7023 \\
+RF-glove & 0.6901 & 0.6876 & 0.7274 & 0.7069 & 0.7649 \\
+SVM-glove & 0.6919 & 0.6946 & 0.7090 & 0.7018 & 0.7596 \\
+XG-glove & \textbf{\underline{0.7198}} & \textbf{\underline{0.7197}} & \textbf{\underline{0.7449}} & \textbf{\underline{0.7321}} & \textbf{\underline{7939}} \\
+GNB-glove & 0.6221 & 0.6403 & 0.6039 & 0.6216 & 0.6707 \\
+\bottomrule
+\end{tabular}
+\caption{Model performances using GloVe feature extraction and feature selection}
+\end{table}
+
+\subsubsection{Discussion}
+From the results, it can be observed that:
+\begin{itemize}
+    \item \textbf{XGBoost-glove} outperformed all other models across almost all evaluation metrics.
+    \item Logistic Regression and MLP also showed competitive performance, especially in terms of ROC AUC and F1 Score.
+    \item Traditional models such as Decision Tree and Gaussian Naive Bayes performed relatively lower, confirming the advantage of more complex classifiers.
+\end{itemize}

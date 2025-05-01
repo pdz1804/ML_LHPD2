@@ -1,0 +1,166 @@
+#####################################
+SVM
+#####################################
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+🚀 Training svm models...
+
+2025-04-18 09:12:39,721 - INFO - 🔎 Training with Method: count...
+2025-04-18 09:12:39,722 - INFO - 🚀 Training new model: SVC...
+2025-04-18 09:29:46,591 - INFO - Best hyperparameters: {'C': 0.1, 'gamma': 'scale', 'kernel': 'linear'}
+2025-04-18 09:29:46,593 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-18 09:38:04,488 - INFO - 📊 Average Accuracy: 71%
+2025-04-18 09:38:04,489 - INFO - 📊 Average ROC AUC: 70%
+2025-04-18 09:38:04,490 - INFO - 📊 Average F1 Score: 73%
+2025-04-18 09:38:04,491 - INFO - 📊 Average Precision: 68%
+2025-04-18 09:38:04,492 - INFO - 📊 Average Recall: 79%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-04-18 10:12:42,923 - INFO - 🔎 Predicting with Model: svm, Method: count...
+2025-04-18 10:13:13,058 - INFO - Model: svm
+2025-04-18 10:13:13,059 - INFO - Method: count
+2025-04-18 10:13:13,060 - INFO - --------------------------------------------------
+2025-04-18 10:13:13,060 - INFO - Accuracy: 0.7060
+2025-04-18 10:13:13,061 - INFO - Precision: 0.6857
+2025-04-18 10:13:13,061 - INFO - Recall: 0.7861
+2025-04-18 10:13:13,062 - INFO - F1 Score: 0.7325
+2025-04-18 10:13:13,063 - INFO - ROC AUC: 0.7769530249423668
+2025-04-18 10:13:13,064 - INFO - 
+🔬 Classification Report:
+2025-04-18 10:13:13,071 - INFO -               precision    recall  f1-score   support
+
+    negative       0.73      0.62      0.67       976
+    positive       0.69      0.79      0.73      1024
+
+    accuracy                           0.71      2000
+   macro avg       0.71      0.70      0.70      2000
+weighted avg       0.71      0.71      0.70      2000
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+
+2025-04-18 09:39:10,434 - INFO - 🔎 Training with Method: tfidf...
+2025-04-18 09:39:10,436 - INFO - 🚀 Training new model: SVC...
+2025-04-18 09:58:25,787 - INFO - Best hyperparameters: {'C': 1, 'gamma': 'scale', 'kernel': 'linear'}
+2025-04-18 09:58:25,788 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-18 10:06:07,068 - INFO - 📊 Average Accuracy: 70%
+2025-04-18 10:06:07,069 - INFO - 📊 Average ROC AUC: 70%
+2025-04-18 10:06:07,070 - INFO - 📊 Average F1 Score: 71%
+2025-04-18 10:06:07,071 - INFO - 📊 Average Precision: 69%
+2025-04-18 10:06:07,072 - INFO - 📊 Average Recall: 74%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-04-18 10:13:13,072 - INFO - 🔎 Predicting with Model: svm, Method: tfidf...
+2025-04-18 10:13:40,890 - INFO - Model: svm
+2025-04-18 10:13:40,891 - INFO - Method: tfidf
+2025-04-18 10:13:40,891 - INFO - --------------------------------------------------
+2025-04-18 10:13:40,892 - INFO - Accuracy: 0.6880
+2025-04-18 10:13:40,893 - INFO - Precision: 0.6845
+2025-04-18 10:13:40,893 - INFO - Recall: 0.7246
+2025-04-18 10:13:40,894 - INFO - F1 Score: 0.7040
+2025-04-18 10:13:40,895 - INFO - ROC AUC: 0.7662773757684426
+2025-04-18 10:13:40,895 - INFO - 
+🔬 Classification Report:
+2025-04-18 10:13:40,903 - INFO -               precision    recall  f1-score   support
+
+    negative       0.69      0.65      0.67       976
+    positive       0.68      0.72      0.70      1024
+
+    accuracy                           0.69      2000
+   macro avg       0.69      0.69      0.69      2000
+weighted avg       0.69      0.69      0.69      2000
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+
+2025-04-18 10:06:53,321 - INFO - 🔎 Training with Method: word2vec...
+2025-04-18 10:06:53,324 - INFO - 🚀 Training new model: SVC...
+2025-04-18 10:08:40,300 - INFO - Best hyperparameters: {'C': 0.1, 'gamma': 'scale', 'kernel': 'linear'}
+2025-04-18 10:08:40,301 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-18 10:09:25,183 - INFO - 📊 Average Accuracy: 71%
+2025-04-18 10:09:25,183 - INFO - 📊 Average ROC AUC: 71%
+2025-04-18 10:09:25,184 - INFO - 📊 Average F1 Score: 72%
+2025-04-18 10:09:25,185 - INFO - 📊 Average Precision: 71%
+2025-04-18 10:09:25,185 - INFO - 📊 Average Recall: 74%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-04-18 10:13:40,904 - INFO - 🔎 Predicting with Model: svm, Method: word2vec...
+2025-04-18 10:13:43,420 - INFO - Model: svm
+2025-04-18 10:13:43,420 - INFO - Method: word2vec
+2025-04-18 10:13:43,421 - INFO - --------------------------------------------------
+2025-04-18 10:13:43,422 - INFO - Accuracy: 0.7160
+2025-04-18 10:13:43,423 - INFO - Precision: 0.7127
+2025-04-18 10:13:43,423 - INFO - Recall: 0.7461
+2025-04-18 10:13:43,424 - INFO - F1 Score: 0.7290
+2025-04-18 10:13:43,425 - INFO - ROC AUC: 0.7846189405097337
+2025-04-18 10:13:43,426 - INFO - 
+🔬 Classification Report:
+2025-04-18 10:13:43,432 - INFO -               precision    recall  f1-score   support
+
+    negative       0.72      0.68      0.70       976
+    positive       0.71      0.75      0.73      1024
+
+    accuracy                           0.72      2000
+   macro avg       0.72      0.72      0.72      2000
+weighted avg       0.72      0.72      0.72      2000
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+----------------------------------------------------------------------
+
+2025-04-18 10:09:32,110 - INFO - 🔎 Training with Method: glove...
+2025-04-18 10:09:32,111 - INFO - 🚀 Training new model: SVC...
+2025-04-18 10:11:30,824 - INFO - Best hyperparameters: {'C': 0.1, 'gamma': 'scale', 'kernel': 'linear'}
+2025-04-18 10:11:30,825 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-18 10:12:13,787 - INFO - 📊 Average Accuracy: 71%
+2025-04-18 10:12:13,788 - INFO - 📊 Average ROC AUC: 71%
+2025-04-18 10:12:13,789 - INFO - 📊 Average F1 Score: 71%
+2025-04-18 10:12:13,790 - INFO - 📊 Average Precision: 71%
+2025-04-18 10:12:13,790 - INFO - 📊 Average Recall: 72%
+
+----------------------------------------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+----------------------------------------------------------------------
+
+2025-04-18 10:13:43,433 - INFO - 🔎 Predicting with Model: svm, Method: glove...
+2025-04-18 10:13:45,887 - INFO - Model: svm
+2025-04-18 10:13:45,888 - INFO - Method: glove
+2025-04-18 10:13:45,889 - INFO - --------------------------------------------------
+2025-04-18 10:13:45,890 - INFO - Accuracy: 0.6945
+2025-04-18 10:13:45,891 - INFO - Precision: 0.6999
+2025-04-18 10:13:45,892 - INFO - Recall: 0.7061
+2025-04-18 10:13:45,893 - INFO - F1 Score: 0.7030
+2025-04-18 10:13:45,894 - INFO - ROC AUC: 0.7692791047643442
+2025-04-18 10:13:45,895 - INFO - 
+🔬 Classification Report:
+2025-04-18 10:13:45,908 - INFO -               precision    recall  f1-score   support
+
+    negative       0.69      0.68      0.69       976
+    positive       0.70      0.71      0.70      1024
+
+    accuracy                           0.69      2000
+   macro avg       0.69      0.69      0.69      2000
+weighted avg       0.69      0.69      0.69      2000
+
+2025-04-18 10:13:45,908 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-18 10:13:45,909 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

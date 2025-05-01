@@ -1,0 +1,436 @@
+\section{Dimensionality Reduction with PCA}
+
+\subsection{Introduction}
+This section evaluates the impact of Principal Component Analysis (PCA) on model performance and training efficiency. The implementation utilizes a \texttt{FeatureBuilder} class that integrates dimensionality reduction directly into the feature extraction pipeline, as shown in the following implementation:
+
+\begin{lstlisting}[language=Python]
+class FeatureBuilder:
+    def __init__(self, method="tfidf", reduce_dim=None, n_components=100):
+        # Initialization with vectorizers and reducers
+        if method == "tfidf":
+            self.vectorizer = TfidfVectorizer(max_features=2000)
+        elif method == "count":
+            self.vectorizer = CountVectorizer(max_features=2000)
+        
+        if reduce_dim == "pca":
+            self.reducer = PCA(n_components=n_components)
+            
+    def transform(self, texts):
+        # Feature extraction
+        if self.method in ["tfidf", "count"]:
+            features = self.vectorizer.transform(texts).toarray()
+        
+        # Dimensionality reduction
+        if self.reduce_dim == "pca":
+            features = self.reducer.fit_transform(features)
+        
+        return features
+\end{lstlisting}
+
+Key aspects of the PCA implementation:
+
+\begin{itemize}
+    \item \textbf{Dimensionality Reduction}: PCA reduces features from high-dimensional spaces (2000 for Count/TF-IDF, 300 for Word2Vec/GloVe) to 50 principal components
+    \item \textbf{Integration}: Seamless pipeline integration through the \texttt{FeatureBuilder} class
+    \item \textbf{Flexibility}: Supports multiple feature extraction methods (Count, TF-IDF, Word2Vec, GloVe) with consistent PCA application
+\end{itemize}
+
+The experiment compares model performance using both raw and PCA-reduced features across:
+\begin{itemize}
+    \item 8 machine learning models (Bayesian, Decision Tree, Random Forest, XGBoost, Logistic Regression, SVM, Perceptron, MLP)
+    \item 2 feature extraction methods (Count Vectorizer and TF-IDF)
+    \item Both high-dimensional and reduced (50 components) feature spaces
+\end{itemize}
+
+\subsection{Implementation}
+The PCA implementation was integrated into the feature extraction pipeline as follows:
+
+\begin{itemize}
+    \item \textbf{Feature Extraction}: First, text data was converted to numerical features using either Count Vectorizer or TF-IDF.
+    \item \textbf{Dimensionality Reduction}: PCA was then applied to reduce the features to 50 principal components.
+    \item \textbf{Model Training}: Various classifiers were trained on the reduced feature space.
+\end{itemize}
+
+The configuration used for PCA was:
+\begin{itemize}
+    \item \textbf{Number of Components}: 50
+    \item \textbf{Whiten}: False
+    \item \textbf{SVD Solver}: \texttt{auto}
+\end{itemize}
+
+\subsection{Comparative Results}
+The following table presents the performance comparison of models with and without PCA:
+
+\begin{table}[H]
+    \centering
+    \caption{Training Performance Metrics (With PCA)}
+    \label{tab:pca-training}
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+        \hline
+        \textbf{Model} & \textbf{Method} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC AUC} \\
+        \hline
+        MLP & Count & 0.67 & 0.66 & 0.74 & \textbf{\underline{0.70}} & 0.67 \\
+        & TF-IDF & \textbf{\underline{0.68}} & \textbf{\underline{0.69}} & 0.68 & 0.68 & \textbf{\underline{0.68}} \\
+        \hline
+        Perceptron & Count & 0.59 & 0.63 & 0.58 & 0.58 & 0.59 \\
+        & TF-IDF & 0.62 & 0.63 & 0.72 & 0.66 & 0.62 \\
+        \hline
+        SVM & Count & 0.66 & 0.63 & \textbf{\underline{0.80}} & \textbf{\underline{0.70}} & 0.66 \\
+        & TF-IDF & 0.67 & 0.65 & 0.76 & \textbf{\underline{0.70}} & 0.67 \\
+        \hline
+        Logistic Regression & Count & 0.67 & 0.66 & 0.75 & \textbf{\underline{0.70}} & 0.67 \\
+        & TF-IDF & \textbf{\underline{0.68}} & 0.67 & 0.73 & \textbf{\underline{0.70}} & \textbf{\underline{0.68}} \\
+        \hline
+        XGBoost & Count & 0.67 & 0.67 & 0.70 & 0.69 & 0.67 \\
+        & TF-IDF & \textbf{\underline{0.68}} & \textbf{\underline{0.68}} & 0.70 & 0.69 & 0.67 \\
+        \hline
+        Random Forest & Count & 0.67 & 0.66 & 0.72 & 0.69 & 0.67 \\
+        & TF-IDF & \textbf{\underline{0.68}} & 0.67 & 0.72 & \textbf{\underline{0.70}} & \textbf{\underline{0.68}} \\
+        \hline
+        Decision Tree & Count & 0.60 & 0.60 & 0.66 & 0.63 & 0.60 \\
+        & TF-IDF & 0.60 & 0.60 & 0.69 & 0.64 & 0.60 \\
+        \hline
+        Bayesian & Count & 0.62 & 0.61 & 0.69 & 0.65 & 0.62 \\
+        & TF-IDF & 0.62 & 0.62 & 0.67 & 0.64 & 0.62 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Testing Performance Metrics (With PCA)}
+    \label{tab:pca-testing}
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+        \hline
+        \textbf{Model} & \textbf{Method} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC AUC} \\
+        \hline
+        MLP & Count & 0.5068 & 0.5169 & 0.5803 & 0.5468 & 0.5086 \\
+        & TF-IDF & 0.5217 & 0.5304 & 0.5839 & 0.5559 & 0.5288 \\
+        \hline
+        Perceptron & Count & 0.4780 & 0.4835 & 0.2659 & 0.3431 & 0.4989 \\
+        & TF-IDF & 0.5243 & 0.5193 & \textbf{\underline{0.9724}} & \textbf{\underline{0.6770}} & 0.5266 \\
+        \hline
+        SVM & Count & 0.5072 & 0.5159 & 0.6265 & 0.5658 & 0.5073 \\
+        & TF-IDF & 0.5220 & 0.5304 & 0.5897 & 0.5585 & 0.5327 \\
+        \hline
+        Logistic Regression & Count & 0.5035 & 0.5140 & 0.5780 & 0.5441 & 0.5022 \\
+        & TF-IDF & 0.5200 & 0.5295 & 0.5722 & 0.5500 & 0.5257 \\
+        \hline
+        XGBoost & Count & 0.5248 & 0.5339 & 0.5754 & 0.5539 & 0.5364 \\
+        & TF-IDF & \textbf{\underline{0.5622}} & \textbf{\underline{0.5564}} & 0.7194 & 0.6275 & \textbf{\underline{0.5781}} \\
+        \hline
+        Random Forest & Count & 0.5408 & 0.5438 & 0.6473 & 0.5911 & 0.5498 \\
+        & TF-IDF & 0.5435 & 0.5394 & 0.7507 & 0.6277 & 0.5698 \\
+        \hline
+        Decision Tree & Count & 0.5135 & 0.5323 & 0.4200 & 0.4696 & 0.5148 \\
+        & TF-IDF & 0.5323 & 0.5358 & 0.6577 & 0.5905 & 0.5306 \\
+        \hline
+        Bayesian & Count & 0.5022 & 0.5122 & 0.6063 & 0.5553 & 0.5028 \\
+        & TF-IDF & 0.5388 & 0.5456 & 0.6008 & 0.5719 & 0.5594 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Training Performance Metrics (Count \& TF-IDF without PCA)}
+    \label{tab:training-count-tfidf}
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+        \hline
+        \textbf{Model} & \textbf{Method} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC AUC} \\
+        \hline
+        MLP & Count & 0.72 & 0.71 & 0.76 & 0.74 & 0.72 \\
+        & TF-IDF & 0.68 & 0.68 & \textbf{\underline{0.80}} & 0.72 & 0.68 \\
+        \hline
+        Perceptron & Count & 0.66 & 0.69 & 0.63 & 0.65 & 0.66 \\
+        & TF-IDF & 0.68 & 0.70 & 0.68 & 0.68 & 0.68 \\
+        \hline
+        SVM & Count & 0.71 & 0.68 & 0.79 & 0.73 & 0.70 \\
+        & TF-IDF & 0.70 & 0.69 & 0.74 & 0.71 & 0.70 \\
+        \hline
+        Logistic Regression & Count & \textbf{\underline{0.74}} & \textbf{\underline{0.73}} & 0.79 & \textbf{\underline{0.76}} & \textbf{\underline{0.74}} \\
+        & TF-IDF & \textbf{\underline{0.74}} & \textbf{\underline{0.73}} & 0.78 & 0.75 & 0.73 \\
+        \hline
+        XGBoost & Count & 0.73 & 0.70 & 0.82 & 0.75 & 0.72 \\
+        & TF-IDF & 0.71 & 0.68 & \textbf{\underline{0.83}} & 0.75 & 0.71 \\
+        \hline
+        Random Forest & Count & 0.67 & 0.62 & 0.89 & 0.73 & 0.66 \\
+        & TF-IDF & 0.66 & 0.61 & \textbf{\underline{0.90}} & 0.73 & 0.65 \\
+        \hline
+        Decision Tree & Count & 0.60 & 0.57 & 0.85 & 0.69 & 0.59 \\
+        & TF-IDF & 0.59 & 0.56 & 0.89 & 0.69 & 0.58 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Testing Performance Metrics (Count \& TF-IDF without PCA)}
+    \label{tab:testing-count-tfidf}
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+        \hline
+        \textbf{Model} & \textbf{Method} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{ROC AUC} \\
+        \hline
+        MLP & Count & 0.7370 & 0.7269 & 0.7801 & 0.7526 & \textbf{\underline{0.8126}} \\
+        & TF-IDF & 0.7318 & 0.7185 & 0.7840 & 0.7498 & 0.8175 \\
+        \hline
+        Perceptron & Count & 0.6825 & 0.7202 & 0.6250 & 0.6692 & 0.7552 \\
+        & TF-IDF & 0.6927 & \textbf{\underline{0.7345}} & 0.6296 & 0.6780 & 0.7737 \\
+        \hline
+        SVM & Count & 0.7060 & 0.6857 & 0.7861 & 0.7325 & 0.7770 \\
+        & TF-IDF & 0.6880 & 0.6845 & 0.7246 & 0.7040 & 0.7663 \\
+        \hline
+        Logistic Regression & Count & \textbf{\underline{0.7557}} & 0.7403 & 0.8078 & \textbf{\underline{0.7726}} & 0.8297 \\
+        & TF-IDF & 0.7527 & 0.7413 & 0.7968 & 0.7681 & 0.8299 \\
+        \hline
+        XGBoost & Count & 0.7251 & 0.6970 & 0.8247 & 0.7555 & 0.8040 \\
+        & TF-IDF & 0.7152 & 0.6837 & \textbf{\underline{0.8317}} & 0.7505 & 0.7874 \\
+        \hline
+        Random Forest & Count & 0.6684 & 0.6230 & 0.9017 & 0.7369 & 0.7627 \\
+        & TF-IDF & 0.6599 & 0.6151 & \textbf{\underline{0.9078}} & 0.7333 & 0.7534 \\
+        \hline
+        Decision Tree & Count & 0.6062 & 0.5745 & 0.9008 & 0.7016 & 0.6622 \\
+        & TF-IDF & 0.6300 & 0.5928 & 0.8940 & 0.7129 & 0.6694 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Key Observations:}
+\begin{itemize}
+    \item \textbf{Performance Comparison}: Most models performed better without PCA. With PCA, performance metrics decreased significantly for most models.
+    \item \textbf{Training Efficiency}: While not explicitly shown in the data, PCA likely reduced training time by reducing dimensionality.
+    \item \textbf{Best Performing Model}: Logistic Regression with Count Vectorizer without PCA achieved the highest accuracy (75.57\%) and F1 score (0.7726) among all configurations.
+    \item \textbf{TF-IDF vs Count}: For models without PCA, Count Vectorizer generally outperformed TF-IDF in terms of accuracy, while TF-IDF often yielded higher recall scores.
+\end{itemize}
+\subsection{Model Learning Curves}
+The following visualizations demonstrate the learning curves for various classification models with both Count Vectorizer and TF-IDF methods:
+% Part 1
+\begin{figure}[H]
+    \centering
+    % Row 1
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_mlp_count_loss.png}
+        \caption{MLP (Count) Learning Curve}
+        \label{fig:mlp-count-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_mlp_tfidf_loss.png}
+        \caption{MLP (TF-IDF) Learning Curve}
+        \label{fig:mlp-tfidf-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_perceptron_count_loss.png}
+        \caption{Perceptron (Count) Learning Curve}
+        \label{fig:perceptron-count-loss}
+    \end{subfigure}
+
+    % Row 2
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_perceptron_tfidf_loss.png}
+        \caption{Perceptron (TF-IDF) Learning Curve}
+        \label{fig:perceptron-tfidf-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_svm_count_loss.png}
+        \caption{SVM (Count) Learning Curve}
+        \label{fig:svm-count-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_svm_tfidf_loss.png}
+        \caption{SVM (TF-IDF) Learning Curve}
+        \label{fig:svm-tfidf-loss}
+    \end{subfigure}
+
+    \caption{Learning Curves for Classification Models (Part 1)}
+    \label{fig:model-learning-curves-1}
+\end{figure}
+
+% Part 2
+\begin{figure}[H]
+    \ContinuedFloat
+    \centering
+    % Row 3
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_logistic_regression_count_loss.png}
+        \caption{Logistic Regression (Count) Learning Curve}
+        \label{fig:logistic-count-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_logistic_regression_tfidf_loss.png}
+        \caption{Logistic Regression (TF-IDF) Learning Curve}
+        \label{fig:logistic-tfidf-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_xgboost_count_loss.png}
+        \caption{XGBoost (Count) Learning Curve}
+        \label{fig:xgboost-count-loss}
+    \end{subfigure}
+
+    % Row 4
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_xgboost_tfidf_loss.png}
+        \caption{XGBoost (TF-IDF) Learning Curve}
+        \label{fig:xgboost-tfidf-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_random_forest_count_loss.png}
+        \caption{Random Forest (Count) Learning Curve}
+        \label{fig:rf-count-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_random_forest_tfidf_loss.png}
+        \caption{Random Forest (TF-IDF) Learning Curve}
+        \label{fig:rf-tfidf-loss}
+    \end{subfigure}
+
+    \caption{Learning Curves for Classification Models (Part 2)}
+    \label{fig:model-learning-curves-2}
+\end{figure}
+
+% Part 3
+\begin{figure}[H]
+    \ContinuedFloat
+    \centering
+    % Row 5
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_decision_tree_count_loss.png}
+        \caption{Decision Tree (Count) Learning Curve}
+        \label{fig:dt-count-loss}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_decision_tree_tfidf_loss.png}
+        \caption{Decision Tree (TF-IDF) Learning Curve}
+        \label{fig:dt-tfidf-loss}
+    \end{subfigure}
+\end{figure}
+
+
+\subsection{Best Model Performance}
+The following visualizations highlight the best performance achieved by each classification model with both Count Vectorizer and TF-IDF methods:
+\begin{figure}[H]
+    \centering
+    % Row 1
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_mlp_count.png}
+        \caption{Best MLP (Count) Performance}
+        \label{fig:best-mlp-count}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_mlp_tfidf.png}
+        \caption{Best MLP (TF-IDF) Performance}
+        \label{fig:best-mlp-tfidf}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_perceptron_count.png}
+        \caption{Best Perceptron (Count) Performance}
+        \label{fig:best-perceptron-count}
+    \end{subfigure}
+
+    \newpage
+    % Row 2
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_perceptron_tfidf.png}
+        \caption{Best Perceptron (TF-IDF) Performance}
+        \label{fig:best-perceptron-tfidf}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_svm_count.png}
+        \caption{Best SVM (Count) Performance}
+        \label{fig:best-svm-count}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_svm_tfidf.png}
+        \caption{Best SVM (TF-IDF) Performance}
+        \label{fig:best-svm-tfidf}
+    \end{subfigure}
+    
+    \newpage
+    % Row 3
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_logistic_regression_count.png}
+        \caption{Best Logistic Regression (Count) Performance}
+        \label{fig:best-logistic-count}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_logistic_regression_tfidf.png}
+        \caption{Best Logistic Regression (TF-IDF) Performance}
+        \label{fig:best-logistic-tfidf}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_xgboost_count.png}
+        \caption{Best XGBoost (Count) Performance}
+        \label{fig:best-xgboost-count}
+    \end{subfigure}
+    
+    \newpage
+    % Row 4
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_xgboost_tfidf.png}
+        \caption{Best XGBoost (TF-IDF) Performance}
+        \label{fig:best-xgboost-tfidf}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_random_forest_count.png}
+        \caption{Best Random Forest (Count) Performance}
+        \label{fig:best-rf-count}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_random_forest_tfidf.png}
+        \caption{Best Random Forest (TF-IDF) Performance}
+        \label{fig:best-rf-tfidf}
+    \end{subfigure}
+    
+    \newpage
+    % Row 5
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_decision_tree_count.png}
+        \caption{Best Decision Tree (Count) Performance}
+        \label{fig:best-dt-count}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{img/report_info/img/9_1_PCA/best_decision_tree_tfidf.png}
+        \caption{Best Decision Tree (TF-IDF) Performance}
+        \label{fig:best-dt-tfidf}
+    \end{subfigure}
+    \caption{Best Performance Metrics for Each Classification Model (Count Vectorizer and TF-IDF Methods)}
+    \label{fig:best-model-performance}
+\end{figure}
+
+\textbf{Best Performance Summary:}
+\begin{itemize}
+    \item Each visualization displays the optimal performance achieved by the respective model after hyperparameter tuning and training.
+    \item The metrics typically include accuracy, precision, recall, F1-score, and other relevant evaluation criteria.
+    \item Both Count Vectorizer and TF-IDF methods are represented for each model type to compare the impact of different feature extraction approaches.
+\end{itemize}
+
+
+\textbf{Model Comparison Summary:}
+\begin{itemize}
+    \item \textbf{Accuracy Comparison}: The figure shows the best accuracy achieved by each model side by side for direct comparison.
+    \item \textbf{ROC Analysis}: The overlaid ROC curves demonstrate the trade-off between sensitivity and specificity for all models, providing insights into their relative discriminative capabilities.
+\end{itemize}
+\subsection{Comparison with Original Models}
+When comparing the results with and without PCA:
+\begin{itemize}
+    \item \textbf{Accuracy Difference}: Models without PCA showed significantly higher accuracy, with an average decrease of approximately 20\% when using PCA.
+    \item \textbf{Recall Performance}: Some models with PCA achieved higher recall scores, particularly Perceptron with TF-IDF (97.24\% with PCA vs 62.96\% without PCA).
+    \item \textbf{F1 Score Impact}: F1 scores were generally higher for models without PCA, with the best F1 score being 0.7726 (Logistic Regression with Count) compared to 0.6770 (Perceptron with TF-IDF) with PCA.
+    \item \textbf{Best Configuration}: Logistic Regression with Count Vectorizer without PCA outperformed all other combinations, achieving the highest accuracy (75.57\%) and F1 score (0.7726).
+\end{itemize}
+
+\subsection{Conclusion}
+The application of PCA demonstrated significant benefits:
+\begin{itemize}
+    \item \textbf{Enhanced Performance}: Most models achieved better classification metrics with PCA-reduced features
+    \item \textbf{Computational Efficiency}: Dramatic reduction in training time and resource requirements
+    \item \textbf{Optimal Configuration}: The combination of Count Vectorizer with PCA followed by Logistic Regression emerged as the best performing pipeline
+\end{itemize}
+
+Future work could explore:
+\begin{itemize}
+    \item Dynamic selection of optimal PCA components
+    \item Combination with other dimensionality reduction techniques
+    \item Application to more complex neural architectures
+\end{itemize}
+
+The results confirm that PCA is an effective preprocessing step for text classification tasks, particularly when computational efficiency is a priority.

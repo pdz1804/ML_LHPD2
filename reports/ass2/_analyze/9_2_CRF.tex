@@ -1,0 +1,127 @@
+\section{Model: BiLSTM with CRF}
+
+\subsection{Theory of BiLSTM and CRF}
+
+Bidirectional Long Short-Term Memory (BiLSTM) is a recurrent neural network architecture designed to model sequential data by processing input sequences in both forward and backward directions. This bidirectionality enables BiLSTM to capture contextual dependencies from past and future tokens, making it particularly effective for tasks like sentiment analysis, where understanding the full context of a sentence is crucial. The LSTM units mitigate the vanishing gradient problem, allowing the model to learn long-range dependencies in text.
+
+Conditional Random Fields (CRFs) are probabilistic models used for structured prediction, particularly in sequence labeling tasks. In the context of sentiment classification, a CRF layer models the joint probability of a tag sequence (e.g., positive or negative labels) given the input sequence, enforcing constraints on valid tag transitions (e.g., preventing invalid sequences like transitioning to a start tag). By integrating a CRF layer on top of BiLSTM outputs, the model combines BiLSTM’s rich feature extraction with CRF’s ability to optimize sequence-level predictions, resulting in a robust architecture for capturing complex textual patterns and dependencies.
+
+The BiLSTM-CRF combination is considered state-of-the-art for tasks requiring sequential understanding, as it leverages BiLSTM’s contextual feature learning and CRF’s structured output modeling to achieve superior performance compared to standalone models.
+
+\subsection{Introduction}
+
+This report evaluates the performance of a Bidirectional Long Short-Term Memory (BiLSTM) model combined with a Conditional Random Field (CRF) layer for sentiment classification. The BiLSTM model, renowned for its ability to capture complex sequential dependencies in text, is enhanced by the CRF layer, which acts as a sophisticated classifier to model tag sequence probabilities effectively. This architecture leverages the strengths of BiLSTM’s contextual feature extraction and CRF’s structured prediction, making it highly suitable for sentiment analysis tasks.
+
+\subsection{Training Configuration}
+
+The BiLSTM with CRF model was trained with the following hyperparameter configuration, optimized using Optuna for maximum F1-score:
+\begin{verbatim}
+{
+    "model": "BiLSTM_CRF",
+    "hyperparameters": {
+        "hidden_dim": 128,
+        "lr": 0.000430368798375161,
+        "embedding_dim": 100,
+        "max_length": 100,
+        "vocab_size": 10000,
+        "batch_size": 32,
+        "epochs": 30
+    }
+}
+\end{verbatim}
+
+Hyperparameter tuning was performed over the following search space:
+
+\begin{itemize}
+    \item \textbf{Hidden Dimension} (\texttt{hidden\_dim}): 64, 128, 192, 256.
+    \item \textbf{Learning Rate} (\texttt{lr}): $10^{-5}$ to $10^{-3}$ (log scale).
+\end{itemize}
+
+The model was trained using the Adam optimizer, with tokenization handled by a \texttt{Tokenizer} from \texttt{keras.preprocessing.text} and padding to a fixed sequence length. The CRF layer was configured with transition parameters to enforce valid tag sequences (e.g., preventing transitions to \texttt{<START>} or from \texttt{<STOP>}).
+
+\subsection{Training and Evaluation Results}
+
+The model was trained and evaluated using a train-validation-test split (80\%-20\%-20\%). The training process involved 30 epochs with early stopping based on validation loss. Performance was assessed using Accuracy, F1-score, Precision, Recall, and ROC AUC on the test set.
+
+\textbf{Testing Performance Metrics:}
+
+\begin{table}[H]
+    \centering
+    \caption{Testing Performance Metrics for BiLSTM with CRF}
+    \label{tab:bilstm-crf-testing-metrics}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        \textbf{Method} & \textbf{Accuracy} & \textbf{ROC AUC} & \textbf{F1} & \textbf{Precision} & \textbf{Recall} \\ 
+        \hline
+        BiLSTM with CRF & 0.7092 & 0.7082 & 0.7326 & 0.6853 & 0.7868 \\ 
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Testing Classification Report for BiLSTM with CRF}
+    \label{tab:bilstm-crf-classification-report}
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\ 
+        \hline
+        Negative & 0.74 & 0.63 & 0.68 \\ 
+        \hline
+        Positive & 0.69 & 0.79 & 0.73 \\ 
+        \hline
+        Macro Avg & 0.71 & 0.71 & 0.71 \\ 
+        \hline
+        Weighted Avg & 0.71 & 0.71 & 0.71 \\ 
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Best Model Selection Criteria:}
+
+\begin{itemize}
+    \item The model was selected based on testing performance, prioritizing F1-score for balanced precision and recall.
+    \item The selection priority follows: F1 Score > Accuracy > ROC AUC.
+    \item The best model configuration is:
+\end{itemize}
+
+\begin{verbatim}
+{
+    "method": "BiLSTM_CRF",
+    "model": "BiLSTM_CRF",
+    "hyperparameters": {
+        "hidden_dim": 128,
+        "lr": 0.000430368798375161,
+        "embedding_dim": 100,
+        "max_length": 100,
+        "vocab_size": 10000,
+        "batch_size": 32,
+        "epochs": 30
+    },
+    "performance": {
+        "accuracy": 0.7092,
+        "precision": 0.6853,
+        "recall": 0.7868,
+        "f1": 0.7326,
+        "roc_auc": 0.7082
+    }
+}
+\end{verbatim}
+
+\textbf{Conclusion:} The BiLSTM with CRF model achieved a test accuracy of 70.92\% and an F1-score of 73.26\%, demonstrating robust performance in sentiment classification. The CRF layer effectively enhanced the BiLSTM’s ability to model sequential dependencies, resulting in a balanced precision-recall tradeoff.
+
+\subsection{Performance Analysis}
+
+\begin{itemize}
+    \item \textbf{Accuracy Analysis}: The model achieved a test accuracy of 70.92\%, indicating effective sentiment classification, though slightly lower than traditional methods like Logistic Regression with Count Vectorizer.
+    \item \textbf{Loss Analysis}: The training and validation loss curves showed convergence over 30 epochs, with minimal overfitting, as evidenced by stable validation loss.
+    \item \textbf{ROC AUC}: With a ROC AUC of 70.82\%, the model demonstrates moderate discriminative ability between positive and negative sentiments.
+    \item \textbf{Precision and Recall}: The model achieved a precision of 68.53\% and a recall of 78.68\%, indicating a slight bias toward identifying positive sentiments (higher recall for Positive class).
+    \item \textbf{Model Effectiveness}: The BiLSTM’s bidirectional context modeling, combined with CRF’s structured prediction, effectively captured complex textual patterns, outperforming simpler sequence models in handling sentiment dependencies.
+\end{itemize}
+
+\subsection{Conclusion}
+
+The BiLSTM with CRF model, leveraging the sophisticated sequence modeling of BiLSTM and the structured prediction of CRF, achieved a test F1-score of 73.26\% and accuracy of 70.92\%. While it did not outperform simpler models like Logistic Regression with Count Vectorizer, its ability to capture complex sequential dependencies makes it a strong candidate for sentiment analysis tasks with intricate textual patterns. Future improvements could include experimenting with larger hidden dimensions or incorporating pre-trained embeddings like BERT to enhance feature representation.
+
+

@@ -1,0 +1,60 @@
+#####################################
+BiLSTM with CRF  
+
+Khi viết report về cái này nhớ nói dùm t một số ý sau (ghi dài giải thích ra)
+- lí do tại sao kh dùng LDA để giảm chiều như PCA --> do thằng LDA sẽ làm giảm số chiều xuống số lớp của nhãn (nếu có 2 lớp thì chỉ còn 1 chiều thôi)
+- LDA là supervised learning, trong khi PCA là unsupervised learning
+- LDA sẽ tìm ra các vector mà có thể phân loại tốt nhất giữa các lớp, trong khi PCA chỉ tìm ra các vector chính để giảm chiều mà không quan tâm đến nhãn
+
+==> kết luận chính vì những lí do như vậy nên nhóm đã chọn thằng LDA làm một classifier để phân loại như các model khác
+như DT Naive Bayes...
+
+#####################################
+🚀 Training lda models...
+--------------------------------------
+"lda": {
+    "solver": ["lsqr", "eigen"],
+    "shrinkage": [None, "auto"],  # Only used with 'lsqr' or 'eigen'
+    "tol": [1e-4, 1e-3, 1e-2]     # Tolerance for convergence
+},
+--------------------------------------
+PERFORMANCE METRICS DURING TRAINING 
+--------------------------------------
+2025-04-13 07:32:05,731 - INFO - 🔎 Training with Method: count...
+2025-04-13 07:32:05,732 - INFO - 🚀 Training new model: LinearDiscriminantAnalysis...
+2025-04-13 07:52:13,543 - INFO - Best hyperparameters: {'shrinkage': None, 'solver': 'lsqr', 'tol': 0.0001}
+2025-04-13 07:52:13,544 - INFO - 
+🎯 Running K-Fold Cross-Validation...
+2025-04-13 07:52:54,057 - INFO - 📊 Average Accuracy: 74%
+2025-04-13 07:52:54,058 - INFO - 📊 Average ROC AUC: 74%
+2025-04-13 07:52:54,059 - INFO - 📊 Average F1 Score: 76%
+2025-04-13 07:52:54,060 - INFO - 📊 Average Precision: 73%
+2025-04-13 07:52:54,061 - INFO - 📊 Average Recall: 80%
+
+2025-04-13 07:53:02,373 - INFO - 💾 Model saved to best_lda_count.pkl
+2025-04-13 07:53:02,555 - INFO - 📈 Plot saved to best_lda_count.png
+2025-04-13 07:53:02,683 - INFO - 📉 Loss plot saved to best_lda_count_loss.png
+2025-04-13 07:53:02,757 - INFO - 🔎 Predicting with Model: lda, Method: count...
+2025-04-13 07:53:03,101 - INFO - Model: lda
+--------------------------------------
+PERFORMANCE METRICS OF TESTING 
+- lúc trình bày trong report LATEX thì bỏ cột support đi nha
+--------------------------------------
+2025-04-13 07:53:03,104 - INFO - Accuracy: 0.7539
+2025-04-13 07:53:03,105 - INFO - Precision: 0.7358
+2025-04-13 07:53:03,105 - INFO - Recall: 0.8129
+2025-04-13 07:53:03,106 - INFO - F1 Score: 0.7724
+2025-04-13 07:53:03,106 - INFO - ROC AUC: 0.8292299998866131
+2025-04-13 07:53:03,108 - INFO - 
+🔬 Classification Report:
+2025-04-13 07:53:03,149 - INFO -               precision    recall  f1-score   support
+
+    negative       0.78      0.69      0.73      9723
+    positive       0.74      0.81      0.77     10277
+
+    accuracy                           0.75     20000
+   macro avg       0.76      0.75      0.75     20000
+weighted avg       0.76      0.75      0.75     20000
+
+2025-04-13 07:53:03,150 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+2025-04-13 07:53:03,150 - INFO - %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

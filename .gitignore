@@ -46,4 +46,45 @@ store.txt
 *.keras
 *.h5
 models/Ver02_25_02_25/trained/tuner_results/*
+models/Ver03_25_04_13/trained/tuner_results/*
 other/*
+
+# Ignore all auxiliary LaTeX build files
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+
+# Ignore temp swap/backup files from editors like VSCode, Vim, etc.
+*~
+*.swp
+*.bak
+*.tmp
+
+# Do not ignore your actual .tex files
+!*.tex
+
+# Do not ignore image files (for common formats)
+!*.png
+!*.jpg
+!*.jpeg
+!*.pdf
+!*.eps
+!*.svg
+
+# Ignore LaTeX build folder if using 'build' or 'output' directory
+build/
+output/
+
+# Ignore VSCode workspace settings (optional)
+.vscode/

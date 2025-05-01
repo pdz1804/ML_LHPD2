@@ -1,0 +1,178 @@
+\section{Model: Stacking}
+
+\subsection{Theory of Stacking}
+Stacking (Stacked Generalization) is an ensemble learning technique that combines predictions from multiple base models to improve predictive performance. Unlike simple ensemble methods like voting, stacking leverages a meta-model (or final estimator) to learn how to best combine the predictions of base models. The process involves two levels:
+\begin{itemize}
+    \item \textbf{Level-0 (Base Models)}: Diverse base models are trained on the original dataset, and their out-of-fold predictions (generated via cross-validation) form a new feature set.
+    \item \textbf{Level-1 (Meta-Model)}: A meta-model is trained on these out-of-fold predictions to produce the final prediction, effectively learning the optimal way to weigh and combine base model outputs.
+\end{itemize}
+Stacking is particularly effective when base models capture complementary patterns in the data, as the meta-model can exploit their strengths while mitigating individual weaknesses. This approach often outperforms individual models and simpler ensembles by reducing bias and variance.
+
+\subsection{Implementation}
+In this study, we implemented two stacking classifiers to enhance sentiment classification performance by combining multiple base models. The stacking process is managed by the \texttt{train\_stacking\_classifier} function, which operates as follows:
+
+\begin{itemize}
+    \item \textbf{Training}: The function accepts a dictionary of base model classes, their hyperparameters, training features (\texttt{X}), labels (\texttt{y}), a feature extraction method, and a final estimator (Logistic Regression by default). It performs 5-fold cross-validation to train base models, generating out-of-fold predictions. These predictions are used to train the final estimator. The function evaluates performance metrics (accuracy, ROC AUC, F1-score, precision, recall) during cross-validation, saves the trained model, and generates plots for performance and loss.
+    \item \textbf{Prediction}: The trained stacking classifier predicts on test features by combining base model predictions through the final estimator.
+\end{itemize}
+
+The pseudocode for the \texttt{train\_stacking\_classifier} function is as follows:
+
+\begin{algorithm}[H]
+\caption{ \texttt{train\_stacking\_classifier}}
+\begin{algorithmic}[1]
+\Procedure{TrainStackingClassifier}{model\_dict, param\_dict, feature\_method, X, y, final\_estimator, model\_save\_path, img\_save\_path, img\_loss\_path}
+    \If{file exists at model\_save\_path}
+        \State \Return load model from model\_save\_path
+    \EndIf
+    \State base\_models $\gets$ empty list
+    \For{each model\_name in model\_dict}
+        \State model $\gets$ instantiate model\_dict[model\_name] with param\_dict[model\_name]
+        \State append (model\_name, model) to base\_models
+        \State handle exceptions by skipping invalid models
+    \EndFor
+    \If{length of base\_models < 2}
+        \State \Return None
+    \EndIf
+    \State stacking\_clf $\gets$ StackingClassifier(base\_models, final\_estimator)
+    \State Initialize lists for accuracy, roc\_auc, f1, precision, recall, train\_loss, val\_loss
+    \State k\_fold $\gets$ KFold(n\_splits=5)
+    \For{each train\_idx, val\_idx in k\_fold.split(X)}
+        \State X\_train, X\_val $\gets$ X[train\_idx], X[val\_idx]
+        \State y\_train, y\_val $\gets$ y[train\_idx], y[val\_idx]
+        \State Fit stacking\_clf on X\_train, y\_train
+        \State Compute train\_loss and val\_loss using get\_training\_loss
+        \State Append losses to train\_loss, val\_loss
+        \State val\_preds $\gets$ stacking\_clf.predict(X\_val)
+        \State Append metrics (accuracy, roc\_auc, f1, precision, recall) for val\_preds, y\_val
+    \EndFor
+    \State Fit stacking\_clf on full X, y
+    \State Save stacking\_clf to model\_save\_path
+    \State Plot metrics and losses to img\_save\_path, img\_loss\_path
+    \State \Return stacking\_clf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Model 1: Stacking Multiple Logistic Regression}
+This model stacks five Logistic Regression models, each with identical hyperparameters but different random seeds for diversity. The rationale is to test whether combining multiple strong Logistic Regression models (identified as the best-performing in prior experiments) improves performance. The final estimator is a Logistic Regression model.
+
+\textbf{Hyperparameters:}
+\begin{verbatim}
+{
+    "model": "LogisticRegression",
+    "instances": 5,
+    "hyperparameters": {
+        "penalty": "l2",
+        "C": 0.1,
+        "max_iter": 3000,
+        "random_state": "range(0, 4)"
+    },
+    "final_estimator": "LogisticRegression"
+}
+\end{verbatim}
+
+\textbf{Performance Metrics:}
+\begin{table}[H]
+\centering
+\caption{Training and Testing Performance of Stacking Multiple Logistic Regression}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Metric} & \textbf{Training (Avg)} & \textbf{Testing} \\ \hline
+Accuracy & 0.7429 & 0.7363 \\ \hline
+ROC AUC & 0.7417 & 0.7348 \\ \hline
+F1 Score & 0.7585 & 0.7539 \\ \hline
+Precision & 0.7347 & 0.7258 \\ \hline
+Recall & 0.7840 & 0.7843 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Testing Classification Report for Stacking Multiple Logistic Regression}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
+0.0 & 0.75 & 0.69 & 0.72 \\ \hline
+1.0 & 0.73 & 0.78 & 0.75 \\ \hline
+Macro Avg & 0.74 & 0.73 & 0.73 \\ \hline
+Weighted Avg & 0.74 & 0.74 & 0.74 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Model 2: Stacking Selected Models}
+This model stacks four diverse models that performed well in prior experiments: Logistic Regression, XGBoost, MLP, and GaussianNB, each configured with optimized hyperparameters. The final estimator is a Logistic Regression model. This approach tests whether combining diverse, high-performing models yields better results.
+
+\textbf{Hyperparameters:}
+\begin{verbatim}
+[
+    {
+        "model": "LogisticRegression",
+        "hyperparameters": {
+            "penalty": "l2",
+            "C": 0.1,
+            "max_iter": 1000
+        }
+    },
+    {
+        "model": "XGBoost",
+        "hyperparameters": {
+            "n_estimators": 150,
+            "learning_rate": 0.1,
+            "max_depth": 15
+        }
+    },
+    {
+        "model": "MLP",
+        "hyperparameters": {
+            "hidden_layer_sizes": [100],
+            "activation": "logistic",
+            "solver": "sgd",
+            "alpha": 0.01,
+            "batch_size": 32,
+            "max_iter": 2000
+        }
+    },
+    {
+        "model": "GaussianNB",
+        "hyperparameters": {
+            "priors": [0.3, 0.7],
+            "var_smoothing": 1e-9
+        }
+    },
+    {
+        "final_estimator": "LogisticRegression"
+    }
+]
+\end{verbatim}
+
+\textbf{Performance Metrics:}
+\begin{table}[H]
+\centering
+\caption{Training and Testing Performance of Stacking Selected Models}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Metric} & \textbf{Training (Avg)} & \textbf{Testing} \\ \hline
+Accuracy & 0.7467 & 0.7451 \\ \hline
+ROC AUC & 0.7455 & 0.7431 \\ \hline
+F1 Score & 0.7619 & 0.7657 \\ \hline
+Precision & 0.7384 & 0.7270 \\ \hline
+Recall & 0.7871 & 0.8087 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Testing Classification Report for Stacking Selected Models}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
+0.0 & 0.77 & 0.68 & 0.72 \\ \hline
+1.0 & 0.73 & 0.81 & 0.77 \\ \hline
+Macro Avg & 0.75 & 0.74 & 0.74 \\ \hline
+Weighted Avg & 0.75 & 0.75 & 0.74 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Conclusion}
+The stacking model with selected diverse models (\texttt{stacking\_model\_selected\_models}) slightly outperforms the multiple Logistic Regression stacking model in both training and testing phases, achieving higher accuracy (0.7451 vs. 0.7363), F1 score (0.7657 vs. 0.7539), and recall (0.8087 vs. 0.7843). This suggests that combining diverse models leverages complementary strengths, leading to better generalization.

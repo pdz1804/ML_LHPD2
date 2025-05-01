@@ -1,8 +1,8 @@
-\subsection{Project Workflow and Implementation}
+\section{Project Workflow and Implementation}
 
 The project follows a structured workflow to ensure consistency, reliability, and a systematic comparison of different machine learning models for sentiment analysis. Each model is trained and evaluated through a standardized process, allowing for a clear assessment of their strengths and limitations.
 
-\subsubsection{Training and Evaluation Workflow}
+\subsection{Training and Evaluation Workflow}
 
 Each model undergoes a systematic training and evaluation process to ensure robust comparisons. The workflow consists of the following key steps:
 
@@ -15,13 +15,34 @@ Each model undergoes a systematic training and evaluation process to ensure robu
     \item \textbf{Logging performance metrics}: Key performance indicators such as accuracy, precision, recall, F1-score, and ROC AUC are recorded for a structured analysis.
 \end{itemize}
 
-\subsubsection{Implementation Quality and Code Efficiency}
+\subsection{Implementation Quality and Code Efficiency}
 
 Our team has ensured high \textbf{Implementation Quality} by maintaining modular, well-structured code with appropriate error handling and documentation. The repository adheres to \textbf{style compliance} standards to enhance readability and maintainability.
 
 Moreover, \textbf{Code Efficiency} has been a major focus, with optimizations in time and space complexity to ensure scalable model execution. We evaluated resource usage across different models and applied various \textbf{optimization strategies} to improve computational efficiency.
 
-\subsubsection{Data Preprocessing and Model Tuning}
+\subsection{Use Case Scenarios}
+
+In our sentiment analysis problem, we defined and implemented two major use case pipelines:
+
+\begin{enumerate}
+    \item \textbf{Raw Feature Modeling Pipeline} – In this approach, we focused on building models directly on engineered features:
+    \begin{itemize}
+        \item We experimented with various feature representations including \textbf{Count Vectorizer}, \textbf{TF-IDF}, \textbf{GloVe}, and \textbf{Word2Vec} embeddings to numerically encode text.
+        \item These features were used as input to traditional models such as \textbf{Logistic Regression}, \textbf{Random Forest}, \textbf{XGBoost}, and \textbf{SVM}. For SVM specifically, we explored \textbf{custom kernel functions for text}, \textbf{memory-efficient sparse representations}, and applied \textbf{soft-margin optimization} through hyperparameter tuning.
+        \item \textbf{CRF} was utilized for its sequence labeling capability. By combining it with a BiLSTM encoder, we implemented a \textbf{BiLSTM-CRF model} to capture contextual relationships and sequential dependencies in sentiment-bearing words.
+        \item \textbf{Ensemble methods} such as \textbf{Voting} and \textbf{Stacking} were implemented to combine multiple base learners, leveraging their complementary strengths for better generalization.
+    \end{itemize}
+
+    \item \textbf{Dimensionality Reduction Pipeline} – This use case introduces a dimensionality reduction step into the feature modeling pipeline:
+    \begin{itemize}
+        \item After building the same high-dimensional representations as above, we applied \textbf{Principal Component Analysis (PCA)} to reduce the feature space while retaining most of the variance.
+        \item The reduced vectors were then used for training and inference using the same set of models.
+        \item This approach provides advantages such as \textbf{reduced computational cost}, \textbf{lower memory consumption}, and \textbf{potential improvements in model generalization} due to elimination of redundant and noisy features.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Data Preprocessing and Model Tuning}
 
 To enhance model effectiveness, our team performed rigorous \textbf{Data Preprocessing}, including:
 \begin{itemize}
@@ -32,7 +53,7 @@ To enhance model effectiveness, our team performed rigorous \textbf{Data Preproc
 
 For \textbf{Model Tuning}, we applied hyperparameter selection techniques, cross-validation, and optimization strategies to maximize each model’s performance. The \textbf{Results Analysis} component ensures that the best hyperparameter settings are chosen based on empirical evidence.
 
-\subsubsection{Performance Analysis and Model Evaluation}
+\subsection{Performance Analysis and Model Evaluation}
 
 Performance evaluation was conducted rigorously, focusing on:
 \begin{itemize}
@@ -42,7 +63,7 @@ Performance evaluation was conducted rigorously, focusing on:
     \item Statistical testing to validate model significance in sentiment classification.
 \end{itemize}
 
-\subsubsection{Documentation and Reproducibility}
+\subsection{Documentation and Reproducibility}
 
 We maintained \textbf{comprehensive documentation}, including API references, code comments, and result interpretations, to ensure clarity and ease of understanding. Our repository also adheres to best practices in \textbf{Reproducibility} by:
 \begin{itemize}
@@ -51,7 +72,7 @@ We maintained \textbf{comprehensive documentation}, including API references, co
     \item Handling random seed initialization to ensure consistent results.
 \end{itemize}
 
-\subsubsection{Project Management and Collaboration}
+\subsection{Project Management and Collaboration}
 
 Our team structured the project following best practices in \textbf{Project Management}, utilizing GitHub for issue tracking, version control, and structured repository organization. Each team member contributed through separate branches, submitting pull requests for review and integration. 
 

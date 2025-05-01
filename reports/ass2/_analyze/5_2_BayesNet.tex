@@ -1,10 +1,10 @@
-\subsection{Model: BayesNet}
+\section{Model: BayesNet}
 
-\subsubsection{Introduction}
+\subsection{Introduction}
 
 The Bayesian Network (BayesNet) model is a probabilistic graphical model that represents dependencies between variables using a directed acyclic graph. In this study, we implement a custom Bayesian Network classifier that integrates feature selection, dimensionality reduction, and discretization techniques to handle continuous data. The model is trained using Maximum Likelihood Estimation (MLE) and performs inference using Belief Propagation. By leveraging probabilistic reasoning, BayesNet provides interpretable predictions while handling uncertainty effectively.
 
-\subsubsection{Training Configuration}
+\subsection{Training Configuration}
 
 The Bayesian Network classifier was implemented using the \texttt{pgmpy} library, which provides probabilistic graphical modeling tools. Unlike traditional machine learning models that rely on direct optimization techniques (e.g., gradient descent in logistic regression), Bayesian Networks model conditional dependencies between variables and perform inference based on probabilistic reasoning.
 
@@ -50,7 +50,7 @@ The model training process consists of several key steps:
 
 This approach ensures that the Bayesian Network captures conditional dependencies effectively, leveraging probabilistic inference for classification tasks.
 
-\subsubsection{Training and Evaluation Results}
+\subsection{Training and Evaluation Results}
 
 The Bayesian Network model was trained and evaluated using a structured probabilistic approach. Unlike conventional machine learning models, Bayesian Networks leverage probabilistic dependencies between features and perform inference through belief propagation or variable elimination. The evaluation focused on key performance metrics such as Accuracy, Precision, Recall, F1-score, and ROC AUC.
 
@@ -93,7 +93,7 @@ The Bayesian Network model was trained and evaluated using a structured probabil
 \textbf{Conclusion:}  
 The Bayesian Network model achieved an accuracy of \textbf{64.95\%} with an F1-score of \textbf{0.6875} and a ROC AUC of \textbf{0.7143}. These results indicate that the model effectively captures probabilistic dependencies within the dataset. Further improvements could involve optimizing feature selection, adjusting discretization strategies, or incorporating domain knowledge into the network structure.
 
-\subsubsection{Performance Analysis}
+\subsection{Performance Analysis}
 
 The Bayesian Network model demonstrated moderate classification performance, achieving an accuracy of \textbf{64.95\%}. While the model effectively captured probabilistic dependencies between features, its precision (\textbf{0.6364}) was lower than its recall (\textbf{0.7476}), indicating a tendency to produce more false positives.
 
@@ -107,7 +107,7 @@ Key observations from the evaluation metrics:
 
 Overall, while Bayesian Networks provide an interpretable probabilistic framework, their performance could potentially be enhanced with improved feature engineering, hyperparameter tuning, and refinement of the network structure.
 
-\subsubsection{Conclusion}
+\subsection{Conclusion}
 
 The Bayesian Network model was trained and evaluated using a structured probabilistic approach, leveraging inference methods such as Belief Propagation and Variable Elimination. The model achieved an accuracy of \textbf{64.95\%} with reasonable recall and AUC scores, demonstrating its effectiveness in capturing underlying dependencies in the data.
 

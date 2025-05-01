@@ -1,0 +1,172 @@
+\section{Model: Voting}
+
+\subsection{Theory of Voting}
+Voting classifiers are an ensemble learning technique that combine predictions from multiple base models to produce a final prediction. The approach is based on the principle that aggregating diverse models can reduce individual model biases and improve overall performance. Voting classifiers operate in two primary modes:
+\begin{itemize}
+    \item \textbf{Hard Voting}: Each base model casts a vote for a class label, and the final prediction is determined by majority voting.
+    \item \textbf{Soft Voting}: Base models provide probability scores for each class, and the final prediction is based on the averaged probabilities across all models, typically selecting the class with the highest average probability.
+\end{itemize}
+Soft voting is often preferred when base models are well-calibrated, as it leverages confidence scores to make more informed decisions. Voting is effective when base models are diverse and complementary, as it mitigates weaknesses of individual models while preserving their strengths.
+
+\subsection{Implementation}
+We implemented two voting classifiers to enhance sentiment classification performance by combining predictions from multiple models. The voting process is managed by the \texttt{train\_voting\_classifier} function, which operates as follows:
+
+\begin{itemize}
+    \item \textbf{Training}: The function accepts a dictionary of base model classes, their hyperparameters, training features (\texttt{X}), labels (\texttt{y}), a feature extraction method, and a voting type (`soft' for probability averaging or `hard' for majority voting). It trains each base model independently, performs 5-fold cross-validation to evaluate performance (accuracy, ROC AUC, F1-score, precision, recall), and saves the trained voting classifier to a specified path. Performance and loss plots are generated.
+    \item \textbf{Prediction}: The trained voting classifier predicts on test features by averaging probabilities (soft voting) or taking a majority vote (hard voting) from all base models to produce the final prediction.
+\end{itemize}
+
+The pseudocode for the \texttt{train\_voting\_classifier} function is as follows:
+
+\begin{algorithm}[H]
+\caption{\texttt{train\_voting\_classifier}}
+\begin{algorithmic}[1]
+\Procedure{TrainVotingClassifier}{model\_dict, param\_dict, feature\_method, X, y, voting\_type, model\_save\_path, img\_save\_path, img\_loss\_path}
+    \If{file exists at model\_save\_path}
+        \State \Return load model from model\_save\_path
+    \EndIf
+    \State base\_models $\gets$ empty list
+    \For{each model\_name in model\_dict}
+        \State model $\gets$ instantiate model\_dict[model\_name] with param\_dict[model\_name]
+        \State append (model\_name, model) to base\_models
+        \State handle exceptions by skipping invalid models
+    \EndFor
+    \If{length of base\_models < 2}
+        \State \Return None
+    \EndIf
+    \State voting\_clf $\gets$ VotingClassifier(base\_models, voting\_type)
+    \State Initialize lists for accuracy, roc\_auc, f1, precision, recall, train\_loss, val\_loss
+    \State k\_fold $\gets$ KFold(n\_splits=5)
+    \For{each train\_idx, val\_idx in k\_fold.split(X)}
+        \State X\_train, X\_val $\gets$ X[train\_idx], X[val\_idx]
+        \State y\_train, y\_val $\gets$ y[train\_idx], y[val\_idx]
+        \State Fit voting\_clf on X\_train, y\_train
+        \State Compute train\_loss and val\_loss using get\_training\_loss
+        \State Append losses to train\_loss, val\_loss
+        \State val\_preds $\gets$ voting\_clf.predict(X\_val)
+        \State Append metrics (accuracy, roc\_auc, f1, precision, recall) for val\_preds, y\_val
+    \EndFor
+    \State Fit voting\_clf on full X, y
+    \State Save voting\_clf to model\_save\_path
+    \State Plot metrics and losses to img\_save\_path, img\_loss\_path
+    \State \Return voting\_clf
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Model 1: Voting Multiple Logistic Regression}
+This model combines 10 Logistic Regression models, each with identical hyperparameters but different random seeds for diversity. The goal is to evaluate whether aggregating multiple strong Logistic Regression models (best-performing in prior experiments) improves results. Soft voting is used.
+
+\textbf{Hyperparameters:}
+\begin{verbatim}
+{
+    "model": "LogisticRegression",
+    "instances": 10,
+    "hyperparameters": {
+        "penalty": "l2",
+        "C": 0.1,
+        "max_iter": 3000,
+        "random_state": "range(0, 9)"
+    }
+}
+\end{verbatim}
+
+\textbf{Performance Metrics:}
+\begin{table}[H]
+\centering
+\caption{Training and Testing Performance of Voting Multiple Logistic Regression}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Metric} & \textbf{Training (Avg)} & \textbf{Testing} \\ \hline
+Accuracy & 0.7440 & 0.7373 \\ \hline
+ROC AUC & 0.7424 & 0.7356 \\ \hline
+F1 Score & 0.7615 & 0.7568 \\ \hline
+Precision & 0.7318 & 0.7232 \\ \hline
+Recall & 0.7939 & 0.7938 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Testing Classification Report for Voting Multiple Logistic Regression}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
+0.0 & 0.76 & 0.68 & 0.71 \\ \hline
+1.0 & 0.72 & 0.79 & 0.76 \\ \hline
+Weighted Avg & 0.74 & 0.74 & 0.74 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Model 2: Voting Selected Models}
+This model combines 4 diverse models that performed well in prior experiments: Logistic Regression, XGBoost, MLP, and GaussianNB, each configured with optimized hyperparameters. Soft voting is used to aggregate predictions, testing whether diverse models yield better performance.
+
+\textbf{Hyperparameters:}
+\begin{verbatim}
+[
+    {
+        "model": "LogisticRegression",
+        "hyperparameters": {
+            "penalty": "l2",
+            "C": 0.1,
+            "max_iter": 1000
+        }
+    },
+    {
+        "model": "XGBoost",
+        "hyperparameters": {
+            "n_estimators": 150,
+            "learning_rate": 0.1,
+            "max_depth": 15
+        }
+    },
+    {
+        "model": "MLP",
+        "hyperparameters": {
+            "hidden_layer_sizes": [100],
+            "activation": "logistic",
+            "solver": "sgd",
+            "alpha": 0.01,
+            "batch_size": 32,
+            "max_iter": 2000
+        }
+    },
+    {
+        "model": "GaussianNB",
+        "hyperparameters": {
+            "priors": [0.3, 0.7],
+            "var_smoothing": 1e-9
+        }
+    }
+]
+\end{verbatim}
+
+\textbf{Performance Metrics:}
+\begin{table}[H]
+\centering
+\caption{Training and Testing Performance of Voting Selected Models}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Metric} & \textbf{Training (Avg)} & \textbf{Testing} \\ \hline
+Accuracy & 0.7284 & 0.7273 \\ \hline
+ROC AUC & 0.7276 & 0.7263 \\ \hline
+F1 Score & 0.7408 & 0.7415 \\ \hline
+Precision & 0.7286 & 0.7244 \\ \hline
+Recall & 0.7539 & 0.7594 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Testing Classification Report for Voting Selected Models}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} \\ \hline
+0.0 & 0.73 & 0.69 & 0.71 \\ \hline
+1.0 & 0.72 & 0.76 & 0.74 \\ \hline
+Weighted Avg & 0.73 & 0.73 & 0.73 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Conclusion}
+The voting model with multiple Logistic Regression models (\texttt{voting\_model\_multiple\_lr}) outperforms the voting model with selected diverse models (\texttt{voting\_model\_all\_models}) in both training and testing phases, achieving higher accuracy (0.7373 vs. 0.7273) and F1 score (0.7568 vs. 0.7415). This suggests that combining multiple instances of a strong model (Logistic Regression) is more effective than aggregating diverse models in this case.

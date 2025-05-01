@@ -14,7 +14,7 @@ This directory contains all the reports generated for the assignments and the fi
 📂 reports/             
 │── 📂 ass1                 # Contains the source in latex for the report for the 1st assignment. 
 │── 📂 ass2                 # Contains the source in latex for the report for the 2nd assignment. 
-│── 📂 final_project/       # This place contains the final PDF file for the assignments.
+│── 📂 final_project/       # This place contains the final PDF file for the 2 assignments.
 │── 📜 README.md            # Documentation for this directory
 ```
 
