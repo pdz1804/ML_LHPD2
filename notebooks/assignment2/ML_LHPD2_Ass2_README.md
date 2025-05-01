@@ -1,4 +1,4 @@
-<div align="center">
+<div style="text-align: center">
   <h2>VIETNAM NATIONAL UNIVERSITY, HO CHI MINH CITY</h2>
   <h3>UNIVERSITY OF TECHNOLOGY</h3>
   <h3>FACULTY OF COMPUTER SCIENCE AND ENGINEERING</h3>
@@ -11,9 +11,9 @@
   <br />
 </div>
 
-<h2 align="center">💡 Course: Machine Learning - 242 💡</h2>
-<h2 align="center">Assignment 2</h2>
-<h3 align="center">💡 Class: CC01 - Group LHPD2  💡</h2>
+<h2 style="text-align: center">💡 Course: Machine Learning - 242 💡</h2>
+<h2 style="text-align: center">Assignment 2</h2>
+<h3 style="text-align: center">💡 Class: CC01 - Group LHPD2  💡</h2>
 
 ---
 
@@ -24,7 +24,7 @@ Our repository is at this link: [https://github.com/pdz1804/ML_LHPD2](https://gi
 
 This README that we submitted to you is stored in the repository at [ML_LHPD2/notebooks/assignment2/ML_LHPD2_Ass2_README.md](https://github.com/pdz1804/ML_LHPD2/blob/main/notebooks/assignment2/ML_LHPD2_Ass2_README.md).
 
-Also, our team's report which contains detailed information (data analysis, data preprocessing, normalization, models training process and evaluation of those trained models) for this Assignment 1 is stored in the repository at [ML_LHPD2/reports/final_project/](https://github.com/pdz1804/ML_LHPD2/tree/main/reports/final_project/).
+Also, our team's report which contains detailed information (data analysis, data preprocessing, normalization, models training process and evaluation of those trained models) for this Assignment 2 is stored in the repository at [ML_LHPD2/reports/final_project/](https://github.com/pdz1804/ML_LHPD2/tree/main/reports/final_project/).
 
 
 | Name | Student ID |
@@ -53,8 +53,8 @@ Also, our team's report which contains detailed information (data analysis, data
 
 ### **2️⃣ GitHub Repository Structure**
 We are implementing **ALL machine learning models from the syllabus** using:
-- **ONE unified dataset** with one use-case before the midterm (Chapters 2-6) (which we do in this Assignment - Assignment 1).
-- **THAT dataset** for that same use-case for the second stage after midterm (Chapters 6-10) (which we will do in our Assignment 2).
+- **ONE unified dataset** with one use-case before the midterm (Chapters 2-6) (which we have done in our Assignment 1).
+- **THAT dataset** for that same use-case for the second stage after midterm (Chapters 6-10) (which we have done in our Assignment 2).
 
 ✅ **Repository Setup**:
 - The **main repository** is created by the team lead.
@@ -123,7 +123,7 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
   - Naive Bayes
   - GA, HMM, Bayesian Network
   - MLPClassifier and simple Perceptron (ANN)
-  - CNN / LSTM for deep learning 
+  - CNN / LSTM for Deep Neural Networks 
 
 - **Compare Model Performance** 🏆
 - **Create Visualizations for Analysis** 📊
@@ -133,9 +133,10 @@ We have **collected and preprocessed** the dataset, and it has been uploaded to 
 - **Train and Evaluate Models** 🚀
   - Graphical Models (Bayesian Networks, HMM)
   - Support Vector Machines (kernel and regularization)
-  - PCA for Dimension Reduction 
-    - Feature Selection Strategies 
-    - Topic Modeling, Variance, Chi-squared
+  - Dimension Reduction 
+    - Principal Component Analysis (PCA)
+  - Feature Selection Strategies 
+    - Topic Modeling, Variance-threshold, Chi-squared
   - LDA as linear classifier 
   - Ensemble Models / Methods
     - Random Forest 
@@ -222,13 +223,13 @@ For any questions or contributions, please contact:
 
 ---
 
-<h2 align="center">✨💟 Contributors 💟✨</h2>
+<h2 style="text-align: center">✨💟 Contributors 💟✨</h2>
 
-<p align="center">
+<p style="text-align: center">
   💖 <strong>We fairly contribute to this repository with dedication and teamwork!</strong> 💖
 </p>
 
-<div align="center">
+<div style="text-align: center">
   <a href="https://github.com/pdz1804"><img src="https://avatars.githubusercontent.com/u/123137268?v=4" title="pdz1804" width="50" height="50"></a>
   <a href="https://github.com/MarkX04"><img src="https://avatars.githubusercontent.com/u/105540317?v=4" title="MarkX04" width="50" height="50"></a>
   <a href="https://github.com/DatNguyen1402"><img src="https://avatars.githubusercontent.com/u/137872945?v=4" title="DatNguyen1402" width="50" height="50"></a>
